@@ -1,0 +1,26 @@
+{
+  "name": "zenn-markdown-preview",
+  "version": "0.0.0",
+  "description": "Preview Markdown Content",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "start": "webpack-dev-server --host 0.0.0.0 --port 4567",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "zenn-markdown-loader": "^0.0.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

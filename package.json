@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zenn-dev/zenn-editor.git"
+  },
+  "author": "catnose99 <catnose99@gmail.com> (https://catnose99.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zenn-dev/zenn-editor/issues"
+  },
+  "homepage": "https://github.com/zenn-dev/zenn-editor#readme",
+  "devDependencies": {
+    "lerna": "^3.22.0"
+  }
+}
