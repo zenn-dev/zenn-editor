@@ -10,6 +10,7 @@ const mdContainer = require("markdown-it-container");
 const mdAnchor = require("markdown-it-anchor");
 const mdFootnote = require("markdown-it-footnote");
 const mdImgNativeLazy = require("markdown-it-image-lazy-loading");
+const mdImsize = require("markdown-it-imsize");
 
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container
@@ -55,6 +56,7 @@ md.use(mdPrism)
   .use(mdLineHighlight)
   .use(mdFootnote)
   .use(mdImgNativeLazy)
+  .use(mdImsize, { autofill: false })
   .use(mdAnchor, { level: [1, 2, 3] })
   .use(mdContainer, "details", mdContainerDetails)
   .use(mdContainer, "message", mdContainerMessage);
