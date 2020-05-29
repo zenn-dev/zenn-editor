@@ -1,6 +1,8 @@
+import Head from "next/head";
+
 import { getArticleBySlug } from "../../lib/api";
 import markdownToHtml from "zenn-markdown-html";
-import Head from "next/head";
+import ContentBody from "../../components/ContentBody";
 
 // todo: type
 export default function Post({ article }: any) {
@@ -8,10 +10,7 @@ export default function Post({ article }: any) {
     <article>
       <div>
         <h1>{article.slug}</h1>
-        <div
-          className="md-content"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
+        <ContentBody content={article.content} />
       </div>
     </article>
   );
