@@ -1,11 +1,11 @@
-import "../styles/reset.css";
-import "../styles/index.css";
-
-import "zenn-css";
-
 import React from "react";
 import App from "next/app";
 import Head from "next/head";
+
+import "zenn-css";
+
+import "@styles/reset.css";
+import "@styles/index.css";
 
 export default class MyApp extends App {
   render() {

@@ -1,8 +1,8 @@
 import Head from "next/head";
 
-import { getArticleBySlug } from "../../lib/api";
 import markdownToHtml from "zenn-markdown-html";
-import ContentBody from "../../components/ContentBody";
+import ContentBody from "@components/ContentBody";
+import { getArticleBySlug } from "@utils/api";
 
 // todo: type
 export default function Post({ article }: any) {

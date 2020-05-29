@@ -1,6 +1,7 @@
-import { getAllArticles } from "../lib/api";
 import Head from "next/head";
 import Link from "next/link";
+
+import { getAllArticles } from "@utils/api";
 
 export default function Index({ allArticles }) {
   return (
