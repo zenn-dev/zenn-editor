@@ -1,6 +1,7 @@
 $c-primary: #3ea8ff;
 $c-primary-bg: #edf2f7;
 $c-primary-bg-darker: #c6d5e2;
+$c-primary-bg-lighter: #f1f5f9;
 $c-gray: #93a5b1;
 $c-gray-lighter: #b9c7d2;
 $c-gray-darker: #77838c;
@@ -34,4 +35,5 @@ $breakpoints: (
   @import "./_embed.scss";
   @import "./_prism.scss";
   @import "./_message.scss";
+  @import "./_footnotes.scss";
 }
