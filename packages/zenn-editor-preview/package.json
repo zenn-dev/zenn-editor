@@ -1,5 +1,6 @@
 {
   "name": "zenn-editor-preview",
+  "license": "MIT",
   "version": "0.0.0",
   "main": "lib/zenn-editor-preview.js",
   "directories": {

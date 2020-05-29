@@ -1,0 +1,224 @@
+$pre-side-padding: 1.2rem;
+
+i,
+cite,
+em {
+  font-style: italic;
+}
+strong {
+  font-weight: 700;
+}
+a {
+  color: $c-primary;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+p + p {
+  margin-top: 1.6rem;
+}
+ul,
+ol {
+  margin: 1.4rem 0;
+  line-height: 1.7;
+  & > li {
+    margin: 0.6rem 0;
+  }
+  ul,
+  ol {
+    margin: 0.2em 0;
+  }
+  p {
+    margin: 0;
+  }
+}
+
+ul {
+  padding-left: 0;
+  & > li {
+    list-style: none;
+    list-style-position: inside;
+    position: relative;
+    padding-left: 1.5em;
+
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0.7em;
+      left: 0.3em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: $c-primary;
+    }
+    li:before {
+      background: $c-primary-bg-darker;
+    }
+  }
+}
+ol {
+  margin-left: 0;
+  padding-left: 1.4rem;
+  list-style: decimal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  & + p {
+    margin-top: 0.3em;
+  }
+}
+
+h1,
+h2 {
+  margin-top: 2.3em;
+  margin-bottom: 0.5em;
+}
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 2.3em;
+  margin-bottom: 0.5em;
+}
+h1 {
+  padding-bottom: 0.3em;
+  margin-bottom: 1.1rem;
+  font-size: 1.7em;
+  position: relative;
+  border-bottom: solid 1px $c-gray-border-lighter;
+}
+h2 {
+  position: relative;
+  font-size: 1.5em;
+}
+h3 {
+  font-size: 1.25em;
+}
+h4 {
+  font-size: 1em;
+}
+h5 {
+  font-size: 1em;
+}
+h5,
+h6 {
+  color: $c-gray;
+}
+h6 {
+  font-size: 0.85em;
+}
+
+@include mq(sm) {
+  h1 {
+    font-size: 1.4em;
+  }
+  h2 {
+    font-size: 1.3em;
+  }
+  h3 {
+    font-size: 1.1em;
+  }
+  h4 {
+    font-size: 1em;
+  }
+  h5 {
+    font-size: 1em;
+  }
+  h6 {
+    font-size: 0.85em;
+  }
+}
+
+hr {
+  border-top: 1px dashed $c-gray-border;
+  margin: 2rem 0;
+}
+blockquote {
+  margin: 1.4rem 0;
+  border-left: solid 3px $c-gray-darker;
+  padding: 0.1rem 0 0.1rem 1.2rem;
+  color: $c-gray-darker;
+  p {
+    margin: 1rem 0;
+  }
+  & > :first-child {
+    margin-top: 0;
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+  &.twitter-tweet {
+    display: none;
+  }
+}
+table {
+  margin: 1.2rem 0;
+  width: auto;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  line-height: 1.7;
+}
+th,
+td {
+  padding: 0.5rem 1vw;
+  border: solid 1px $c-gray-border;
+}
+th {
+  font-weight: 700;
+  background: $c-primary-bg;
+}
+code {
+  color: $c-gray-darker;
+  padding: 0.2em 0.4em;
+  margin: 0 0.2em;
+  background: $c-primary-bg;
+  vertical-align: middle;
+  font-size: 0.95em;
+  border-radius: 4px;
+}
+pre {
+  margin: 1.3rem 0;
+  background: $c-contrast;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 3px;
+  word-break: normal; // iOSで折り返されるのを防ぐ
+  word-wrap: normal; // iOSで折り返されるのを防ぐ
+  @include mq(xs) {
+    border-radius: 0;
+  }
+  code {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-size: 0.9em;
+    color: #fff;
+  }
+  & > code {
+    display: block;
+    padding: 1.5rem $pre-side-padding; // このようにしないとpreのスクロールバーがコードに重なってしまう
+  }
+}
+
+/* with markdown-it-highlight-lines */
+.highlighted-line {
+  background-color: rgba(0, 0, 0, 0.05);
+  display: block;
+  margin: 0 -#{$pre-side-padding};
+  padding: 0 $pre-side-padding;
+}
+
+img {
+  margin: 1.5rem auto;
+  display: table;
+  border: solid 1px $c-gray-border-lighter;
+  max-width: 100%;
+}

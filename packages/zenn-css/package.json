@@ -1,0 +1,17 @@
+{
+  "name": "zenn-css",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "lib/index.css",
+  "files": [
+    "lib/index.css"
+  ],
+  "scripts": {
+    "build": "node-sass ./src/index.scss ./lib/index.css --output-style compressed",
+    "dev": "node-sass-chokidar ./src -o ./lib --watch"
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "node-sass-chokidar": "^1.4.0"
+  }
+}
