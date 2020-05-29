@@ -20,6 +20,12 @@
   },
   "dependencies": {
     "markdown-it": "^11.0.0",
+    "markdown-it-anchor": "^5.3.0",
+    "markdown-it-container": "^2.0.0",
+    "markdown-it-footnote": "^3.0.2",
+    "markdown-it-highlight-lines": "^1.0.2",
+    "markdown-it-image-lazy-loading": "^1.0.2",
+    "markdown-it-imsize": "^2.0.1",
     "markdown-it-prism": "^2.0.5"
   }
 }

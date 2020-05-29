@@ -1,9 +1,4 @@
-const mdPrism = require("markdown-it-prism");
-const md = require("markdown-it")({
-  html: false,
-  breaks: true,
-  linkify: true,
-}).use(mdPrism);
+import md from "./utils/md";
 
 const markdownToHtml = (text: string): string => {
   if (!(text && text.length)) return text;

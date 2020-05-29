@@ -1,0 +1,3 @@
+:::details Detail
+summary here
+:::

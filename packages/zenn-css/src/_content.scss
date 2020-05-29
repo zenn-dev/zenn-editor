@@ -222,3 +222,7 @@ img {
   border: solid 1px $c-gray-border-lighter;
   max-width: 100%;
 }
+
+summary {
+  cursor: default;
+}
