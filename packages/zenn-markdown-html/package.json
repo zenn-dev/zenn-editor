@@ -1,0 +1,25 @@
+{
+  "name": "zenn-markdown-html",
+  "version": "0.0.0",
+  "description": "Get html and frontmatter attributes from raw markdown text.",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^10.0.1",
+    "@types/node": "^14.0.5",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "markdown-it": "^11.0.0",
+    "markdown-it-prism": "^2.0.5"
+  }
+}

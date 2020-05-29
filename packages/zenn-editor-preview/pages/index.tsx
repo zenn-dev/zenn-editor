@@ -25,7 +25,7 @@ export default function Index({ allArticles }) {
   );
 }
 
-export async function getStaticProps() {
+export function getStaticProps() {
   const allArticles = getAllArticles(["content", "slug"]);
 
   return {

@@ -13,9 +13,11 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
+    "gray-matter": "^4.0.2",
     "next": "^9.4.4",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "zenn-markdown-html": "^0.0.0"
   },
   "devDependencies": {
     "@types/node": "^14.0.5",
