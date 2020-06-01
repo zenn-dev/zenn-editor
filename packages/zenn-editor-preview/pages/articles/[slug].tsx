@@ -30,9 +30,18 @@ const ArticleSlugPage = ({
   );
 };
 
-export const getServerSideProps = ({ params }) => {
+export const getServerSideProps = ({ res, params }) => {
   const slug = params.slug;
   const article = getArticleBySlug(slug);
+
+  if (!article) {
+    if (res) {
+      res.writeHead(301, { Location: "/" });
+      res.end();
+      return;
+    }
+  }
+
   const content = markdownToHtml(article.content);
   const allContentsNavCollection = getAllContentsNavCollection();
 

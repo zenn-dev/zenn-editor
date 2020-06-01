@@ -17,7 +17,13 @@ function getArticleMdNames(): string[] {
 // todo: return type
 export function getArticleBySlug(slug: string, fields?: null | string[]): any {
   const fullPath = join(articlesDirectory, `${slug}.md`);
-  const fileRaw = fs.readFileSync(fullPath, "utf8");
+  let fileRaw;
+  try {
+    fileRaw = fs.readFileSync(fullPath, "utf8");
+  } catch (e) {
+    return null;
+  }
+
   const { data, content } = matter(fileRaw);
 
   // return only specified fields
