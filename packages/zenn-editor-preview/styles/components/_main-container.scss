@@ -1,14 +1,16 @@
 .main-container {
+  display: flex;
 }
 
 .main-sidebar {
-  position: fixed;
-  width: 330px;
+  position: sticky;
+  top: 0;
+  width: 290px;
   height: 100vh;
   overflow-y: auto;
   border-right: solid 1px $c-gray-border-lighter;
 }
 .main-content {
-  padding-left: 330px;
-  min-width: 700px;
+  min-width: 375px;
+  flex: 1;
 }
