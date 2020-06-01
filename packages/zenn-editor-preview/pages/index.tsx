@@ -1,35 +1,32 @@
 import Head from "next/head";
 import Link from "next/link";
+import MainContainer from "@components/MainContainer";
+import { NavCollections } from "@types";
+import { getAllContentsNavCollection } from "@utils/navCollections";
 
-import { getAllArticles } from "@utils/api";
+type IndexPageProps = {
+  allContentsNavCollection: NavCollections;
+};
 
-export default function Index({ allArticles }) {
+const IndexPage = ({ allContentsNavCollection }: IndexPageProps) => {
   return (
     <div>
       <Head>
-        <title>Contents Index</title>
+        <title>Welcome!</title>
       </Head>
 
-      {allArticles.map((article) => {
-        const slug = article.slug;
-        const realPath = `/articles/${slug}`;
-        return (
-          <div>
-            <Link href="/articles/[slug]" as={realPath} key={slug}>
-              <a href={realPath}>{slug}</a>
-            </Link>
-            {article.slug} - {article.content}
-          </div>
-        );
-      })}
+      <MainContainer navCollections={allContentsNavCollection}>
+        Welcome!
+      </MainContainer>
     </div>
   );
-}
+};
 
-export function getStaticProps() {
-  const allArticles = getAllArticles(["content", "slug"]);
-
+export const getServerSideProps = () => {
+  const allContentsNavCollection = getAllContentsNavCollection();
   return {
-    props: { allArticles },
+    props: { allContentsNavCollection },
   };
-}
+};
+
+export default IndexPage;

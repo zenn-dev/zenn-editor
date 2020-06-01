@@ -19,6 +19,7 @@
     "next": "^9.4.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "sass": "^1.26.7",
     "zenn-css": "^0.0.0",
     "zenn-markdown-html": "^0.0.0"
   },

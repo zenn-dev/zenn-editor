@@ -1,5 +1,14 @@
 # Zenn Editor
 
+## ToDO
+- [ ] frontmatterの表示
+- [ ] エラー表示
+- [ ] exampleリポジトリの作成
+- [ ] CLIの作成
+- [ ] 画像ULの仕組み
+- [ ] API
+- [ ] 目次が動くか確認（h1,h2,h3まで）
+
 ## Dev
 - Mono repo by lerna.
 

@@ -4,8 +4,7 @@ import Head from "next/head";
 
 import "zenn-css";
 
-import "@styles/reset.css";
-import "@styles/index.css";
+import "@styles/index.scss";
 
 export default class MyApp extends App {
   render() {
