@@ -1,4 +1,5 @@
-import { getAllArticles, getAllBooks } from "@utils/api";
+import { getAllArticles } from "@utils/api/articles";
+import { getAllBooks } from "@utils/api/books";
 import { Article, Book, NavCollection, NavCollections } from "@types";
 
 const articlePlaceholderItem = {

@@ -4,7 +4,7 @@ import { GetServerSideProps } from "next";
 import BookHeader from "@components/BookHeader";
 import MainContainer from "@components/MainContainer";
 import { getAllContentsNavCollection } from "@utils/navCollections";
-import { getBookBySlug } from "@utils/api";
+import { getBookBySlug } from "@utils/api/books";
 
 import { Book, NavCollections } from "@types";
 
@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<BookSlugPageProps> = async (
     if (res) {
       res.setHeader("content-type", "text/html; charset=utf-8");
       res.statusCode = 404;
-      res.end(`books/${slug}/config.yamlが見つかりませんでした`);
+      res.end(`books/${slug}/config.yamlが取得できませんでした`);
       return;
     }
   }

@@ -17,8 +17,13 @@ const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
         </div>
 
         <div className="content-header__row">
+          <span className="content-header__row-title">summary</span>
+          {book.summary || "指定が必要です"}
+        </div>
+
+        <div className="content-header__row">
           <span className="content-header__row-title">topics</span>
-          {book.topics
+          {Array.isArray(book.topics)
             ? book.topics.map((t) => (
                 <span className="content-header__topic">{t}</span>
               ))
@@ -30,6 +35,14 @@ const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
             <span className="content-header__row-title">public</span>
             {book.public?.toString()}
             {book.public === false ? "（非公開）" : ""}
+          </div>
+        )}
+
+        {book.price !== undefined && (
+          <div className="content-header__row">
+            <span className="content-header__row-title">price</span>
+            {book.price?.toString()}
+            {book.price === 0 ? "（無料公開）" : ""}
           </div>
         )}
 

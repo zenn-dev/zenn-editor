@@ -12,7 +12,7 @@ export type Article = {
 export type Book = {
   slug: string;
   title?: string;
-  abstract?: string;
+  summary?: string;
   price?: number;
   topics?: string[];
   public?: boolean;

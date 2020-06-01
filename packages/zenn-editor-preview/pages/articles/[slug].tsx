@@ -6,7 +6,7 @@ import ContentBody from "@components/ContentBody";
 import ArticleHeader from "@components/ArticleHeader";
 import MainContainer from "@components/MainContainer";
 import { getAllContentsNavCollection } from "@utils/navCollections";
-import { getArticleBySlug } from "@utils/api";
+import { getArticleBySlug } from "@utils/api/articles";
 
 import { Article, NavCollections } from "@types";
 

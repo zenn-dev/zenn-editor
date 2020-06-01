@@ -40,8 +40,9 @@ const validateMissingEmoji: ItemValidator = {
 };
 
 const validateMissingTopics: ItemValidator = {
-  errorType: "notice",
-  message: "topicsを配列で指定してください",
+  errorType: "critical",
+  message:
+    'topics（記事に関連する言語や技術）を配列で指定してください。例）["react", "javascript"]',
   isInvalid: (item: Article | Book) =>
     !item.topics?.length || !Array.isArray(item.topics),
 };
@@ -50,7 +51,7 @@ const validateTooManyTopis: ItemValidator = {
   errorType: "critical",
   message: "topicsは最大5つまで指定できます",
   isInvalid: (item: Article | Book) =>
-    item.topics?.length && item.topics.length > 5,
+    Array.isArray(item.topics) && item.topics.length > 5,
 };
 
 const validateInvalidTopicLetters: ItemValidator = {
@@ -58,7 +59,7 @@ const validateInvalidTopicLetters: ItemValidator = {
   message:
     "topicsに記号やスペースを使用することはできません。例えばC++は「cpp」、C#は「csharp」と記載してください",
   isInvalid: (item: Article | Book) =>
-    item.topics?.length &&
+    Array.isArray(item.topics) &&
     !!item.topics.find((t) => t.match(/[ -\/:-@\[-`{-~]/g)),
 };
 
@@ -66,6 +67,33 @@ const validateUseTags: ItemValidator = {
   errorType: "notice",
   message: "tagではなくtopicsを使ってください",
   isInvalid: (item: any) => item.tags?.length,
+};
+
+const validateBookSummary: ItemValidator = {
+  errorType: "critical",
+  message: "summary（本の説明）の記載は必須です",
+  isInvalid: (item: Book) => !item.summary?.length,
+};
+
+const validateBookPriceType: ItemValidator = {
+  errorType: "critical",
+  message:
+    'price（本の価格）は文字列ではなく数字で指定してください（"で囲まないでください）',
+  isInvalid: (item: Book) => typeof item.price !== "number",
+};
+
+const validateBookPriceRange: ItemValidator = {
+  errorType: "critical",
+  message:
+    "price（本の価格）を有料にする場合、200〜5000の間で指定する必要があります",
+  isInvalid: (item: Book) =>
+    item.price && item.price !== 0 && (item.price > 5000 || item.price < 200),
+};
+
+const validateBookPriceFraction: ItemValidator = {
+  errorType: "critical",
+  message: "price（本の価格）は100円単位で指定してください",
+  isInvalid: (item: Book) => item.price && item.price % 100 !== 0,
 };
 
 export const getArticleErrors = (article: Article): ErrorMessages => {
@@ -103,6 +131,10 @@ export const getBookErrors = (book: Book): ErrorMessages => {
     validateUseTags,
     validateInvalidTopicLetters,
     validateTooManyTopis,
+    validateBookSummary,
+    validateBookPriceType,
+    validateBookPriceRange,
+    validateBookPriceFraction,
   ];
 
   validators.forEach((validator) => {
