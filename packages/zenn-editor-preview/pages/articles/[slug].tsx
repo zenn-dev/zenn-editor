@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { GetServerSideProps } from "next";
 
 import markdownToHtml from "zenn-markdown-html";
 import ContentBody from "@components/ContentBody";
@@ -19,19 +20,28 @@ const ArticleSlugPage = ({
   allContentsNavCollection,
 }: ArticleSlugPageProps) => {
   return (
-    <MainContainer navCollections={allContentsNavCollection}>
-      <article>
-        <div>
-          <ArticleHeader article={article} />
-          <ContentBody content={article.content} />
-        </div>
-      </article>
-    </MainContainer>
+    <>
+      <Head>
+        <title>{article.title || "無題"}の編集</title>
+      </Head>
+      <MainContainer navCollections={allContentsNavCollection}>
+        <article>
+          <div>
+            <ArticleHeader article={article} />
+            <ContentBody content={article.content} />
+          </div>
+        </article>
+      </MainContainer>
+    </>
   );
 };
 
-export const getServerSideProps = ({ res, params }) => {
-  const slug = params.slug;
+export const getServerSideProps: GetServerSideProps<ArticleSlugPageProps> = async ({
+  res,
+  params,
+}) => {
+  const paramsSlug = params.slug;
+  const slug: string = Array.isArray(paramsSlug) ? paramsSlug[0] : paramsSlug;
   const article = getArticleBySlug(slug);
 
   if (!article) {

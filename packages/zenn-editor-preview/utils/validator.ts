@@ -59,13 +59,13 @@ const validateInvalidTopicLetters: ItemValidator = {
     "topicsに記号やスペースを使用することはできません。例えばC++は「cpp」、C#は「csharp」と記載してください",
   isInvalid: (item: Article | Book) =>
     item.topics?.length &&
-    item.topics.find((t) => t.match(/[ -\/:-@\[-`{-~]/g)),
+    !!item.topics.find((t) => t.match(/[ -\/:-@\[-`{-~]/g)),
 };
 
 const validateUseTags: ItemValidator = {
   errorType: "notice",
   message: "tagではなくtopicsを使ってください",
-  isInvalid: (item: Article | Book) => item.tags?.length,
+  isInvalid: (item: any) => item.tags?.length,
 };
 
 export const getArticleErrors = (article: Article): ErrorMessages => {
@@ -85,6 +85,28 @@ export const getArticleErrors = (article: Article): ErrorMessages => {
 
   validators.forEach((validator) => {
     if (validator.isInvalid(article)) {
+      const { errorType, message } = validator;
+      messages.push({ errorType, message });
+    }
+  });
+
+  return messages;
+};
+
+export const getBookErrors = (book: Book): ErrorMessages => {
+  let messages: ErrorMessages = [];
+
+  const validators = [
+    validateInvalidSlug,
+    validateMissingTitle,
+    validateMissingTopics,
+    validateUseTags,
+    validateInvalidTopicLetters,
+    validateTooManyTopis,
+  ];
+
+  validators.forEach((validator) => {
+    if (validator.isInvalid(book)) {
       const { errorType, message } = validator;
       messages.push({ errorType, message });
     }

@@ -88,14 +88,12 @@ export function getAllBookSlugs(): string[] {
 
 export function getAllBooks(fields = []): Book[] {
   const slugs = getAllBookSlugs();
-  const books = slugs.map((slug) => getBookBySlug(slug, fields));
+  const books = slugs.map((slug) => getBookBySlug(slug, fields) || { slug });
   return books;
 }
 
-export function getBookBySlug(slug: string, fields?: null | string[]): Book {
-  const fullDirPath = join(booksDirectory, slug);
+function getConfigYamlData(fullDirPath: string): Book {
   let fileRaw;
-
   try {
     fileRaw = fs.readFileSync(`${fullDirPath}/config.yaml`, "utf8");
   } catch (e) {
@@ -103,16 +101,21 @@ export function getBookBySlug(slug: string, fields?: null | string[]): Book {
       fileRaw = fs.readFileSync(`${fullDirPath}/config.yml`, "utf8");
     } catch (e) {}
   }
-  if (!fileRaw)
-    return {
-      slug,
-    };
+  // couldn't get yaml files
+  if (!fileRaw) {
+    return null;
+  }
+  return yaml.safeLoad(fileRaw);
+}
 
-  const data = yaml.safeLoad(fileRaw);
+export function getBookBySlug(slug: string, fields?: null | string[]): Book {
+  const fullDirPath = join(booksDirectory, slug);
+  const data = getConfigYamlData(fullDirPath);
+  if (!data) return null;
 
   // return only specified fields
   if (fields) {
-    const item: Article = {
+    const item: Book = {
       slug,
     };
     fields.forEach((field) => {

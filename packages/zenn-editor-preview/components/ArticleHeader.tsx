@@ -12,6 +12,11 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
         <h1 className="content-header__title">{article.title || "No Title"}</h1>
 
         <div className="content-header__row">
+          <span className="content-header__row-title">slug</span>
+          {article.slug}
+        </div>
+
+        <div className="content-header__row">
           <span className="content-header__row-title">emoji</span>
 
           {article.emoji ? (
@@ -19,11 +24,6 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
           ) : (
             "指定が必要です"
           )}
-        </div>
-
-        <div className="content-header__row">
-          <span className="content-header__row-title">slug</span>
-          {article.slug}
         </div>
 
         <div className="content-header__row">
