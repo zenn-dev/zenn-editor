@@ -1,0 +1,37 @@
+.error-row {
+  position: relative;
+  margin: 12px 0 0;
+  padding-left: 24px;
+  color: #ff6868;
+  font-size: 14px;
+  line-height: 1.5;
+  &:before {
+    position: absolute;
+    content: "!";
+    left: 0;
+    top: 2px;
+    background: #ff6868;
+    color: #fff;
+    border-radius: 50%;
+    width: 17px;
+    height: 17px;
+    line-height: 17px;
+    font-size: 11px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+  }
+  a {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+}
+.error-row--critical {
+}
+
+.error-row--notice {
+  color: rgba(255, 158, 11, 1);
+  &:before {
+    background: rgba(255, 158, 11, 1);
+  }
+}

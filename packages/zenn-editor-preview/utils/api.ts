@@ -15,27 +15,34 @@ function getArticleMdNames(): string[] {
 }
 
 // todo: return type
-export function getArticleBySlug(slug: string, fields: string[] = []): any {
+export function getArticleBySlug(slug: string, fields?: null | string[]): any {
   const fullPath = join(articlesDirectory, `${slug}.md`);
   const fileRaw = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileRaw);
 
-  const items = {};
-
-  // Ensure only the minimal needed data is exposed
-  fields.forEach((field) => {
-    if (field === "slug") {
-      items[field] = slug;
-    }
-    if (field === "content") {
-      items[field] = content;
-    }
-    if (data[field]) {
-      items[field] = data[field];
-    }
-  });
-
-  return items;
+  // return only specified fields
+  if (fields) {
+    const item = {};
+    fields.forEach((field) => {
+      if (field === "slug") {
+        item[field] = slug;
+      }
+      if (field === "content") {
+        item[field] = content;
+      }
+      if (data[field]) {
+        item[field] = data[field];
+      }
+    });
+    return item;
+  } else {
+    // or return all
+    return {
+      slug,
+      content,
+      ...data,
+    };
+  }
 }
 
 export function getAllArticles(fields = []) {

@@ -1,12 +1,15 @@
 .main-container {
-  display: flex;
-  width: 100%;
 }
 
 .main-sidebar {
+  position: fixed;
   width: 330px;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: solid 1px $c-gray-border-lighter;
 }
 .main-content {
+  padding-left: 330px;
   flex: 1;
-  min-width: 380px;
+  min-width: 600px;
 }

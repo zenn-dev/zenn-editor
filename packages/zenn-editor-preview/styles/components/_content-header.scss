@@ -1,0 +1,34 @@
+.content-header {
+  padding: 35px 0;
+  background: $c-primary-bg-lighter;
+}
+.content-header__title {
+  font-size: 27px;
+}
+.content-header__row {
+  margin-top: 10px;
+  line-height: 1.4;
+  font-size: 14.5px;
+}
+.content-header__row-title {
+  font-weight: 700;
+  display: inline-block;
+  width: 70px;
+  padding-right: 10px;
+}
+.content-header__link {
+  display: inline-block;
+  margin-top: 10px;
+  color: $c-gray;
+  font-size: 14px;
+}
+.content-header__topic {
+  display: inline-block;
+  color: $c-gray-darker;
+  font-size: 13px;
+  border: solid 1px $c-gray-border-lighter;
+  background: #fff;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  margin-right: 6px;
+}

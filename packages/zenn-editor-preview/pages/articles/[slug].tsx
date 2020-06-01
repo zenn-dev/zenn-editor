@@ -2,24 +2,39 @@ import Head from "next/head";
 
 import markdownToHtml from "zenn-markdown-html";
 import ContentBody from "@components/ContentBody";
+import ArticleHeader from "@components/ArticleHeader";
+import MainContainer from "@components/MainContainer";
+import { getAllContentsNavCollection } from "@utils/navCollections";
 import { getArticleBySlug } from "@utils/api";
 
-// todo: type
-export default function Post({ article }: any) {
-  return (
-    <article>
-      <div>
-        <h1>{article.slug}</h1>
-        <ContentBody content={article.content} />
-      </div>
-    </article>
-  );
-}
+import { Article, NavCollections } from "@types";
 
-export function getServerSideProps({ params }) {
+type ArticleSlugPageProps = {
+  article: Article;
+  allContentsNavCollection: NavCollections;
+};
+
+const ArticleSlugPage = ({
+  article,
+  allContentsNavCollection,
+}: ArticleSlugPageProps) => {
+  return (
+    <MainContainer navCollections={allContentsNavCollection}>
+      <article>
+        <div>
+          <ArticleHeader article={article} />
+          <ContentBody content={article.content} />
+        </div>
+      </article>
+    </MainContainer>
+  );
+};
+
+export const getServerSideProps = ({ params }) => {
   const slug = params.slug;
-  const article = getArticleBySlug(slug, ["content"]);
+  const article = getArticleBySlug(slug);
   const content = markdownToHtml(article.content);
+  const allContentsNavCollection = getAllContentsNavCollection();
 
   return {
     props: {
@@ -28,6 +43,9 @@ export function getServerSideProps({ params }) {
         content,
         slug,
       },
+      allContentsNavCollection,
     },
   };
-}
+};
+
+export default ArticleSlugPage;

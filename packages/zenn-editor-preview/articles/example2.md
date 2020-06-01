@@ -1,5 +1,17 @@
-:::details Detail
-summary here
-:::
+---
+title: "新しい記事です"
+type: "tech" # or "idea"
+topics: 
+  - React
+  - 初心者
+  - ソイラテ
+  - RubyOnRails
+  - Angulerjs
+emoji: 🐲
+public: false
+---
 
-![Minion](https://octodex.github.com/images/minion.png =250x)
+prfix2
+fix2
+fix
+sss

@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import MainContainer from "@components/MainContainer";
 import { NavCollections } from "@types";
 import { getAllContentsNavCollection } from "@utils/navCollections";
