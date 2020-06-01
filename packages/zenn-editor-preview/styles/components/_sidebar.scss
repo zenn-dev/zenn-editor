@@ -27,7 +27,7 @@
 }
 .sidebar-nav-item {
   display: block;
-  margin: 7px 0;
+  padding: 4px 0;
   padding-left: 15px;
   font-size: 14px;
   color: $c-gray-darker;
@@ -36,5 +36,10 @@
   white-space: nowrap;
   &:hover {
     color: $c-base;
+  }
+  &.active {
+    color: $c-primary;
+    background: $c-blue-bg;
+    cursor: default;
   }
 }

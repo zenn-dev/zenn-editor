@@ -39,12 +39,15 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
           <div className="content-header__row">
             <span className="content-header__row-title">public</span>
             {article.public?.toString()}
+            {article.public === false ? "（非公開）" : ""}
           </div>
         )}
 
         <div className="content-header__row">
           <span className="content-header__row-title">type</span>
           {article.type || "指定が必要です"}
+          {article.type === "tech" ? "（技術記事）" : ""}
+          {article.type === "idea" ? "（アイデア）" : ""}
         </div>
 
         {!!errorCount && (

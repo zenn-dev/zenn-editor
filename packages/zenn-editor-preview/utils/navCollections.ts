@@ -2,13 +2,13 @@ import { getAllArticles } from "@utils/api";
 import { Article, NavCollection, NavCollections, NavItem } from "@types";
 
 export const getAllArticlesNavCollection = (): NavCollection => {
-  const allArticles = getAllArticles(["title", "slug"]);
+  const allArticles = getAllArticles(["title", "slug", "emoji"]);
 
   return {
     name: "articles",
     items: allArticles.map((article: Article) => {
       return {
-        name: `📄${article.title || article.slug}`,
+        name: `${article.emoji || "📄"}${article.title || article.slug}`,
         realPath: `/articles/${article.slug}`,
         dynamicRoutePath: `/articles/[slug]`,
       };

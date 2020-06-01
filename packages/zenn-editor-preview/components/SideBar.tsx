@@ -1,13 +1,18 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { NavCollections, NavCollection, NavItem } from "@types";
 
 const SideBarNavItem: React.FC<{ navItem: NavItem }> = ({ navItem }) => {
+  const router = useRouter();
+  const className = `sidebar-nav-item ${
+    router.asPath === navItem.realPath ? "active" : ""
+  }`;
   return (
     <Link
       href={navItem.dynamicRoutePath || navItem.realPath}
       as={navItem.realPath}
     >
-      <a href={navItem.realPath} className="sidebar-nav-item">
+      <a href={navItem.realPath} className={className}>
         {navItem.name}
       </a>
     </Link>
