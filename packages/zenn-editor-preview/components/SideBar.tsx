@@ -31,17 +31,28 @@ const SideBarNavCollection: React.FC<{ navCollection: NavCollection }> = ({
   );
 };
 
+const LogoLink: React.FC = () => (
+  <Link href="/">
+    <a href="/" className="sidebar-logo-link">
+      <img src="/logo.svg" alt="Zenn Editor" width={187} height={22} />
+    </a>
+  </Link>
+);
+
 const SideBar: React.FC<{
   navCollections: NavCollections;
 }> = ({ navCollections }) => {
   return (
     <aside className="sidebar">
-      {navCollections.map((navCollection) => (
-        <SideBarNavCollection
-          navCollection={navCollection}
-          key={navCollection.name}
-        />
-      ))}
+      <LogoLink />
+      <div className="sidebar-collections">
+        {navCollections.map((navCollection) => (
+          <SideBarNavCollection
+            navCollection={navCollection}
+            key={navCollection.name}
+          />
+        ))}
+      </div>
     </aside>
   );
 };

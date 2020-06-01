@@ -5,7 +5,7 @@ export const getAllArticlesNavCollection = (): NavCollection => {
   const allArticles = getAllArticles(["title", "slug"]);
 
   return {
-    name: "Articles",
+    name: "articles",
     items: allArticles.map((article: Article) => {
       return {
         name: `📄${article.title || article.slug}`,
@@ -33,7 +33,7 @@ export const getAllBooksNavCollection = (): NavCollection => {
   });
 
   return {
-    name: "Books",
+    name: "books",
     items: items?.length ? items : [bookPlaceholderItem],
   };
 };
