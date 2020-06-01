@@ -1,24 +1,26 @@
 .content-header {
-  padding: 35px 0;
+  padding: 40px 0;
   background: $c-primary-bg-lighter;
+  line-height: 1.4;
 }
 .content-header__title {
-  font-size: 27px;
+  font-size: 30px;
 }
+
 .content-header__row {
-  margin-top: 10px;
-  line-height: 1.4;
-  font-size: 14.5px;
+  margin: 10px 0;
+  font-size: 14px;
 }
+
 .content-header__row-title {
   font-weight: 700;
   display: inline-block;
-  width: 70px;
+  width: 64px;
   padding-right: 10px;
 }
 .content-header__link {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 15 px;
   color: $c-gray;
   font-size: 14px;
 }
@@ -31,4 +33,10 @@
   padding: 0.2em 0.4em;
   border-radius: 3px;
   margin-right: 6px;
+}
+.content-header__error-title {
+  margin-top: 20px;
+  color: #ff6868;
+  font-size: 14px;
+  font-weight: 700;
 }

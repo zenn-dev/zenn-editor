@@ -5,14 +5,20 @@ import ErrorRow from "@components/ErrorRow";
 
 const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
   const errorMessages = getArticleErrors(article);
+  const errorCount = errorMessages?.length;
   return (
     <header className="content-header">
       <ContentWrapper>
-        <h1 className="content-header__title">{article.title}</h1>
+        <h1 className="content-header__title">{article.title || "No Title"}</h1>
 
         <div className="content-header__row">
           <span className="content-header__row-title">emoji</span>
-          {article.emoji}
+
+          {article.emoji ? (
+            <span style={{ fontSize: "20px" }}>{article.emoji}</span>
+          ) : (
+            "指定が必要です"
+          )}
         </div>
 
         <div className="content-header__row">
@@ -22,9 +28,11 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
 
         <div className="content-header__row">
           <span className="content-header__row-title">topics</span>
-          {article.topics?.map((t) => (
-            <span className="content-header__topic">{t}</span>
-          ))}
+          {article.topics
+            ? article.topics.map((t) => (
+                <span className="content-header__topic">{t}</span>
+              ))
+            : "指定が必要です"}
         </div>
 
         {article.public !== undefined && (
@@ -36,12 +44,20 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
 
         <div className="content-header__row">
           <span className="content-header__row-title">type</span>
-          {article.type}
+          {article.type || "指定が必要です"}
         </div>
 
-        {errorMessages.map((errorMessage, index) => (
-          <ErrorRow errorMessage={errorMessage} key={`invldmsg${index}`} />
-        ))}
+        {!!errorCount && (
+          <div>
+            <div className="content-header__error-title">
+              {errorCount}件のエラー
+            </div>
+            {errorMessages.map((errorMessage, index) => (
+              <ErrorRow errorMessage={errorMessage} key={`invldmsg${index}`} />
+            ))}
+          </div>
+        )}
+
         <a href="todo" className="content-header__link" target="_blank">
           Articleのmdファイルの作成方法はこちら →
         </a>

@@ -14,6 +14,15 @@ const validateMissingTitle: ItemValidator = {
   isInvalid: (item: Item) => !item.title?.length,
 };
 
+const validateArticleType: ItemValidator = {
+  errorType: "critical",
+  message:
+    'type（記事のタイプ）にtechもしくはideaを指定してください。技術記事の場合はtechを指定してください<br/><a href="https://zenn.dev/tech-or-idea" target="_blank">詳細はこちら →</a>',
+  isInvalid: (item: Article) => {
+    return !item.type || !(item.type === "tech" || item.type === "idea");
+  },
+};
+
 const validateEmojiFormat: ItemValidator = {
   errorType: "critical",
   message: "不正なemoji（絵文字）が指定されています",
@@ -26,7 +35,7 @@ const validateEmojiFormat: ItemValidator = {
 const validateMissingEmoji: ItemValidator = {
   errorType: "notice",
   message:
-    'アイキャッチとなるemoji（絵文字）を指定してください。<a href="https://getemoji.com/" target="_blank">絵文字を探す→</a>',
+    'アイキャッチとなるemoji（絵文字）を指定してください<br/><a href="https://getemoji.com/" target="_blank">絵文字を探す→</a>',
   isInvalid: (item: Article) => !item.emoji,
 };
 
@@ -59,28 +68,19 @@ const validateUseTags: ItemValidator = {
   isInvalid: (item: Article | Book) => item.tags?.length,
 };
 
-const validateArticleType: ItemValidator = {
-  errorType: "critical",
-  message:
-    'type（記事のタイプ）にtechもしくはideaを指定してください。技術記事の場合はtechと記載してください。<a href="https://zenn.dev/tech-or-idea" target="_blank">詳細はこちら →</a>',
-  isInvalid: (item: Article) => {
-    return !item.type || !(item.type === "tech" || item.type === "idea");
-  },
-};
-
 export const getArticleErrors = (article: Article): ErrorMessages => {
   let messages: ErrorMessages = [];
 
   const validators = [
     validateInvalidSlug,
     validateMissingTitle,
+    validateArticleType,
     validateEmojiFormat,
     validateMissingEmoji,
     validateMissingTopics,
     validateUseTags,
     validateInvalidTopicLetters,
     validateTooManyTopis,
-    validateArticleType,
   ];
 
   validators.forEach((validator) => {
