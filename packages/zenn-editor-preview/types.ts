@@ -1,6 +1,6 @@
 export type Article = {
-  content: string;
   slug: string;
+  content?: string;
   title?: string;
   emoji?: string;
   type?: "tech" | "idea";
@@ -9,7 +9,15 @@ export type Article = {
   public?: boolean;
 };
 
-export type Book = any;
+export type Book = {
+  slug: string;
+  title?: string;
+  abstract?: string;
+  price?: number;
+  topics?: string[];
+  public?: boolean;
+};
+
 export type Chapter = any;
 
 export type Item = Article | Book | Chapter;
