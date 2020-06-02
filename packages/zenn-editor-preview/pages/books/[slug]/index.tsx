@@ -4,18 +4,40 @@ import { GetServerSideProps } from "next";
 import BookHeader from "@components/BookHeader";
 import MainContainer from "@components/MainContainer";
 import ContentBody from "@components/ContentBody";
+import ChapterList from "@components/ChapterList";
 import { getAllContentsNavCollections } from "@utils/navCollections";
 import { getBookBySlug } from "@utils/api/books";
+import { getChapters } from "@utils/api/chapters";
 
-import { Book, NavCollections } from "@types";
+import { Book, Chapter, NavCollections } from "@types";
+
+const BodyPlaceholder = () => (
+  <>
+    <h1>✍️ チャプターを作成する</h1>
+    <p>
+      1つめのチャプターを作成しましょう。チャプターは
+      <code>チャプター番号.md</code>
+      という形式でファイルを作成します。チャプター1は
+      <code>1.md</code>、チャプター2は
+      <code>2.md</code>…のようになります。
+      <br />
+      <br />
+      <a href="fixme" target="_blank">
+        本の作成について詳しく知る→
+      </a>
+    </p>
+  </>
+);
 
 type BookSlugPageProps = {
   book: Book;
+  chapters: Chapter[];
   allContentsNavCollection: NavCollections;
 };
 
 const BookSlugPage = ({
   book,
+  chapters,
   allContentsNavCollection,
 }: BookSlugPageProps) => {
   return (
@@ -28,19 +50,14 @@ const BookSlugPage = ({
           <div>
             <BookHeader book={book} />
             <ContentBody>
-              <h1>✍️ 本文を編集する</h1>
-              <p>
-                本文を編集するには、サイドバーからチャプターを選びます。新しくチャプターを作成する場合は
-                <code>チャプター番号.md</code>
-                という形式でファイルを作成します。チャプター1は
-                <code>1.md</code>、チャプター2は
-                <code>2.md</code>…のようになります。
-                <br />
-                <br />
-                <a href="fixme" target="_blank">
-                  本の作成について詳しく知る→
-                </a>
-              </p>
+              {chapters?.length ? (
+                <>
+                  <h1>✍️ チャプターを編集する</h1>
+                  <ChapterList chapters={chapters} bookSlug={book.slug} />
+                </>
+              ) : (
+                <BodyPlaceholder />
+              )}
             </ContentBody>
           </div>
         </article>
@@ -61,10 +78,12 @@ export const getServerSideProps: GetServerSideProps<BookSlugPageProps> = async (
     if (res) {
       res.setHeader("content-type", "text/html; charset=utf-8");
       res.statusCode = 404;
-      res.end(`books/${slug}/config.yamlが取得できませんでした`);
+      res.end(`books/${slug}/config.yamlの内容が取得できませんでした`);
       return;
     }
   }
+
+  const chapters = getChapters(slug, ["title", "position"]);
 
   const allContentsNavCollection = getAllContentsNavCollections();
 
@@ -74,6 +93,7 @@ export const getServerSideProps: GetServerSideProps<BookSlugPageProps> = async (
         ...book,
         slug,
       },
+      chapters,
       allContentsNavCollection,
     },
   };

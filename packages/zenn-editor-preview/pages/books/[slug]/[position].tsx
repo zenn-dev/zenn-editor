@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 
 import markdownToHtml from "zenn-markdown-html";
 import ContentBody from "@components/ContentBody";
+import ChapterHeader from "@components/ChapterHeader";
 import MainContainer from "@components/MainContainer";
 import { getBookNavCollections } from "@utils/navCollections";
 import { getChapter } from "@utils/api/chapters";
@@ -22,7 +23,8 @@ const ChapterPage = ({ chapter, bookNavCollections }: ChapterPageProps) => {
       </Head>
       <MainContainer navCollections={bookNavCollections}>
         <article>
-          <div>{chapter.title}</div>
+          <ChapterHeader chapter={chapter} />
+          <ContentBody content={chapter.content} />
         </article>
       </MainContainer>
     </>

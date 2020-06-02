@@ -1,4 +1,12 @@
-import { Item, Article, Book, ItemValidator, ErrorMessages } from "@types";
+import {
+  Item,
+  Article,
+  Book,
+  Chapter,
+  ItemValidator,
+  ErrorMessages,
+  ErrorMessage,
+} from "@types";
 
 const validateInvalidSlug: ItemValidator = {
   errorType: "critical",
@@ -96,6 +104,13 @@ const validateBookPriceFraction: ItemValidator = {
   isInvalid: (item: Book) => item.price && item.price % 100 !== 0,
 };
 
+const validateChapterPosition: ItemValidator = {
+  errorType: "critical",
+  message:
+    "各チャプターのファイル名は「1.md」のように「0〜50の半角数字.md」とする必要があります",
+  isInvalid: (item: Chapter) => !item.position.match(/^[0-9]{1,2}$/),
+};
+
 export const getArticleErrors = (article: Article): ErrorMessages => {
   let messages: ErrorMessages = [];
 
@@ -114,7 +129,8 @@ export const getArticleErrors = (article: Article): ErrorMessages => {
   validators.forEach((validator) => {
     if (validator.isInvalid(article)) {
       const { errorType, message } = validator;
-      messages.push({ errorType, message });
+      const errorMessage: ErrorMessage = { errorType, message };
+      messages.push(errorMessage);
     }
   });
 
@@ -140,7 +156,23 @@ export const getBookErrors = (book: Book): ErrorMessages => {
   validators.forEach((validator) => {
     if (validator.isInvalid(book)) {
       const { errorType, message } = validator;
-      messages.push({ errorType, message });
+      const errorMessage: ErrorMessage = { errorType, message };
+      messages.push(errorMessage);
+    }
+  });
+
+  return messages;
+};
+
+export const getChapterErrors = (chapter: Chapter): ErrorMessages => {
+  let messages: ErrorMessages = [];
+  const validators = [validateChapterPosition, validateMissingTitle];
+
+  validators.forEach((validator) => {
+    if (validator.isInvalid(chapter)) {
+      const { errorType, message } = validator;
+      const errorMessage: ErrorMessage = { errorType, message };
+      messages.push(errorMessage);
     }
   });
 

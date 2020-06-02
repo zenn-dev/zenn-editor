@@ -1,6 +1,13 @@
 import { getAllArticles } from "@utils/api/articles";
 import { getAllBooks, getBookBySlug } from "@utils/api/books";
-import { Article, Book, Chapter, NavCollection, NavCollections } from "@types";
+import {
+  Article,
+  Book,
+  Chapter,
+  NavCollection,
+  NavCollections,
+  NavItem,
+} from "@types";
 import { getChapters } from "./api/chapters";
 
 const articlePlaceholderItem = {
@@ -11,7 +18,7 @@ const articlePlaceholderItem = {
 
 export const getAllArticlesNavCollection = (): NavCollection => {
   const allArticles = getAllArticles(["title", "emoji"]);
-  const items = allArticles?.map((article: Article) => {
+  const items: NavItem[] = allArticles?.map((article: Article) => {
     return {
       name: `${article.emoji || "📄"}${article.title || article.slug}`,
       realPath: `/articles/${article.slug}`,
@@ -32,7 +39,7 @@ const bookPlaceholderItem = {
 
 export const getAllBooksNavCollection = (): NavCollection => {
   const allBooks = getAllBooks(["title"]);
-  const items = allBooks?.map((book: Book) => {
+  const items: NavItem[] = allBooks?.map((book: Book) => {
     return {
       name: `📙${book.title || "無題のタイトル"}`,
       realPath: `/books/${book.slug}`,
@@ -56,24 +63,22 @@ export const getBookNavCollections = (slug: string): NavCollections => {
   const book = getBookBySlug(slug);
   if (!book) throw new Error(`books/${slug}の情報を取得できませんでした`);
   const chapters = getChapters(slug, ["title"]);
-  const items = chapters?.map((chapter: Chapter) => {
+  const items: NavItem[] = chapters?.map((chapter: Chapter) => {
     return {
-      name: `📄${chapter.title || "無題のチャプター"}`,
+      name: `📄${chapter.title || chapter.position + ".md"}`,
       realPath: `/books/${slug}/${chapter.position}`,
       dynamicRoutePath: `/books/[slug]/[position]`,
     };
   });
 
-  items.unshift({
+  const navItemBack: NavItem = {
     name: "← 戻る",
     realPath: `/books/${slug}`,
-    dynamicRoutePath: `/books/[slug]`,
-  });
-
+  };
+  items.unshift(navItemBack);
   const bookNavCollection: NavCollection = {
     name: `📙 ${book?.title || slug}`,
     items,
   };
-
   return [bookNavCollection];
 };

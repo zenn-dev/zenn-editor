@@ -12,7 +12,11 @@ const SideBarNavItem: React.FC<{ navItem: NavItem }> = ({ navItem }) => {
       href={navItem.dynamicRoutePath || navItem.realPath}
       as={navItem.realPath}
     >
-      <a href={navItem.realPath} className={className}>
+      <a
+        href={navItem.realPath}
+        className={className}
+        title={`${navItem.realPath}.md`}
+      >
         {navItem.name}
       </a>
     </Link>
