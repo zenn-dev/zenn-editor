@@ -1,7 +1,7 @@
 import Head from "next/head";
 import MainContainer from "@components/MainContainer";
 import { NavCollections } from "@types";
-import { getAllContentsNavCollections } from "@utils/navCollections";
+import { getAllContentsNavCollections } from "@utils/nav-collections";
 
 type IndexPageProps = {
   allContentsNavCollections: NavCollections;

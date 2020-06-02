@@ -5,7 +5,7 @@ import BookHeader from "@components/BookHeader";
 import MainContainer from "@components/MainContainer";
 import ContentBody from "@components/ContentBody";
 import ChapterList from "@components/ChapterList";
-import { getAllContentsNavCollections } from "@utils/navCollections";
+import { getAllContentsNavCollections } from "@utils/nav-collections";
 import { getBookBySlug } from "@utils/api/books";
 import { getChapters } from "@utils/api/chapters";
 
