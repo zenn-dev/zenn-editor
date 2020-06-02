@@ -23,7 +23,7 @@ export function getAllBookSlugs(): string[] {
   return getBookDirNames();
 }
 
-export function getAllBooks(fields = []): Book[] {
+export function getAllBooks(fields: string[] = []): Book[] {
   const slugs = getAllBookSlugs();
   const books = slugs.map((slug) => getBookBySlug(slug, fields) || { slug });
   return books;

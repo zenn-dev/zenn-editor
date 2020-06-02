@@ -1,20 +1,20 @@
 import Head from "next/head";
 import MainContainer from "@components/MainContainer";
 import { NavCollections } from "@types";
-import { getAllContentsNavCollection } from "@utils/navCollections";
+import { getAllContentsNavCollections } from "@utils/navCollections";
 
 type IndexPageProps = {
-  allContentsNavCollection: NavCollections;
+  allContentsNavCollections: NavCollections;
 };
 
-const IndexPage = ({ allContentsNavCollection }: IndexPageProps) => {
+const IndexPage = ({ allContentsNavCollections }: IndexPageProps) => {
   return (
     <div>
       <Head>
         <title>Welcome!</title>
       </Head>
 
-      <MainContainer navCollections={allContentsNavCollection}>
+      <MainContainer navCollections={allContentsNavCollections}>
         Welcome!
       </MainContainer>
     </div>
@@ -22,9 +22,9 @@ const IndexPage = ({ allContentsNavCollection }: IndexPageProps) => {
 };
 
 export const getServerSideProps = () => {
-  const allContentsNavCollection = getAllContentsNavCollection();
+  const allContentsNavCollections = getAllContentsNavCollections();
   return {
-    props: { allContentsNavCollection },
+    props: { allContentsNavCollections },
   };
 };
 

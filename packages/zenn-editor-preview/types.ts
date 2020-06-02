@@ -18,7 +18,11 @@ export type Book = {
   public?: boolean;
 };
 
-export type Chapter = any;
+export type Chapter = {
+  position: string;
+  title?: string;
+  content?: string;
+};
 
 export type Item = Article | Book | Chapter;
 

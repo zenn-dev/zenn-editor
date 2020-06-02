@@ -5,26 +5,26 @@ import markdownToHtml from "zenn-markdown-html";
 import ContentBody from "@components/ContentBody";
 import ArticleHeader from "@components/ArticleHeader";
 import MainContainer from "@components/MainContainer";
-import { getAllContentsNavCollection } from "@utils/navCollections";
+import { getAllContentsNavCollections } from "@utils/navCollections";
 import { getArticleBySlug } from "@utils/api/articles";
 
 import { Article, NavCollections } from "@types";
 
 type ArticleSlugPageProps = {
   article: Article;
-  allContentsNavCollection: NavCollections;
+  allContentsNavCollections: NavCollections;
 };
 
 const ArticleSlugPage = ({
   article,
-  allContentsNavCollection,
+  allContentsNavCollections,
 }: ArticleSlugPageProps) => {
   return (
     <>
       <Head>
         <title>{article.title || "無題"}の編集</title>
       </Head>
-      <MainContainer navCollections={allContentsNavCollection}>
+      <MainContainer navCollections={allContentsNavCollections}>
         <article>
           <div>
             <ArticleHeader article={article} />
@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps<ArticleSlugPageProps> = asyn
   }
 
   const content = markdownToHtml(article.content);
-  const allContentsNavCollection = getAllContentsNavCollection();
+  const allContentsNavCollections = getAllContentsNavCollections();
 
   return {
     props: {
@@ -62,7 +62,7 @@ export const getServerSideProps: GetServerSideProps<ArticleSlugPageProps> = asyn
         content,
         slug,
       },
-      allContentsNavCollection,
+      allContentsNavCollections,
     },
   };
 };

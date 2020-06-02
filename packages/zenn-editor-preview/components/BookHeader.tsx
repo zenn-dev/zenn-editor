@@ -24,8 +24,10 @@ const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
         <div className="content-header__row">
           <span className="content-header__row-title">topics</span>
           {Array.isArray(book.topics)
-            ? book.topics.map((t) => (
-                <span className="content-header__topic">{t}</span>
+            ? book.topics.map((t, i) => (
+                <span className="content-header__topic" key={`bt${i}`}>
+                  {t}
+                </span>
               ))
             : "指定が必要です"}
         </div>

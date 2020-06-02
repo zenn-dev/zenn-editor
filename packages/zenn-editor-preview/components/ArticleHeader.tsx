@@ -29,8 +29,11 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
         <div className="content-header__row">
           <span className="content-header__row-title">topics</span>
           {article.topics
-            ? article.topics.map((t) => (
-                <span className="content-header__topic">{t}</span>
+            ? article.topics.map((t, i) => (
+                <span className="content-header__topic" key={`at${i}`}>
+                  {" "}
+                  {t}
+                </span>
               ))
             : "指定が必要です"}
         </div>

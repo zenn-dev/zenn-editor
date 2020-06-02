@@ -4,7 +4,7 @@ import { GetServerSideProps } from "next";
 import BookHeader from "@components/BookHeader";
 import MainContainer from "@components/MainContainer";
 import ContentBody from "@components/ContentBody";
-import { getAllContentsNavCollection } from "@utils/navCollections";
+import { getAllContentsNavCollections } from "@utils/navCollections";
 import { getBookBySlug } from "@utils/api/books";
 
 import { Book, NavCollections } from "@types";
@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<BookSlugPageProps> = async (
     }
   }
 
-  const allContentsNavCollection = getAllContentsNavCollection();
+  const allContentsNavCollection = getAllContentsNavCollections();
 
   return {
     props: {

@@ -1,6 +1,7 @@
 import { getAllArticles } from "@utils/api/articles";
-import { getAllBooks } from "@utils/api/books";
-import { Article, Book, NavCollection, NavCollections } from "@types";
+import { getAllBooks, getBookBySlug } from "@utils/api/books";
+import { Article, Book, Chapter, NavCollection, NavCollections } from "@types";
+import { getChapters } from "./api/chapters";
 
 const articlePlaceholderItem = {
   name: "✨最初の記事を作成しましょう",
@@ -45,7 +46,34 @@ export const getAllBooksNavCollection = (): NavCollection => {
   };
 };
 
-export const getAllContentsNavCollection = (): NavCollections => [
+export const getAllContentsNavCollections = (): NavCollections => [
   getAllArticlesNavCollection(),
   getAllBooksNavCollection(),
 ];
+
+export const getBookNavCollections = (slug: string): NavCollections => {
+  // slug = Book slug
+  const book = getBookBySlug(slug);
+  if (!book) throw new Error(`books/${slug}の情報を取得できませんでした`);
+  const chapters = getChapters(slug, ["title"]);
+  const items = chapters?.map((chapter: Chapter) => {
+    return {
+      name: `📄${chapter.title || "無題のチャプター"}`,
+      realPath: `/books/${slug}/${chapter.position}`,
+      dynamicRoutePath: `/books/[slug]/[position]`,
+    };
+  });
+
+  items.unshift({
+    name: "← 戻る",
+    realPath: `/books/${slug}`,
+    dynamicRoutePath: `/books/[slug]`,
+  });
+
+  const bookNavCollection: NavCollection = {
+    name: `📙 ${book?.title || slug}`,
+    items,
+  };
+
+  return [bookNavCollection];
+};

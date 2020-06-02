@@ -58,7 +58,7 @@ export function getArticleBySlug(
   }
 }
 
-export function getAllArticles(fields = []) {
+export function getAllArticles(fields: string[] = []) {
   const slugs = getAllArticleSlugs();
   const articles = slugs.map((slug) => getArticleBySlug(slug, fields));
   return articles;
