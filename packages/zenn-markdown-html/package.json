@@ -26,6 +26,7 @@
     "markdown-it-highlight-lines": "^1.0.2",
     "markdown-it-image-lazy-loading": "^1.0.2",
     "markdown-it-imsize": "^2.0.1",
+    "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-prism": "^2.0.5"
   }
 }

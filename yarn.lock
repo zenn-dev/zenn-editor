@@ -5774,6 +5774,11 @@ markdown-it-imsize@^2.0.1:
   resolved "https://registry.yarnpkg.com/markdown-it-imsize/-/markdown-it-imsize-2.0.1.tgz#cca0427905d05338a247cb9ca9d968c5cddd5170"
   integrity sha1-zKBCeQXQUziiR8ucqdloxc3dUXA=
 
+markdown-it-link-attributes@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/markdown-it-link-attributes/-/markdown-it-link-attributes-3.0.0.tgz#12d6f403102ac22695ee2617bec109ee79426e45"
+  integrity sha512-B34ySxVeo6MuEGSPCWyIYryuXINOvngNZL87Mp7YYfKIf6DcD837+lXA8mo6EBbauKsnGz22ZH0zsbOiQRWTNg==
+
 markdown-it-prism@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/markdown-it-prism/-/markdown-it-prism-2.0.5.tgz#4bbf46be47878f227678dd83ed97f6c9b07a4094"

@@ -11,6 +11,7 @@ const mdAnchor = require("markdown-it-anchor");
 const mdFootnote = require("markdown-it-footnote");
 const mdImgNativeLazy = require("markdown-it-image-lazy-loading");
 const mdImsize = require("markdown-it-imsize");
+const mdLinkAttributes = require("markdown-it-link-attributes");
 
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container
@@ -58,6 +59,12 @@ md.use(mdPrism)
   .use(mdImgNativeLazy)
   .use(mdImsize, { autofill: false })
   .use(mdAnchor, { level: [1, 2, 3] })
+  .use(mdLinkAttributes, {
+    attrs: {
+      target: "_blank",
+      rel: "nofollow noreferrer noopener",
+    },
+  })
   .use(mdContainer, "details", mdContainerDetails)
   .use(mdContainer, "message", mdContainerMessage);
 
