@@ -1,8 +1,8 @@
 # Zenn Editor
 
 ## ToDO
-- [ ] frontmatterの表示
-- [ ] エラー表示
+- [x] frontmatterの表示
+- [x] エラー表示
 - [ ] embed
 - [ ] exampleリポジトリの作成
 - [ ] CLIの作成

@@ -7,8 +7,9 @@ import ArticleHeader from "@components/ArticleHeader";
 import MainContainer from "@components/MainContainer";
 import { getAllContentsNavCollections } from "@utils/navCollections";
 import { getArticleBySlug } from "@utils/api/articles";
-
+import { loadEmbed } from "@utils/embed";
 import { Article, NavCollections } from "@types";
+import { useEffect } from "react";
 
 type ArticleSlugPageProps = {
   article: Article;
@@ -19,6 +20,10 @@ const ArticleSlugPage = ({
   article,
   allContentsNavCollections,
 }: ArticleSlugPageProps) => {
+  useEffect(() => {
+    loadEmbed(article.content);
+  }, []);
+
   return (
     <>
       <Head>
