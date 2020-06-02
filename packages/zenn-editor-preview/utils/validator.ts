@@ -104,11 +104,23 @@ const validateBookPriceFraction: ItemValidator = {
   isInvalid: (item: Book) => item.price && item.price % 100 !== 0,
 };
 
+const validateChapterFormat: ItemValidator = {
+  errorType: "critical",
+  message:
+    "各チャプターのファイル名は0から始めることはできません。1.mdのように1〜50の数字にする必要があります",
+  isInvalid: (item: Chapter) => {
+    return !!item.position.match(/^0/);
+  },
+};
+
 const validateChapterPosition: ItemValidator = {
   errorType: "critical",
   message:
-    "各チャプターのファイル名は「1.md」のように「0〜50の半角数字.md」とする必要があります",
-  isInvalid: (item: Chapter) => !item.position.match(/^[0-9]{1,2}$/),
+    "各チャプターのファイル名は「1.md」のように「1〜50の半角数字.md」とする必要があります",
+  isInvalid: (item: Chapter) => {
+    const positionNum = Number(item.position);
+    return Number.isNaN(positionNum) || positionNum < 1 || positionNum > 50;
+  },
 };
 
 export const getArticleErrors = (article: Article): ErrorMessages => {
@@ -166,7 +178,11 @@ export const getBookErrors = (book: Book): ErrorMessages => {
 
 export const getChapterErrors = (chapter: Chapter): ErrorMessages => {
   let messages: ErrorMessages = [];
-  const validators = [validateChapterPosition, validateMissingTitle];
+  const validators = [
+    validateChapterPosition,
+    validateChapterFormat,
+    validateMissingTitle,
+  ];
 
   validators.forEach((validator) => {
     if (validator.isInvalid(chapter)) {

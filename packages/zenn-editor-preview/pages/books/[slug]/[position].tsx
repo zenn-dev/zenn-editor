@@ -19,7 +19,7 @@ const ChapterPage = ({ chapter, bookNavCollections }: ChapterPageProps) => {
   return (
     <>
       <Head>
-        <title>{chapter.title || "無題"}の編集</title>
+        <title>{chapter.title || `${chapter.position}.md`}の編集</title>
       </Head>
       <MainContainer navCollections={bookNavCollections}>
         <article>
