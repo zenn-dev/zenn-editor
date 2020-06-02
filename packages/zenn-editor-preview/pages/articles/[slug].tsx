@@ -1,15 +1,15 @@
+import { useEffect } from "react";
 import Head from "next/head";
 import { GetServerSideProps } from "next";
 
 import markdownToHtml from "zenn-markdown-html";
+import { initEmbed } from "zenn-markdown-html/lib/embed";
 import ContentBody from "@components/ContentBody";
 import ArticleHeader from "@components/ArticleHeader";
 import MainContainer from "@components/MainContainer";
-import { getAllContentsNavCollections } from "@utils/navCollections";
+import { getAllContentsNavCollections } from "@utils/nav-collections";
 import { getArticleBySlug } from "@utils/api/articles";
-import { loadEmbed } from "@utils/embed";
 import { Article, NavCollections } from "@types";
-import { useEffect } from "react";
 
 type ArticleSlugPageProps = {
   article: Article;
@@ -21,7 +21,7 @@ const ArticleSlugPage = ({
   allContentsNavCollections,
 }: ArticleSlugPageProps) => {
   useEffect(() => {
-    loadEmbed(article.content);
+    initEmbed(article.content);
   }, []);
 
   return (

@@ -1,34 +1,26 @@
 // plugis
 import { md } from "./md-base";
-const mdPrism = require("markdown-it-prism");
-const mdLineHighlight = require("markdown-it-highlight-lines");
 const mdContainer = require("markdown-it-container");
-const mdAnchor = require("markdown-it-anchor");
-const mdFootnote = require("markdown-it-footnote");
-const mdImgNativeLazy = require("markdown-it-image-lazy-loading");
-const mdImsize = require("markdown-it-imsize");
-const mdLinkAttributes = require("markdown-it-link-attributes");
-const mdCustomBlock = require("markdown-it-custom-block");
 
 // options
 import { mdContainerDetails, mdContainerMessage } from "./option-md-container";
 import { optionCustomBlock } from "./option-md-custom-block";
 
-md.use(mdPrism)
-  .use(mdLineHighlight)
-  .use(mdFootnote)
-  .use(mdImgNativeLazy)
-  .use(mdImsize, { autofill: false })
-  .use(mdAnchor, { level: [1, 2, 3] })
-  .use(mdLinkAttributes, {
+md.use(require("markdown-it-prism"))
+  .use(require("markdown-it-highlight-lines"))
+  .use(require("markdown-it-footnote"))
+  .use(require("markdown-it-image-lazy-loading"))
+  .use(require("markdown-it-imsize"), { autofill: false })
+  .use(require("markdown-it-anchor"), { level: [1, 2, 3] })
+  .use(require("markdown-it-link-attributes"), {
     attrs: {
       target: "_blank",
       rel: "nofollow noreferrer noopener",
     },
   })
+  .use(require("markdown-it-custom-block"), optionCustomBlock)
   .use(mdContainer, "details", mdContainerDetails)
-  .use(mdContainer, "message", mdContainerMessage)
-  .use(mdCustomBlock, optionCustomBlock);
+  .use(mdContainer, "message", mdContainerMessage);
 
 // custom footnote
 md.renderer.rules.footnote_block_open = () =>

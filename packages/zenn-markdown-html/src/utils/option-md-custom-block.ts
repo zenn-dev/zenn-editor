@@ -17,7 +17,7 @@ export const optionCustomBlock = {
   speakerdeck(key: string) {
     return `<div class="embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
       key
-    )}" scrolling="no" allowfullscreen loading="lazy"></iframe></div>`;
+    )}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></div>`;
   },
   jsfiddle(str: string) {
     if (!str?.match(/^(http|https):\/\/jsfiddle\.net\/[a-zA-Z0-9_,\/\-]+$/)) {
@@ -39,6 +39,7 @@ export const optionCustomBlock = {
     url.searchParams.set("embed-version", "2");
     return `<div class="embed-codepen"><iframe src="${url}" scrolling="no" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy"></iframe></div>`;
   },
+  // クライアントでhttps://platform.twitter.com/widgets.jsを読み込む必要あり
   tweet(str: string) {
     if (!str?.match(/^https:\/\/twitter.com\/[a-zA-Z0-9\_\-\/]+$/)) {
       return "ツイートページのURLを指定してください";

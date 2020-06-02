@@ -1,11 +1,13 @@
+import { useEffect } from "react";
 import Head from "next/head";
 import { GetServerSideProps } from "next";
 
 import markdownToHtml from "zenn-markdown-html";
+
 import ContentBody from "@components/ContentBody";
 import ChapterHeader from "@components/ChapterHeader";
 import MainContainer from "@components/MainContainer";
-import { getBookNavCollections } from "@utils/navCollections";
+import { getBookNavCollections } from "@utils/nav-collections";
 import { getChapter } from "@utils/api/chapters";
 
 import { Chapter, NavCollections } from "@types";
