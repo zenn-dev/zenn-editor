@@ -3,7 +3,8 @@ import { loadScript } from "./load-script";
 export const initTweet = async () => {
   loadScript({
     src: "https://platform.twitter.com/widgets.js",
-    skipIfExist: false,
+    id: "embed-tweet",
+    refreshIfExist: true,
   });
 };
 
@@ -25,6 +26,6 @@ export const initMathjax = async () => {
   loadScript({
     src: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js",
     id: "mathjax",
-    skipIfExist: true,
+    refreshIfExist: false,
   });
 };

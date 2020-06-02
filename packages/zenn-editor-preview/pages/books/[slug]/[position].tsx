@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import Head from "next/head";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
 import markdownToHtml from "zenn-markdown-html";
-
+import { initEmbed } from "zenn-markdown-html/lib/embed";
 import ContentBody from "@components/ContentBody";
 import ChapterHeader from "@components/ChapterHeader";
 import MainContainer from "@components/MainContainer";
@@ -18,6 +19,12 @@ type ChapterPageProps = {
 };
 
 const ChapterPage = ({ chapter, bookNavCollections }: ChapterPageProps) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    initEmbed(chapter.content); // reInit everytime page changes
+  }, [router.asPath]);
+
   return (
     <>
       <Head>

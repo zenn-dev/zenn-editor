@@ -1,16 +1,19 @@
 type LoadScriptParams = {
   src: string;
   id?: string;
-  skipIfExist: boolean;
+  refreshIfExist: boolean;
 };
 
 export const loadScript = ({
   src,
   id,
-  skipIfExist = true,
+  refreshIfExist = true,
 }: LoadScriptParams) => {
   const identicalScript = id ? document.getElementById(id) : null;
-  if (identicalScript && skipIfExist) return;
+  if (identicalScript) {
+    if (!refreshIfExist) return; // refreshIfExist:falseの場合は何もせず終了
+    identicalScript.remove(); // 既存の同一scriptは削除しておく
+  }
 
   return new Promise((resolve, reject) => {
     let script = document.createElement("script");

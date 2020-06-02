@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import Head from "next/head";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import Head from "next/head";
 
 import markdownToHtml from "zenn-markdown-html";
 import { initEmbed } from "zenn-markdown-html/lib/embed";
@@ -20,9 +21,11 @@ const ArticleSlugPage = ({
   article,
   allContentsNavCollections,
 }: ArticleSlugPageProps) => {
+  const router = useRouter();
+
   useEffect(() => {
-    initEmbed(article.content);
-  }, []);
+    initEmbed(article.content); // reInit everytime page changes
+  }, [router.asPath]);
 
   return (
     <>
