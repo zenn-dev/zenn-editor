@@ -74,6 +74,7 @@ export const getBookNavCollections = (slug: string): NavCollections => {
   const navItemBack: NavItem = {
     name: "← 戻る",
     realPath: `/books/${slug}`,
+    dynamicRoutePath: `/books/[slug]`,
   };
   items.unshift(navItemBack);
   const bookNavCollection: NavCollection = {
