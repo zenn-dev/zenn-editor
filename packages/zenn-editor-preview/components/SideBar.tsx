@@ -62,6 +62,19 @@ const SideBar: React.FC<{
           />
         ))}
       </div>
+      <a
+        href="https://zenn.dev/dashboard/contents/uploader"
+        className="sidebar-external-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src="https://twemoji.maxcdn.com/2/svg/\1f4f7.svg"
+          width="16"
+          height="16"
+        />
+        画像のアップロード
+      </a>
     </aside>
   );
 };

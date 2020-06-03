@@ -10,8 +10,8 @@
     "lib"
   ],
   "scripts": {
-    "start": "next",
-    "dev": "next",
+    "start": "next -p 3002",
+    "dev": "next -p 3002",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {

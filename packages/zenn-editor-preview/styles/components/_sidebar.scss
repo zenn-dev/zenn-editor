@@ -44,3 +44,14 @@
     border-radius: 3px;
   }
 }
+
+.sidebar-external-link {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+  font-size: 14px;
+  font-weight: 700;
+  img {
+    margin-right: 5px;
+  }
+}
