@@ -130,9 +130,19 @@ const validateChapterPosition: ItemValidator = {
   },
 };
 
-export const getArticleErrors = (article: Article): ErrorMessages => {
+const getErrors = (item: Item, validators: ItemValidator[]): ErrorMessages => {
   let messages: ErrorMessages = [];
+  validators.forEach((validator) => {
+    if (validator.isInvalid(item)) {
+      const { errorType, message } = validator;
+      const errorMessage: ErrorMessage = { errorType, message };
+      messages.push(errorMessage);
+    }
+  });
+  return messages;
+};
 
+export const getArticleErrors = (article: Article): ErrorMessages => {
   const validators = [
     validateInvalidSlug,
     validateMissingTitle,
@@ -144,21 +154,10 @@ export const getArticleErrors = (article: Article): ErrorMessages => {
     validateInvalidTopicLetters,
     validateTooManyTopis,
   ];
-
-  validators.forEach((validator) => {
-    if (validator.isInvalid(article)) {
-      const { errorType, message } = validator;
-      const errorMessage: ErrorMessage = { errorType, message };
-      messages.push(errorMessage);
-    }
-  });
-
-  return messages;
+  return getErrors(article, validators);
 };
 
 export const getBookErrors = (book: Book): ErrorMessages => {
-  let messages: ErrorMessages = [];
-
   const validators = [
     validateInvalidSlug,
     validateMissingTitle,
@@ -172,33 +171,14 @@ export const getBookErrors = (book: Book): ErrorMessages => {
     validateBookPriceFraction,
     validateMissingBookCover,
   ];
-
-  validators.forEach((validator) => {
-    if (validator.isInvalid(book)) {
-      const { errorType, message } = validator;
-      const errorMessage: ErrorMessage = { errorType, message };
-      messages.push(errorMessage);
-    }
-  });
-
-  return messages;
+  return getErrors(book, validators);
 };
 
 export const getChapterErrors = (chapter: Chapter): ErrorMessages => {
-  let messages: ErrorMessages = [];
   const validators = [
     validateChapterPosition,
     validateChapterFormat,
     validateMissingTitle,
   ];
-
-  validators.forEach((validator) => {
-    if (validator.isInvalid(chapter)) {
-      const { errorType, message } = validator;
-      const errorMessage: ErrorMessage = { errorType, message };
-      messages.push(errorMessage);
-    }
-  });
-
-  return messages;
+  return getErrors(chapter, validators);
 };
