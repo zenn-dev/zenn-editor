@@ -104,6 +104,13 @@ const validateBookPriceFraction: ItemValidator = {
   isInvalid: (item: Book) => item.price && item.price % 100 !== 0,
 };
 
+const validateMissingBookCover: ItemValidator = {
+  errorType: "notice",
+  message:
+    "本のカバー画像（cover.pngもしくはcover.jpg）をディレクトリ内に配置してください",
+  isInvalid: (item: Book) => !item.coverDataUrl,
+};
+
 const validateChapterFormat: ItemValidator = {
   errorType: "critical",
   message:
@@ -163,6 +170,7 @@ export const getBookErrors = (book: Book): ErrorMessages => {
     validateBookPriceType,
     validateBookPriceRange,
     validateBookPriceFraction,
+    validateMissingBookCover,
   ];
 
   validators.forEach((validator) => {

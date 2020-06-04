@@ -54,27 +54,60 @@ function getConfigYamlData(fullDirPath: string): Book {
   }
 }
 
+function bufferToDataURL(buffer: Buffer, mediaType: string): string {
+  return `data:${mediaType};base64,${buffer.toString("base64")}`;
+}
+
+function getImageFileSize(fullPath: string): number {
+  const stat = fs.statSync(fullPath);
+  return stat.size;
+}
+
+function getCoverDataUrl(fullDirPath: string): string | null {
+  const fileNameOptions = ["cover.jpg", "cover.jpeg", "cover.png"];
+  let bufferImage;
+  let mediaType;
+  let fileSize;
+  for (const fileName of fileNameOptions) {
+    const fullPath = `${fullDirPath}/${fileName}`;
+    try {
+      bufferImage = fs.readFileSync(fullPath);
+      mediaType = fileName === "cover.png" ? "image/png" : "image/jpeg";
+      fileSize = getImageFileSize(fullPath);
+      break;
+    } catch (e) {}
+  }
+  if (!bufferImage) return null;
+
+  if (fileSize > 1000 * 1000) {
+    throw new Error("カバー画像のサイズは1MB以下にしてください");
+  }
+  return bufferToDataURL(bufferImage, mediaType);
+}
+
 export function getBookBySlug(slug: string, fields?: null | string[]): Book {
   const fullDirPath = join(booksDirectory, slug);
   const data = getConfigYamlData(fullDirPath);
   if (!data) return null;
 
-  // return only specified fields
+  let result: Book = {
+    slug,
+  };
+  // include only specified fields
   if (fields) {
-    const item: Book = {
-      slug,
-    };
     fields.forEach((field) => {
       if (data[field]) {
-        item[field] = data[field];
+        result[field] = data[field];
+      }
+      if (field === "coverDataUrl") {
+        result[field] = getCoverDataUrl(fullDirPath);
       }
     });
-    return item;
   } else {
-    // or return all
-    return {
-      slug,
-      ...data,
-    };
+    // or include all
+    result = Object.assign(result, data);
+    result.coverDataUrl = getCoverDataUrl(fullDirPath);
   }
+
+  return result;
 }

@@ -1,5 +1,7 @@
 title: "本のタイトルをここに" # 本のタイトル
 summary: "ここに好きな文章を書きます。本の内容などです"
 public: true # 公開設定
-topics: ["React", "テスト"] # トピックス（5つまで）
+topics:
+  - react
+  - テスト
 price: 200

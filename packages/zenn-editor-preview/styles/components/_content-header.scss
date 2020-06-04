@@ -40,3 +40,16 @@
   font-size: 14px;
   font-weight: 700;
 }
+
+// book
+.content-header__cover {
+  margin-bottom: 25px;
+  img {
+    object-fit: cover;
+    width: 200px;
+    height: 280px;
+    box-shadow: 3px 7px 16px -5px rgba(0, 27, 68, 0.2),
+      0 0 3px rgba(0, 21, 60, 0.1);
+    border-radius: 3px 4px 4px 3px;
+  }
+}

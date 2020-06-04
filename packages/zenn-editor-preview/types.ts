@@ -16,6 +16,7 @@ export type Book = {
   price?: number;
   topics?: string[];
   public?: boolean;
+  coverDataUrl?: string;
 };
 
 export type Chapter = {
