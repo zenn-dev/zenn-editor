@@ -10,7 +10,7 @@ const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
   const isCover = !!book.coverDataUrl;
   const baseErrorMessages = getBookErrors(book);
   const coverRatioError: ErrorMessage = {
-    errorType: "critical",
+    isCritical: true,
     message:
       "カバー画像の「幅 : 高さ」の比率は「1 : 1.4」にしてください（最終的に幅500px・高さ700pxにリサイズされます）",
   };

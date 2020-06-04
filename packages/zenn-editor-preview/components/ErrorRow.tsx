@@ -3,10 +3,13 @@ import { ErrorMessage } from "@types";
 const ErrorRow: React.FC<{ errorMessage: ErrorMessage }> = ({
   errorMessage,
 }) => {
-  const classNames = `error-row error-row--${errorMessage.errorType}`;
+  let className = "error-row";
+  if (!errorMessage.isCritical) {
+    className = className + " " + "error-row--critical";
+  }
   return (
     <div
-      className={classNames}
+      className={className}
       dangerouslySetInnerHTML={{ __html: errorMessage.message }}
     />
   );

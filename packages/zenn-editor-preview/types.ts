@@ -42,12 +42,14 @@ export type NavCollection = {
 export type NavCollections = NavCollection[];
 
 export type ErrorMessage = {
-  errorType: "critical" | "notice";
+  isCritical: boolean;
   message: string;
 };
 
 export type ErrorMessages = ErrorMessage[];
 
-export type ItemValidator = ErrorMessage & {
+export type ItemValidator = {
+  isCritical?: boolean;
+  getMessage: (item?: Item) => string;
   isInvalid: (item: Item) => boolean;
 };
