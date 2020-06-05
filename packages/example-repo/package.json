@@ -1,0 +1,10 @@
+{
+  "name": "example-repo",
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "zenn"
+  },
+  "dependencies": {
+    "zenn-editor-preview": "^0.0.0"
+  }
+}

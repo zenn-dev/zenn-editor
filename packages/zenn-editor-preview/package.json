@@ -2,19 +2,20 @@
   "name": "zenn-editor-preview",
   "license": "MIT",
   "version": "0.0.0",
-  "main": "lib/zenn-editor-preview.js",
-  "directories": {
-    "lib": "lib"
+  "bin": {
+    "zenn": "bin/zenn.js"
   },
   "files": [
-    "lib"
+    "build",
+    "bin"
   ],
   "scripts": {
     "start": "next -p 3002",
     "dev": "next -p 3002",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "next build"
   },
   "dependencies": {
+    "copy-dir": "^1.3.0",
     "gray-matter": "^4.0.2",
     "js-yaml": "^3.14.0",
     "next": "^9.4.4",

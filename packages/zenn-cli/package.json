@@ -2,9 +2,6 @@
   "name": "zenn-cli",
   "version": "0.0.0",
   "main": "lib/index.js",
-  "directories": {
-    "lib": "lib"
-  },
   "files": [
     "lib"
   ],

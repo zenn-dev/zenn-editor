@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "description": "Get html and frontmatter attributes from raw markdown text.",
   "main": "lib/index.js",
-  "directories": {
-    "lib": "lib"
-  },
   "files": [
     "lib"
   ],
