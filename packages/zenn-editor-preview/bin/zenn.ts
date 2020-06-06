@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-const srcDir = `${__dirname}/../.`;
+
+export const wip = {}; // TODO
+const srcDir = `${__dirname}/../../.`; // refer src from src/dist/bin/zenn.js
 
 const { createServer } = require("http");
 const { parse } = require("url");

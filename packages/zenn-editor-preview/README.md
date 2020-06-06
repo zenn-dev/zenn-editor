@@ -1,11 +1,4 @@
-# `zenn-editor-preview`
 
-> TODO: description
-
-## Usage
-
-```
-const zennEditorPreview = require('zenn-editor-preview');
-
-// TODO: DEMONSTRATE API
-```
+# compile
+1. next.js => dist
+2. bin => dist/bin
