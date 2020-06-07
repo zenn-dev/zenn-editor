@@ -3,17 +3,21 @@
   "license": "MIT",
   "version": "0.0.0",
   "bin": {
-    "zenn": "dist/bin/zenn.js"
+    "zenn": "bin/zenn.js"
   },
   "files": [
-    "dist"
+    ".next",
+    "dist",
+    "bin"
   ],
   "scripts": {
     "start": "next -p 3002",
     "dev": "next -p 3002",
-    "build": "tsc --outDir dist/bin bin/zenn.ts & next build"
+    "build:bin": "tsc --project cli --outDir dist/cli",
+    "build": "npm run build:bin & next build"
   },
   "dependencies": {
+    "arg": "^4.1.3",
     "commander": "^5.1.0",
     "gray-matter": "^4.0.2",
     "js-yaml": "^3.14.0",

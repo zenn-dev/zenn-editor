@@ -1,7 +1,6 @@
 const path = require("path");
 
 module.exports = {
-  distDir: "dist",
   webpack(config, { isServer }) {
     // config.resolve.extensions.push(".md");
     // config.module.rules.push({

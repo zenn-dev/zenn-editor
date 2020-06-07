@@ -10,7 +10,7 @@
   - [ ] preview以外のコマンドを作成
   - [ ] ポート番号の指定ができるように
   - [ ] colors.jsでConsoleに色付け
-  - [ ] エラーメッセージを調整
+  - [ ] エラーメッセージを調整（console / process.exit(1)）
   - [ ] npx zenn initを作成
 - [x] 画像ULの仕組み
 - [ ] API
