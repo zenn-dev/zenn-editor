@@ -9,12 +9,11 @@ const commands: { [command: string]: () => Promise<cliCommand> } = {
 };
 
 const args = arg({});
-
-const command = args?.[0] || "preview";
+const command = args._[0] || "preview";
 
 if (!commands[command]) {
-  console.error("No CLI command fround...");
+  console.error("😿CLIコマンドが見つかりませんでした");
   process.exit(1);
 }
 
-commands[command]().then((exec) => exec(args[0]));
+commands[command]().then((exec) => exec(args._.slice(1)));

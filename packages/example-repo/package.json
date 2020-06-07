@@ -2,7 +2,7 @@
   "name": "example-repo",
   "version": "0.0.0",
   "scripts": {
-    "serve": "zenn"
+    "preview": "zenn previews"
   },
   "dependencies": {
     "zenn-editor-preview": "^0.0.0"
