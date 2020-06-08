@@ -39,16 +39,17 @@ export const exec: cliCommand = (argv) => {
   const emoji = args["--emoji"] || pickRandomEmoji();
   const type = args["--type"] === "idea" ? "idea" : "tech";
   const isPublic = args["--public"] === "false" ? "false" : "true"; // デフォルトはtrue
-  console.log(args["--public"]);
 
-  const fileBody = `---
-title: "${title}"
-emoji: "${emoji}"
-type: "${type}" # tech: 技術記事 / idea: アイデア
-topics: []
-public: ${isPublic}
----
-`;
+  const fileBody =
+    [
+      "---",
+      `title: "${title}"`,
+      `emoji: "${emoji}"`,
+      `type: "${type}" # tech: 技術記事 / idea: アイデア`,
+      "topics: []",
+      `public: ${isPublic}`,
+      "---",
+    ].join("\n") + "\n";
 
   try {
     fs.writeFileSync(

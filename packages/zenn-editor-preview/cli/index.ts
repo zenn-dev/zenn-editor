@@ -9,6 +9,7 @@ const commands: { [command: string]: () => Promise<cliCommand> } = {
   help: async () => await import("./help").then((i) => i.exec),
   init: async () => await import("./init").then((i) => i.exec),
   "new:article": async () => await import("./new-article").then((i) => i.exec),
+  "new:book": async () => await import("./new-book").then((i) => i.exec),
 };
 
 const args = arg(

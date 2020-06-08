@@ -42,7 +42,7 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
           <div className="content-header__row">
             <span className="content-header__row-title">public</span>
             {article.public?.toString()}
-            {article.public === false ? "（非公開）" : ""}
+            {article.public === false ? "（下書き）" : ""}
           </div>
         )}
 

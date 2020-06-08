@@ -70,7 +70,7 @@ const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
           <div className="content-header__row">
             <span className="content-header__row-title">public</span>
             {book.public?.toString()}
-            {book.public === false ? "（非公開）" : ""}
+            {book.public === false ? "（下書き）" : ""}
           </div>
         )}
 

@@ -13,11 +13,9 @@ const Error = ({ statusCode }: { statusCode: number }) => {
   );
 };
 
-Error.getInitialProps = (props: any) => {
-  console.log(props.err);
-  // const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
-  // // console.log(title);
-  return { statusCode: 400 };
+Error.getInitialProps = ({ res, err }: NextPageContext) => {
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
+  return { statusCode };
 };
 
 export default Error;
