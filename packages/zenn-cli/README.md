@@ -1,11 +1,4 @@
-# `zenn-cli`
 
-> TODO: description
-
-## Usage
-
-```
-const zennCli = require('zenn-cli');
-
-// TODO: DEMONSTRATE API
-```
+# compile
+1. next.js => dist
+2. bin => dist/bin

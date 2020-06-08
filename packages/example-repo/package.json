@@ -5,6 +5,6 @@
     "preview": "zenn preview"
   },
   "dependencies": {
-    "zenn-editor-preview": "^0.0.0"
+    "zenn-cli": "^0.0.0"
   }
 }
