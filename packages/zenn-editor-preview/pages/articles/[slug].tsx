@@ -52,8 +52,6 @@ export const getServerSideProps: GetServerSideProps<ArticleSlugPageProps> = asyn
   const slug: string = Array.isArray(paramsSlug) ? paramsSlug[0] : paramsSlug;
   const article = getArticleBySlug(slug);
 
-  console.log(`👀Article ${slug} is on Preview`);
-
   if (!article) {
     if (res) {
       res.writeHead(301, { Location: "/" });

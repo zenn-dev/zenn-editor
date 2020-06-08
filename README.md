@@ -13,8 +13,10 @@
   - [ ] エラーメッセージを調整（console / process.exit(1)）
   - [ ] npx zenn initを作成
 - [x] 画像ULの仕組み
+- [ ] API側でREADMEファイルをスルーする
 - [ ] API
 - [ ] 目次が動くか確認（h1,h2,h3まで）
+- [ ] npmパッケージ名を考える
 
 
 

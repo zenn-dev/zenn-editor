@@ -22,6 +22,7 @@
     "commander": "^5.1.0",
     "gray-matter": "^4.0.2",
     "js-yaml": "^3.14.0",
+    "mkdirp": "^1.0.4",
     "next": "^9.4.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
