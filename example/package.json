@@ -1,0 +1,7 @@
+{
+  "name": "zenn-example-repo",
+  "version": "0.0.0",
+  "dependencies": {
+    "zenn-cli": "^0.0.0"
+  }
+}

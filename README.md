@@ -4,15 +4,17 @@
 - [x] frontmatterの表示
 - [x] エラー表示
 - [x] embed
-- [ ] カバー画像を表示（バリデーション）
-- [ ] exampleリポジトリの作成
-- [ ] CLIの作成
-  - [ ] preview以外のコマンドを作成
-  - [ ] ポート番号の指定ができるように
-  - [ ] colors.jsでConsoleに色付け
-  - [ ] エラーメッセージを調整（console / process.exit(1)）
-  - [ ] npx zenn initを作成
+- [x] カバー画像を表示（バリデーション）
+- [x] exampleリポジトリの作成
+- [x] CLIの作成
+  - [x] preview以外のコマンドを作成
+  - [x] ポート番号の指定ができるように
+  - [x] colors.jsでConsoleに色付け
+  - [x] エラーメッセージを調整
+  - [x] npx zenn initを作成
 - [x] 画像ULの仕組み
+- [ ] previewのホーム画面を作成
+- [ ] CLIの使い方の解説ページへのリンクを設置（サイドバーの 画像をアップロード の下）
 - [ ] API側でREADMEファイルをスルーする
 - [ ] API
 - [ ] 目次が動くか確認（h1,h2,h3まで）
