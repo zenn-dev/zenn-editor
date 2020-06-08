@@ -13,13 +13,14 @@
   "scripts": {
     "start": "next -p 3002",
     "dev": "next -p 3002",
-    "build:bin": "tsc --project cli --outDir dist/cli",
+    "build:bin": "tsc --project cli",
     "build": "npm run build:bin & next build"
   },
   "dependencies": {
     "arg": "^4.1.3",
     "colors": "^1.4.0",
     "commander": "^5.1.0",
+    "crypto-random-string": "^3.2.0",
     "gray-matter": "^4.0.2",
     "js-yaml": "^3.14.0",
     "mkdirp": "^1.0.4",

@@ -37,7 +37,7 @@ export const exec: cliCommand = (argv) => {
         console.error(err);
         process.exit(1);
       }
-      console.log(`✨Preview on ${previewUrl}`);
+      console.log(`👀Preview on ${previewUrl}`);
     });
   });
 };

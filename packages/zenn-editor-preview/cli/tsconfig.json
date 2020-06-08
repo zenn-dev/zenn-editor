@@ -7,7 +7,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "rootDir": "../.",
+    "outDir": "../dist"
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts"]

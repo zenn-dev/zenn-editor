@@ -6,8 +6,11 @@ export const exec: cliCommand = (argv) => {
     zenn init         コンテンツ管理用のディレクトリを作成。初回のみ実行
     zenn preview      コンテンツをブラウザでプレビュー
     zenn              zenn previewのエイリアス
-    zenn add:article  新しいarticleを追加
-    zenn add:book     新しいbookを追加
+    zenn new:article  新しいarticleを追加
+    zenn new:book     新しいbookを追加
+
+    👇詳細
+    fixme
   `);
   process.exit(0);
 };

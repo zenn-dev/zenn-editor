@@ -16,9 +16,9 @@ export const exec: cliCommand = (argv) => {
   早速コンテンツを作成しましょう
 
   👇新しい記事を作成する
-  $ zenn add:article
+  $ zenn new:article
 
   👇新しい本を作成する
-  $ zenn add:book
+  $ zenn new:book
   `);
 };
