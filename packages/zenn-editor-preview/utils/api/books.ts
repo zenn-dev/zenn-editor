@@ -2,6 +2,7 @@ import fs from "fs";
 import { join } from "path";
 import yaml from "js-yaml";
 import { Book } from "@types";
+import { throwWithConsoleError } from "@utils/errors";
 
 // books
 const booksDirectory = join(process.cwd(), "books");
@@ -11,7 +12,9 @@ export function getBookDirNames(): string[] {
   try {
     allDirs = fs.readdirSync(booksDirectory);
   } catch (e) {
-    throw new Error("booksディレクトリを作成してください");
+    throwWithConsoleError(
+      "プロジェクトルートにbooksディレクトリを作成してください"
+    );
   }
   // return dirs only
   return allDirs?.filter((f) =>
@@ -48,7 +51,7 @@ function getConfigYamlData(fullDirPath: string): Book {
     return yaml.safeLoad(fileRaw);
   } catch (e) {
     // couldn't load yaml files
-    throw new Error(
+    throwWithConsoleError(
       `config.yamlの表記に誤りがあります😿\n ${fullDirPath}/config.yaml`
     );
   }
@@ -80,7 +83,7 @@ function getCoverDataUrl(fullDirPath: string): string | null {
   if (!bufferImage) return null;
 
   if (fileSize > 1000 * 1000) {
-    throw new Error("カバー画像のサイズは1MB以下にしてください");
+    throwWithConsoleError("カバー画像のサイズは1MB以下にしてください");
   }
   return bufferToDataURL(bufferImage, mediaType);
 }

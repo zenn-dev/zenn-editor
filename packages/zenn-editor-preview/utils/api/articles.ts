@@ -2,6 +2,7 @@ import fs from "fs";
 import { join } from "path";
 import matter from "gray-matter";
 import { Article } from "@types";
+import { throwWithConsoleError } from "@utils/errors";
 
 const articlesDirectory = join(process.cwd(), "articles");
 
@@ -14,7 +15,9 @@ function getArticleMdNames(): string[] {
   try {
     allFiles = fs.readdirSync(articlesDirectory);
   } catch (e) {
-    throw new Error("articlesディレクトリを作成してください");
+    throwWithConsoleError(
+      "プロジェクトルートにarticlesディレクトリを作成してください"
+    );
   }
   const mdRegex = /\.md$/;
   return allFiles?.filter((f) => f.match(mdRegex));

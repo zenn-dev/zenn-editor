@@ -9,6 +9,7 @@ import {
   NavItem,
 } from "@types";
 import { getChapters } from "./api/chapters";
+import { throwWithConsoleError } from "@utils/errors";
 
 const articlePlaceholderItem = {
   name: "✨最初の記事を作成しましょう",
@@ -61,7 +62,8 @@ export const getAllContentsNavCollections = (): NavCollections => [
 export const getBookNavCollections = (slug: string): NavCollections => {
   // slug = Book slug
   const book = getBookBySlug(slug);
-  if (!book) throw new Error(`books/${slug}の情報を取得できませんでした`);
+  if (!book) throwWithConsoleError(`books/${slug}の情報を取得できませんでした`);
+
   const chapters = getChapters(slug, ["title"]);
   const items: NavItem[] = chapters?.map((chapter: Chapter) => {
     return {

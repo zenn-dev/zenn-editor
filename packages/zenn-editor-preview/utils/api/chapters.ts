@@ -1,8 +1,8 @@
 import fs from "fs";
 import { join } from "path";
 import matter from "gray-matter";
-
 import { Chapter } from "@types";
+import { throwWithConsoleError } from "@utils/errors";
 
 function getBookDirPath(bookSlug: string): string {
   return join(process.cwd(), "books", bookSlug);
@@ -13,7 +13,9 @@ export function getChapterMdNames(bookSlug: string): string[] {
   try {
     allChapters = fs.readdirSync(getBookDirPath(bookSlug));
   } catch (e) {
-    throw new Error(`books/${bookSlug}ディレクトリを取得できませんでした`);
+    throwWithConsoleError(
+      `books/${bookSlug}ディレクトリを取得できませんでした`
+    );
   }
   // return md only
   const mdRegex = /\.md$/;
