@@ -1,3 +1,5 @@
+import path from "path";
+import fs from "fs-extra";
 import arg from "arg";
 import { cliCommand } from ".";
 import {
@@ -7,10 +9,20 @@ import {
 } from "../utils/slug-helper";
 import colors from "colors/safe";
 
+const pickRandomEmoji = () => {
+  // prettier-ignore
+  const emojiList =["😺","📘","📚","📑","😊","😎","👻","🤖","😸","😽","💨","💬","💭","👋", "👌","👏","🙌","🙆","🐕","🐈","🦁","🐷","🦔","🐥","🐡","🐙","🍣","🕌","🌟","🔥","🌊","🎃","✨","🎉","⛳","🔖","📝","🗂","📌"]
+  return emojiList[Math.floor(Math.random() * emojiList.length)];
+};
+
 export const exec: cliCommand = (argv) => {
   const args = arg(
     {
       "--slug": String,
+      "--title": String,
+      "--type": String,
+      "--emoji": String,
+      "--public": String,
     },
     { argv }
   );
@@ -21,6 +33,31 @@ export const exec: cliCommand = (argv) => {
     console.error(colors.red(`エラー：${errorMessage}`));
     process.exit(1);
   }
-  const fileName = colors.green(`${slug}.md`);
-  console.log(`📄${fileName} created.`);
+  const fileName = `${slug}.md`;
+  const filePath = path.join(process.cwd(), "articles", fileName);
+  const title = args["--title"] || "";
+  const emoji = args["--emoji"] || pickRandomEmoji();
+  const type = args["--type"] === "idea" ? "idea" : "tech";
+  const isPublic = args["--public"] === "false" ? "false" : "true"; // デフォルトはtrue
+  console.log(args["--public"]);
+
+  const fileBody = `---
+title: "${title}"
+emoji: "${emoji}"
+type: "${type}" # tech: 技術記事 / idea: アイデア
+topics: []
+public: ${isPublic}
+---
+`;
+
+  try {
+    fs.writeFileSync(
+      filePath,
+      fileBody,
+      { flag: "wx" } // Don't overwrite
+    );
+    console.log(`📄${colors.green(fileName)} created.`);
+  } catch (e) {
+    console.log(colors.red("エラーが発生しました") + e);
+  }
 };

@@ -16,7 +16,7 @@ const ArticleHeader: React.FC<{ chapter: Chapter }> = ({ chapter }) => {
         {!!errorCount && (
           <div>
             <div className="content-header__error-title">
-              {errorCount}件のエラー
+              {errorCount}件の修正が必要です
             </div>
             {errorMessages.map((errorMessage, index) => (
               <ErrorRow errorMessage={errorMessage} key={`invldmsg${index}`} />

@@ -1,5 +1,6 @@
 import path from "path";
-const mkdirp = require("mkdirp");
+import fs from "fs-extra";
+
 import { cliCommand } from ".";
 
 export const exec: cliCommand = (argv) => {
@@ -8,7 +9,7 @@ export const exec: cliCommand = (argv) => {
 
   mkDirNames.forEach((dirName) => {
     try {
-      mkdirp.sync(path.join(projectRoot, dirName));
+      fs.mkdirpSync(path.join(projectRoot, dirName));
     } catch (e) {}
   });
   console.log(`

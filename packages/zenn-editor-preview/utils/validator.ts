@@ -8,12 +8,12 @@ import {
   ErrorMessage,
 } from "@types";
 
+import { validateSlug, getSlugErrorMessage } from "@utils/slug-helper";
+
 const validateInvalidSlug: ItemValidator = {
   isCritical: true,
-  getMessage: (item: Article | Book) =>
-    `slug（${item.slug}）が不正です。半角英数字（a-z0-9）とハイフン（-）の12〜50字の組み合わせにしてください`,
-  isInvalid: (item: Article | Book) =>
-    !(item.slug && item.slug.match(/^[0-9a-z\-\_]{12,50}$/)),
+  getMessage: (item: Article | Book) => getSlugErrorMessage(item.slug),
+  isInvalid: (item: Article | Book) => !validateSlug(item.slug),
 };
 
 const validateMissingTitle: ItemValidator = {

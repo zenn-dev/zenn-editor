@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs-extra";
 import { join } from "path";
 import yaml from "js-yaml";
 import { Book } from "@types";
