@@ -5,7 +5,7 @@ import arg from "arg";
 
 import { cliCommand } from ".";
 
-export const zennPreview: cliCommand = (argv) => {
+export const exec: cliCommand = (argv) => {
   const args = arg(
     {
       // Types
@@ -16,6 +16,7 @@ export const zennPreview: cliCommand = (argv) => {
     },
     { argv }
   );
+
   const port = args["--port"] || 3003;
   const previewUrl = `http://localhost:${port}`;
 
@@ -25,7 +26,11 @@ export const zennPreview: cliCommand = (argv) => {
 
   app.prepare().then(() => {
     createServer((req, res) => {
-      const parsedUrl = parse(req.url, true);
+      const requestUrl = req.url;
+      if (!requestUrl) {
+        return console.error("Undefined request url");
+      }
+      const parsedUrl = parse(requestUrl, true);
       handle(req, res, parsedUrl);
     }).listen(port, (err?: any) => {
       if (err) {
