@@ -1,5 +1,5 @@
 {
-  "name": "zenn-example-repo",
+  "name": "example",
   "version": "1.0.0",
   "description": "```sh $ npm install zenn-cli -g ```",
   "main": "index.js",
@@ -9,6 +9,6 @@
   "author": "catnose99 <nodding.com@gmail.com> (https://catnose99.com)",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli": "0.0.5"
+    "zenn-cli": "^0.0.6"
   }
 }
