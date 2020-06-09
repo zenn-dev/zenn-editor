@@ -47,15 +47,18 @@ $ yarn workspace zenn-markdown-preview run build
 
 ### publish on npm
 ```sh
-$ lerna publish
+$ yarn build # build all packages
+$ lerna publish # publish all packages to npm
 ```
+
+TODO: use github actions to publish
 
 
 
 ### Licence
 MIT
 
-## ToDO
+## ToDo
 - [x] frontmatterの表示
 - [x] エラー表示
 - [x] embed

@@ -3,8 +3,8 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
-import markdownToHtml from "zenn-markdown-html";
-import { initEmbed } from "zenn-markdown-html/lib/embed";
+import markdownToHtml from "@zenn-dev/zenn-markdown-html";
+import { initEmbed } from "@zenn-dev/zenn-markdown-html/lib/embed";
 import ContentBody from "@components/ContentBody";
 import ChapterHeader from "@components/ChapterHeader";
 import MainContainer from "@components/MainContainer";

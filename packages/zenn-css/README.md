@@ -4,7 +4,7 @@ Style for post content.
 ## Getting Started
 1. Some Css loader might be needed if you use this with Webpack.
 ```js
-import 'zenn-css';
+import '@zenn-dev/zenn-css';
 ```
 2. Add post content wrapper class `znc`
 ```html

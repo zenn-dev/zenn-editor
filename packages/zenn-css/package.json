@@ -1,6 +1,6 @@
 {
-  "name": "zenn-css",
-  "version": "0.0.0",
+  "name": "@zenn-dev/zenn-css",
+  "version": "0.0.1",
   "license": "MIT",
   "description": "Zenn flavor content style.",
   "main": "lib/index.css",
@@ -14,5 +14,9 @@
   "devDependencies": {
     "node-sass": "^4.14.1",
     "node-sass-chokidar": "^1.4.0"
+  },
+  "gitHead": "f6abf3a4c7bb39ec1dd3eee3ea104723bba28394",
+  "publishConfig": {
+    "access": "public"
   }
 }

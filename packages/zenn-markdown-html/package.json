@@ -1,6 +1,6 @@
 {
-  "name": "zenn-markdown-html",
-  "version": "0.0.0",
+  "name": "@zenn-dev/zenn-markdown-html",
+  "version": "0.0.1",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
   "files": [
@@ -26,5 +26,9 @@
     "markdown-it-imsize": "^2.0.1",
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-prism": "^2.0.5"
+  },
+  "gitHead": "f6abf3a4c7bb39ec1dd3eee3ea104723bba28394",
+  "publishConfig": {
+    "access": "public"
   }
 }

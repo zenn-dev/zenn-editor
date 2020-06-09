@@ -3,6 +3,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "devDependencies": {
+    "lerna": "^3.22.0"
+  },
   "scripts": {
     "build": "lerna run build --stream"
   },
@@ -16,7 +19,7 @@
     "url": "https://github.com/zenn-dev/zenn-editor/issues"
   },
   "homepage": "https://github.com/zenn-dev/zenn-editor#readme",
-  "devDependencies": {
-    "lerna": "^3.22.0"
+  "publishConfig": {
+    "access": "public"
   }
 }
