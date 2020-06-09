@@ -47,7 +47,6 @@ $ yarn workspace zenn-markdown-preview run build
 
 ### publish on npm
 ```sh
-$ yarn build # build all packages
 $ lerna publish # publish all packages to npm
 ```
 

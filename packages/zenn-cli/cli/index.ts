@@ -1,5 +1,7 @@
 import arg from "arg";
 import colors from "colors/safe";
+import updateNotifier from "update-notifier";
+const pkg = require("../package.json");
 
 // Special thanks to vercel/next.js for great examples.
 export type cliCommand = (argv?: string[]) => void;
@@ -19,6 +21,13 @@ const args = arg(
   }
 );
 const command = args._[0] || "preview";
+
+// notify package update
+const notifier = updateNotifier({
+  pkg,
+  updateCheckInterval: 1000 * 60 * 60 * 24 * 3, // 3days
+});
+notifier.notify();
 
 if (!commands[command]) {
   console.log(

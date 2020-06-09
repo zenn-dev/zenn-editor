@@ -1,11 +1,5 @@
-# `example-repo`
+## Getting Started
 
-> TODO: description
-
-## Usage
-
-```
-const exampleRepo = require('example-repo');
-
-// TODO: DEMONSTRATE API
+```sh
+$ npm install @zenn-dev/zenn-cli@latest
 ```
