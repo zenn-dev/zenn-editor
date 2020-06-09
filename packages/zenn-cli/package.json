@@ -9,7 +9,8 @@
   "files": [
     ".next",
     "dist",
-    "bin"
+    "bin",
+    "public"
   ],
   "scripts": {
     "start": "next -p 3002",
