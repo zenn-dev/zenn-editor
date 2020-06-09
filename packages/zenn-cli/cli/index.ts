@@ -15,7 +15,12 @@ const commands: { [command: string]: () => Promise<cliCommand> } = {
 };
 
 const args = arg(
-  {},
+  {
+    "--version": Boolean,
+
+    // alias
+    "-v": "--version",
+  },
   {
     permissive: true,
   }
@@ -28,6 +33,11 @@ const notifier = updateNotifier({
   updateCheckInterval: 1000 * 60 * 60 * 24 * 3, // 3days
 });
 notifier.notify();
+
+if (args["--version"]) {
+  console.log(`zenn-cli v${pkg.version}`);
+  process.exit(0);
+}
 
 if (!commands[command]) {
   console.log(
