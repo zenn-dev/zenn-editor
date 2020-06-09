@@ -6,11 +6,11 @@
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "resolveJsonModule": false,
     "isolatedModules": true,
-    "rootDir": "../.",
-    "outDir": "../dist"
+    "rootDir": ".",
+    "outDir": "./dist"
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts"]
+  "include": ["cli/*.ts"]
 }
