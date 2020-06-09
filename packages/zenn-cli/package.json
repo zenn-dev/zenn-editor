@@ -30,7 +30,7 @@
     "react-dom": "^16.13.1",
     "sass": "^1.26.7",
     "update-notifier": "^4.1.0",
-    "zenn-css": "^0.0.4",
+    "zenn-content-css": "^0.0.4",
     "zenn-markdown-html": "^0.0.4"
   },
   "devDependencies": {
@@ -45,7 +45,7 @@
     "tslint-react": "^5.0.0",
     "typescript": "^3.9.3"
   },
-  "gitHead": "f6abf3a4c7bb39ec1dd3eee3ea104723bba28394",
+  "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
     "access": "public"
   }

@@ -27,7 +27,7 @@
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-prism": "^2.0.5"
   },
-  "gitHead": "f6abf3a4c7bb39ec1dd3eee3ea104723bba28394",
+  "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
     "access": "public"
   }

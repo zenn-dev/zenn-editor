@@ -2,7 +2,7 @@ import React from "react";
 import App from "next/app";
 import Head from "next/head";
 
-import "zenn-css";
+import "zenn-content-css";
 import "@styles/index.scss";
 
 export default class MyApp extends App {
