@@ -1,7 +1,7 @@
 import arg from "arg";
 import colors from "colors/safe";
 import updateNotifier from "update-notifier";
-const pkg = require("../package.json");
+const pkg = require("../../package.json"); // refer package.json from dist/cli/index.js
 
 // Special thanks to vercel/next.js for great examples.
 export type cliCommand = (argv?: string[]) => void;
