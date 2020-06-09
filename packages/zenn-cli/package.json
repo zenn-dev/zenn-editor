@@ -1,7 +1,7 @@
 {
   "name": "@zenn-dev/zenn-cli",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Preview Zenn content locally.",
   "bin": {
     "zenn": "bin/zenn.js"
@@ -18,8 +18,8 @@
     "build": "npm run build:bin & next build"
   },
   "dependencies": {
-    "@zenn-dev/zenn-css": "^0.0.2",
-    "@zenn-dev/zenn-markdown-html": "^0.0.2",
+    "@zenn-dev/zenn-css": "^0.0.3",
+    "@zenn-dev/zenn-markdown-html": "^0.0.3",
     "arg": "^4.1.3",
     "colors": "^1.4.0",
     "commander": "^5.1.0",
