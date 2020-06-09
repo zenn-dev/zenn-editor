@@ -1,5 +1,5 @@
 {
-  "name": "@zenn-dev/zenn-markdown-html",
+  "name": "zenn-markdown-html",
   "version": "0.0.3",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",

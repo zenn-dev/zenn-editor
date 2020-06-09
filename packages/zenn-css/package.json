@@ -1,5 +1,5 @@
 {
-  "name": "@zenn-dev/zenn-css",
+  "name": "zenn-css",
   "version": "0.0.3",
   "license": "MIT",
   "description": "Zenn flavor content style.",

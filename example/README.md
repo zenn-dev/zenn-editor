@@ -1,5 +1,7 @@
 ## Getting Started
 
 ```sh
-$ npm install @zenn-dev/zenn-cli@latest
+$ mkdir my-zenn-content
+$ npm install zenn-cli@latest
+$ npx zenn init
 ```
