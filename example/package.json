@@ -1,7 +1,0 @@
-{
-  "name": "zenn-content",
-  "version": "1.0.0",
-  "dependencies": {
-    "zenn-cli": "latest"
-  }
-}

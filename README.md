@@ -69,7 +69,7 @@ MIT
   - [x] colors.jsでConsoleに色付け
   - [x] エラーメッセージを調整
   - [x] npx zenn initを作成
-  - [ ] version (-v)コマンド
+  - [x] version (-v)コマンド
 - [x] 画像ULの仕組み
 - [ ] previewのホーム画面を作成
 - [ ] CLIの使い方の解説ページへのリンクを設置（サイドバーの 画像をアップロード の下）
