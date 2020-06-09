@@ -8,13 +8,13 @@
   },
   "files": [
     ".next",
-    "lib",
+    "dist",
     "bin"
   ],
   "scripts": {
     "start": "next -p 3002",
     "dev": "next -p 3002",
-    "clean:bin": "rimraf lib/*",
+    "clean:bin": "rimraf dist/*",
     "build:bin": "tsc --project tsconfig.cli.json",
     "build:next": "next build",
     "build": "run-s clean:bin build:bin build:next"
