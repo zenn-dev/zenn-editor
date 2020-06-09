@@ -3,6 +3,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "build": "lerna run build --stream"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zenn-dev/zenn-editor.git"

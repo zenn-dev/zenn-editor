@@ -1,30 +1,8 @@
 # Zenn Editor
-
-## ToDO
-- [x] frontmatterの表示
-- [x] エラー表示
-- [x] embed
-- [x] カバー画像を表示（バリデーション）
-- [x] exampleリポジトリの作成
-- [x] CLIの作成
-  - [x] preview以外のコマンドを作成
-  - [x] ポート番号の指定ができるように
-  - [x] colors.jsでConsoleに色付け
-  - [x] エラーメッセージを調整
-  - [x] npx zenn initを作成
-- [x] 画像ULの仕組み
-- [ ] previewのホーム画面を作成
-- [ ] CLIの使い方の解説ページへのリンクを設置（サイドバーの 画像をアップロード の下）
-- [ ] API側でREADMEファイルをスルーする
-- [ ] API
-- [ ] 目次が動くか確認（h1,h2,h3まで）
-- [ ] npmパッケージ名を考える
-
-
+Manage Zenn content locally.
 
 ## Dev
 - Mono repo by lerna.
-
 
 ### packages
 
@@ -66,3 +44,34 @@ $ yarn workspace zenn-markdown-preview add package-name --dev
 ```
 $ yarn workspace zenn-markdown-preview run build
 ```
+
+### publish on npm
+```sh
+$ lerna publish
+```
+
+
+
+### Licence
+MIT
+
+## ToDO
+- [x] frontmatterの表示
+- [x] エラー表示
+- [x] embed
+- [x] カバー画像を表示（バリデーション）
+- [x] exampleリポジトリの作成
+- [x] CLIの作成
+  - [x] preview以外のコマンドを作成
+  - [x] ポート番号の指定ができるように
+  - [x] colors.jsでConsoleに色付け
+  - [x] エラーメッセージを調整
+  - [x] npx zenn initを作成
+- [x] 画像ULの仕組み
+- [ ] previewのホーム画面を作成
+- [ ] CLIの使い方の解説ページへのリンクを設置（サイドバーの 画像をアップロード の下）
+- [ ] API側でREADMEファイルをスルーする
+- [ ] API
+- [ ] 目次が動くか確認（h1,h2,h3まで）
+- [ ] npmパッケージ名を考える
+- [ ] テスト書く

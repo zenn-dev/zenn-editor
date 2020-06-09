@@ -1,7 +1,7 @@
 {
   "name": "zenn-markdown-html",
   "version": "0.0.0",
-  "description": "Get html and frontmatter attributes from raw markdown text.",
+  "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
   "files": [
     "lib"
