@@ -1,3 +1,5 @@
+# Zenn CLI
+Preview local markdown contents on browser.
 
 # compile
 1. next.js => .next
