@@ -25,10 +25,10 @@ export const mdContainerDetails = {
 // :::
 export const mdContainerMessage = {
   validate: function (params: string) {
-    return params.trim().match(/^msg\s+(.*)$/);
+    return params.trim().match(/^message\s*(.*)$/);
   },
   render: function (tokens: any[], idx: number) {
-    const m = tokens[idx].info.trim().match(/^msg\s+(.*)$/);
+    const m = tokens[idx].info.trim().match(/^message\s*(.*)$/);
     if (tokens[idx].nesting === 1) {
       // opening tag
       return '<div class="msg ' + escapeHtml(m[1]) + '">';
