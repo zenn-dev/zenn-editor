@@ -1,4 +1,7 @@
 // twitter
+.tweet-container {
+  margin: 1.5rem 0;
+}
 .twitter-tweet {
   margin-left: auto;
   margin-right: auto;
@@ -32,4 +35,13 @@
 }
 .embed-slideshare iframe {
   border: 1px solid $c-contrast;
+}
+
+// mathjax
+// はみ出た場合にスクロールするように
+mjx-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-top: 0.3em; // 一部隠れてしまうことがあるため
+  padding-bottom: 0.3em;
 }
