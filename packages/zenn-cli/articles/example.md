@@ -6,6 +6,11 @@ topics: ["zenn"]
 public: true
 ---
 
+https://flaviocopes.com/node-request-data/
+
+fasfda
+s
+
 ```swift
 struct Animal {
     let nickName : String?
@@ -199,6 +204,10 @@ $ npx zenn new:book
 slugは`a-z0-9`とハイフン`-`の12〜50字の組み合わせにする必要があります
 :::
 
+
+> fafda
+>
+> fafa
 
 :::message 
 
