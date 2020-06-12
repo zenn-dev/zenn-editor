@@ -4,7 +4,7 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
 import markdownToHtml from "zenn-markdown-html";
-import { initEmbed } from "zenn-markdown-html/lib/embed";
+import initEmbed from "zenn-init-embed";
 import ContentBody from "@components/ContentBody";
 import ChapterHeader from "@components/ChapterHeader";
 import MainContainer from "@components/MainContainer";

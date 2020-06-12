@@ -1,9 +1,9 @@
 import { loadScript, loadStylesheet } from "./utils/load-external-source";
 
-export const initEmbed = () => {
+export default async function () {
   initTweet();
   initKatex();
-};
+}
 
 async function initTweet() {
   if (!document.querySelector(".twitter-tweet")) return;

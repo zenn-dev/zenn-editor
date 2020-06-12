@@ -31,6 +31,7 @@
     "react-dom": "^16.13.1",
     "update-notifier": "^4.1.0",
     "zenn-content-css": "^0.1.2",
+    "zenn-init-embed": "^0.1.2",
     "zenn-markdown-html": "^0.1.2"
   },
   "devDependencies": {
