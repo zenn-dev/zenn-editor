@@ -6,12 +6,14 @@ Style for post content.
 ```js
 import 'zenn-content-css';
 ```
+
 2. Add post content wrapper class `znc`
 ```html
 <div class="znc">
   <!-- html parsed from markdown comes here. -->
 </div>
 ```
+
 Note that the styles are not applied to elements outside wrapper class `znc`.
 
 ## ToDo

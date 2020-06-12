@@ -24,7 +24,7 @@ const ArticleSlugPage = ({
   const router = useRouter();
 
   useEffect(() => {
-    initEmbed(article.content); // reInit everytime page changes
+    initEmbed(); // reInit everytime page changes
   }, [router.asPath]);
 
   return (

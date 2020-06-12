@@ -6,18 +6,38 @@ topics: ["zenn"]
 public: true
 ---
 
-https://flaviocopes.com/node-request-data/
+# heading
 
-fasfda
-s
+## heading2
+
+### heading3
+
+
+## katex
+$a\ne0$
+
+
+$$
+e^{i\theta} = \cos\theta + i\sin\theta
+$$
+
+$\sqrt{3x-1}+(1+x)^2$
+
+## tweet
+
+@[tweet](https://twitter.com/Megu_Negicco/status/1267475348993671168)
+
+
+
+# code block
 
 ```swift
 struct Animal {
-    let nickName : String?
+    let dog : String?
 }
 ```
 
-todo
+
 
 次のような流れで、編集を行います。
 

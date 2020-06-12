@@ -22,7 +22,7 @@ const ChapterPage = ({ chapter, bookNavCollections }: ChapterPageProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    initEmbed(chapter.content); // reInit everytime page changes
+    initEmbed(); // reInit everytime page changes
   }, [router.asPath]);
 
   return (

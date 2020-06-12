@@ -57,7 +57,7 @@ markdown-it-container@^2.0.0:
   resolved "https://registry.yarnpkg.com/markdown-it-container/-/markdown-it-container-2.0.0.tgz#0019b43fd02eefece2f1960a2895fba81a404695"
   integrity sha1-ABm0P9Au7+zi8ZYKKJX7qBpARpU=
 
-"markdown-it-custom-block@github:catnose99/markdown-it-custom-block#master":
+markdown-it-custom-block@catnose99/markdown-it-custom-block#master:
   version "0.1.1"
   resolved "https://codeload.github.com/catnose99/markdown-it-custom-block/tar.gz/9c627526d315a150a1adceb37b8f8f5159dee3cf"
 

@@ -37,11 +37,9 @@
   border: 1px solid $c-contrast;
 }
 
-// mathjax
-// はみ出た場合にスクロールするように
-mjx-container {
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-top: 0.3em; // 一部隠れてしまうことがあるため
-  padding-bottom: 0.3em;
+// katex
+eqn,
+eq {
+  display: block;
+  overflow: hidden;
 }

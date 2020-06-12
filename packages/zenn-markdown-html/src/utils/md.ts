@@ -20,7 +20,12 @@ md.use(require("markdown-it-prism"))
   })
   .use(require("markdown-it-custom-block"), optionCustomBlock)
   .use(mdContainer, "details", mdContainerDetails)
-  .use(mdContainer, "message", mdContainerMessage);
+  .use(mdContainer, "message", mdContainerMessage)
+  .use(require("markdown-it-texmath"), {
+    engine: require("katex"),
+    delimiters: "dollars",
+    katexOptions: { macros: { "\\RR": "\\mathbb{R}" } },
+  });
 
 // custom footnote
 md.renderer.rules.footnote_block_open = () =>

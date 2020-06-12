@@ -9,7 +9,7 @@ const html = markdownToHtml(markdown);
 ```
 
 ## init embed
-Load embed scripts(Twitter, mathjax...) on client.
+Load embed scripts(Twitter, katex...) on client.
 
 ```js
 import { initEmbed } from "zenn-markdown-html/lib/embed";
