@@ -213,7 +213,7 @@ pre {
   border-radius: 3px;
   word-break: normal; // iOSで折り返されるのを防ぐ
   word-wrap: normal; // iOSで折り返されるのを防ぐ
-  @include mq(xs) {
+  @include mq(sm) {
     border-radius: 0;
   }
   code {
@@ -225,7 +225,7 @@ pre {
   }
   & > code {
     display: block;
-    padding: 1.5rem $pre-side-padding; // このようにしないとpreのスクロールバーがコードに重なってしまう
+    padding: 1.4rem $pre-side-padding; // このようにしないとpreのスクロールバーがコードに重なってしまう
   }
 }
 
