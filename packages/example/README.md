@@ -1,6 +1,6 @@
 ## Getting Started
 
 ```sh
-$ npm install zenn-cli -g # install CLI
-$ zenn init # init directories
+$ npm install zenn-cli # install CLI
+$ npx zenn init # init directories
 ```
