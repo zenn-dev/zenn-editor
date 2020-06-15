@@ -231,14 +231,6 @@ pre {
   }
 }
 
-/* with markdown-it-highlight-lines */
-.highlighted-line {
-  background-color: rgba(0, 0, 0, 0.05);
-  display: block;
-  margin: 0 -#{$pre-side-padding};
-  padding: 0 $pre-side-padding;
-}
-
 img {
   margin: 1.5rem auto;
   display: table;
