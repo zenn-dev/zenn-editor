@@ -14,7 +14,7 @@ export default class MyApp extends App {
           <link rel="icon shortcut" href="/favicon.png" />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
           />
         </Head>
         <Component {...pageProps} />
