@@ -12,6 +12,16 @@ export const exec: cliCommand = (argv) => {
       fs.mkdirpSync(path.join(projectRoot, dirName));
     } catch (e) {}
   });
+
+  // generate .gitignore
+  try {
+    fs.writeFileSync(
+      path.join(process.cwd(), ".gitignore"),
+      ["node_modules", ".DS_Store"].join("\n"),
+      { flag: "wx" } // Don't overwrite
+    );
+  } catch (e) {}
+
   console.log(`
   🎉Done!
   早速コンテンツを作成しましょう
