@@ -6,7 +6,7 @@ export type Article = {
   type?: "tech" | "idea";
   topics?: string[];
   tags?: string[];
-  public?: boolean;
+  published?: boolean;
 };
 
 export type Book = {
@@ -15,7 +15,7 @@ export type Book = {
   summary?: string;
   price?: number;
   topics?: string[];
-  public?: boolean;
+  published?: boolean;
   coverDataUrl?: string;
 };
 

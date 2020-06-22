@@ -30,7 +30,7 @@ export const exec: cliCommand = (argv) => {
     {
       "--slug": String,
       "--title": String,
-      "--public": String,
+      "--published": String,
       "--summary": String,
       "--price": Number,
     },
@@ -51,7 +51,7 @@ export const exec: cliCommand = (argv) => {
   }
   const title = args["--title"] || "";
   const summary = args["--summary"] || "";
-  const isPublic = args["--public"] === "true" ? "true" : "false"; // デフォルトはfalse
+  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
   const price = args["--price"] || 0; // デフォルトはfalse
 
   const configYamlBody =
@@ -59,7 +59,7 @@ export const exec: cliCommand = (argv) => {
       `title: "${title}"`,
       `summary: "${summary}"`,
       "topics: []",
-      `public: ${isPublic}`,
+      `published: ${published}`,
       `price: ${price} # 有料の場合200〜5000`,
     ].join("\n") + "\n";
 

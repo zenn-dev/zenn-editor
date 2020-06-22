@@ -38,11 +38,11 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
             : "指定が必要です"}
         </div>
 
-        {article.public !== undefined && (
+        {article.published !== undefined && (
           <div className="content-header__row">
-            <span className="content-header__row-title">public</span>
-            {article.public?.toString()}
-            {article.public === false ? "（下書き）" : ""}
+            <span className="content-header__row-title">published</span>
+            {article.published?.toString()}
+            {article.published === false ? "（下書き）" : ""}
           </div>
         )}
 

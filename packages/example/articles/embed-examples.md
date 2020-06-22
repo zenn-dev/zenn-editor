@@ -8,7 +8,7 @@ topics:
   - RubyOnRails
   - Angulerjs
 emoji: 🐲
-public: false
+published: false
 ---
 
 prfix2

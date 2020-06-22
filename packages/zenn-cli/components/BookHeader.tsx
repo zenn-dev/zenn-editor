@@ -66,11 +66,11 @@ const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
             : "指定が必要です"}
         </div>
 
-        {book.public !== undefined && (
+        {book.published !== undefined && (
           <div className="content-header__row">
-            <span className="content-header__row-title">public</span>
-            {book.public?.toString()}
-            {book.public === false ? "（下書き）" : ""}
+            <span className="content-header__row-title">published</span>
+            {book.published?.toString()}
+            {book.published === false ? "（下書き）" : ""}
           </div>
         )}
 

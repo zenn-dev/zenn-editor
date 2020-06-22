@@ -22,7 +22,7 @@ export const exec: cliCommand = (argv) => {
       "--title": String,
       "--type": String,
       "--emoji": String,
-      "--public": String,
+      "--published": String,
     },
     { argv }
   );
@@ -38,7 +38,7 @@ export const exec: cliCommand = (argv) => {
   const title = args["--title"] || "";
   const emoji = args["--emoji"] || pickRandomEmoji();
   const type = args["--type"] === "idea" ? "idea" : "tech";
-  const isPublic = args["--public"] === "false" ? "false" : "true"; // デフォルトはtrue
+  const published = args["--published"] === "false" ? "false" : "true"; // デフォルトはtrue
 
   const fileBody =
     [
@@ -47,7 +47,7 @@ export const exec: cliCommand = (argv) => {
       `emoji: "${emoji}"`,
       `type: "${type}" # tech: 技術記事 / idea: アイデア`,
       "topics: []",
-      `public: ${isPublic}`,
+      `published: ${published}`,
       "---",
     ].join("\n") + "\n";
 

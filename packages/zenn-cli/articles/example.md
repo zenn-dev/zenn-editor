@@ -3,7 +3,7 @@ title: "Zennでマークダウンコンテンツを管理する"
 emoji: "🐙"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["zenn"]
-public: true
+published: true
 ---
 
 # heading
@@ -120,7 +120,7 @@ title: ""
 emoji: "😸"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: []
-public: true
+published: true
 ---
 
 ```
@@ -184,7 +184,7 @@ books
 title: "本のタイトル"
 summary: "本の紹介文"
 topics: ["markdown", "zenn", "react"] # トピック（5つまで）
-public: true # falseだと下書き
+published: true # falseだと下書き
 price: 0 # 有料の場合200〜5000
 ```
 👆たとえば1000円で有料販売するときは`price: 1000`と記載します（200〜5000の間で100円単位で設定する必要があります）。
