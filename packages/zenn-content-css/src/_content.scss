@@ -231,7 +231,7 @@ pre {
   }
 }
 
-img {
+img:not(.emoji) {
   margin: 1.5rem auto;
   display: table;
   border: solid 1px $c-gray-border-lighter;
