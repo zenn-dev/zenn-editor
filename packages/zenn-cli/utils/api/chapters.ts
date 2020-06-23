@@ -62,7 +62,7 @@ export function getChapter(
       if (field === "content") {
         item[field] = content;
       }
-      if (data[field]) {
+      if (data[field] !== undefined) {
         item[field] = data[field];
       }
     });

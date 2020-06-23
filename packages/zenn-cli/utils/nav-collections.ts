@@ -11,6 +11,8 @@ import {
 import { getChapters } from "./api/chapters";
 import { throwWithConsoleError } from "@utils/errors";
 
+const draftLabel = `<span class="draft">下書き</span>`;
+
 const articlePlaceholderItem = {
   name: "✨ 最初の記事を作成しましょう",
   realPath: `/todo`,
@@ -20,8 +22,9 @@ const articlePlaceholderItem = {
 export const getAllArticlesNavCollection = (): NavCollection => {
   const allArticles = getAllArticles(["title", "emoji", "published"]);
   const items: NavItem[] = allArticles?.map((article: Article) => {
+    // article will be public unless "published" field is specified.
     const name = `${article.emoji || "📄"} ${
-      article.published ? "下書き）" : ""
+      article.published === false ? draftLabel : ""
     }${article.title || article.slug}`;
     return {
       name,
@@ -44,7 +47,9 @@ const bookPlaceholderItem = {
 export const getAllBooksNavCollection = (): NavCollection => {
   const allBooks = getAllBooks(["title", "published"]);
   const items: NavItem[] = allBooks?.map((book: Book) => {
-    const name = `📙 ${book.published ? "下書き）" : ""}${
+    // book will be draft unless "published" field is specified.
+
+    const name = `📙 ${book.published ? "" : draftLabel}${
       book.title || "無題のタイトル"
     }`;
     return {

@@ -34,6 +34,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  .draft {
+    display: inline-block;
+    background: $c-primary-bg;
+    color: $c-gray;
+    font-size: 0.85em;
+    padding: 0.2em 0.3em;
+    border-radius: 3px;
+    vertical-align: 0.1em;
+    margin-right: 0.4em;
+  }
   &:hover {
     color: $c-base;
   }
@@ -42,6 +52,9 @@
     background: $c-blue-bg;
     cursor: default;
     border-radius: 3px;
+    .draft {
+      background: #fff;
+    }
   }
 }
 

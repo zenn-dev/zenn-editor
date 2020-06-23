@@ -16,9 +16,8 @@ const SideBarNavItem: React.FC<{ navItem: NavItem }> = ({ navItem }) => {
         href={navItem.realPath}
         className={className}
         title={`${navItem.realPath}.md`}
-      >
-        {navItem.name}
-      </a>
+        dangerouslySetInnerHTML={{ __html: navItem.name }}
+      ></a>
     </Link>
   );
 };

@@ -99,7 +99,7 @@ export function getBookBySlug(slug: string, fields?: null | string[]): Book {
   // include only specified fields
   if (fields) {
     fields.forEach((field) => {
-      if (data[field]) {
+      if (data[field] !== undefined) {
         result[field] = data[field];
       }
       if (field === "coverDataUrl") {
