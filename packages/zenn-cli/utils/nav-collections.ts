@@ -12,16 +12,19 @@ import { getChapters } from "./api/chapters";
 import { throwWithConsoleError } from "@utils/errors";
 
 const articlePlaceholderItem = {
-  name: "✨最初の記事を作成しましょう",
+  name: "✨ 最初の記事を作成しましょう",
   realPath: `/todo`,
   dynamicRoutePath: null,
 };
 
 export const getAllArticlesNavCollection = (): NavCollection => {
-  const allArticles = getAllArticles(["title", "emoji"]);
+  const allArticles = getAllArticles(["title", "emoji", "published"]);
   const items: NavItem[] = allArticles?.map((article: Article) => {
+    const name = `${article.emoji || "📄"} ${
+      article.published ? "下書き）" : ""
+    }${article.title || article.slug}`;
     return {
-      name: `${article.emoji || "📄"}${article.title || article.slug}`,
+      name,
       realPath: `/articles/${article.slug}`,
       dynamicRoutePath: `/articles/[slug]`,
     };
@@ -33,16 +36,19 @@ export const getAllArticlesNavCollection = (): NavCollection => {
 };
 
 const bookPlaceholderItem = {
-  name: "✨最初の本を作成しましょう",
+  name: "✨ 最初の本を作成しましょう",
   realPath: `/todo`,
   dynamicRoutePath: null,
 };
 
 export const getAllBooksNavCollection = (): NavCollection => {
-  const allBooks = getAllBooks(["title"]);
+  const allBooks = getAllBooks(["title", "published"]);
   const items: NavItem[] = allBooks?.map((book: Book) => {
+    const name = `📙 ${book.published ? "下書き）" : ""}${
+      book.title || "無題のタイトル"
+    }`;
     return {
-      name: `📙${book.title || "無題のタイトル"}`,
+      name,
       realPath: `/books/${book.slug}`,
       dynamicRoutePath: `/books/[slug]`,
     };
