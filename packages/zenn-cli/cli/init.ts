@@ -22,6 +22,19 @@ export const exec: cliCommand = (argv) => {
     );
   } catch (e) {}
 
+  // generate README.md
+  try {
+    fs.writeFileSync(
+      path.join(process.cwd(), "README.md"),
+      [
+        "# Zenn Contents\n\n",
+        "👇How to use\n",
+        "https://zenn.dev/zenn/how-to-use-zenn-cli",
+      ].join(""),
+      { flag: "wx" } // Don't overwrite
+    );
+  } catch (e) {}
+
   console.log(`
   🎉Done!
   早速コンテンツを作成しましょう
