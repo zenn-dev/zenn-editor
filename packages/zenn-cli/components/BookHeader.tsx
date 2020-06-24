@@ -47,38 +47,49 @@ const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
 
         <div className="content-header__row">
           <span className="content-header__row-title">slug</span>
-          {book.slug}
+          <span className="content-header__row-result"> {book.slug}</span>
         </div>
 
         <div className="content-header__row">
           <span className="content-header__row-title">summary</span>
-          {book.summary || "指定が必要です"}
+          <span
+            className="content-header__row-result"
+            style={{ whiteSpace: "pre-line" }}
+          >
+            {book.summary || "指定が必要です"}
+          </span>
         </div>
 
         <div className="content-header__row">
           <span className="content-header__row-title">topics</span>
-          {Array.isArray(book.topics)
-            ? book.topics.map((t, i) => (
-                <span className="content-header__topic" key={`bt${i}`}>
-                  {t}
-                </span>
-              ))
-            : "指定が必要です"}
+          <span className="content-header__row-result">
+            {Array.isArray(book.topics) && book.topics.length
+              ? book.topics.map((t, i) => (
+                  <span className="content-header__topic" key={`bt${i}`}>
+                    {t}
+                  </span>
+                ))
+              : "指定が必要です"}
+          </span>
         </div>
 
         {book.published !== undefined && (
           <div className="content-header__row">
             <span className="content-header__row-title">published</span>
-            {book.published?.toString()}
-            {book.published === false ? "（下書き）" : ""}
+            <span className="content-header__row-result">
+              {book.published?.toString()}
+              {book.published === false ? "（下書き）" : ""}
+            </span>
           </div>
         )}
 
         {book.price !== undefined && (
           <div className="content-header__row">
             <span className="content-header__row-title">price</span>
-            {book.price?.toString()}
-            {book.price === 0 ? "（無料公開）" : ""}
+            <span className="content-header__row-result">
+              {book.price?.toString()}
+              {book.price === 0 ? "（無料公開）" : ""}
+            </span>
           </div>
         )}
 

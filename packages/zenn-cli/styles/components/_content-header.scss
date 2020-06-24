@@ -10,6 +10,7 @@
 .content-header__row {
   margin: 10px 0;
   font-size: 14px;
+  display: flex;
 }
 
 .content-header__row-title {
@@ -18,6 +19,10 @@
   width: 86px;
   padding-right: 5px;
 }
+.content-header__row-result {
+  flex: 1;
+}
+
 .content-header__link {
   display: inline-block;
   margin-top: 15px;
