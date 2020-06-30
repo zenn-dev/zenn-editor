@@ -10,13 +10,18 @@ export const exec: cliCommand = (argv) => {
   mkDirNames.forEach((dirName) => {
     try {
       fs.mkdirpSync(path.join(projectRoot, dirName));
+      fs.writeFileSync(
+        path.join(projectRoot, dirName, ".keep"),
+        "",
+        { flag: "wx" } // Don't overwrite
+      );
     } catch (e) {}
   });
 
   // generate .gitignore
   try {
     fs.writeFileSync(
-      path.join(process.cwd(), ".gitignore"),
+      path.join(projectRoot, ".gitignore"),
       ["node_modules", ".DS_Store"].join("\n"),
       { flag: "wx" } // Don't overwrite
     );
@@ -25,7 +30,7 @@ export const exec: cliCommand = (argv) => {
   // generate README.md
   try {
     fs.writeFileSync(
-      path.join(process.cwd(), "README.md"),
+      path.join(projectRoot, "README.md"),
       [
         "# Zenn Contents\n\n",
         "👇How to use\n",
