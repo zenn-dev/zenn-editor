@@ -4,6 +4,7 @@ Manage Zenn content locally.
 ## Dev
 - Mono repo by lerna.
 
+
 ### packages
 
 #### add new package to zenn-packages
@@ -71,7 +72,7 @@ MIT
   - [x] npx zenn initを作成
   - [x] version (-v)コマンド
 - [x] 画像ULの仕組み
-- [ ] previewのホーム画面を作成
+- [x] previewのホーム画面を作成
 - [ ] CLIの使い方の解説ページへのリンクを設置（サイドバーの 画像をアップロード の下）
 - [ ] マークダウンの書き方の解説ページへのリンクを設置（サイドバーの 画像をアップロード の下）
 - [ ] API側でREADMEファイルをスルーする
@@ -79,3 +80,6 @@ MIT
 - [x] 目次が動くか確認（h1,h2,h3まで）
 - [x] npmパッケージ名を考える
 - [ ] テスト書く
+- [ ] FIXME: tslintをeslintに変更
+- [ ] やっぱりマークダウンのh2見出しの左線消すか...
+
