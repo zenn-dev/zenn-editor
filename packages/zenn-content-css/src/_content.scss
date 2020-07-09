@@ -214,12 +214,9 @@ pre {
   background: $c-contrast;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border-radius: 3px;
+  border-radius: 5px;
   word-break: normal; // iOSで折り返されるのを防ぐ
   word-wrap: normal; // iOSで折り返されるのを防ぐ
-  @include mq(sm) {
-    border-radius: 0;
-  }
   code {
     margin: 0;
     padding: 0;
