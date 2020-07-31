@@ -135,6 +135,9 @@ published: true
 $ npx zenn new:article --slug 記事のスラッグ --title タイトル --type idea --emoji ✨ 
 ```
 
+![](https://images.unsplash.com/photo-1559624989-7b9303bd9792?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80)
+
+
 ## プレビューしながら執筆しよう
 本文の執筆は、ブラウザでプレビューしながら確認できます。ブラウザでプレビューするためには次のコマンドを実行します。
 
