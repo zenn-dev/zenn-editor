@@ -62,7 +62,7 @@ const SideBar: React.FC<{
         ))}
       </div>
       <a
-        href="https://zenn.dev/dashboard/contents/uploader"
+        href="https://zenn.dev/dashboard/uploader"
         className="sidebar-external-link"
         target="_blank"
         rel="noopener noreferrer"

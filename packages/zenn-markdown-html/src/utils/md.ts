@@ -9,7 +9,7 @@ import { optionCustomBlock } from "./option-md-custom-block";
 md.use(require("markdown-it-prism"))
   .use(require("markdown-it-footnote"))
   .use(require("markdown-it-image-lazy-loading"))
-  .use(require("markdown-it-imsize"), { autofill: false })
+  .use(require("markdown-it-imsize"), { autofill: true })
   .use(require("markdown-it-anchor"), { level: [1, 2, 3] })
   .use(require("markdown-it-link-attributes"), {
     attrs: {
