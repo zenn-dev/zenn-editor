@@ -31,6 +31,11 @@ $ npx lerna add A --scope B --dev
 # e.g. lerna add zenn-package-a --scope zenn-package-b --dev 
 ```
 
+refresh
+```sh
+$ lerna bootstrap --scope zenn-cli
+```
+
 ## npm
 ### release
 
@@ -82,4 +87,5 @@ MIT
 - [ ] テスト書く
 - [ ] FIXME: tslintをeslintに変更
 - [ ] やっぱりマークダウンのh2見出しの左線消すか...
+- [ ] リリース時にすべてのpackagesのバージョンがあっているか一応確認しておく
 
