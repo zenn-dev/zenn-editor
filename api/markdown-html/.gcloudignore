@@ -1,8 +1,0 @@
-.git
-.gitignore
-node_modules
-.deploy-functions.sh
-README.md
-tsconfig.json
-*.ts
-yarn.lock
