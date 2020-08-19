@@ -13,6 +13,7 @@
     "public"
   ],
   "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
     "start": "next -p 3002",
     "dev": "next -p 3002",
     "build:bin": "rimraf dist/* && tsc --project tsconfig.cli.json",
@@ -41,10 +42,17 @@
     "@types/react-dom": "^16.9.8",
     "@types/update-notifier": "^4.1.0",
     "@types/webpack": "^4.41.17",
+    "@typescript-eslint/eslint-plugin": "^3.5.0",
+    "@typescript-eslint/parser": "^3.5.0",
+    "eslint": "^7.3.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.5",
+    "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "sass": "^1.26.8",
-    "tslint": "^6.1.2",
-    "tslint-react": "^5.0.0",
     "typescript": "^3.9.3"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
