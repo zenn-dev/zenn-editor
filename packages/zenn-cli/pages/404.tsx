@@ -1,6 +1,7 @@
+import { NextPage } from "next";
 import Link from "next/link";
 
-const NotFoundPage = () => {
+const NotFoundPage: NextPage = () => {
   return (
     <div className="error">
       <div className="error-container">

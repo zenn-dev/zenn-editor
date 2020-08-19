@@ -1,9 +1,11 @@
 import { Chapter } from "@types";
 import { getChapterErrors } from "@utils/validator";
-import ContentWrapper from "@components/ContentWrapper";
-import ErrorRow from "@components/ErrorRow";
+import { ContentWrapper } from "@components/ContentWrapper";
+import { ErrorRow } from "@components/ErrorRow";
 
-const ArticleHeader: React.FC<{ chapter: Chapter }> = ({ chapter }) => {
+type Props = { chapter: Chapter };
+
+export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
   const errorMessages = getChapterErrors(chapter);
   const errorCount = errorMessages?.length;
   return (
@@ -31,4 +33,3 @@ const ArticleHeader: React.FC<{ chapter: Chapter }> = ({ chapter }) => {
     </header>
   );
 };
-export default ArticleHeader;

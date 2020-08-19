@@ -1,11 +1,13 @@
 import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Book, ErrorMessage, ErrorMessages } from "@types";
+import { Book, ErrorMessage } from "@types";
 import { getBookErrors } from "@utils/validator";
-import ContentWrapper from "@components/ContentWrapper";
-import ErrorRow from "@components/ErrorRow";
+import { ContentWrapper } from "@components/ContentWrapper";
+import { ErrorRow } from "@components/ErrorRow";
 
-const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
+type Props = { book: Book };
+
+export const BookHeader: React.FC<Props> = ({ book }) => {
   const [isCoverRatioError, setIsCoverRatioError] = useState<boolean>(false);
   const isCover = !!book.coverDataUrl;
   const baseErrorMessages = getBookErrors(book);
@@ -111,4 +113,3 @@ const BookHeader: React.FC<{ book: Book }> = ({ book }) => {
     </header>
   );
 };
-export default BookHeader;

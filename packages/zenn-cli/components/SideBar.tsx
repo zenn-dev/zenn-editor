@@ -47,7 +47,7 @@ const LogoLink: React.FC = () => (
   </Link>
 );
 
-const SideBar: React.FC<{
+export const SideBar: React.FC<{
   navCollections: NavCollections;
 }> = ({ navCollections }) => {
   return (
@@ -77,5 +77,3 @@ const SideBar: React.FC<{
     </aside>
   );
 };
-
-export default SideBar;

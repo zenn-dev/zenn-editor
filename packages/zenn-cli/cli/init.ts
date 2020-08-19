@@ -3,7 +3,7 @@ import fs from "fs-extra";
 
 import { cliCommand } from ".";
 
-export const exec: cliCommand = (argv) => {
+export const exec: cliCommand = () => {
   const projectRoot = process.cwd();
   const mkDirNames = ["articles", "books"];
 
@@ -15,7 +15,9 @@ export const exec: cliCommand = (argv) => {
         "",
         { flag: "wx" } // Don't overwrite
       );
-    } catch (e) {}
+    } catch (e) {
+      console.log(`Generating ${dirName} skipped.`);
+    }
   });
 
   // generate .gitignore
@@ -25,7 +27,9 @@ export const exec: cliCommand = (argv) => {
       ["node_modules", ".DS_Store"].join("\n"),
       { flag: "wx" } // Don't overwrite
     );
-  } catch (e) {}
+  } catch (e) {
+    console.log(`Generating .gitignore skipped.`);
+  }
 
   // generate README.md
   try {
@@ -38,7 +42,9 @@ export const exec: cliCommand = (argv) => {
       ].join(""),
       { flag: "wx" } // Don't overwrite
     );
-  } catch (e) {}
+  } catch (e) {
+    console.log(`Generating README.md skipped.`);
+  }
 
   console.log(`
   🎉Done!

@@ -1,10 +1,14 @@
-import SideBar from "@components/SideBar";
+import { SideBar } from "@components/SideBar";
 import { NavCollections } from "@types";
 
-const MainContainer: React.FC<{
-  children: React.ReactNode;
+type Props = {
   navCollections: NavCollections;
-}> = ({ children, navCollections }) => {
+};
+
+export const MainContainer: React.FC<Props> = ({
+  children,
+  navCollections,
+}) => {
   return (
     <div className="main-container">
       <div className="main-sidebar">
@@ -14,4 +18,3 @@ const MainContainer: React.FC<{
     </div>
   );
 };
-export default MainContainer;

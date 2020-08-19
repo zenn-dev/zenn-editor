@@ -20,12 +20,15 @@ module.exports = {
   ],
   rules: {
     // Include .prettierrc.js rules
+    "no-empty": "off",
     "prettier/prettier": ["error", {}, { usePrettierrc: true }],
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "jsx-a11y/alt-text": "off",
     "jsx-a11y/accessible-emoji": "off",
     "jsx-a11y/label-has-associated-control": [

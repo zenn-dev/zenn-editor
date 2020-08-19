@@ -5,7 +5,7 @@ export const generateSlug = (): string => {
 };
 
 export const validateSlug = (slug: string): boolean => {
-  return !!(slug && slug.match(/^[0-9a-z\-\_]{12,50}$/));
+  return !!(slug && slug.match(/^[0-9a-z\-_]{12,50}$/));
 };
 
 export const getSlugErrorMessage = (slug: string) =>

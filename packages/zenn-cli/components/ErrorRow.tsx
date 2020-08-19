@@ -1,8 +1,8 @@
 import { ErrorMessage } from "@types";
 
-const ErrorRow: React.FC<{ errorMessage: ErrorMessage }> = ({
-  errorMessage,
-}) => {
+type Props = { errorMessage: ErrorMessage };
+
+export const ErrorRow: React.FC<Props> = ({ errorMessage }) => {
   let className = "error-row";
   if (!errorMessage.isCritical) {
     className = className + " " + "error-row--critical";
@@ -14,5 +14,3 @@ const ErrorRow: React.FC<{ errorMessage: ErrorMessage }> = ({
     />
   );
 };
-
-export default ErrorRow;

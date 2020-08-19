@@ -1,26 +1,23 @@
 import { useEffect } from "react";
-import { GetServerSideProps } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
 import markdownToHtml from "zenn-markdown-html";
 import initEmbed from "zenn-init-embed";
-import ContentBody from "@components/ContentBody";
-import ArticleHeader from "@components/ArticleHeader";
-import MainContainer from "@components/MainContainer";
+import { ContentBody } from "@components/ContentBody";
+import { ArticleHeader } from "@components/ArticleHeader";
+import { MainContainer } from "@components/MainContainer";
 import { getAllContentsNavCollections } from "@utils/nav-collections";
 import { getArticleBySlug } from "@utils/api/articles";
 import { Article, NavCollections } from "@types";
 
-type ArticleSlugPageProps = {
+type Props = {
   article: Article;
   allContentsNavCollections: NavCollections;
 };
 
-const ArticleSlugPage = ({
-  article,
-  allContentsNavCollections,
-}: ArticleSlugPageProps) => {
+const Page: NextPage<Props> = ({ article, allContentsNavCollections }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -44,7 +41,7 @@ const ArticleSlugPage = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps<ArticleSlugPageProps> = async ({
+export const getServerSideProps: GetServerSideProps<Props> = async ({
   res,
   params,
 }) => {
@@ -75,4 +72,4 @@ export const getServerSideProps: GetServerSideProps<ArticleSlugPageProps> = asyn
   };
 };
 
-export default ArticleSlugPage;
+export default Page;

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Chapter } from "@types";
 
-type ChapterListProps = { bookSlug: string; chapters: Chapter[] };
+type Props = { bookSlug: string; chapters: Chapter[] };
 
-const ChapterList: React.FC<ChapterListProps> = ({ chapters, bookSlug }) => {
+export const ChapterList: React.FC<Props> = ({ chapters, bookSlug }) => {
   return (
     <div>
       <ul>
@@ -23,5 +23,3 @@ const ChapterList: React.FC<ChapterListProps> = ({ chapters, bookSlug }) => {
     </div>
   );
 };
-
-export default ChapterList;

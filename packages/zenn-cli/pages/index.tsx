@@ -1,13 +1,14 @@
+import { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
-import MainContainer from "@components/MainContainer";
+import { MainContainer } from "@components/MainContainer";
 import { NavCollections } from "@types";
 import { getAllContentsNavCollections } from "@utils/nav-collections";
 
-type IndexPageProps = {
+type Props = {
   allContentsNavCollections: NavCollections;
 };
 
-const IndexPage = ({ allContentsNavCollections }: IndexPageProps) => {
+const Page: NextPage<Props> = ({ allContentsNavCollections }) => {
   return (
     <div>
       <Head>
@@ -21,11 +22,11 @@ const IndexPage = ({ allContentsNavCollections }: IndexPageProps) => {
   );
 };
 
-export const getServerSideProps = () => {
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const allContentsNavCollections = getAllContentsNavCollections();
   return {
     props: { allContentsNavCollections },
   };
 };
 
-export default IndexPage;
+export default Page;

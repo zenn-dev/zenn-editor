@@ -1,9 +1,11 @@
-import ContentWrapper from "@components/ContentWrapper";
+import { ContentWrapper } from "@components/ContentWrapper";
 
-const ContentBody: React.FC<{
+type Props = {
   content?: string;
   children?: React.ReactNode;
-}> = ({ content, children }) => {
+};
+
+export const ContentBody: React.FC<Props> = ({ content, children }) => {
   return (
     <ContentWrapper>
       <div className="znc" style={{ margin: `40px 0` }}>
@@ -20,4 +22,3 @@ const ContentBody: React.FC<{
     </ContentWrapper>
   );
 };
-export default ContentBody;

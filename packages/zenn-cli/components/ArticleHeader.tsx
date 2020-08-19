@@ -1,9 +1,11 @@
 import { Article } from "@types";
 import { getArticleErrors } from "@utils/validator";
-import ContentWrapper from "@components/ContentWrapper";
-import ErrorRow from "@components/ErrorRow";
+import { ContentWrapper } from "@components/ContentWrapper";
+import { ErrorRow } from "@components/ErrorRow";
 
-const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
+type Props = { article: Article };
+
+export const ArticleHeader: React.FC<Props> = ({ article }) => {
   const errorMessages = getArticleErrors(article);
   const errorCount = errorMessages?.length;
   return (
@@ -77,4 +79,3 @@ const ArticleHeader: React.FC<{ article: Article }> = ({ article }) => {
     </header>
   );
 };
-export default ArticleHeader;

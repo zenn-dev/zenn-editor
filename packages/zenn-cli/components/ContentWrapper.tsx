@@ -1,4 +1,4 @@
-const ContentBody: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+type Props = { children: React.ReactNode };
+export const ContentWrapper: React.FC<Props> = ({ children }) => {
   return <div className="content-wrapper">{children}</div>;
 };
-export default ContentBody;

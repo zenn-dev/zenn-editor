@@ -1,6 +1,6 @@
 import { cliCommand } from ".";
 
-export const exec: cliCommand = (argv) => {
+export const exec: cliCommand = () => {
   console.log(`
   Command:
     zenn init         コンテンツ管理用のディレクトリを作成。初回のみ実行
