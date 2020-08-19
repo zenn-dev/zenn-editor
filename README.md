@@ -43,12 +43,12 @@ $ lerna bootstrap --scope zenn-cli
 
 ### add package
 ```
-$ yarn workspace zenn-markdown-preview add package-name --dev
+$ yarn workspace zenn-cli add package-name --dev
 ```
 
 ### build
 ```
-$ yarn workspace zenn-markdown-preview run build
+$ yarn workspace zenn-cli run build
 ```
 
 ### publish on npm
@@ -87,5 +87,5 @@ MIT
 - [ ] テスト書く
 - [ ] FIXME: tslintをeslintに変更
 - [ ] やっぱりマークダウンのh2見出しの左線消すか...
-- [ ] リリース時にすべてのpackagesのバージョンがあっているか一応確認しておく
+- [ ] NextPageなどのtypeをちゃんと指定する
 
