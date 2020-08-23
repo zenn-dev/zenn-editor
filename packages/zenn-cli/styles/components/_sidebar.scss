@@ -1,6 +1,11 @@
 .sidebar {
-  padding: 15px;
+  padding: 13px;
   line-height: 1.4;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .sidebar-logo-link {
   display: block;
@@ -11,7 +16,7 @@
 .sidebar-collection__title {
   font-size: 14.5px;
   font-weight: bold;
-  padding: 4px 0;
+  padding: 5px 0;
   cursor: default;
   outline: 0;
   &:focus {
@@ -22,9 +27,7 @@
   }
   user-select: none;
 }
-.sidebar-collection__ul {
-  margin: 0 0 20px;
-}
+
 .sidebar-nav-item {
   display: block;
   padding: 4px 0;
@@ -61,10 +64,10 @@
 .sidebar-external-link {
   display: flex;
   align-items: center;
-  margin: 6px 0;
+  margin: 7px 0;
   font-size: 14px;
   font-weight: 700;
   img {
-    margin-right: 5px;
+    margin-right: 7px;
   }
 }

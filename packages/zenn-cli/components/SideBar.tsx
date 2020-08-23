@@ -35,12 +35,36 @@ const SideBarNavCollection: React.FC<{ navCollection: NavCollection }> = ({
   );
 };
 
-const LogoLink: React.FC = () => (
-  <Link href="/" passHref>
-    <a className="sidebar-logo-link">
-      <img src="/logo.svg" alt="Zenn Editor" width={160} height={19} />
+const SidebarHeader: React.FC = () => (
+  <header className="sidebar-header">
+    <Link href="/" passHref>
+      <a className="sidebar-logo-link">
+        <img src="/logo.svg" alt="Zenn Editor" width={160} height={19} />
+      </a>
+    </Link>
+    <a
+      href="https://github.com/zenn-dev/zenn-editor"
+      className="sidebar-github-link"
+    >
+      <img src="/github.svg" alt="GitHub" width={22} height={22} />
     </a>
-  </Link>
+  </header>
+);
+
+const UploadImageLink: React.FC = () => (
+  <a
+    href="https://zenn.dev/dashboard/uploader"
+    className="sidebar-external-link"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img
+      src="https://twemoji.maxcdn.com/2/svg/\1f4f7.svg"
+      width="16"
+      height="16"
+    />
+    画像のアップロード
+  </a>
 );
 
 export const SideBar: React.FC<{
@@ -48,7 +72,7 @@ export const SideBar: React.FC<{
 }> = ({ navCollections }) => {
   return (
     <aside className="sidebar">
-      <LogoLink />
+      <SidebarHeader />
       <div className="sidebar-collections">
         {navCollections.map((navCollection) => (
           <SideBarNavCollection
@@ -57,19 +81,7 @@ export const SideBar: React.FC<{
           />
         ))}
       </div>
-      <a
-        href="https://zenn.dev/dashboard/uploader"
-        className="sidebar-external-link"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          src="https://twemoji.maxcdn.com/2/svg/\1f4f7.svg"
-          width="16"
-          height="16"
-        />
-        画像のアップロード
-      </a>
+      <UploadImageLink />
     </aside>
   );
 };
