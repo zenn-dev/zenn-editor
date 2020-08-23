@@ -51,22 +51,6 @@ const SidebarHeader: React.FC = () => (
   </header>
 );
 
-const UploadImageLink: React.FC = () => (
-  <a
-    href="https://zenn.dev/dashboard/uploader"
-    className="sidebar-external-link"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img
-      src="https://twemoji.maxcdn.com/2/svg/\1f4f7.svg"
-      width="16"
-      height="16"
-    />
-    画像のアップロード
-  </a>
-);
-
 export const SideBar: React.FC<{
   navCollections: NavCollections;
 }> = ({ navCollections }) => {
@@ -81,7 +65,32 @@ export const SideBar: React.FC<{
           />
         ))}
       </div>
-      <UploadImageLink />
+      <a
+        href="https://zenn.dev/dashboard/uploader"
+        className="sidebar-external-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src="https://twemoji.maxcdn.com/2/svg/\1f4f7.svg"
+          width="16"
+          height="16"
+        />
+        画像のアップロード
+      </a>
+      <a
+        href="https://zenn.dev/zenn/zenn-markdown-guide"
+        className="sidebar-external-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src="https://twemoji.maxcdn.com/2/svg/\1f58b.svg"
+          width="16"
+          height="16"
+        />
+        マークダウン・ガイド
+      </a>
     </aside>
   );
 };

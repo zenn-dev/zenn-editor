@@ -64,9 +64,11 @@
 .sidebar-external-link {
   display: flex;
   align-items: center;
-  margin: 7px 0;
-  font-size: 14px;
-  font-weight: 700;
+  margin: 12px 0;
+  font-size: 13.5px;
+  &:hover {
+    text-decoration: underline;
+  }
   img {
     margin-right: 7px;
   }
