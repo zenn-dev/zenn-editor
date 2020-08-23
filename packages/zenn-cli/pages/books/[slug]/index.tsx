@@ -51,15 +51,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   res,
   params,
 }) => {
-  const paramsSlug = params.slug;
-  const slug: string = Array.isArray(paramsSlug) ? paramsSlug[0] : paramsSlug;
+  const slug = params.slug as string;
   const book = getBookBySlug(slug);
 
   if (!book) {
     if (res) {
       res.setHeader("content-type", "text/html; charset=utf-8");
       res.statusCode = 404;
-      res.end(`books/${slug}/config.yamlの内容が取得できませんでした`);
+      res.end(
+        `本の設定ファイル（books/${slug}/config.yaml）の内容が取得できませんでした`
+      );
       return;
     }
   }

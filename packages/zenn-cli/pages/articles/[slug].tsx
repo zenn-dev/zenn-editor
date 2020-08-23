@@ -46,15 +46,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   res,
   params,
 }) => {
-  const paramsSlug = params.slug;
-  const slug: string = Array.isArray(paramsSlug) ? paramsSlug[0] : paramsSlug;
+  const slug = params.slug as string;
   const article = getArticleBySlug(slug);
 
-  // FIXME: やっぱりエラーを出す
   if (!article) {
     if (res) {
-      res.writeHead(301, { Location: "/" });
-      res.end();
+      res.setHeader("content-type", "text/html; charset=utf-8");
+      res.end(`articles/${slug}.mdが見つかりませんでした`);
       return;
     }
   }

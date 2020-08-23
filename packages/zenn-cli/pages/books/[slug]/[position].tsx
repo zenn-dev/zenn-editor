@@ -45,12 +45,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   res,
   params,
 }) => {
-  const paramsSlug = params.slug;
-  const slug: string = Array.isArray(paramsSlug) ? paramsSlug[0] : paramsSlug;
-  const paramsPosition = params.position;
-  const position: string = Array.isArray(paramsPosition)
-    ? paramsPosition[0]
-    : paramsPosition;
+  const slug = params.slug as string;
+  const position = params.position as string;
 
   const bookNavCollections = getBookNavCollections(slug);
 
