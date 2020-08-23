@@ -9,39 +9,82 @@ type Props = {
   allContentsNavCollections: NavCollections;
 };
 
-const Page: NextPage<Props> = ({ allContentsNavCollections }) => {
+const Page: NextPage<Props> = (props) => {
   return (
     <>
       <Head>
-        <title>Welcome to Zenn Editor!</title>
+        <title>Zenn Editor</title>
       </Head>
       <div>
-        <MainContainer navCollections={allContentsNavCollections}>
-          <ContentWrapper>
-            <article className="home">
-              <div className="home__content">
-                <h1 className="home__title">
-                  <img
-                    src="/logo.svg"
-                    alt="Zenn Editor"
-                    width={480}
-                    height={56}
-                  />
-                </h1>
-                <p className="home__description">
-                  ローカルのテキストエディターでZennのコンテンツを編集しましょう
+        <MainContainer navCollections={props.allContentsNavCollections}>
+          <article className="home">
+            <ContentWrapper>
+              <h1 className="home__title">
+                <img
+                  src="/logo.svg"
+                  alt="Zenn Editor"
+                  width={300}
+                  height={35}
+                />
+              </h1>
+              <div className="home__container">
+                <p>
+                  ローカルのテキストエディターでZennのコンテンツを編集しましょう。
                 </p>
-                <a
-                  href="https://zenn.dev/zenn/how-to-use-zenn-cli"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="home__link"
-                >
-                  使い方を知る
-                </a>
+                <h2>
+                  <img
+                    src="https://twemoji.maxcdn.com/2/svg/\1f4dd.svg"
+                    width="23"
+                    height="23"
+                  />
+                  記事の作成
+                </h2>
+                <pre>
+                  <code>$ npx zenn new:article</code>
+                </pre>
+                <p>
+                  記事のURLの一部となるslugを指定して作成することもできます。
+                </p>
+                <pre>
+                  <code>$ npx zenn new:article --slug my-awesome-article</code>
+                </pre>
+                <h2>
+                  <img
+                    src="https://twemoji.maxcdn.com/2/svg/\1f4d8.svg"
+                    width="23"
+                    height="23"
+                  />
+                  本の作成
+                </h2>
+                <pre>
+                  <code>$ npx zenn new:book</code>
+                </pre>
+                <p>本のURLの一部となるslugを指定して作成することもできます。</p>
+                <pre>
+                  <code>$ npx zenn new:book --slug my-awesome-book</code>
+                </pre>
+                <h2>
+                  <img
+                    src="https://twemoji.maxcdn.com/2/svg/\1f4a1.svg"
+                    width="23"
+                    height="23"
+                  />
+                  Learn More
+                </h2>
+                <p>
+                  詳しくは、
+                  <a
+                    href="https://zenn.dev/zenn/how-to-use-zenn-cli"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Zenn CLIの使い方
+                  </a>
+                  をご覧ください。
+                </p>
               </div>
-            </article>
-          </ContentWrapper>
+            </ContentWrapper>
+          </article>
         </MainContainer>
       </div>
     </>

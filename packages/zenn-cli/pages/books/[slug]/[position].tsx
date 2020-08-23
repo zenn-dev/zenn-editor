@@ -18,7 +18,8 @@ type Props = {
   bookNavCollections: NavCollections;
 };
 
-const Page: NextPage<Props> = ({ chapter, bookNavCollections }) => {
+const Page: NextPage<Props> = (props) => {
+  const { chapter } = props;
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const Page: NextPage<Props> = ({ chapter, bookNavCollections }) => {
       <Head>
         <title>{chapter.title || `${chapter.position}.md`}の編集</title>
       </Head>
-      <MainContainer navCollections={bookNavCollections}>
+      <MainContainer navCollections={props.bookNavCollections}>
         <article>
           <ChapterHeader chapter={chapter} />
           <ContentBody content={chapter.content} />

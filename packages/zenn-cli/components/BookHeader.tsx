@@ -106,7 +106,12 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
           </div>
         )}
 
-        <a href="todo" className="content-header__link" target="_blank">
+        <a
+          href="https://zenn.dev/zenn/edit-book-using-cli"
+          className="content-header__link"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           Bookの作成方法はこちら →
         </a>
       </ContentWrapper>

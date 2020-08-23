@@ -205,6 +205,7 @@ code {
   vertical-align: 0.08em;
   font-family: Menlo, Monaco, Consolas, Meiryo, "Inter", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  -webkit-font-smoothing: antialiased;
 }
 pre {
   margin: 1.3rem 0;
@@ -223,7 +224,7 @@ pre {
   }
   & > code {
     display: block;
-    padding: 1.4rem $pre-side-padding; // このようにしないとpreのスクロールバーがコードに重なってしまう
+    padding: 1.2rem $pre-side-padding; // このようにしないとpreのスクロールバーがコードに重なってしまう
   }
 }
 

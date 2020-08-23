@@ -72,7 +72,12 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
           </div>
         )}
 
-        <a href="todo" className="content-header__link" target="_blank">
+        <a
+          href="https://zenn.dev/zenn/edit-article-using-cli"
+          className="content-header__link"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           Articleのmdファイルの作成方法はこちら →
         </a>
       </ContentWrapper>

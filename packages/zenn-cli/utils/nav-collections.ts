@@ -15,7 +15,7 @@ const draftLabel = `<span class="draft">下書き</span>`;
 
 const articlePlaceholderItem = {
   name: "✨ 最初の記事を作成しましょう",
-  href: "/todo",
+  href: "/",
 };
 
 export const getAllArticlesNavCollection = (): NavCollection => {
@@ -41,7 +41,7 @@ export const getAllArticlesNavCollection = (): NavCollection => {
 
 const bookPlaceholderItem = {
   name: "✨ 最初の本を作成しましょう",
-  href: `/todo`,
+  href: `/`,
 };
 
 export const getAllBooksNavCollection = (): NavCollection => {

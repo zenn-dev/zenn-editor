@@ -61,3 +61,19 @@ ol {
 hr {
   border: none;
 }
+
+button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  appearance: none;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  transition: 0.25s;
+  padding: 0;
+  margin: 0;
+  outline-color: rgba(61, 210, 255, 0.32);
+  outline-offset: 2px;
+}

@@ -17,7 +17,8 @@ type Props = {
   allContentsNavCollections: NavCollections;
 };
 
-const Page: NextPage<Props> = ({ article, allContentsNavCollections }) => {
+const Page: NextPage<Props> = (props) => {
+  const { article } = props;
   const router = useRouter();
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Page: NextPage<Props> = ({ article, allContentsNavCollections }) => {
       <Head>
         <title>{article.title || "無題"}の編集</title>
       </Head>
-      <MainContainer navCollections={allContentsNavCollections}>
+      <MainContainer navCollections={props.allContentsNavCollections}>
         <article>
           <div>
             <ArticleHeader article={article} />
@@ -49,6 +50,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const slug: string = Array.isArray(paramsSlug) ? paramsSlug[0] : paramsSlug;
   const article = getArticleBySlug(slug);
 
+  // FIXME: やっぱりエラーを出す
   if (!article) {
     if (res) {
       res.writeHead(301, { Location: "/" });

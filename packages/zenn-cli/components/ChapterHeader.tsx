@@ -26,7 +26,11 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
           </div>
         )}
 
-        <a href="todo" className="content-header__link" target="_blank">
+        <a
+          href=" https://zenn.dev/zenn/edit-book-using-cli"
+          className="content-header__link"
+          target="_blank"
+        >
           Chapterのmdファイルの作成方法はこちら →
         </a>
       </ContentWrapper>

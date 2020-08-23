@@ -10,7 +10,7 @@ export const BookBodyPlaceholder: React.FC = () => (
       <br />
       <br />
       <a
-        href="https://zenn.dev/zenn/how-to-use-zenn-cli"
+        href="https://zenn.dev/zenn/edit-book-using-cli"
         target="_blank"
         rel="noreferrer noopener"
       >

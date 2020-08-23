@@ -19,17 +19,14 @@ type Props = {
   allContentsNavCollection: NavCollections;
 };
 
-const Page: NextPage<Props> = ({
-  book,
-  chapters,
-  allContentsNavCollection,
-}) => {
+const Page: NextPage<Props> = (props) => {
+  const { book, chapters } = props;
   return (
     <>
       <Head>
         <title>{book.title || "無題"}の編集</title>
       </Head>
-      <MainContainer navCollections={allContentsNavCollection}>
+      <MainContainer navCollections={props.allContentsNavCollection}>
         <article>
           <div>
             <BookHeader book={book} />
