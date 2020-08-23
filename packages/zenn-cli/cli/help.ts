@@ -10,7 +10,7 @@ export const exec: cliCommand = () => {
     zenn new:book     新しいbookを追加
 
     👇詳細
-    fixme
+    https://zenn.dev/zenn/how-to-use-zenn-cli
   `);
   process.exit(0);
 };

@@ -30,8 +30,8 @@ export type Item = Article | Book | Chapter;
 // link to each post item
 export type NavItem = {
   name: string;
-  realPath: string;
-  dynamicRoutePath?: string;
+  as?: string;
+  href: string;
 };
 // books, articles
 export type NavCollection = {

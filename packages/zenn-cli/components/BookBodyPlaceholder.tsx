@@ -9,7 +9,11 @@ export const BookBodyPlaceholder: React.FC = () => (
       <code>2.md</code>…のようになります。
       <br />
       <br />
-      <a href="fixme" target="_blank">
+      <a
+        href="https://zenn.dev/zenn/how-to-use-zenn-cli"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
         本の作成について詳しく知る→
       </a>
     </p>

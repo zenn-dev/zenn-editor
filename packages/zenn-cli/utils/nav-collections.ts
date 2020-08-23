@@ -15,12 +15,12 @@ const draftLabel = `<span class="draft">下書き</span>`;
 
 const articlePlaceholderItem = {
   name: "✨ 最初の記事を作成しましょう",
-  realPath: `/todo`,
-  dynamicRoutePath: null,
+  href: "/todo",
 };
 
 export const getAllArticlesNavCollection = (): NavCollection => {
   const allArticles = getAllArticles(["title", "emoji", "published"]);
+
   const items: NavItem[] = allArticles?.map((article: Article) => {
     // article will be public unless "published" field is specified.
     const name = `${article.emoji || "📄"} ${
@@ -28,10 +28,11 @@ export const getAllArticlesNavCollection = (): NavCollection => {
     }${article.title || article.slug}`;
     return {
       name,
-      realPath: `/articles/${article.slug}`,
-      dynamicRoutePath: `/articles/[slug]`,
+      href: `/articles/[slug]`,
+      as: `/articles/${article.slug}`,
     };
   });
+
   return {
     name: "articles",
     items: items?.length ? items : [articlePlaceholderItem],
@@ -40,8 +41,7 @@ export const getAllArticlesNavCollection = (): NavCollection => {
 
 const bookPlaceholderItem = {
   name: "✨ 最初の本を作成しましょう",
-  realPath: `/todo`,
-  dynamicRoutePath: null,
+  href: `/todo`,
 };
 
 export const getAllBooksNavCollection = (): NavCollection => {
@@ -54,8 +54,8 @@ export const getAllBooksNavCollection = (): NavCollection => {
     }`;
     return {
       name,
-      realPath: `/books/${book.slug}`,
-      dynamicRoutePath: `/books/[slug]`,
+      as: `/books/${book.slug}`,
+      href: `/books/[slug]`,
     };
   });
 
@@ -79,15 +79,15 @@ export const getBookNavCollections = (slug: string): NavCollections => {
   const items: NavItem[] = chapters?.map((chapter: Chapter) => {
     return {
       name: `📄${chapter.title || chapter.position + ".md"}`,
-      realPath: `/books/${slug}/${chapter.position}`,
-      dynamicRoutePath: `/books/[slug]/[position]`,
+      href: `/books/[slug]/[position]`,
+      as: `/books/${slug}/${chapter.position}`,
     };
   });
 
   const navItemBack: NavItem = {
     name: "← 戻る",
-    realPath: `/books/${slug}`,
-    dynamicRoutePath: `/books/[slug]`,
+    href: `/books/[slug]`,
+    as: `/books/${slug}`,
   };
   items.unshift(navItemBack);
   const bookNavCollection: NavCollection = {

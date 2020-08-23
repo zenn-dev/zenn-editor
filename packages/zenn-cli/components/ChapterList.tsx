@@ -8,13 +8,14 @@ export const ChapterList: React.FC<Props> = ({ chapters, bookSlug }) => {
     <div>
       <ul>
         {chapters.map((chapter) => {
-          const realPath = `/books/${bookSlug}/${chapter.position}`;
           return (
             <li key={`ch${chapter.position}`}>
-              <Link href="/books/[slug]/[position]" as={realPath}>
-                <a href={realPath}>
-                  {chapter.title || `${chapter.position}.md`}
-                </a>
+              <Link
+                href="/books/[slug]/[position]"
+                as={`/books/${bookSlug}/${chapter.position}`}
+                passHref
+              >
+                <a>{chapter.title || `${chapter.position}.md`}</a>
               </Link>
             </li>
           );

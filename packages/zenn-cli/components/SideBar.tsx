@@ -5,19 +5,15 @@ import { NavCollections, NavCollection, NavItem } from "@types";
 const SideBarNavItem: React.FC<{ navItem: NavItem }> = ({ navItem }) => {
   const router = useRouter();
   const className = `sidebar-nav-item ${
-    router.asPath === navItem.realPath ? "active" : ""
+    router.asPath === navItem.as ? "active" : ""
   }`;
   return (
-    <Link
-      href={navItem.dynamicRoutePath || navItem.realPath}
-      as={navItem.realPath}
-    >
+    <Link href={navItem.href} as={navItem.as} passHref>
       <a
-        href={navItem.realPath}
         className={className}
-        title={`${navItem.realPath}.md`}
+        title={`${navItem.as}.md`}
         dangerouslySetInnerHTML={{ __html: navItem.name }}
-      ></a>
+      />
     </Link>
   );
 };
@@ -31,8 +27,8 @@ const SideBarNavCollection: React.FC<{ navCollection: NavCollection }> = ({
         {navCollection.name}
       </summary>
       <ul className="sidebar-collection__ul">
-        {navCollection?.items.map((navItem) => (
-          <SideBarNavItem navItem={navItem} key={navItem.realPath} />
+        {navCollection?.items.map((navItem, i) => (
+          <SideBarNavItem navItem={navItem} key={`nav-item-${i}`} />
         ))}
       </ul>
     </details>
@@ -40,9 +36,9 @@ const SideBarNavCollection: React.FC<{ navCollection: NavCollection }> = ({
 };
 
 const LogoLink: React.FC = () => (
-  <Link href="/">
-    <a href="/" className="sidebar-logo-link">
-      <img src="/logo.svg" alt="Zenn Editor" width={187} height={22} />
+  <Link href="/" passHref>
+    <a className="sidebar-logo-link">
+      <img src="/logo.svg" alt="Zenn Editor" width={160} height={19} />
     </a>
   </Link>
 );
