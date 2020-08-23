@@ -1,0 +1,26 @@
+.home {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.home__content {
+  margin-top: -20px;
+}
+.home__description {
+  margin-top: 1rem;
+}
+.home__link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.5em 1.6em;
+  background: $c-primary;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0.45em;
+  box-shadow: 0 4px 8px -2px rgba(100, 110, 167, 0.4);
+  &:hover {
+    box-shadow: 0 8px 15px -1px rgba(100, 110, 167, 0.4);
+  }
+}
