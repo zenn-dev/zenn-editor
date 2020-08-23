@@ -55,5 +55,8 @@ export const exec: cliCommand = () => {
 
   👇新しい本を作成する
   $ zenn new:book
+
+  👇表示をプレビューする
+  $ zenn preview
   `);
 };
