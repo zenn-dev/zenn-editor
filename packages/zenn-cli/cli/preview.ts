@@ -17,7 +17,7 @@ export const exec: cliCommand = (argv) => {
     { argv }
   );
 
-  const port = args["--port"] || 3003;
+  const port = args["--port"] || 8000;
   const previewUrl = `http://localhost:${port}`;
 
   const srcDir = `${__dirname}/../../.`; // refer project root from dist/cli/zenn-preview.js
