@@ -5,16 +5,25 @@ import { escapeHtml } from "./md-base";
 
 export const optionCustomBlock = {
   youtube(videoId: string) {
+    if (!videoId?.match(/^[a-zA-Z0-9_-]+$/)) {
+      return "YouTubeのvideoIDが不正です";
+    }
     return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapeHtml(
       videoId
     )}" allowfullscreen loading="lazy"></iframe></div>`;
   },
   slideshare(key: string) {
+    if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
+      return "Slide Shareのkeyが不正です";
+    }
     return `<div class="embed-slideshare"><iframe src="https://www.slideshare.net/slideshow/embed_code/key/${escapeHtml(
       key
     )}" scrolling="no" allowfullscreen loading="lazy"></iframe></div>`;
   },
   speakerdeck(key: string) {
+    if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
+      return "Speaker Deckのkeyが不正です";
+    }
     return `<div class="embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
       key
     )}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></div>`;

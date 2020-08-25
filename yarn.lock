@@ -6430,7 +6430,7 @@ markdown-it-container@^2.0.0:
 
 markdown-it-custom-block@catnose99/markdown-it-custom-block#master:
   version "0.1.1"
-  resolved "https://codeload.github.com/catnose99/markdown-it-custom-block/tar.gz/9c627526d315a150a1adceb37b8f8f5159dee3cf"
+  resolved "https://codeload.github.com/catnose99/markdown-it-custom-block/tar.gz/7969ce2cca2fd30bd543104e45e6b67386d0743c"
 
 markdown-it-footnote@^3.0.2:
   version "3.0.2"
