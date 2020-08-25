@@ -18,7 +18,7 @@
     "dev": "next -p 3002",
     "build:bin": "rimraf dist/* && tsc --project tsconfig.cli.json",
     "build:next": "next build && rimraf .next/cache",
-    "build": "npm run build:bin & npm run build:next"
+    "build": "npm run lint && npm run build:bin & npm run build:next"
   },
   "dependencies": {
     "arg": "^4.1.3",
