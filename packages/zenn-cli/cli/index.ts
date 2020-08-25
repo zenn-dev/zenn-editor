@@ -30,8 +30,7 @@ const command = args._[0] || "preview";
 // notify package update
 const notifier = updateNotifier({
   pkg,
-  updateCheckInterval: 1000 * 60, // fixme: テストのため短くする
-  // updateCheckInterval: 1000 * 60 * 60 * 24 * 3, // 3days
+  updateCheckInterval: 1000 * 60 * 60 * 24 * 3, // 3days
 });
 notifier.notify();
 
