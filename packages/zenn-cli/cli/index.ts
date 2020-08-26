@@ -30,9 +30,13 @@ const command = args._[0] || "preview";
 // notify package update
 const notifier = updateNotifier({
   pkg,
-  updateCheckInterval: 1000 * 60 * 60 * 24 * 3, // 3days
+  updateCheckInterval: 1000 * 60 * 60 * 24 * 0.5, // FIXME: after stabled
+  // updateCheckInterval: 1000 * 60 * 60 * 24 * 3, // 3days
 });
-notifier.notify();
+notifier.notify({
+  message:
+    "Update available {currentVersion} → {latestVersion} 🔥\nRun `npm update zenn-cli`",
+});
 
 if (args["--version"]) {
   console.log(`zenn-cli v${pkg.version}`);
