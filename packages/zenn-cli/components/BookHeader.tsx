@@ -79,8 +79,7 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
           <div className="content-header__row">
             <span className="content-header__row-title">published</span>
             <span className="content-header__row-result">
-              {book.published?.toString()}
-              {book.published === false ? "（下書き）" : ""}
+              {book.published ? "✅（公開）" : "false（下書き）"}
             </span>
           </div>
         )}

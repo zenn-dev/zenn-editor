@@ -46,8 +46,7 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
           <div className="content-header__row">
             <span className="content-header__row-title">published</span>
             <span className="content-header__row-result">
-              {article.published?.toString()}
-              {article.published === false ? "（下書き）" : ""}
+              {article.published ? "✅true（公開）" : "false（下書き）"}
             </span>
           </div>
         )}

@@ -28,7 +28,7 @@ const Page: NextPage<Props> = (props) => {
   return (
     <>
       <Head>
-        <title>{article.title || "無題"}の編集</title>
+        <title>{article.title || "無題"}のプレビュー</title>
       </Head>
       <MainContainer navCollections={props.allContentsNavCollections}>
         <article>

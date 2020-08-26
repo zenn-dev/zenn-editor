@@ -136,7 +136,7 @@ h6 {
 
 @include mq(sm) {
   h1 {
-    font-size: 1.4em;
+    font-size: 1.5em;
   }
   h2 {
     font-size: 1.3em;
@@ -156,7 +156,7 @@ h6 {
 }
 
 hr {
-  border-top: 1px dashed $c-gray-border;
+  border-top: 2px solid $c-gray-border;
   margin: 2rem 0;
 }
 blockquote {

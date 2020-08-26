@@ -29,7 +29,7 @@ const Page: NextPage<Props> = (props) => {
   return (
     <>
       <Head>
-        <title>{chapter.title || `${chapter.position}.md`}の編集</title>
+        <title>{chapter.title || `${chapter.position}.md`}のプレビュー</title>
       </Head>
       <MainContainer navCollections={props.bookNavCollections}>
         <article>
