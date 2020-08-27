@@ -55,7 +55,7 @@
     "sass": "^1.26.8",
     "typescript": "^3.9.3"
   },
-  "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
+  "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
   "publishConfig": {
     "access": "public"
   }

@@ -50,6 +50,7 @@ $ yarn workspaces run build
 
 ### publish on npm
 ```sh
+# cannot use yarn here
 $ npm run publish:all
 ```
 
