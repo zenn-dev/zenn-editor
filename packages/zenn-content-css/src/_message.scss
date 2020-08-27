@@ -8,13 +8,14 @@
   background: #fff6e4;
   color: rgba(0, 0, 0, 0.65);
   font-size: 14.5px;
-  line-height: 1.7;
+  line-height: 1.6;
   &:before {
     position: absolute;
     left: 15px;
-    top: 25px;
+    top: 50%;
+    transform: translateY(-52%);
     content: "!";
-    display: inline-block;
+    display: block;
     width: 20px;
     height: 20px;
     line-height: 20px;
