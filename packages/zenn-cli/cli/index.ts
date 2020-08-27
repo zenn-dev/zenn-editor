@@ -35,7 +35,7 @@ const notifier = updateNotifier({
 });
 notifier.notify({
   message:
-    "Update available {currentVersion} → {latestVersion} 🔥\nRun `npm update zenn-cli`",
+    "CLIに変更があります {currentVersion} → {latestVersion} 💡\n`npm update zenn-cli`で更新してください",
 });
 
 if (args["--version"]) {

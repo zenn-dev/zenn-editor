@@ -38,7 +38,7 @@ export const exec: cliCommand = () => {
       [
         "# Zenn Contents\n\n",
         "👇How to use\n",
-        "https://zenn.dev/zenn/how-to-use-zenn-cli",
+        "https://zenn.dev/zenn/articles/how-to-use-zenn-cli",
       ].join(""),
       { flag: "wx" } // Don't overwrite
     );
