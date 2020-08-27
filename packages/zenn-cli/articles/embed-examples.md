@@ -4,7 +4,6 @@ type: "tech" # or "idea"
 topics: 
   - React
   - 初心者
-  - ソイラテ
   - RubyOnRails
   - Angulerjs
 emoji: 🐲

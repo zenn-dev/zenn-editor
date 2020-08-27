@@ -45,7 +45,7 @@ $ lerna bootstrap --scope zenn-cli
 
 ### build
 ```
-$ yarn workspace zenn-cli run build
+$ yarn workspaces run build
 ```
 
 ### publish on npm
@@ -54,6 +54,7 @@ $ npm run publish:all
 ```
 
 ## ToDo
+- [ ] Hot reload markdown content (can be done using api)
 - [ ] Write test
 
 ### Licence
