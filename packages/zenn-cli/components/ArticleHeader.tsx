@@ -77,7 +77,7 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          Articleのmdファイルの作成方法はこちら →
+          Articleのmdファイルの作成方法 →
         </a>
       </ContentWrapper>
     </header>

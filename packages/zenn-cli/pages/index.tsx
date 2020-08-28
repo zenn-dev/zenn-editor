@@ -74,7 +74,7 @@ const Page: NextPage<Props> = (props) => {
                 <p>
                   詳しくは、
                   <a
-                    href="https://zenn.dev/zenn/articles/how-to-use-zenn-cli"
+                    href="https://zenn.dev/zenn/articles/zenn-cli-guide"
                     target="_blank"
                     rel="noreferrer noopener"
                   >

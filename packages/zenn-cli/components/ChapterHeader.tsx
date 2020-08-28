@@ -31,7 +31,7 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
           className="content-header__link"
           target="_blank"
         >
-          Chapterのmdファイルの作成方法はこちら →
+          Chapterのmdファイルの作成方法 →
         </a>
       </ContentWrapper>
     </header>

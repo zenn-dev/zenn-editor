@@ -79,7 +79,7 @@ export const SideBar: React.FC<{
         画像のアップロード
       </a>
       <a
-        href="https://zenn.dev/zenn/articles/zenn-markdown-guide"
+        href="https://zenn.dev/zenn/articles/markdown-guide"
         className="sidebar-external-link"
         target="_blank"
         rel="noopener noreferrer"

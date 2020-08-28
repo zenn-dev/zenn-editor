@@ -111,7 +111,7 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          Bookの作成方法はこちら →
+          Bookの作成方法 →
         </a>
       </ContentWrapper>
     </header>
