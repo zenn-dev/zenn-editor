@@ -237,17 +237,27 @@ img:not(.emoji) {
 details {
   font-size: 0.95em;
   margin: 1rem 0;
-  padding: 0.1em 0.9em;
-  background: $c-primary-bg-lighter;
-  border-radius: 4px;
-  * {
-    margin: 0.5em 0;
-  }
+  line-height: 1.7;
 }
 summary {
   cursor: pointer;
   outline: 0;
+  padding: 0.7em 0.7em 0.7em 0.9em;
+  background: $c-primary-bg-lighter;
+  border-radius: 5px;
   &::-webkit-details-marker {
     color: $c-gray;
+  }
+}
+details[open] summary {
+  border-radius: 5px 5px 0 0;
+}
+.details-content {
+  padding: 0.5em 0.9em;
+  border: solid 2px $c-primary-bg-lighter;
+  border-radius: 0 0 5px 5px;
+
+  & > * {
+    margin: 0.5em 0;
   }
 }

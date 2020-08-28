@@ -17,10 +17,16 @@ published: false
 
 ## accordion
 
-:::details Details
-this is the detail
-:::
+:::details ショートカットを使用しよう
 
+マークダウンエディターでは、以下のショートカットを使用できます。
+
+- **Ctrl + P（プレビュー）**：マークダウンがどのように表示されるかをチェックできます。もう一度ショートカットを実行すると、エディターに戻ります。
+- **Ctrl + S（内容の保存）**：変更内容を保存します。
+- **Ctrl + I（埋め込み）**：ツイートやYouTube、CodePen、SpeakerDeckなどの埋め込みコンテンツを挿入するためのモーダルが表示されます。
+
+
+:::
 
 ## Horizontal Rules
 

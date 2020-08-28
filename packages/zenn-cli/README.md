@@ -1,7 +1,5 @@
 # Zenn CLI
-Preview local markdown contents on browser.
+Manage Zenn content locally 👩‍💻
 
-# compile
-1. next.js => .next
-2. bin => bin
-2. cli => dist/cli
+# Documentation
+https://zenn.dev/zenn/articles/zenn-cli-guide

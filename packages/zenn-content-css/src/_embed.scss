@@ -38,8 +38,7 @@
 }
 
 // katex
-eqn,
-eq {
+eqn {
   display: block;
-  overflow: hidden;
+  overflow-x: auto;
 }

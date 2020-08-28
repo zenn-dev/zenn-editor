@@ -13,10 +13,14 @@ export const mdContainerDetails = {
     const m = tokens[idx].info.trim().match(/^details\s+(.*)$/);
     if (tokens[idx].nesting === 1) {
       // opening tag
-      return "<details><summary>" + escapeHtml(m[1]) + "</summary>\n";
+      return (
+        "<details><summary>" +
+        escapeHtml(m[1]) +
+        '</summary><div class="details-content">'
+      );
     } else {
       // closing tag
-      return "</details>\n";
+      return "</div></details>\n";
     }
   },
 };
