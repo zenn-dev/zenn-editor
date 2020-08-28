@@ -15,6 +15,12 @@ published: false
 ##### h5 Heading
 ###### h6 Heading
 
+## accordion
+
+:::details Details
+this is the detail
+:::
+
 
 ## Horizontal Rules
 

@@ -41,7 +41,7 @@ $ lerna bootstrap --scope zenn-cli
 
 ### build
 ```
-$ yarn workspaces run build
+$ yarn build
 ```
 
 ### publish on npm
@@ -51,7 +51,8 @@ $ npm run publish:all
 ```
 
 ## ToDo
-- [ ] Hot reload markdown content (can be done using api)
+- [ ] Hot reload markdown content
+  - nodemonをconcurrentlyを使って動かせばいける？（https://www.npmjs.com/package/concurrently#programmatic-usage）
 - [ ] Write test
 
 ### Licence

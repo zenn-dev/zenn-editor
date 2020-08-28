@@ -4,11 +4,10 @@
   font-size: 0.9em;
 }
 .footnotes-title {
-  display: flex;
-  align-items: center;
   padding-bottom: 3px;
   border-bottom: solid 1px $c-gray-border;
   font-weight: 700;
+  font-size: 15px;
 }
 .footnotes-list {
   margin: 0;
@@ -16,4 +15,5 @@
 .footnotes-twemoji {
   border: none;
   margin: 0 7px 0 0;
+  vertical-align: -3px;
 }

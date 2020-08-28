@@ -29,7 +29,7 @@ md.use(require("markdown-it-prism"))
 // custom footnote
 md.renderer.rules.footnote_block_open = () =>
   '<section class="footnotes">\n' +
-  '<div class="footnotes-title"><img src="https://twemoji.maxcdn.com/2/svg/1f58b.svg" class="footnotes-twemoji" loading="lazy" width="20" height="20">脚注</div>\n' +
+  '<div class="footnotes-title"><img src="https://twemoji.maxcdn.com/2/svg/1f58b.svg" class="emoji footnotes-twemoji" loading="lazy" width="20" height="20">脚注</div>\n' +
   '<ol class="footnotes-list">\n';
 
 export default md;
