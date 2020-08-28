@@ -1,8 +1,4 @@
-# Zenn Editor
-Manage Zenn content locally 👩‍💻
-
 ![Zenn Editor](https://user-images.githubusercontent.com/34590683/91540859-60e06780-e956-11ea-9762-0acac2b7c4c5.png)
-
 
 ## Documentation
 - [Connect GitHub repository to Zenn](https://zenn.dev/zenn/articles/connect-to-github)
