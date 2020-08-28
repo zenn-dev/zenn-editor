@@ -30,7 +30,7 @@ const command = args._[0] || "preview";
 // notify package update
 const notifier = updateNotifier({
   pkg,
-  updateCheckInterval: 1000 * 60 * 60 * 24 * 0.5, // FIXME: after stabled
+  updateCheckInterval: 1000 * 60 * 60 * 24, // FIXME: after stabled
   // updateCheckInterval: 1000 * 60 * 60 * 24 * 3, // 3days
 });
 notifier.notify({

@@ -236,14 +236,17 @@ img:not(.emoji) {
 }
 details {
   font-size: 0.95em;
+  margin: 1rem 0;
+  padding: 0.1em 0.9em;
+  background: $c-primary-bg-lighter;
+  border-radius: 4px;
+  * {
+    margin: 0.5em 0;
+  }
 }
 summary {
-  cursor: default;
+  cursor: pointer;
   outline: 0;
-  background: $c-primary-bg;
-  padding: 5px 10px 5px 14px;
-  border-radius: 4px;
-  margin-bottom: 7px;
   &::-webkit-details-marker {
     color: $c-gray;
   }
