@@ -2,8 +2,7 @@
 .msg {
   position: relative;
   margin: 1.5rem 0;
-  padding: 21px 20px;
-  padding-left: 45px;
+  padding: 21px 15px 21px 45px;
   border-radius: 6px;
   background: #fff6e4;
   color: rgba(0, 0, 0, 0.65);
@@ -40,7 +39,7 @@
 }
 
 .msg.alert {
-  background: #ffeaee;
+  background: #ffeff2;
   &:before {
     background: #ff7670;
   }

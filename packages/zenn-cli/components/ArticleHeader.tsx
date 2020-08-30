@@ -72,7 +72,7 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
         )}
 
         <a
-          href="https://zenn.dev/zenn/articles/edit-article-using-cli"
+          href="https://zenn.dev/zenn/articles/zenn-cli-guide"
           className="content-header__link"
           rel="noopener noreferrer"
           target="_blank"

@@ -1,11 +1,7 @@
 ---
 title: "Embedのテスト"
 type: "tech" # or "idea"
-topics: 
-  - React
-  - 初心者
-  - RubyOnRails
-  - Angulerjs
+topics: [12]
 emoji: 🐲
 published: false
 ---

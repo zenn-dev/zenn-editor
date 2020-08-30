@@ -156,7 +156,7 @@ h6 {
 }
 
 hr {
-  border-top: 4px double $c-gray-border-lighter;
+  border-top: 4px solid $c-gray-border-lighter;
   margin: 2rem 0;
 }
 blockquote {
@@ -196,11 +196,11 @@ th {
 }
 code {
   color: rgba(0, 0, 0, 0.6);
-  padding: 0.15em 0.4em;
+  padding: 0.2em 0.4em;
   margin: 0 0.2em;
   background: rgba(19, 81, 158, 0.08);
   vertical-align: middle;
-  font-size: 0.9em;
+  font-size: 0.93em;
   border-radius: 4px;
   vertical-align: 0.08em;
   font-family: Menlo, Monaco, Consolas, Meiryo, "Inter", sans-serif,

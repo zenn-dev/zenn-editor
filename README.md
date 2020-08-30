@@ -2,4 +2,5 @@
 
 ## Documentation
 - [Connect GitHub repository to Zenn](https://zenn.dev/zenn/articles/connect-to-github)
+- [Install Zenn CLI](https://zenn.dev/zenn/articles/install-zenn-cli)
 - [Zenn CLI Guide](https://zenn.dev/zenn/articles/zenn-cli-guide)

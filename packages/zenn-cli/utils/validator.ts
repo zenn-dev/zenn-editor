@@ -66,7 +66,10 @@ const validateInvalidTopicLetters: ItemValidator = {
     "topicsに記号やスペースを使用することはできません。例えばC++は「cpp」、C#は「csharp」と記載してください",
   isInvalid: (item: Article | Book) =>
     Array.isArray(item.topics) &&
-    !!item.topics.find((t) => t.match(/[ -/:-@[-`{-~]/g)),
+    !!item.topics.find((t) => {
+      if (typeof t !== "string") return true;
+      return t.match(/[ -/:-@[-`{-~]/g);
+    }),
 };
 
 const validateUseTags: ItemValidator = {
