@@ -44,7 +44,6 @@ ul {
 
     &:before {
       content: "";
-      display: block;
       position: absolute;
       top: 0.7em;
       left: 0.35em;
@@ -54,6 +53,14 @@ ul {
       background: rgba(2, 13, 60, 0.6);
     }
   }
+}
+.contains-task-list li {
+  &:before {
+    content: none !important;
+  }
+}
+.task-list-item-checkbox {
+  margin-left: -1.6em;
 }
 ol {
   margin-left: 0;

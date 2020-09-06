@@ -51,8 +51,7 @@ $ npm run publish:all
 ```
 
 ## ToDo
-- [ ] Hot reload markdown content
-  - nodemonをconcurrentlyを使って動かせばいける？（https://www.npmjs.com/package/concurrently#programmatic-usage）
+- [ ] Hot reload markdown file
 - [ ] Write test
 
 ### Licence

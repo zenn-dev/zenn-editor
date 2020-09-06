@@ -27,6 +27,7 @@
     "markdown-it-imsize": "^2.0.1",
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-prism": "^2.0.5",
+    "markdown-it-task-lists": "^2.1.1",
     "markdown-it-texmath": "^0.6.9"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
