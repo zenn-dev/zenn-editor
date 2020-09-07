@@ -14,8 +14,7 @@ md.use(require("markdown-it-prism"))
   .use(require("markdown-it-anchor"), { level: [1, 2, 3] })
   .use(require("markdown-it-link-attributes"), {
     attrs: {
-      target: "_blank",
-      rel: "nofollow noreferrer noopener",
+      rel: "nofollow",
     },
   })
   .use(require("markdown-it-custom-block"), optionCustomBlock)

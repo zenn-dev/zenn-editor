@@ -27,7 +27,7 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
         )}
 
         <a
-          href=" https://zenn.dev/zenn/articles/zenn-cli-guide#books"
+          href=" https://zenn.dev/zenn/articles/zenn-cli-guide#cliで本（book）を管理する"
           className="content-header__link"
           target="_blank"
         >
