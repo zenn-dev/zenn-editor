@@ -53,7 +53,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     if (res) {
       res.setHeader("content-type", "text/html; charset=utf-8");
       res.end(`articles/${slug}.mdが見つかりませんでした`);
-      return;
+      return {
+        props: {} as any,
+      };
     }
   }
 

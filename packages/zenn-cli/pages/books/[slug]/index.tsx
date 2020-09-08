@@ -61,7 +61,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       res.end(
         `本の設定ファイル（books/${slug}/config.yaml）の内容が取得できませんでした`
       );
-      return;
+      return {
+        props: {} as any,
+      };
     }
   }
 
