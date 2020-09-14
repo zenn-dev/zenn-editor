@@ -58,5 +58,8 @@
   "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
   }
 }
