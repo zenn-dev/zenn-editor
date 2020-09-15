@@ -60,7 +60,9 @@ ul {
   }
 }
 .task-list-item-checkbox {
-  margin-left: -1.6em;
+  margin-left: -1.5em;
+  font-size: 1em;
+  pointer-events: none;
 }
 ol {
   margin-left: 0;
