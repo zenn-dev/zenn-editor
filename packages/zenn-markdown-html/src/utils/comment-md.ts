@@ -5,7 +5,7 @@ const commentMd = require("markdown-it")({
 });
 
 commentMd
-  .disable(["link", "image", "table", "heading"])
+  .disable(["image", "table", "heading"])
   .use(require("markdown-it-prism"))
   .use(require("markdown-it-link-attributes"), {
     attrs: {
