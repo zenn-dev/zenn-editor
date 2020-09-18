@@ -37,8 +37,7 @@ export const exec: cliCommand = () => {
       path.join(projectRoot, "README.md"),
       [
         "# Zenn Contents\n\n",
-        "👇How to use\n",
-        "https://zenn.dev/zenn/articles/zenn-cli-guide",
+        "[✍️ How to use](https://zenn.dev/zenn/articles/zenn-cli-guide)",
       ].join(""),
       { flag: "wx" } // Don't overwrite
     );
