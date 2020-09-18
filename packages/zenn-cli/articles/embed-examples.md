@@ -1,9 +1,9 @@
 ---
-title: "Embedのテスト"
+title: "Embedのテスト4"
 type: "tech" # or "idea"
-topics: [12]
+topics: [2]
 emoji: 🐲
-published: false
+published: true
 ---
 
 @[youtube](eqf0PlmlEXk)
