@@ -192,7 +192,8 @@ table {
   width: auto;
   border-collapse: collapse;
   font-size: 0.95em;
-  line-height: 1.7;
+  line-height: 1.5;
+  word-break: normal; // Layout will break without this.
 }
 th,
 td {
