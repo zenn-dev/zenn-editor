@@ -2,7 +2,7 @@ import { createServer, Server } from "http";
 import { parse } from "url";
 import next from "next";
 
-type ExecArgs = {
+type BuildArgs = {
   srcDir: string;
   port: number;
   previewUrl: string;
@@ -12,7 +12,7 @@ export const build = async ({
   srcDir,
   port,
   previewUrl,
-}: ExecArgs): Promise<Server> => {
+}: BuildArgs): Promise<Server> => {
   const app = next({ dev: false, dir: srcDir, conf: {} });
   const handle = app.getRequestHandler();
   await app.prepare();
