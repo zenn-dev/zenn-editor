@@ -32,7 +32,7 @@ export const exec: cliCommand = async (argv) => {
     const io = socketIo(server);
     watcher.once("ready", () => {
       io.on("connection", (socket) => {
-        watcher.on("all", async (_, path) => {
+        watcher.once("all", async (_, path) => {
           if (/articles|books/.test(path)) {
             socket.emit("reload");
           }
