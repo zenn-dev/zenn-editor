@@ -52,7 +52,7 @@ export const exec: cliCommand = (argv) => {
   const title = args["--title"] || "";
   const summary = args["--summary"] || "";
   const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
-  const price = args["--price"] || 0; // デフォルトはfalse
+  const price = args["--price"] || 0; // デフォルトは¥0
 
   const configYamlBody =
     [
