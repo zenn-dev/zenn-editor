@@ -28,7 +28,6 @@ export const exec: cliCommand = async (argv) => {
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
-  await open(previewUrl);
   if (watch) {
     const watcher = chokidar.watch(process.cwd());
     const io = socketIo(server);
@@ -40,6 +39,9 @@ export const exec: cliCommand = async (argv) => {
           }
         });
       });
+      open(previewUrl);
     });
+  } else {
+    open(previewUrl);
   }
 };
