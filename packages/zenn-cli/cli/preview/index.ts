@@ -26,7 +26,7 @@ export const exec: cliCommand = async (argv) => {
   const port = args["--port"] || 8000;
   const watch = args["--watch"] ?? true;
   const previewUrl = `http://localhost:${port}`;
-  const srcDir = process.cwd(); // refer project root from dist/cli/zenn-preview.js
+  const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
   await open(previewUrl);
   if (watch) {
