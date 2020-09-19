@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 
 import "zenn-content-css";
 import "@styles/index.scss";
 
+declare global {
+  interface Window {
+    io: any;
+  }
+}
+
 export default function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    const { body } = document;
+    const script = document.createElement("script");
+    script.src = "/socket.io/socket.io.js";
+    script.onload = () => {
+      const socket = (window.io as any).connect(location.origin);
+      socket.on("reload", () => {
+        location.reload();
+      });
+    };
+    body.append(script);
+  }, []);
+
   return (
     <>
       <Head>

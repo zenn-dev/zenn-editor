@@ -1,31 +1,23 @@
-import { createServer } from "http";
+import { createServer, Server } from "http";
 import { parse } from "url";
 import next from "next";
-import arg from "arg";
 
-import { cliCommand } from ".";
+type BuildArgs = {
+  srcDir: string;
+  port: number;
+  previewUrl: string;
+};
 
-export const exec: cliCommand = (argv) => {
-  const args = arg(
-    {
-      // Types
-      "--port": Number,
-
-      // Alias
-      "-p": "--port",
-    },
-    { argv }
-  );
-
-  const port = args["--port"] || 8000;
-  const previewUrl = `http://localhost:${port}`;
-
-  const srcDir = `${__dirname}/../../.`; // refer project root from dist/cli/zenn-preview.js
+export const build = async ({
+  srcDir,
+  port,
+  previewUrl,
+}: BuildArgs): Promise<Server> => {
   const app = next({ dev: false, dir: srcDir, conf: {} });
   const handle = app.getRequestHandler();
-
-  app.prepare().then(() => {
-    createServer((req, res) => {
+  await app.prepare();
+  return new Promise((resolve) => {
+    const server = createServer((req, res) => {
       const requestUrl = req.url;
       if (!requestUrl) {
         return console.error("Undefined request url");
@@ -38,6 +30,7 @@ export const exec: cliCommand = (argv) => {
         process.exit(1);
       }
       console.log(`👀Preview on ${previewUrl}`);
+      resolve(server);
     });
   });
 };
