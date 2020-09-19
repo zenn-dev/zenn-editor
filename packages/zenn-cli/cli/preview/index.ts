@@ -28,14 +28,12 @@ export const exec: cliCommand = async (argv) => {
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
   if (watch) {
-    const watcher = chokidar.watch(process.cwd());
+    const watcher = chokidar.watch(`${process.cwd()}/{articles,books}/**/*`);
     const io = socketIo(server);
-    watcher.once("ready", () => {
+    watcher.on("ready", () => {
       io.on("connection", (socket) => {
-        watcher.once("all", async (_, path) => {
-          if (/articles|books/.test(path)) {
-            socket.emit("reload");
-          }
+        watcher.once("all", async () => {
+          socket.emit("reload");
         });
       });
     });
