@@ -3,7 +3,6 @@ import { cliCommand } from "..";
 import { build } from "./build";
 import chokidar from "chokidar";
 import socketIo from "socket.io";
-import open from "open";
 
 export const exec: cliCommand = async (argv) => {
   const args = arg(
@@ -28,7 +27,6 @@ export const exec: cliCommand = async (argv) => {
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
-  await open(previewUrl);
   if (watch) {
     const watcher = chokidar.watch(process.cwd());
     const io = socketIo(server);
