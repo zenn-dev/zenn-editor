@@ -30,7 +30,7 @@ export const exec: cliCommand = async (argv) => {
   const server = await build({ port, previewUrl, srcDir });
   await open(previewUrl);
   if (watch) {
-    const watcher = chokidar.watch(srcDir);
+    const watcher = chokidar.watch(process.cwd());
     const io = socketIo(server);
     watcher.on("ready", () => {
       io.on("connection", (socket) => {
