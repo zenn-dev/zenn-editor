@@ -51,7 +51,7 @@ $ npm run publish:all
 ```
 
 ## ToDo
-- [ ] Hot reload markdown file
+- [x] Hot reload markdown file
 - [ ] Write test
 
 ### Licence
