@@ -9,3 +9,6 @@
 
 - CatNose ([@catnose99](https://twitter.com/catnose99))
 - Hori Godai ([@steelydylan](https://github.com/steelydylan))
+
+## Huge thanks
+- noriaki watanabe ([@nnabeyang](https://github.com/nnabeyang))

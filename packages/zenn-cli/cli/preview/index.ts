@@ -30,7 +30,7 @@ export const exec: cliCommand = async (argv) => {
   if (watch) {
     const watcher = chokidar.watch(process.cwd());
     const io = socketIo(server);
-    watcher.on("ready", () => {
+    watcher.once("ready", () => {
       io.on("connection", (socket) => {
         watcher.on("all", async (_, path) => {
           if (/articles|books/.test(path)) {
