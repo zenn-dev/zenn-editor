@@ -17,7 +17,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const script = document.createElement("script");
     script.src = "/socket.io/socket.io.js";
     script.onload = () => {
-      const socket = (window.io as any).connect(location.origin);
+      const socket = (window.io as any).connect(location.origin, {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 99999,
+      });
       socket.on("reload", () => {
         location.reload();
       });
