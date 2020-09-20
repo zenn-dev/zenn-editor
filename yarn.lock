@@ -6580,9 +6580,9 @@ markdown-it-container@^2.0.0:
   resolved "https://registry.yarnpkg.com/markdown-it-container/-/markdown-it-container-2.0.0.tgz#0019b43fd02eefece2f1960a2895fba81a404695"
   integrity sha1-ABm0P9Au7+zi8ZYKKJX7qBpARpU=
 
-markdown-it-custom-block@catnose99/markdown-it-custom-block#master:
+"markdown-it-custom-block@git+https://github.com/catnose99/markdown-it-custom-block.git":
   version "0.1.1"
-  resolved "https://codeload.github.com/catnose99/markdown-it-custom-block/tar.gz/7969ce2cca2fd30bd543104e45e6b67386d0743c"
+  resolved "git+https://github.com/catnose99/markdown-it-custom-block.git#7969ce2cca2fd30bd543104e45e6b67386d0743c"
 
 markdown-it-footnote@^3.0.2:
   version "3.0.2"
@@ -6604,12 +6604,11 @@ markdown-it-link-attributes@^3.0.0:
   resolved "https://registry.yarnpkg.com/markdown-it-link-attributes/-/markdown-it-link-attributes-3.0.0.tgz#12d6f403102ac22695ee2617bec109ee79426e45"
   integrity sha512-B34ySxVeo6MuEGSPCWyIYryuXINOvngNZL87Mp7YYfKIf6DcD837+lXA8mo6EBbauKsnGz22ZH0zsbOiQRWTNg==
 
-markdown-it-prism@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/markdown-it-prism/-/markdown-it-prism-2.0.5.tgz#4bbf46be47878f227678dd83ed97f6c9b07a4094"
-  integrity sha512-u2jErcoLCnENIOUnEbS9w9RWUGiId8fjQovD0Gbo4iT8tZU0/Un4v72E8g8sj/NAzieSCvFVG6KtMwlurSBMnw==
+"markdown-it-prism@git+https://github.com/catnose99/markdown-it-prism.git":
+  version "2.1.1"
+  resolved "git+https://github.com/catnose99/markdown-it-prism.git#682f4fecc7e4fc188210efd97a4b86b26d9f9515"
   dependencies:
-    prismjs "1.19.0"
+    prismjs "^1.21.0"
 
 markdown-it-task-lists@^2.1.1:
   version "2.1.1"
@@ -8017,10 +8016,10 @@ prettier@^2.0.5:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
   integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
-prismjs@1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.19.0.tgz#713afbd45c3baca4b321569f2df39e17e729d4dc"
-  integrity sha512-IVFtbW9mCWm9eOIaEkNyo2Vl4NnEifis2GQ7/MLRG5TQe6t+4Sj9J5QWI9i3v+SS43uZBlCAOn+zYTVYQcPXJw==
+prismjs@^1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.21.0.tgz#36c086ec36b45319ec4218ee164c110f9fc015a3"
+  integrity sha512-uGdSIu1nk3kej2iZsLyDoJ7e9bnPzIgY0naW/HdknGj61zScaprVEVGHrPoXqI+M9sP0NDnTK2jpkvmldpuqDw==
   optionalDependencies:
     clipboard "^2.0.0"
 

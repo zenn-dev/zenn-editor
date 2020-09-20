@@ -8,6 +8,10 @@ emoji: 👩‍💻
 published: false
 ---
 
+```"><img/onerror="alert(location)"src=.>
+aaa
+```
+
 # h1 Heading
 ## h2 Heading
 ### h3 Heading
