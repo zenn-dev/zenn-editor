@@ -1,6 +1,6 @@
 {
   "name": "zenn-markdown-html",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
   "files": [
