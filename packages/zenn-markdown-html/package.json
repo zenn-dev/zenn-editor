@@ -28,7 +28,7 @@
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-prism": "git+https://github.com/catnose99/markdown-it-prism.git",
     "markdown-it-task-lists": "^2.1.1",
-    "markdown-it-texmath": "^0.6.9"
+    "markdown-it-texmath": "git+https://github.com/catnose99/markdown-it-texmath.git"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {

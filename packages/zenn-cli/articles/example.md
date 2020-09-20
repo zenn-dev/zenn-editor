@@ -8,9 +8,14 @@ emoji: 👩‍💻
 published: false
 ---
 
-```"><img/onerror="alert(location)"src=.>
-aaa
-```
+$$"<img/src=./ onerror=alert(location)>
+e^{i\theta} = i\sin\thetae^{i\theta}
+$$
+
+$$
+e^{i\theta"<img/src=./ onerror=alert(location)>} = \cos\theta + i\sin\thetae^{i\theta} 
+$$
+
 
 # h1 Heading
 ## h2 Heading

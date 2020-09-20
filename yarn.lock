@@ -6615,10 +6615,9 @@ markdown-it-task-lists@^2.1.1:
   resolved "https://registry.yarnpkg.com/markdown-it-task-lists/-/markdown-it-task-lists-2.1.1.tgz#f68f4d2ac2bad5a2c373ba93081a1a6848417088"
   integrity sha512-TxFAc76Jnhb2OUu+n3yz9RMu4CwGfaT788br6HhEDlvWfdeJcLUsxk1Hgw2yJio0OXsxv7pyIPmvECY7bMbluA==
 
-markdown-it-texmath@^0.6.9:
-  version "0.6.9"
-  resolved "https://registry.yarnpkg.com/markdown-it-texmath/-/markdown-it-texmath-0.6.9.tgz#709f45b3c7f76a5f0157baf819ae80b9499a9ab4"
-  integrity sha512-0Nz9yycwji3r776RCG2lmCsc2bk+lovsaPQklNR3VZMobQ9x45TRMWo2E/J5bejG3qN58MuBKDQWhIA0r1AWVw==
+"markdown-it-texmath@git+https://github.com/catnose99/markdown-it-texmath.git":
+  version "0.8.0"
+  resolved "git+https://github.com/catnose99/markdown-it-texmath.git#a0b893d52f0369d56b49be49a8ab0f8f20fd1513"
 
 markdown-it@^11.0.0:
   version "11.0.0"
