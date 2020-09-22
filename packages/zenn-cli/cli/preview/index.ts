@@ -28,13 +28,13 @@ export const exec: cliCommand = async (argv) => {
 
   const port = args["--port"] || 8000;
   const watch = args["--watch"] ?? true;
-  const isOpen = args["--open"];
+  const shouldOpen = args["--open"];
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
 
   // Opens the preview in the default browser
-  if (isOpen) {
+  if (shouldOpen) {
     await open(previewUrl);
   }
 
