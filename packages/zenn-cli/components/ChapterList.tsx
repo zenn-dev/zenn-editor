@@ -6,7 +6,7 @@ type Props = { bookSlug: string; chapters: Chapter[] };
 export const ChapterList: React.FC<Props> = ({ chapters, bookSlug }) => {
   return (
     <div>
-      <ul>
+      <ol>
         {chapters.map((chapter) => {
           return (
             <li key={`ch${chapter.position}`}>
@@ -20,7 +20,7 @@ export const ChapterList: React.FC<Props> = ({ chapters, bookSlug }) => {
             </li>
           );
         })}
-      </ul>
+      </ol>
     </div>
   );
 };

@@ -22,6 +22,14 @@ const validateMissingTitle: ItemValidator = {
   isInvalid: (item: Item) => !item.title?.length,
 };
 
+const validateTitleLength: ItemValidator = {
+  isCritical: true,
+  getMessage: () => "タイトルは60字以内にしてください",
+  isInvalid: (item: Item) => {
+    return item.title && item.title?.length > 60;
+  },
+};
+
 const validateArticleType: ItemValidator = {
   isCritical: true,
   getMessage: () =>
@@ -147,6 +155,7 @@ export const getArticleErrors = (article: Article): ErrorMessages => {
   const validators = [
     validateInvalidSlug,
     validateMissingTitle,
+    validateTitleLength,
     validateArticleType,
     validateEmojiFormat,
     validateMissingEmoji,
@@ -162,6 +171,7 @@ export const getBookErrors = (book: Book): ErrorMessages => {
   const validators = [
     validateInvalidSlug,
     validateMissingTitle,
+    validateTitleLength,
     validateMissingTopics,
     validateUseTags,
     validateInvalidTopicLetters,
@@ -180,6 +190,7 @@ export const getChapterErrors = (chapter: Chapter): ErrorMessages => {
     validateChapterPosition,
     validateChapterFormat,
     validateMissingTitle,
+    validateTitleLength,
   ];
   return getErrors(chapter, validators);
 };
