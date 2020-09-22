@@ -1,6 +1,8 @@
 import arg from "arg";
 import colors from "colors/safe";
 import updateNotifier from "update-notifier";
+import { commandListText } from "./constants";
+
 const pkg = require("../../package.json"); // refer package.json from dist/cli/index.js
 
 // Special thanks to vercel/next.js for great examples.
@@ -44,11 +46,8 @@ if (args["--version"]) {
 }
 
 if (!commands[command]) {
-  console.log(
-    colors.red(
-      '😿該当するCLIコマンドが存在しません。コマンド一覧は"zenn help"で確認できます'
-    )
-  );
+  console.log(colors.red("😿該当するCLIコマンドが存在しません"));
+  console.log(commandListText);
   process.exit(1);
 }
 
