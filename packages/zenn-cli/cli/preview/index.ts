@@ -2,6 +2,7 @@ import arg from "arg";
 import { cliCommand } from "..";
 import { build } from "./build";
 import chokidar from "chokidar";
+import open from "open";
 import socketIo from "socket.io";
 
 export const exec: cliCommand = async (argv) => {
@@ -18,15 +19,25 @@ export const exec: cliCommand = async (argv) => {
 
       // Alias
       "-w": "--watch",
+
+      // Types
+      "--open": Boolean,
     },
     { argv }
   );
 
   const port = args["--port"] || 8000;
   const watch = args["--watch"] ?? true;
+  const isOpen = args["--open"];
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
+
+  // Opens the preview in the default browser
+  if (isOpen) {
+    await open(previewUrl);
+  }
+
   if (watch) {
     const watcher = chokidar.watch(`${process.cwd()}/{articles,books}/**/*`);
     const io = socketIo(server);
