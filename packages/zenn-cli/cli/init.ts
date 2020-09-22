@@ -36,10 +36,10 @@ export const exec: cliCommand = () => {
     fs.writeFileSync(
       path.join(projectRoot, "README.md"),
       [
-        "# Zenn Contents\n\n",
-        "* [✍️ How to use](https://zenn.dev/zenn/articles/zenn-cli-guide)\n",
-        "* [✍️ Markdown guide](https://zenn.dev/zenn/articles/markdown-guide)\n",
-      ].join(""),
+        "# Zenn Contents\n",
+        "* [✍️ How to use](https://zenn.dev/zenn/articles/zenn-cli-guide)",
+        "* [✍️ Markdown guide](https://zenn.dev/zenn/articles/markdown-guide)",
+      ].join("\n"),
       { flag: "wx" } // Don't overwrite
     );
   } catch (e) {
