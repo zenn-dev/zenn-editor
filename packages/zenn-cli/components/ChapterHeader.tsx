@@ -11,7 +11,15 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
   return (
     <header className="content-header">
       <ContentWrapper>
-        <div style={{ fontSize: "14px" }}>Chapter {chapter.position}</div>
+        <div className="content-header__chapter-info">
+          <span className="content-header__chapter-number">
+            Chapter {chapter.position}
+          </span>
+          {/* user can use "is_free" or "free" to set chapter ¥0 */}
+          {(chapter.is_free || chapter.free) && (
+            <span className="content-header__label">無料公開に設定済</span>
+          )}
+        </div>
 
         <h1 className="content-header__title">{chapter.title || "No Title"}</h1>
 
