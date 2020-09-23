@@ -14,20 +14,17 @@ export const exec: cliCommand = async (argv) => {
       "-p": "--port",
 
       // Types
-      "--watch": Boolean,
-
-      // Alias
-      "-w": "--watch",
+      "--nowatch": Boolean,
     },
     { argv }
   );
 
   const port = args["--port"] || 8000;
-  const watch = args["--watch"] ?? true;
+  const shouldWatch = !args["--nowatch"];
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
-  if (watch) {
+  if (shouldWatch) {
     const watcher = chokidar.watch(`${process.cwd()}/{articles,books}/**/*`);
     const io = socketIo(server);
     watcher.on("ready", () => {
