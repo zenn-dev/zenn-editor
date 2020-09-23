@@ -14,13 +14,13 @@ export const exec: cliCommand = async (argv) => {
       "-p": "--port",
 
       // Types
-      "--nowatch": Boolean,
+      "--no-watch": Boolean,
     },
     { argv }
   );
 
   const port = args["--port"] || 8000;
-  const shouldWatch = !args["--nowatch"];
+  const shouldWatch = !args["--no-watch"];
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
