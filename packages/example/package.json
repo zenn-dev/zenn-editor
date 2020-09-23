@@ -1,8 +1,8 @@
 {
   "private": true,
   "name": "example",
-  "version": "0.1.33",
+  "version": "0.1.34",
   "dependencies": {
-    "zenn-cli": "^0.1.33"
+    "zenn-cli": "^0.1.34"
   }
 }
