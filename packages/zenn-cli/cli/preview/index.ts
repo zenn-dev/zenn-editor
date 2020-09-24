@@ -3,6 +3,7 @@ import { cliCommand } from "..";
 import { build } from "./build";
 import chokidar from "chokidar";
 import socketIo from "socket.io";
+import open from "open";
 
 export const exec: cliCommand = async (argv) => {
   const args = arg(
@@ -30,12 +31,11 @@ export const exec: cliCommand = async (argv) => {
   if (watch) {
     const watcher = chokidar.watch(`${process.cwd()}/{articles,books}/**/*`);
     const io = socketIo(server);
-    watcher.on("ready", () => {
-      io.on("connection", (socket) => {
-        watcher.once("all", async () => {
-          socket.emit("reload");
-        });
+    io.on("connection", (socket) => {
+      watcher.once("all", async () => {
+        socket.emit("reload");
       });
     });
+    open(previewUrl);
   }
 };
