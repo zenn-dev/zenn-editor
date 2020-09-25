@@ -40,7 +40,7 @@ export function getChapters(
 
 export function getChapter(
   bookSlug: string,
-  position: number | string,
+  position: string,
   fields?: null | string[]
 ): Chapter {
   const fullPath = join(getBookDirPath(bookSlug), `${position}.md`);
