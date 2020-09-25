@@ -16,6 +16,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const { body } = document;
     const script = document.createElement("script");
     script.src = "/socket.io/socket.io.js";
+
+    script.onerror = () => {
+      console.log("Hot reload disabled.");
+      return true;
+    };
+
     script.onload = () => {
       const socket = (window.io as any).connect(location.origin, {
         reconnection: true,
