@@ -23,7 +23,7 @@ export function getChapterMdNames(bookSlug: string): string[] {
 }
 
 // ["1.md", "2.md"] => ["1","2"]
-export function getChapterPositionStrings(bookSlug: string): string[] {
+export function getChapterPositionStrings(bookSlug: string) {
   return getChapterMdNames(bookSlug)?.map((n) => n.replace(/\.md$/, ""));
 }
 
@@ -32,15 +32,15 @@ export function getChapters(
   fields: null | string[]
 ): Chapter[] {
   const positions = getChapterPositionStrings(bookSlug);
-  const books = positions.map((position) =>
-    getChapter(bookSlug, position, fields)
-  );
+  const books = positions
+    .sort((a, b) => Number(a) - Number(b))
+    .map((position) => getChapter(bookSlug, position, fields));
   return books;
 }
 
 export function getChapter(
   bookSlug: string,
-  position: string,
+  position: number | string,
   fields?: null | string[]
 ): Chapter {
   const fullPath = join(getBookDirPath(bookSlug), `${position}.md`);

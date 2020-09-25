@@ -78,7 +78,7 @@ export const getBookNavCollections = (slug: string): NavCollections => {
   const chapters = getChapters(slug, ["title"]);
   const items: NavItem[] = chapters?.map((chapter: Chapter) => {
     return {
-      name: `📄${chapter.title || chapter.position + ".md"}`,
+      name: `📄 ${chapter.title || chapter.position + ".md"}`,
       href: `/books/[slug]/[position]`,
       as: `/books/${slug}/${chapter.position}`,
     };
