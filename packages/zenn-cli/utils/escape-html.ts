@@ -7,5 +7,5 @@ const entityMap = {
 };
 
 export function escapeHtml(text: string) {
-  return text?.replace(/[&<>"'/]/g, (s: string) => entityMap[s]);
+  return text?.replace(/[&<>"']/g, (s: string) => entityMap[s]);
 }
