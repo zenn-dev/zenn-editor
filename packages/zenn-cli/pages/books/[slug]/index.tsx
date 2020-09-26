@@ -10,6 +10,7 @@ import { BookBodyPlaceholder } from "@components/BookBodyPlaceholder";
 import { getAllContentsNavCollections } from "@utils/nav-collections";
 import { getBookBySlug } from "@utils/api/books";
 import { getChapters } from "@utils/api/chapters";
+import { escapeHtml } from "@utils/escape-html";
 
 import { Book, Chapter, NavCollections } from "@types";
 
@@ -59,7 +60,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       res.setHeader("content-type", "text/html; charset=utf-8");
       res.statusCode = 404;
       res.end(
-        `本の設定ファイル（books/${slug}/config.yaml）の内容が取得できませんでした`
+        `本の設定ファイル（books/${escapeHtml(
+          slug
+        )}/config.yaml）の内容が取得できませんでした`
       );
       return {
         props: {} as any,

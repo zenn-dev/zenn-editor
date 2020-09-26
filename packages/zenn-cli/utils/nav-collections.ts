@@ -10,6 +10,7 @@ import {
 } from "@types";
 import { getChapters } from "./api/chapters";
 import { throwWithConsoleError } from "@utils/errors";
+import { escapeHtml } from "@utils/escape-html";
 
 const draftLabel = `<span class="draft">下書き</span>`;
 
@@ -22,10 +23,10 @@ export const getAllArticlesNavCollection = (): NavCollection => {
   const allArticles = getAllArticles(["title", "emoji", "published"]);
 
   const items: NavItem[] = allArticles?.map((article: Article) => {
-    // article will be public unless "published" field is specified.
-    const name = `${article.emoji || "📄"} ${
-      article.published === false ? draftLabel : ""
-    }${article.title || article.slug}`;
+    const emoji = article.emoji || "📄";
+    const title = escapeHtml(article.title || article.slug);
+    // article will be draft unless "published" field is specified.
+    const name = `${emoji} ${article.published ? "" : draftLabel}${title}`;
     return {
       name,
       href: `/articles/[slug]`,
@@ -48,9 +49,8 @@ export const getAllBooksNavCollection = (): NavCollection => {
   const allBooks = getAllBooks(["title", "published"]);
   const items: NavItem[] = allBooks?.map((book: Book) => {
     // book will be draft unless "published" field is specified.
-
     const name = `📙 ${book.published ? "" : draftLabel}${
-      book.title || "無題のタイトル"
+      escapeHtml(book.title) || "無題のタイトル"
     }`;
     return {
       name,
@@ -78,7 +78,7 @@ export const getBookNavCollections = (slug: string): NavCollections => {
   const chapters = getChapters(slug, ["title"]);
   const items: NavItem[] = chapters?.map((chapter: Chapter) => {
     return {
-      name: `📄 ${chapter.title || chapter.position + ".md"}`,
+      name: `📄 ${escapeHtml(chapter.title || `${chapter.position}.md`)}`,
       href: `/books/[slug]/[position]`,
       as: `/books/${slug}/${chapter.position}`,
     };

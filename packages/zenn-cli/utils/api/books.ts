@@ -1,11 +1,11 @@
 import fs from "fs-extra";
-import { join } from "path";
+import path from "path";
 import yaml from "js-yaml";
 import { Book } from "@types";
 import { throwWithConsoleError } from "@utils/errors";
 
 // books
-const booksDirectory = join(process.cwd(), "books");
+const booksDirectory = path.join(process.cwd(), "books");
 
 export function getBookDirNames(): string[] {
   let allDirs;
@@ -18,7 +18,7 @@ export function getBookDirNames(): string[] {
   }
   // return dirs only
   return allDirs?.filter((f) =>
-    fs.statSync(join(booksDirectory, f)).isDirectory()
+    fs.statSync(path.join(booksDirectory, f)).isDirectory()
   );
 }
 
@@ -89,7 +89,7 @@ function getCoverDataUrl(fullDirPath: string): string | null {
 }
 
 export function getBookBySlug(slug: string, fields?: null | string[]): Book {
-  const fullDirPath = join(booksDirectory, slug);
+  const fullDirPath = path.join(booksDirectory, slug.replace(/\//g, "")); // Prevent directory traversal
   const data = getConfigYamlData(fullDirPath);
   if (!data) return null;
 

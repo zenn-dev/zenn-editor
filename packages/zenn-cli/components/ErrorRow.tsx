@@ -1,4 +1,5 @@
 import { ErrorMessage } from "@types";
+import { escapeHtml } from "@utils/escape-html";
 
 type Props = { errorMessage: ErrorMessage };
 
@@ -10,7 +11,7 @@ export const ErrorRow: React.FC<Props> = ({ errorMessage }) => {
   return (
     <div
       className={className}
-      dangerouslySetInnerHTML={{ __html: errorMessage.message }}
+      dangerouslySetInnerHTML={{ __html: escapeHtml(errorMessage.message) }}
     />
   );
 };

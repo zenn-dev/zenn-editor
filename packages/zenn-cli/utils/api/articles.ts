@@ -1,10 +1,10 @@
 import fs from "fs-extra";
-import { join } from "path";
+import path from "path";
 import matter from "gray-matter";
 import { Article } from "@types";
 import { throwWithConsoleError } from "@utils/errors";
 
-const articlesDirectory = join(process.cwd(), "articles");
+const articlesDirectory = path.join(process.cwd(), "articles");
 
 function getAllArticleSlugs(): string[] {
   return getArticleMdNames()?.map((n) => n.replace(/\.md$/, ""));
@@ -27,7 +27,10 @@ export function getArticleBySlug(
   slug: string,
   fields?: null | string[]
 ): Article {
-  const fullPath = join(articlesDirectory, `${slug}.md`);
+  const fullPath = path.join(
+    articlesDirectory,
+    `${slug.replace(/\//g, "")}.md` // Prevent directory traversal
+  );
   let fileRaw;
   try {
     fileRaw = fs.readFileSync(fullPath, "utf8");

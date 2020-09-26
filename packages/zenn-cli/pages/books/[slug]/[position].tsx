@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   if (!chapter) {
     if (res) {
       res.writeHead(301, { Location: `/books/${slug}` });
-      res.end();
+      res.end(); // 🚩 Do not forget escape if you return messgae here.
       return {
         props: {} as any,
       };

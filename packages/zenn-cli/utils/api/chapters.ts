@@ -1,11 +1,11 @@
 import fs from "fs-extra";
-import { join } from "path";
+import path from "path";
 import matter from "gray-matter";
 import { Chapter } from "@types";
 import { throwWithConsoleError } from "@utils/errors";
 
 function getBookDirPath(bookSlug: string): string {
-  return join(process.cwd(), "books", bookSlug);
+  return path.join(process.cwd(), "books", bookSlug);
 }
 
 export function getChapterMdNames(bookSlug: string): string[] {
@@ -43,7 +43,10 @@ export function getChapter(
   position: string,
   fields?: null | string[]
 ): Chapter {
-  const fullPath = join(getBookDirPath(bookSlug), `${position}.md`);
+  const fullPath = path.join(
+    getBookDirPath(bookSlug.replace(/\//g, "")), // Prevent directory traversal
+    `${position.replace(/\//g, "")}.md`
+  );
   let fileRaw;
   try {
     fileRaw = fs.readFileSync(fullPath, "utf8");
