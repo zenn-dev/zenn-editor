@@ -12,7 +12,7 @@ export const ContentBody: React.FC<Props> = ({ content, children }) => {
         {content ? (
           <div
             dangerouslySetInnerHTML={{
-              __html: content || "✍️本文を入力してください",
+              __html: content || "✍ 本文を入力してください",
             }}
           />
         ) : (

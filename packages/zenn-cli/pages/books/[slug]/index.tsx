@@ -33,7 +33,7 @@ const Page: NextPage<Props> = (props) => {
             <ContentBody>
               {chapters?.length ? (
                 <>
-                  <h1>✍️ チャプターを編集する</h1>
+                  <h1>📝 チャプターを編集する</h1>
                   <ChapterList chapters={chapters} bookSlug={book.slug} />
                 </>
               ) : (

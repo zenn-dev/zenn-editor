@@ -1,6 +1,6 @@
 export const BookBodyPlaceholder: React.FC = () => (
   <>
-    <h1>✍️ チャプターを作成する</h1>
+    <h1>📝 チャプターを作成する</h1>
     <p>
       1つめのチャプターを作成しましょう。チャプターは
       <code>チャプター番号.md</code>
