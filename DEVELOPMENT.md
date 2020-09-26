@@ -8,6 +8,9 @@
 - **zenn-init-embed**: Enable embedded contents (e.g. YouTube, CodePen...)
 - **zenn-markdown-html**: Convert markdown text to html.
 
+## Known Issues
+- [ ] Update `update-notifier` to 4.1.1 cause build error.(Currently fixed to `4.1.0`)
+
 ### add new package to zenn-packages
 ```sh
 $ npx lerna create zenn-package-name
