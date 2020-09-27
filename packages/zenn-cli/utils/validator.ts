@@ -8,8 +8,8 @@ import {
   ErrorMessage,
 } from "@types";
 
-import { validateSlug, getSlugErrorMessage } from "@utils/slug-helper";
-import { escapeHtml } from "@utils/escape-html";
+import { validateSlug, getSlugErrorMessage } from "@utils/shared/slug-helper";
+import { escapeHtml } from "@utils/shared/escape-html";
 
 const validateInvalidSlug: ItemValidator = {
   isCritical: true,

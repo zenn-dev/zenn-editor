@@ -1,5 +1,4 @@
 import { ErrorMessage } from "@types";
-import { escapeHtml } from "@utils/escape-html";
 
 type Props = { errorMessage: ErrorMessage };
 

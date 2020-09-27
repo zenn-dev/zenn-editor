@@ -1,4 +1,4 @@
-import { escapeHtml } from "@utils/escape-html";
+import { escapeHtml } from "./escape-html";
 const cryptoRandomString = require("crypto-random-string");
 
 export const generateSlug = (): string => {

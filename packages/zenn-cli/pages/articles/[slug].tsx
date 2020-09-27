@@ -10,7 +10,7 @@ import { ArticleHeader } from "@components/ArticleHeader";
 import { MainContainer } from "@components/MainContainer";
 import { getAllContentsNavCollections } from "@utils/nav-collections";
 import { getArticleBySlug } from "@utils/api/articles";
-import { escapeHtml } from "@utils/escape-html";
+import { escapeHtml } from "@utils/shared/escape-html";
 import { Article, NavCollections } from "@types";
 
 type Props = {

@@ -10,7 +10,7 @@ import { BookBodyPlaceholder } from "@components/BookBodyPlaceholder";
 import { getAllContentsNavCollections } from "@utils/nav-collections";
 import { getBookBySlug } from "@utils/api/books";
 import { getChapters } from "@utils/api/chapters";
-import { escapeHtml } from "@utils/escape-html";
+import { escapeHtml } from "@utils/shared/escape-html";
 
 import { Book, Chapter, NavCollections } from "@types";
 

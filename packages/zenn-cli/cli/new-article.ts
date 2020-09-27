@@ -6,7 +6,7 @@ import {
   generateSlug,
   validateSlug,
   getSlugErrorMessage,
-} from "../utils/slug-helper";
+} from "../utils/shared/slug-helper";
 import colors from "colors/safe";
 
 const pickRandomEmoji = () => {
