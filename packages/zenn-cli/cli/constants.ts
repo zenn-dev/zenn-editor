@@ -4,6 +4,7 @@ Command:
   zenn preview      コンテンツをブラウザでプレビュー
   zenn new:article  新しい記事を追加
   zenn new:book     新しい本を追加
+  zenn -v           zenn-cliのバージョンを表示
   zenn help         ヘルプ
 
   👇詳細
