@@ -11,7 +11,7 @@ export const ErrorRow: React.FC<Props> = ({ errorMessage }) => {
   return (
     <div
       className={className}
-      dangerouslySetInnerHTML={{ __html: escapeHtml(errorMessage.message) }}
+      dangerouslySetInnerHTML={{ __html: errorMessage.message }}
     />
   );
 };

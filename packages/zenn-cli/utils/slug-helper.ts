@@ -1,3 +1,4 @@
+import { escapeHtml } from "@utils/escape-html";
 const cryptoRandomString = require("crypto-random-string");
 
 export const generateSlug = (): string => {
@@ -9,4 +10,6 @@ export const validateSlug = (slug: string): boolean => {
 };
 
 export const getSlugErrorMessage = (slug: string) =>
-  `slugの値（${slug}）が不正です。半角英数字（a-z0-9）とハイフン（-）の12〜50字の組み合わせにしてください`;
+  `slugの値（${escapeHtml(
+    slug
+  )}）が不正です。半角英数字（a-z0-9）とハイフン（-）の12〜50字の組み合わせにしてください`;

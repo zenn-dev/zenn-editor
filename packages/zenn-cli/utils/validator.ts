@@ -9,6 +9,7 @@ import {
 } from "@types";
 
 import { validateSlug, getSlugErrorMessage } from "@utils/slug-helper";
+import { escapeHtml } from "@utils/escape-html";
 
 const validateInvalidSlug: ItemValidator = {
   isCritical: true,
@@ -114,7 +115,9 @@ const validateBookPriceFraction: ItemValidator = {
 
 const validateMissingBookCover: ItemValidator = {
   getMessage: (item: Book) =>
-    `本のカバー画像（cover.pngもしくはcover.jpg）を「/books/${item.slug}」ディレクトリ内に配置してください`,
+    `本のカバー画像（cover.pngもしくはcover.jpg）を「/books/${escapeHtml(
+      item.slug
+    )}」ディレクトリ内に配置してください`,
   isInvalid: (item: Book) => !item.coverDataUrl,
 };
 
