@@ -12,6 +12,7 @@
 
 ## Contributers
 - noriaki watanabe ([@nnabeyang](https://github.com/nnabeyang))
+- ooooooo_q ([@ooooooo-q](https://github.com/ooooooo-q))
 
 ----
 
