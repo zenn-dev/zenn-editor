@@ -23,7 +23,7 @@ export const getAllArticlesNavCollection = (): NavCollection => {
   const allArticles = getAllArticles(["title", "emoji", "published"]);
 
   const items: NavItem[] = allArticles?.map((article: Article) => {
-    const emoji = article.emoji || "📄";
+    const emoji = escapeHtml(article.emoji || "📄");
     const title = escapeHtml(article.title || article.slug);
     // article will be draft unless "published" field is specified.
     const name = `${emoji} ${article.published ? "" : draftLabel}${title}`;
