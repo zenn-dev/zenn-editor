@@ -89,7 +89,7 @@ function getCoverDataUrl(fullDirPath: string): string | null {
 }
 
 export function getBookBySlug(slug: string, fields?: null | string[]): Book {
-  const fullDirPath = path.join(booksDirectory, slug.replace(/\//g, "")); // Prevent directory traversal
+  const fullDirPath = path.join(booksDirectory, slug.replace(/[/\\]/g, "")); // Prevent directory traversal
   const data = getConfigYamlData(fullDirPath);
   if (!data) return null;
 

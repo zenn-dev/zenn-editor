@@ -44,8 +44,8 @@ export function getChapter(
   fields?: null | string[]
 ): Chapter {
   const fullPath = path.join(
-    getBookDirPath(bookSlug.replace(/\//g, "")), // Prevent directory traversal
-    `${position.replace(/\//g, "")}.md`
+    getBookDirPath(bookSlug.replace(/[/\\]/g, "")), // Prevent directory traversal
+    `${position.replace(/[/\\]/g, "")}.md`
   );
   let fileRaw;
   try {

@@ -29,7 +29,7 @@ export function getArticleBySlug(
 ): Article {
   const fullPath = path.join(
     articlesDirectory,
-    `${slug.replace(/\//g, "")}.md` // Prevent directory traversal
+    `${slug.replace(/[/\\]/g, "")}.md` // Prevent directory traversal
   );
   let fileRaw;
   try {
