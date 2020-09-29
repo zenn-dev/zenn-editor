@@ -1,5 +1,5 @@
 // plugis
-import { md } from "./md-base";
+import { md } from "./md-utils";
 const mdContainer = require("markdown-it-container");
 
 // options
@@ -13,6 +13,7 @@ md.use(require("markdown-it-prism"))
   .use(require("markdown-it-task-lists"), { enabled: true })
   .use(require("markdown-it-anchor"), { level: [1, 2, 3] })
   .use(require("markdown-it-link-attributes"), {
+    pattern: /^(?!https:\/\/zenn.dev)/,
     attrs: {
       rel: "nofollow",
     },

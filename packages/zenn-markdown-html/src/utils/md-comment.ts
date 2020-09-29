@@ -5,13 +5,14 @@ const commentMd = require("markdown-it")({
 });
 
 commentMd
-  .disable(["image", "table", "heading"])
   .use(require("markdown-it-prism"))
   .use(require("markdown-it-link-attributes"), {
+    pattern: /^(?!https:\/\/zenn.dev)/,
     attrs: {
       target: "_blank",
       rel: "nofollow noreferrer noopener",
     },
-  });
+  })
+  .disable(["image", "table", "heading"]);
 
 export default commentMd;

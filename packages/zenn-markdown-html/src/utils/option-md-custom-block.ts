@@ -1,4 +1,4 @@
-import { escapeHtml } from "./md-base";
+import { escapeHtml } from "./md-utils";
 // ref: https://github.com/posva/markdown-it-custom-block
 // e.g.
 // @[youtube](youtube-video-id)
