@@ -3,14 +3,15 @@ import { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
+import escapeHtml from "escape-html";
 import markdownToHtml from "zenn-markdown-html";
 import initEmbed from "zenn-init-embed";
+
 import { ContentBody } from "@components/ContentBody";
 import { ArticleHeader } from "@components/ArticleHeader";
 import { MainContainer } from "@components/MainContainer";
 import { getAllContentsNavCollections } from "@utils/nav-collections";
 import { getArticleBySlug } from "@utils/api/articles";
-import { escapeHtml } from "@utils/shared/escape-html";
 import { Article, NavCollections } from "@types";
 
 type Props = {

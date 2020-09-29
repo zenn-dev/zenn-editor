@@ -1,3 +1,5 @@
+import escapeHtml from "escape-html";
+
 import { getAllArticles } from "@utils/api/articles";
 import { getAllBooks, getBookBySlug } from "@utils/api/books";
 import {
@@ -10,7 +12,6 @@ import {
 } from "@types";
 import { getChapters } from "./api/chapters";
 import { throwWithConsoleError } from "@utils/errors";
-import { escapeHtml } from "@utils/shared/escape-html";
 
 const draftLabel = `<span class="draft">下書き</span>`;
 

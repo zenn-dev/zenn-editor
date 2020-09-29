@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { NextPage, GetServerSideProps } from "next";
+import escapeHtml from "escape-html";
 
 import { BookHeader } from "@components/BookHeader";
 import { MainContainer } from "@components/MainContainer";
@@ -10,7 +11,6 @@ import { BookBodyPlaceholder } from "@components/BookBodyPlaceholder";
 import { getAllContentsNavCollections } from "@utils/nav-collections";
 import { getBookBySlug } from "@utils/api/books";
 import { getChapters } from "@utils/api/chapters";
-import { escapeHtml } from "@utils/shared/escape-html";
 
 import { Book, Chapter, NavCollections } from "@types";
 

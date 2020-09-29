@@ -1,3 +1,5 @@
+import escapeHtml from "escape-html";
+
 import {
   Item,
   Article,
@@ -9,7 +11,6 @@ import {
 } from "@types";
 
 import { validateSlug, getSlugErrorMessage } from "@utils/shared/slug-helper";
-import { escapeHtml } from "@utils/shared/escape-html";
 
 const validateInvalidSlug: ItemValidator = {
   isCritical: true,
