@@ -8,14 +8,11 @@ emoji: 👩‍💻
 published: false
 ---
 
-$$"<img/src=./ onerror=alert(location)>
-e^{i\theta} = i\sin\thetae^{i\theta}
-$$
+Test
 
-$$
-e^{i\theta"<img/src=./ onerror=alert(location)>} = \cos\theta + i\sin\thetae^{i\theta} 
-$$
+<!-- this is not shown -->
 
+Test
 
 # h1 Heading
 ## h2 Heading
