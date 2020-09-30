@@ -10,7 +10,7 @@ import { optionCustomBlock } from "./option-md-custom-block";
 md.use(require("markdown-it-prism"))
   .use(require("markdown-it-footnote"))
   .use(require("markdown-it-image-lazy-loading"))
-  .use(markdownItImSize, { autofill: true })
+  .use(markdownItImSize)
   .use(require("markdown-it-task-lists"), { enabled: true })
   .use(require("markdown-it-anchor"), { level: [1, 2, 3] })
   .use(require("markdown-it-inline-comments"))
