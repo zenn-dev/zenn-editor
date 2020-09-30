@@ -17,7 +17,7 @@
     "typescript": "^3.9.3"
   },
   "dependencies": {
-    "@steelydylan/markdown-it-imsize": "1.0.2",
+    "@steelydylan/markdown-it-imsize": "^1.0.2",
     "katex": "^0.11.1",
     "markdown-it": "^11.0.0",
     "markdown-it-anchor": "^5.3.0",
@@ -25,7 +25,6 @@
     "markdown-it-custom-block": "git+https://github.com/catnose99/markdown-it-custom-block.git",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-image-lazy-loading": "^1.0.2",
-    "markdown-it-imsize": "^2.0.1",
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-prism": "git+https://github.com/catnose99/markdown-it-prism.git",
