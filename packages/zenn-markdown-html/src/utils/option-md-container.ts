@@ -27,12 +27,15 @@ export const mdContainerDetails = {
 // ::: message alert
 //   text
 // :::
+const msgClassRegex = /^message\s*([0-9a-z -_]{0,15})$/;
+
 export const mdContainerMessage = {
   validate: function (params: string) {
-    return params.trim().match(/^message\s*(.*)$/);
+    return params.trim().match(msgClassRegex);
   },
   render: function (tokens: any[], idx: number) {
-    const m = tokens[idx].info.trim().match(/^message\s*(.*)$/);
+    const m = tokens[idx].info.trim().match(msgClassRegex);
+
     if (tokens[idx].nesting === 1) {
       // opening tag
       return '<div class="msg ' + escapeHtml(m[1]) + '">';
