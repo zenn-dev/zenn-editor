@@ -1,5 +1,6 @@
 // plugis
 import { md } from "./md-utils";
+import markdownItImSize from "@steelydylan/markdown-it-imsize"
 const mdContainer = require("markdown-it-container");
 
 // options
@@ -9,7 +10,7 @@ import { optionCustomBlock } from "./option-md-custom-block";
 md.use(require("markdown-it-prism"))
   .use(require("markdown-it-footnote"))
   .use(require("markdown-it-image-lazy-loading"))
-  .use(require("markdown-it-imsize"), { autofill: true })
+  .use(markdownItImSize)
   .use(require("markdown-it-task-lists"), { enabled: true })
   .use(require("markdown-it-anchor"), { level: [1, 2, 3] })
   .use(require("markdown-it-inline-comments"))
