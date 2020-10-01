@@ -1,6 +1,7 @@
 // plugis
 import { md } from "./md-utils";
 import markdownItImSize from "@steelydylan/markdown-it-imsize"
+import markdownItAnchor from "markdown-it-anchor"
 const mdContainer = require("markdown-it-container");
 
 // options
@@ -12,7 +13,7 @@ md.use(require("markdown-it-prism"))
   .use(require("markdown-it-image-lazy-loading"))
   .use(markdownItImSize)
   .use(require("markdown-it-task-lists"), { enabled: true })
-  .use(require("markdown-it-anchor"), { level: [1, 2, 3] })
+  .use(markdownItAnchor, { level: [1, 2, 3] })
   .use(require("markdown-it-inline-comments"))
   .use(require("markdown-it-link-attributes"), {
     pattern: /^(?!https:\/\/zenn.dev)/,
