@@ -50,7 +50,7 @@ export const optionCustomBlock = {
   },
   // クライアントでhttps://platform.twitter.com/widgets.jsを読み込む必要あり
   tweet(str: string) {
-    if (!str?.match(/^https:\/\/twitter.com\/[a-zA-Z0-9\_\-\/]+$/)) {
+    if (!str?.match(/^https:\/\/twitter\.com\/[a-zA-Z0-9\_\-\/]+$/)) {
       return "ツイートページのURLを指定してください";
     }
     return `<div class="embed-tweet tweet-container"><blockquote class="twitter-tweet"><a href="${str}"></a></blockquote></div>`;

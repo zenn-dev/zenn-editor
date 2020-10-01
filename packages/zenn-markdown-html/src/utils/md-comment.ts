@@ -7,7 +7,7 @@ const commentMd = require("markdown-it")({
 commentMd
   .use(require("markdown-it-prism"))
   .use(require("markdown-it-link-attributes"), {
-    pattern: /^(?!https:\/\/zenn.dev)/,
+    pattern: /^(?!https:\/\/zenn\.dev\/)/,
     attrs: {
       target: "_blank",
       rel: "nofollow noreferrer noopener",

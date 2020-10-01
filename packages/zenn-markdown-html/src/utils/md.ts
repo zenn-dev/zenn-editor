@@ -15,7 +15,7 @@ md.use(require("markdown-it-prism"))
   .use(require("markdown-it-anchor"), { level: [1, 2, 3] })
   .use(require("markdown-it-inline-comments"))
   .use(require("markdown-it-link-attributes"), {
-    pattern: /^(?!https:\/\/zenn.dev)/,
+    pattern: /^(?!https:\/\/zenn\.dev\/)/,
     attrs: {
       rel: "nofollow",
     },
