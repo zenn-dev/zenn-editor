@@ -6628,7 +6628,7 @@ markdown-it-task-lists@^2.1.1:
 
 "markdown-it-texmath@git+https://github.com/catnose99/markdown-it-texmath.git":
   version "0.8.0"
-  resolved "git+https://github.com/catnose99/markdown-it-texmath.git#1c81fb9fbfa206c036af7f0096f978c82dd85719"
+  resolved "git+https://github.com/catnose99/markdown-it-texmath.git#0441bb3f085989f08e934ff93651cb95e71f2750"
 
 markdown-it@^11.0.0:
   version "11.0.1"

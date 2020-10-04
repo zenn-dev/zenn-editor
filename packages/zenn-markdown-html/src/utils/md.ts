@@ -1,7 +1,7 @@
 // plugis
 import { md } from "./md-utils";
-import markdownItImSize from "@steelydylan/markdown-it-imsize"
-import markdownItAnchor from "markdown-it-anchor"
+import markdownItImSize from "@steelydylan/markdown-it-imsize";
+import markdownItAnchor from "markdown-it-anchor";
 const mdContainer = require("markdown-it-container");
 
 // options
