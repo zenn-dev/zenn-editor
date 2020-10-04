@@ -8,7 +8,7 @@ published: false
 ---
 
 [this $ should be escaped](https://docs.angularjs.org/api/ng/service/$http#json-vulnerability-protection)
-$$[this  should be escaped](https://docs.angularjs.org/api/ng/service/$$http#json-vulnerability-protection)
+[this $$ should be escaped](https://docs.angularjs.org/api/ng/service/$$http#json-vulnerability-protection)
 
 [test on markdown-it-textmath](https://goessner.github.io/markdown-it-texmath/index.html)
 
