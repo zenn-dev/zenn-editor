@@ -27,6 +27,7 @@
     "chokidar": "^3.4.2",
     "colors": "^1.4.0",
     "crypto-random-string": "^3.2.0",
+    "emoji-regex": "^9.0.0",
     "escape-html": "^1.0.3",
     "fs-extra": "^9.0.1",
     "gray-matter": "^4.0.2",
@@ -42,6 +43,7 @@
     "zenn-markdown-html": "^0.1.42"
   },
   "devDependencies": {
+    "@types/emoji-regex": "^8.0.0",
     "@types/escape-html": "^1.0.0",
     "@types/fs-extra": "^9.0.1",
     "@types/node": "^14.0.5",

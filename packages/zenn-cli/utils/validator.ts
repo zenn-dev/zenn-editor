@@ -1,4 +1,7 @@
 import escapeHtml from "escape-html";
+import initEmojiRegex from "emoji-regex/text.js";
+
+const emojiRegex = initEmojiRegex();
 
 import {
   Item,
@@ -43,17 +46,21 @@ const validateArticleType: ItemValidator = {
 
 const validateEmojiFormat: ItemValidator = {
   isCritical: true,
-  getMessage: () => "使用できない絵文字（emoji）が指定されています",
+  getMessage: () => "絵文字（emoji）を1つだけ指定してください",
   isInvalid: (item: Article) => {
-    const emojiRegex = /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$/;
-    return item.emoji && !item.emoji.match(emojiRegex);
+    const emoji = item?.emoji;
+    if (!emoji) return false;
+    // TODO: 「絵文字 + 絵文字以外の文字列」でもinvalidにならない問題の解消
+    const matches = emoji.match(emojiRegex);
+    if (!matches || !matches[0] || matches[1]) return true;
+    return false;
   },
 };
 
 const validateMissingEmoji: ItemValidator = {
   getMessage: () =>
     'アイキャッチとなるemoji（絵文字）を指定してください<br/><a href="https://getemoji.com/" target="_blank">絵文字を探す→</a>',
-  isInvalid: (item: Article) => !item.emoji,
+  isInvalid: (item: Article) => !item?.emoji,
 };
 
 const validateMissingTopics: ItemValidator = {
