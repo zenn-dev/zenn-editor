@@ -28,7 +28,9 @@ const SideBarNavCollection: React.FC<{ navCollection: NavCollection }> = ({
       </summary>
       <ul className="sidebar-collection__ul">
         {navCollection?.items.map((navItem, i) => (
-          <SideBarNavItem navItem={navItem} key={`nav-item-${i}`} />
+          <li key={`nav-item-${i}`} className="sidebar-collection__li">
+            <SideBarNavItem navItem={navItem} />
+          </li>
         ))}
       </ul>
     </details>
