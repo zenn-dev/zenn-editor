@@ -23,7 +23,6 @@ export type Chapter = {
   position: string;
   title?: string;
   content?: string;
-  is_free?: boolean;
   free?: boolean;
 };
 

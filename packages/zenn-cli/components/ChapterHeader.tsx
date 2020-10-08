@@ -15,8 +15,7 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
           <span className="content-header__chapter-number">
             Chapter {chapter.position}
           </span>
-          {/* user can use "is_free" or "free" to set chapter ¥0 */}
-          {(chapter.is_free || chapter.free) && (
+          {chapter.free && (
             <span className="content-header__label">無料公開に設定済</span>
           )}
         </div>
