@@ -17,13 +17,18 @@ export type Book = {
   topics?: string[];
   published?: boolean;
   coverDataUrl?: string;
+  chapters?: string[];
 };
 
-export type Chapter = {
-  position: string;
-  title?: string;
-  content?: string;
-  free?: boolean;
+export type ChapterMeta = {
+  slug: string;
+  title: string;
+  free: boolean;
+  position?: null | number;
+};
+
+export type Chapter = ChapterMeta & {
+  content: string;
 };
 
 export type Item = Article | Book | Chapter;

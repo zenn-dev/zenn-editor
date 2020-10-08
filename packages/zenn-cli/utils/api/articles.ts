@@ -25,7 +25,7 @@ function getArticleMdNames(): string[] {
 
 export function getArticleBySlug(
   slug: string,
-  fields?: null | string[]
+  fields?: null | (keyof Article)[]
 ): Article {
   const fullPath = path.join(
     articlesDirectory,
@@ -50,7 +50,7 @@ export function getArticleBySlug(
         item[field] = content;
       }
       if (data[field] !== undefined) {
-        item[field] = data[field];
+        item[field as string] = data[field];
       }
     });
     return item;
@@ -64,7 +64,7 @@ export function getArticleBySlug(
   }
 }
 
-export function getAllArticles(fields: string[] = []) {
+export function getAllArticles(fields: (keyof Article)[] = []) {
   const slugs = getAllArticleSlugs();
   const articles = slugs.map((slug) => getArticleBySlug(slug, fields));
   return articles;

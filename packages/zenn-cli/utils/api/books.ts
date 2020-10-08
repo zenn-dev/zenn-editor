@@ -26,7 +26,7 @@ export function getAllBookSlugs(): string[] {
   return getBookDirNames();
 }
 
-export function getAllBooks(fields: string[] = []): Book[] {
+export function getAllBooks(fields: (keyof Book)[] = []): Book[] {
   const slugs = getAllBookSlugs();
   const books = slugs.map((slug) => getBookBySlug(slug, fields) || { slug });
   return books;
@@ -88,7 +88,10 @@ function getCoverDataUrl(fullDirPath: string): string | null {
   return bufferToDataURL(bufferImage, mediaType);
 }
 
-export function getBookBySlug(slug: string, fields?: null | string[]): Book {
+export function getBookBySlug(
+  slug: string,
+  fields?: null | (keyof Book)[]
+): Book {
   const fullDirPath = path.join(booksDirectory, slug.replace(/[/\\]/g, "")); // Prevent directory traversal
   const data = getConfigYamlData(fullDirPath);
   if (!data) return null;
@@ -100,7 +103,7 @@ export function getBookBySlug(slug: string, fields?: null | string[]): Book {
   if (fields) {
     fields.forEach((field) => {
       if (data[field] !== undefined) {
-        result[field] = data[field];
+        result[field as string] = data[field];
       }
       if (field === "coverDataUrl") {
         result[field] = getCoverDataUrl(fullDirPath);

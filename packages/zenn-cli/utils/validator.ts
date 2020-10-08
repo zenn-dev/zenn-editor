@@ -13,9 +13,14 @@ import {
   ErrorMessage,
 } from "@types";
 
-import { validateSlug, getSlugErrorMessage } from "@utils/shared/slug-helper";
+import {
+  validateSlug,
+  getSlugErrorMessage,
+  validateChapterSlug,
+  getChapterSlugErrorMessage,
+} from "@utils/shared/slug-helper";
 
-const validateInvalidSlug: ItemValidator = {
+const validateItemSlug: ItemValidator = {
   isCritical: true,
   getMessage: (item: Article | Book) => getSlugErrorMessage(item.slug),
   isInvalid: (item: Article | Book) => !validateSlug(item.slug),
@@ -129,23 +134,17 @@ const validateMissingBookCover: ItemValidator = {
   isInvalid: (item: Book) => !item.coverDataUrl,
 };
 
-const validateChapterFormat: ItemValidator = {
+const validateChapterItemSlug: ItemValidator = {
   isCritical: true,
-  getMessage: () =>
-    "各チャプターのファイル名は0から始めることはできません。1.mdのように1〜50の数字にしてください",
-  isInvalid: (item: Chapter) => {
-    return !!item.position.match(/^0/);
-  },
+  getMessage: (item: Chapter) => getChapterSlugErrorMessage(item.slug),
+  isInvalid: (item: Chapter) => !validateChapterSlug(item.slug),
 };
 
-const validateChapterPosition: ItemValidator = {
+const validateDeprecatedChapterSlug: ItemValidator = {
   isCritical: true,
   getMessage: () =>
-    "各チャプターのファイル名は「1.md」のように「1〜50の半角数字.md」としてください",
-  isInvalid: (item: Chapter) => {
-    const positionNum = Number(item.position);
-    return Number.isNaN(positionNum) || positionNum < 1 || positionNum > 50;
-  },
+    `1.md、2.md、3.md … のようなチャプターファイルの作成方法は非推奨となっています。<br/><a href="https://zenn.dev/zenn/articles/chapter-filenames" target="_blank">新しいチャプターファイルの作り方</a>`,
+  isInvalid: (item: Chapter) => /^[0-9]{1,2}$/.test(item.slug),
 };
 
 const getErrors = (item: Item, validators: ItemValidator[]): ErrorMessages => {
@@ -164,7 +163,7 @@ const getErrors = (item: Item, validators: ItemValidator[]): ErrorMessages => {
 
 export const getArticleErrors = (article: Article): ErrorMessages => {
   const validators = [
-    validateInvalidSlug,
+    validateItemSlug,
     validateMissingTitle,
     validateTitleLength,
     validateArticleType,
@@ -180,7 +179,7 @@ export const getArticleErrors = (article: Article): ErrorMessages => {
 
 export const getBookErrors = (book: Book): ErrorMessages => {
   const validators = [
-    validateInvalidSlug,
+    validateItemSlug,
     validateMissingTitle,
     validateTitleLength,
     validateMissingTopics,
@@ -198,8 +197,8 @@ export const getBookErrors = (book: Book): ErrorMessages => {
 
 export const getChapterErrors = (chapter: Chapter): ErrorMessages => {
   const validators = [
-    validateChapterPosition,
-    validateChapterFormat,
+    validateChapterItemSlug,
+    validateDeprecatedChapterSlug,
     validateMissingTitle,
     validateTitleLength,
   ];

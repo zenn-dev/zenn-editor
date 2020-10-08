@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Head from "next/head";
 import { NextPage, GetServerSideProps } from "next";
 import escapeHtml from "escape-html";
@@ -17,11 +18,23 @@ import { Book, Chapter, NavCollections } from "@types";
 type Props = {
   book: Book;
   chapters: Chapter[];
+  chapterSlugListOnConfig: string[];
   allContentsNavCollection: NavCollections;
 };
 
 const Page: NextPage<Props> = (props) => {
-  const { book, chapters } = props;
+  const { chapters, book } = props;
+  const isAnyChapter = !!chapters?.length;
+
+  const positionSpecifiedChapters = useMemo(
+    () => chapters.filter((chapter) => chapter.position !== null),
+    [chapters]
+  );
+  const positionUnspecifiedChapters = useMemo(
+    () => chapters.filter((chapter) => chapter.position === null),
+    [chapters]
+  );
+
   return (
     <>
       <Head>
@@ -32,10 +45,25 @@ const Page: NextPage<Props> = (props) => {
           <div>
             <BookHeader book={book} />
             <ContentBody>
-              {chapters?.length ? (
+              {isAnyChapter ? (
                 <>
-                  <h1>📝 チャプターを編集する</h1>
-                  <ChapterList chapters={chapters} bookSlug={book.slug} />
+                  <h1>チャプターを編集する</h1>
+                  <ChapterList
+                    chapters={positionSpecifiedChapters}
+                    bookSlug={book.slug}
+                  />
+                  {!!positionUnspecifiedChapters?.length && (
+                    <>
+                      <h4>
+                        以下のチャプターはconfig.yamlに指定されていないため公開されません
+                      </h4>
+                      <ChapterList
+                        chapters={positionUnspecifiedChapters}
+                        bookSlug={book.slug}
+                        unordered={true}
+                      />
+                    </>
+                  )}
                 </>
               ) : (
                 <BookBodyPlaceholder />
@@ -52,7 +80,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   res,
   params,
 }) => {
-  const slug = params.slug as string;
+  const slug = params.book_slug as string;
   const book = getBookBySlug(slug);
 
   if (!book) {
@@ -70,7 +98,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
   }
 
-  const chapters = getChapters(slug, ["title", "position"]);
+  const chapters = getChapters(slug, book.chapters);
 
   const allContentsNavCollection = getAllContentsNavCollections();
 

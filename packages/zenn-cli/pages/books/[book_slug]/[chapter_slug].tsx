@@ -18,8 +18,7 @@ type Props = {
   bookNavCollections: NavCollections;
 };
 
-const Page: NextPage<Props> = (props) => {
-  const { chapter } = props;
+const Page: NextPage<Props> = ({ chapter, bookNavCollections }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -29,9 +28,9 @@ const Page: NextPage<Props> = (props) => {
   return (
     <>
       <Head>
-        <title>{chapter.title || `${chapter.position}.md`}のプレビュー</title>
+        <title>{chapter.title || `${chapter.slug}.md`}のプレビュー</title>
       </Head>
-      <MainContainer navCollections={props.bookNavCollections}>
+      <MainContainer navCollections={bookNavCollections}>
         <article>
           <ChapterHeader chapter={chapter} />
           <ContentBody content={chapter.content} />
@@ -45,16 +44,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   res,
   params,
 }) => {
-  const slug = params.slug as string;
-  const position = params.position as string;
+  const bookSlug = params.book_slug as string;
+  const chapterSlug = params.chapter_slug as string;
 
-  const bookNavCollections = getBookNavCollections(slug);
+  const bookNavCollections = getBookNavCollections(bookSlug);
 
-  const chapter = getChapter(slug, position, null);
+  const chapter = getChapter(bookSlug, chapterSlug);
 
   if (!chapter) {
     if (res) {
-      res.writeHead(301, { Location: `/books/${slug}` });
+      res.writeHead(301, { Location: `/books/${bookSlug}` });
       res.end(); // 🚩 Do not forget escape if you return messgae here.
       return {
         props: {} as any,

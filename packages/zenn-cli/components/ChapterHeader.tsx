@@ -12,9 +12,6 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
     <header className="content-header">
       <ContentWrapper>
         <div className="content-header__chapter-info">
-          <span className="content-header__chapter-number">
-            Chapter {chapter.position}
-          </span>
           {chapter.free && (
             <span className="content-header__label">無料公開に設定済</span>
           )}
@@ -38,7 +35,7 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
           className="content-header__link"
           target="_blank"
         >
-          Chapterのmdファイルの作成方法 →
+          チャプターのmdファイルの作成方法 →
         </a>
       </ContentWrapper>
     </header>
