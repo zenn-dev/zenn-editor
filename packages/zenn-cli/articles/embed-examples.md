@@ -14,12 +14,14 @@ published: false
 @[speakerdeck](f8653c8c6ffc4f54bb4683daa8c1a284)
 @[jsfiddle](https://jsfiddle.net/9wkngdue/embedded)
 @[codepen](https://codepen.io/noeldelgado/pen/BaogqYy?default-tab=result)
-@[tweet](https://twitter.com/Megu_Negicco/status/1267475348993671168)
+@[tweet](https://twitter.com/jack/status/20)
 
 
 👇must raise error
 @[codesandbox](https://codesandbox.io/embed/a"a)
 @[stackblitz](https://stackblitz.com/edit/embed?embed=a"a)
+@[codesandbox](http://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)
+@[stackblitz](http://stackblitz.com/edit/embed?embed=1&file=app/app.component.ts)
 
 👇html tag cannot be embedded.
 
