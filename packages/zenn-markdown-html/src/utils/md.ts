@@ -5,8 +5,8 @@ import markdownItAnchor from "markdown-it-anchor";
 const mdContainer = require("markdown-it-container");
 
 // options
-import { mdContainerDetails, mdContainerMessage } from "./option-md-container";
-import { optionCustomBlock } from "./option-md-custom-block";
+import { mdContainerDetails, mdContainerMessage } from "./md-container";
+import { optionCustomBlock } from "./md-custom-block";
 
 md.use(require("markdown-it-prism"))
   .use(require("markdown-it-footnote"))
