@@ -48,6 +48,24 @@ export const optionCustomBlock = {
     url.searchParams.set("embed-version", "2");
     return `<div class="embed-codepen"><iframe src="${url}" scrolling="no" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy"></iframe></div>`;
   },
+  codesandbox(str: string) {
+    if (
+      !/^https:\/\/codesandbox\.io\/embed\/[a-zA-Z0-9\-_/.@?&=%]+$/.test(str)
+    ) {
+      return "「https://codesandbox.io/embed/」から始まる正しいURLを入力してください";
+    }
+    return `<div class="embed-codesandbox"><iframe src="${str}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>`;
+  },
+  stackblitz(str: string) {
+    if (
+      !/^https:\/\/stackblitz\.com\/edit\/embed[a-zA-Z0-9\-_/.@?&=%]+$/.test(
+        str
+      )
+    ) {
+      return "StackBlitzのembed用のURLを指定してください";
+    }
+    return `<div class="embed-stackblitz"><iframe src="${str}" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy" allowfullscreen></iframe></div>`;
+  },
   // クライアントでhttps://platform.twitter.com/widgets.jsを読み込む必要あり
   tweet(str: string) {
     if (!str?.match(/^https:\/\/twitter\.com\/[a-zA-Z0-9\_\-\/]+$/)) {

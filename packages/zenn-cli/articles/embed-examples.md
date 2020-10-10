@@ -6,6 +6,9 @@ emoji: 🐲
 published: false
 ---
 
+
+@[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)
+@[stackblitz](https://stackblitz.com/edit/embed?embed=1&file=app/app.component.ts)
 @[youtube](ApXoWvfEYVU)
 @[slideshare](EP6Yf9I2idPXCb)
 @[speakerdeck](f8653c8c6ffc4f54bb4683daa8c1a284)
@@ -13,6 +16,10 @@ published: false
 @[codepen](https://codepen.io/noeldelgado/pen/BaogqYy?default-tab=result)
 @[tweet](https://twitter.com/Megu_Negicco/status/1267475348993671168)
 
+
+👇must raise error
+@[codesandbox](https://codesandbox.io/embed/a"a)
+@[stackblitz](https://stackblitz.com/edit/embed?embed=a"a)
 
 👇html tag cannot be embedded.
 

@@ -12,14 +12,17 @@
 .embed-slideshare,
 .embed-codepen,
 .embed-jsfiddle,
-.embed-youtube {
+.embed-youtube,
+.embed-codesandbox,
+.embed-stackblitz {
   margin: 1.5rem 0;
 }
 .embed-slideshare,
 .embed-speakerdeck,
 .embed-codepen,
 .embed-jsfiddle,
-.embed-youtube {
+.embed-youtube,
+.embed-stackblitz {
   padding-bottom: calc(56.25% + 38px);
   position: relative;
   width: 100%;
