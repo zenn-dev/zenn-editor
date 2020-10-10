@@ -143,7 +143,7 @@ const validateChapterItemSlug: ItemValidator = {
 const validateDeprecatedChapterSlug: ItemValidator = {
   isCritical: true,
   getMessage: () =>
-    `1.md、2.md、3.md … のようなチャプターファイルの作成方法は非推奨となっています。<br/><a href="https://zenn.dev/zenn/articles/chapter-filenames" target="_blank">新しいチャプターファイルの作り方</a>`,
+    `1.md、2.md、3.md … のようなチャプターファイルの作成方法は非推奨となりました。<br/><a href="https://zenn.dev/zenn/articles/deprecated-book-deployment" target="_blank">詳しくはこちら</a>`,
   isInvalid: (item: Chapter) => /^[0-9]{1,2}$/.test(item.slug),
 };
 
