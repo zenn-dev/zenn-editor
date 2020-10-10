@@ -1,26 +1,38 @@
 import Link from "next/link";
 import { Chapter } from "@types";
 
-type Props = { bookSlug: string; chapters: Chapter[] };
+type Props = { bookSlug: string; chapters: Chapter[]; unordered?: boolean };
 
-export const ChapterList: React.FC<Props> = ({ chapters, bookSlug }) => {
+export const ChapterList: React.FC<Props> = ({
+  chapters,
+  bookSlug,
+  unordered,
+}) => {
+  const ListContainerTag = unordered ? "ul" : "ol";
   return (
     <div>
-      <ol>
+      <ListContainerTag>
         {chapters.map((chapter) => {
           return (
-            <li key={`ch${chapter.position}`}>
+            <li key={`ch${chapter.position}`} className="chapter-list-item">
               <Link
-                href="/books/[slug]/[position]"
-                as={`/books/${bookSlug}/${chapter.position}`}
+                href="/books/[book_slug]/[chapter_slug]"
+                as={`/books/${bookSlug}/${chapter.slug}`}
                 passHref
               >
-                <a>{chapter.title || `${chapter.position}.md`}</a>
+                <a className="chapter-list-link">
+                  <span className="chapter-list-title">
+                    {chapter.title || `タイトルなし`}
+                  </span>
+                  <span className="chapter-list-filename">
+                    （{chapter.slug}.md）
+                  </span>
+                </a>
               </Link>
             </li>
           );
         })}
-      </ol>
+      </ListContainerTag>
     </div>
   );
 };

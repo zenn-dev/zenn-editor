@@ -56,7 +56,7 @@ export const getAllBooksNavCollection = (): NavCollection => {
     return {
       name,
       as: `/books/${book.slug}`,
-      href: `/books/[slug]`,
+      href: `/books/[book_slug]`,
     };
   });
 
@@ -73,21 +73,23 @@ export const getAllContentsNavCollections = (): NavCollections => [
 
 export const getBookNavCollections = (slug: string): NavCollections => {
   // slug = Book slug
-  const book = getBookBySlug(slug);
+  const book = getBookBySlug(slug, ["chapters"]);
   if (!book) throwWithConsoleError(`books/${slug}の情報を取得できませんでした`);
 
-  const chapters = getChapters(slug, ["title"]);
+  const chapters = getChapters(slug, book.chapters);
   const items: NavItem[] = chapters?.map((chapter: Chapter) => {
     return {
-      name: `📄 ${escapeHtml(chapter.title || `${chapter.position}.md`)}`,
-      href: `/books/[slug]/[position]`,
-      as: `/books/${slug}/${chapter.position}`,
+      name: `📄 ${chapter.position || "非公開"}）${escapeHtml(
+        chapter.title || `${chapter.slug}.md`
+      )}`,
+      href: `/books/[book_slug]/[chapter_slug]`,
+      as: `/books/${slug}/${chapter.slug}`,
     };
   });
 
   const navItemBack: NavItem = {
     name: "← 戻る",
-    href: `/books/[slug]`,
+    href: `/books/[book_slug]`,
     as: `/books/${slug}`,
   };
   items.unshift(navItemBack);

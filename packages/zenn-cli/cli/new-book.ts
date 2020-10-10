@@ -11,7 +11,7 @@ import colors from "colors/safe";
 
 const generatePlaceholderChapters = (bookDirPath: string): void => {
   const chapterBody = ["---", 'title: ""', "---"].join("\n") + "\n";
-  ["1.md", "2.md", "3.md"].forEach((chapterFileName) => {
+  ["example1.md", "example2.md"].forEach((chapterFileName) => {
     try {
       fs.writeFileSync(
         path.join(bookDirPath, chapterFileName),
@@ -61,6 +61,10 @@ export const exec: cliCommand = (argv) => {
       "topics: []",
       `published: ${published}`,
       `price: ${price} # 有料の場合200〜5000`,
+      `# 本に含めるチャプターを順番に並べましょう`,
+      `chapters:`,
+      `  - example1`,
+      `  - example2`,
     ].join("\n") + "\n";
 
   const configYamlPath = path.join(bookDirPath, "config.yaml");
