@@ -33,6 +33,10 @@ export function getChapters(
 ): ChapterMeta[] {
   const slugs = getChapterSlugList(bookSlug);
 
+  if (configYamlChapters && !Array.isArray(configYamlChapters)) {
+    throw "🚩 config.yamlのchaptersには配列のみを指定できます";
+  }
+
   const configYamlChapterSlugList = configYamlChapters?.map((slug) => {
     if (/ - /.test(slug) || typeof slug !== "string") {
       console.error(
