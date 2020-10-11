@@ -1,11 +1,12 @@
 import md from "./utils/md";
-import mdPreview from './utils/md-preview';
+import { mdLineNumber } from './utils/md-line-number';
 
-const markdownToHtml = (text: string, preview = false): string => {
+export const enablePreview = () => {
+  mdLineNumber(md);
+}
+
+const markdownToHtml = (text: string): string => {
   if (!(text && text.length)) return text;
-  if (preview) {
-    return mdPreview.render(text);
-  }
   return md.render(text);
 };
 export default markdownToHtml;
