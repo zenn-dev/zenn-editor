@@ -34,6 +34,7 @@ const Page: NextPage<Props> = (props) => {
     () => chapters.filter((chapter) => chapter.position === null),
     [chapters]
   );
+  const isConfigPositionMode = !!book.chapters;
 
   return (
     <>
@@ -48,6 +49,17 @@ const Page: NextPage<Props> = (props) => {
               {isAnyChapter ? (
                 <>
                   <h1>チャプターを編集する</h1>
+                  {!isConfigPositionMode && (
+                    <div className="msg alert">
+                      <code>config.yaml</code>に<code>chapters</code>
+                      が指定されていません。<code>数字.md</code>
+                      というチャプター番号の指定の仕方は非推奨であり、今後廃止される可能性があります（
+                      <a href="https://zenn.dev/zenn/articles/deprecated-book-deployment">
+                        詳細
+                      </a>
+                      ）
+                    </div>
+                  )}
                   <ChapterList
                     chapters={positionSpecifiedChapters}
                     bookSlug={book.slug}

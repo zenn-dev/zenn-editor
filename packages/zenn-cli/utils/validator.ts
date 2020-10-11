@@ -140,13 +140,6 @@ const validateChapterItemSlug: ItemValidator = {
   isInvalid: (item: Chapter) => !validateChapterSlug(item.slug),
 };
 
-const validateDeprecatedChapterSlug: ItemValidator = {
-  isCritical: true,
-  getMessage: () =>
-    `1.md、2.md、3.md … のようなチャプターファイルの作成方法は非推奨となりました。<br/><a href="https://zenn.dev/zenn/articles/deprecated-book-deployment" target="_blank">詳しくはこちら</a>`,
-  isInvalid: (item: Chapter) => /^[0-9]{1,2}$/.test(item.slug),
-};
-
 const getErrors = (item: Item, validators: ItemValidator[]): ErrorMessages => {
   const messages: ErrorMessages = [];
   validators.forEach((validator) => {
@@ -198,7 +191,6 @@ export const getBookErrors = (book: Book): ErrorMessages => {
 export const getChapterErrors = (chapter: Chapter): ErrorMessages => {
   const validators = [
     validateChapterItemSlug,
-    validateDeprecatedChapterSlug,
     validateMissingTitle,
     validateTitleLength,
   ];
