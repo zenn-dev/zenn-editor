@@ -136,7 +136,7 @@ Sample text here...
 
 Syntax highlighting
 
-``` js
+``` js:fooBar.js
 var foo = function (bar) {
   return bar++;
 };
