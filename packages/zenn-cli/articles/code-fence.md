@@ -34,3 +34,8 @@ var foo = function (bar) {
 ```html
 <div>a</div>
 ```
+
+
+```"><img/onerror="alert(location)"src=.>
+aaa
+```
