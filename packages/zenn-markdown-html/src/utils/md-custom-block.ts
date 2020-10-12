@@ -57,11 +57,7 @@ export const optionCustomBlock = {
     return `<div class="embed-codesandbox"><iframe src="${str}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>`;
   },
   stackblitz(str: string) {
-    if (
-      !/^https:\/\/stackblitz\.com\/edit\/embed[a-zA-Z0-9\-_/.@?&=%]+$/.test(
-        str
-      )
-    ) {
+    if (!/^https:\/\/stackblitz\.com\/[a-zA-Z0-9\-_/.@?&=%]+$/.test(str)) {
       return "StackBlitzのembed用のURLを指定してください";
     }
     return `<div class="embed-stackblitz"><iframe src="${str}" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy" allowfullscreen></iframe></div>`;
