@@ -23,7 +23,9 @@ export function rendererFence(md: MarkdownIt) {
     if (tokens[idx].content.length === 0) return originalHTML;
 
     const filenameHTML = filename
-      ? `<span class="code-block-filename">${escapeHtml(filename)}</span>`
+      ? `<div class="code-block-filename-container"><span class="code-block-filename">${escapeHtml(
+          filename
+        )}</span></div>`
       : "";
 
     return `

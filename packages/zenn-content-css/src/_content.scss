@@ -250,9 +250,13 @@ pre {
     margin: 0;
   }
 }
-.code-block-filename {
-  max-width: 96%;
+.code-block-filename-container {
   margin-bottom: -12px;
+}
+.code-block-filename {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 100%;
   background: rgba(177, 197, 247, 0.25);
   color: #fff;
   font-size: 12px;
@@ -261,10 +265,9 @@ pre {
   padding: 0px 6px 0 8px;
   font-family: monospace;
   border-radius: 4px 0;
-  display: table;
-  z-index: 2;
-  word-break: normal; // iOSで折り返されるのを防ぐ
-  word-wrap: normal; // iOSで折り返されるのを防ぐ
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 img:not(.emoji) {
   margin: 1.5rem auto;
