@@ -1,4 +1,5 @@
 // コメントでは一部のHTMLのみ許可する
+import { customRendererFence } from "./plugin-md-custom";
 const commentMd = require("markdown-it")({
   breaks: true,
   linkify: true,
@@ -6,6 +7,7 @@ const commentMd = require("markdown-it")({
 
 commentMd
   .use(require("markdown-it-prism"))
+  .use(customRendererFence)
   .use(require("markdown-it-link-attributes"), {
     pattern: /^(?!https:\/\/zenn\.dev\/)/,
     attrs: {
