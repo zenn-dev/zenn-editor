@@ -2,7 +2,7 @@
 import { md } from "./md-utils";
 import markdownItImSize from "@steelydylan/markdown-it-imsize";
 import markdownItAnchor from "markdown-it-anchor";
-import { customRendererFence } from "./plugin-md-custom";
+import { rendererFence } from "./md-renderer-fence";
 const mdContainer = require("markdown-it-container");
 
 // options
@@ -10,9 +10,9 @@ import { mdContainerDetails, mdContainerMessage } from "./md-container";
 import { optionCustomBlock } from "./md-custom-block";
 
 md.use(require("markdown-it-prism"))
-  .use(customRendererFence)
   .use(require("markdown-it-footnote"))
   .use(require("markdown-it-image-lazy-loading"))
+  .use(rendererFence)
   .use(markdownItImSize)
   .use(require("markdown-it-task-lists"), { enabled: true })
   .use(markdownItAnchor, { level: [1, 2, 3] })
