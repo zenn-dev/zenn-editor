@@ -2,6 +2,7 @@
 import { md } from "./md-utils";
 import markdownItImSize from "@steelydylan/markdown-it-imsize";
 import markdownItAnchor from "markdown-it-anchor";
+import { customRendererFence } from "./plugin-md-custom";
 const mdContainer = require("markdown-it-container");
 
 // options
@@ -9,6 +10,7 @@ import { mdContainerDetails, mdContainerMessage } from "./md-container";
 import { optionCustomBlock } from "./md-custom-block";
 
 md.use(require("markdown-it-prism"))
+  .use(customRendererFence)
   .use(require("markdown-it-footnote"))
   .use(require("markdown-it-image-lazy-loading"))
   .use(markdownItImSize)
