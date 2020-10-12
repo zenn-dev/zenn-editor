@@ -1,7 +1,7 @@
 {
   "name": "zenn-cli",
   "license": "MIT",
-  "version": "0.1.47",
+  "version": "0.1.48",
   "description": "Preview Zenn content locally.",
   "bin": {
     "zenn": "bin/zenn.js"
@@ -40,7 +40,7 @@
     "update-notifier": "4.1.0",
     "zenn-content-css": "^0.1.46",
     "zenn-init-embed": "^0.1.3",
-    "zenn-markdown-html": "^0.1.47"
+    "zenn-markdown-html": "^0.1.48"
   },
   "devDependencies": {
     "@types/emoji-regex": "^8.0.0",
