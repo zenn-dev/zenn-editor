@@ -27,7 +27,7 @@
     "markdown-it-image-lazy-loading": "^1.0.2",
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^3.0.0",
-    "markdown-it-prism": "git+https://github.com/catnose99/markdown-it-prism.git",
+    "markdown-it-prism": "^2.1.3",
     "markdown-it-task-lists": "^2.1.1",
     "markdown-it-texmath": "git+https://github.com/catnose99/markdown-it-texmath.git"
   },
