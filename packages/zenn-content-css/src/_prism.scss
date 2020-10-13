@@ -25,8 +25,7 @@ pre[class*="language-"] {
 .style .token.string {
   color: #ffc164;
 }
-.token.selector,
-.token.inserted {
+.token.selector {
   color: #ff8e8e;
 }
 .token.atrule,
@@ -35,6 +34,9 @@ pre[class*="language-"] {
 .token.important,
 .token.deleted {
   color: #ff8e8e;
+}
+.token.inserted {
+  color: #b4ff9b;
 }
 .token.regex,
 .token.statement {
