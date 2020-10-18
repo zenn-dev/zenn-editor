@@ -10,6 +10,7 @@ published: false
 
 Test
 
+
 <!-- this is not shown -->
 
 Test
@@ -192,6 +193,9 @@ Autoconverted link https://github.com/nodeca/pica (enable linkify to see)
 ![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")
 
 Like links, Images also have a footnote style syntax
+
+![](https://octodex.github.com/images/stormtroopocat.jpg)
+*captions*
 
 ![Alt text][id]
 
