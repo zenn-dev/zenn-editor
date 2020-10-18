@@ -276,6 +276,19 @@ img:not(.emoji) {
   max-width: 100%;
   height: auto;
 }
+img + br {
+  display: none;
+}
+// ![](path_to_image)
+// *caption*
+img ~ em {
+  display: block;
+  margin: -1rem auto 0;
+  line-height: 1.3;
+  text-align: center;
+  color: $c-gray;
+  font-size: 0.95rem;
+}
 details {
   font-size: 0.95em;
   margin: 1rem 0;
