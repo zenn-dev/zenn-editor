@@ -15,6 +15,7 @@
 - ooooooo_q ([@ooooooo-q](https://github.com/ooooooo-q))
 - RyotaK ([@Ry0taK](https://github.com/Ry0taK))
 - j5c8k6m8 ([@j5c8k6m8](https://github.com/j5c8k6m8))
+- kkiyama117 ([@kkiyama117](https://github.com/kkiyama117))
 
 
 ----
