@@ -16,7 +16,7 @@
 $ npx lerna create zenn-package-name
 ```
 
-### add external packge to specific zenn-package
+### add external package to specific zenn-package
 **Recommended for this project**
 ```sh
 $ yarn workspace workspace-name add package-name
@@ -29,10 +29,10 @@ $ yarn add -W --dev package-name
 ```
 
 ### add zenn-package-a to zenn-package-b
-The command below enables B to rosolve A
+The command below enables B to resolve A
 ```sh
 $ npx lerna add A --scope B --dev
-# e.g. lerna add zenn-package-a --scope zenn-package-b --dev 
+# e.g. lerna add zenn-package-a --scope zenn-package-b --dev
 ```
 
 ### Refresh package dependencies
