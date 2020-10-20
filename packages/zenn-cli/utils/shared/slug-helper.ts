@@ -15,7 +15,13 @@ export const getSlugErrorMessage = (slug: string) =>
   )}）が不正です。半角英数字（a-z0-9）とハイフン（-）の12〜50字の組み合わせにしてください`;
 
 export const validateChapterSlug = (slug: string): boolean => {
-  return !!(slug && slug.match(/^[0-9a-z\-_]{1,50}$/));
+  if (!slug) return false;
+
+  // n.slug.mdも許容
+  return !!(
+    slug.match(/^[0-9a-z\-_]{1,50}$/) ||
+    slug.match(/^[0-9]{1,2}.[0-9a-z\-_]{1,50}$/)
+  );
 };
 
 export const getChapterSlugErrorMessage = (slug: string) =>

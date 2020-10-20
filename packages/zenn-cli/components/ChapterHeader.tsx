@@ -19,6 +19,14 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
 
         <h1 className="content-header__title">{chapter.title || "No Title"}</h1>
 
+        <div className="content-header__row">
+          <span className="content-header__row-title">slug</span>
+          <span className="content-header__row-result">
+            {/* slug of 1.test.md is "test" */}
+            {chapter.slug.replace(/[0-9]{1,2}./, "")}
+          </span>
+        </div>
+
         {!!errorCount && (
           <div>
             <div className="content-header__error-title">
