@@ -45,8 +45,8 @@ function loadPrismLang(lang: string): Grammar | undefined {
  * @return  The name of the language to use and the Prism language object for that language.
  */
 function selectLanguage(lang: string): [string, Grammar | undefined] {
-  let langToUse = lang;
-  let prismLang = loadPrismLang(langToUse);
+  const langToUse = lang?.toLowerCase();
+  const prismLang = loadPrismLang(langToUse);
   return [langToUse, prismLang];
 }
 
@@ -64,12 +64,7 @@ function selectLanguage(lang: string): [string, Grammar | undefined] {
  * @return {@code text} wrapped in {@code &lt;pre&gt;} and {@code &lt;code&gt;}, both equipped with the appropriate class
  *  (markdown-it’s langPrefix + lang). If Prism knows {@code lang}, {@code text} will be highlighted by it.
  */
-function highlight(
-  markdownit: MarkdownIt,
-  options: Options,
-  text: string,
-  lang: string
-): string {
+function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
   const [langToUse, prismLang] = selectLanguage(lang);
   const code = prismLang
     ? Prism.highlight(text, prismLang, langToUse)
@@ -100,6 +95,5 @@ export default function markdownItPrism(
   options.init(Prism);
 
   // register ourselves as highlighter
-  markdownit.options.highlight = (...args) =>
-    highlight(markdownit, options, ...args);
+  markdownit.options.highlight = (...args) => highlight(markdownit, ...args);
 }

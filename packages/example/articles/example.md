@@ -26,6 +26,9 @@ console.log({
 ```
 
 
+
+
+
 ``` js:fooBar.js
 var foo = function (bar) {
   return bar++;
@@ -48,6 +51,12 @@ var foo = function (bar) {
 };
 ```
 
+```Dockerfile
+FROM ubuntu
+ENV name value # comment
+ENV name=value
+CMD ["echo", "$name"]
+```
 
 ```html
 <div>a</div>
