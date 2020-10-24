@@ -1,3 +1,5 @@
+import markdownItPrism from "./prism";
+
 // コメントでは一部のHTMLのみ許可する
 import { rendererFence } from "./md-renderer-fence";
 const commentMd = require("markdown-it")({
@@ -6,7 +8,7 @@ const commentMd = require("markdown-it")({
 });
 
 commentMd
-  .use(require("markdown-it-prism"))
+  .use(markdownItPrism)
   .use(rendererFence)
   .use(require("markdown-it-link-attributes"), {
     pattern: /^(?!https:\/\/zenn\.dev\/)/,
