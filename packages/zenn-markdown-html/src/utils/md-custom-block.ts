@@ -8,9 +8,8 @@ export const optionCustomBlock = {
     if (!videoId?.match(/^[a-zA-Z0-9_-]+$/)) {
       return "YouTubeのvideoIDが不正です";
     }
-    return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapeHtml(
-      videoId
-    )}" allowfullscreen loading="lazy"></iframe></div>`;
+    const escapedVideoId = escapeHtml(videoId);
+    return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapedVideoId}?loop=1&playlist=${escapedVideoId}" allowfullscreen loading="lazy"></iframe></div>`;
   },
   slideshare(key: string) {
     if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
