@@ -53,6 +53,23 @@ const SidebarHeader: React.FC = () => (
   </header>
 );
 
+const SidebarHomeNav: React.FC = () => {
+  const router = useRouter();
+  const className = `sidebar-nav-item ${router.asPath === "/" ? "active" : ""}`;
+  return (
+    <Link href="/" passHref>
+      <a className={className}>
+        <img
+          src="https://twemoji.maxcdn.com/2/svg/\1f58b.svg"
+          width="16"
+          height="16"
+        />
+        コマンド一覧
+      </a>
+    </Link>
+  );
+};
+
 export const SideBar: React.FC<{
   navCollections: NavCollections;
 }> = ({ navCollections }) => {
@@ -67,6 +84,7 @@ export const SideBar: React.FC<{
           />
         ))}
       </div>
+      <SidebarHomeNav />
       <a
         href="https://zenn.dev/dashboard/uploader"
         className="sidebar-external-link"
