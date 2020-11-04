@@ -93,6 +93,19 @@ export const SideBar: React.FC<{
         />
         マークダウン・ガイド
       </a>
+      <a
+        href="https://zenn.dev/zenn/articles/zenn-cli-guide"
+        className="sidebar-external-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src="https://twemoji.maxcdn.com/2/svg/\1f4bb.svg"
+          width="16"
+          height="16"
+        />
+        CLIコマンド・ガイド
+      </a>
     </aside>
   );
 };
