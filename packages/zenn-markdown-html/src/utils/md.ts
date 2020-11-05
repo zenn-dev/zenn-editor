@@ -12,7 +12,6 @@ import { optionCustomBlock } from "./md-custom-block";
 
 md.use(markdownItPrism)
   .use(require("markdown-it-footnote"))
-  .use(require("markdown-it-image-lazy-loading"))
   .use(rendererFence)
   .use(markdownItImSize)
   .use(require("markdown-it-task-lists"), { enabled: true })
