@@ -8,6 +8,7 @@ import {
   getSlugErrorMessage,
 } from "../utils/shared/slug-helper";
 import colors from "colors/safe";
+import { NewArticleHelpText } from "./constants";
 
 const pickRandomEmoji = () => {
   // prettier-ignore
@@ -18,14 +19,24 @@ const pickRandomEmoji = () => {
 export const exec: cliCommand = (argv) => {
   const args = arg(
     {
+      // Types
       "--slug": String,
       "--title": String,
       "--type": String,
       "--emoji": String,
       "--published": String,
+      "--help": Boolean,
+      // Alias
+      "-h": "--help",
     },
     { argv }
   );
+
+  const help = args["--help"];
+  if (help) {
+    console.log(NewArticleHelpText);
+    return;
+  }
 
   const slug = args["--slug"] || generateSlug();
   if (!validateSlug(slug)) {

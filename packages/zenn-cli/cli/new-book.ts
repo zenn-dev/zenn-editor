@@ -8,6 +8,7 @@ import {
   getSlugErrorMessage,
 } from "../utils/shared/slug-helper";
 import colors from "colors/safe";
+import { NewBookHelpText } from "./constants";
 
 const generatePlaceholderChapters = (bookDirPath: string): void => {
   const chapterBody = ["---", 'title: ""', "---"].join("\n") + "\n";
@@ -28,14 +29,24 @@ const generatePlaceholderChapters = (bookDirPath: string): void => {
 export const exec: cliCommand = (argv) => {
   const args = arg(
     {
+      // Types
       "--slug": String,
       "--title": String,
       "--published": String,
       "--summary": String,
       "--price": Number,
+      "--help": Boolean,
+      // Alias
+      "-h": "--help",
     },
     { argv }
   );
+
+  const help = args["--help"];
+  if (help) {
+    console.log(NewBookHelpText);
+    return;
+  }
 
   const slug = args["--slug"] || generateSlug();
   if (!validateSlug(slug)) {

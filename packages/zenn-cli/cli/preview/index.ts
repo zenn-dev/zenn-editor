@@ -3,21 +3,28 @@ import { cliCommand } from "..";
 import { build } from "./build";
 import chokidar from "chokidar";
 import socketIo from "socket.io";
+import { PreviewHelpText } from "../constants";
 
 export const exec: cliCommand = async (argv) => {
   const args = arg(
     {
       // Types
       "--port": Number,
+      "--no-watch": Boolean,
+      "--help": Boolean,
 
       // Alias
       "-p": "--port",
-
-      // Types
-      "--no-watch": Boolean,
+      "-h": "--help",
     },
     { argv }
   );
+
+  const help = args["--help"];
+  if (help) {
+    console.log(PreviewHelpText);
+    return;
+  }
 
   const port = args["--port"] || 8000;
   const shouldWatch = !args["--no-watch"];
