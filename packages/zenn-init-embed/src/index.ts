@@ -5,12 +5,19 @@ export default async function () {
   initKatex();
 }
 
+declare var twttr: any;
+
+
 async function initTweet() {
+  // load script only when .twitter-tweet exist
   if (!document.querySelector(".twitter-tweet")) return;
-  loadScript({
+
+  await loadScript({
     src: "https://platform.twitter.com/widgets.js",
     id: "embed-tweet",
-    refreshIfExist: true,
+    funcToRefresh: () => {
+      twttr?.widgets?.load() // render again if alread script loaded
+    }
   });
 }
 

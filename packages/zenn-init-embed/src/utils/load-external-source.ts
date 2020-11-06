@@ -1,18 +1,19 @@
 type LoadScriptProps = {
   src: string;
   id?: string;
-  refreshIfExist: boolean;
+  funcToRefresh?: () => void;
 };
 
 export function loadScript({
   src,
   id,
-  refreshIfExist = true,
+  funcToRefresh,
 }: LoadScriptProps) {
+  
   const identicalScript = id ? document.getElementById(id) : null;
   if (identicalScript) {
-    if (!refreshIfExist) return; // refreshIfExist:falseの場合は何もせず終了
-    identicalScript.remove(); // 既存の同一scriptは削除しておく
+    if(funcToRefresh) funcToRefresh()
+    return
   }
 
   return new Promise((resolve, reject) => {
