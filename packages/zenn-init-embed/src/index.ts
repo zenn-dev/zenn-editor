@@ -44,7 +44,7 @@ function initIframeLinkCard() {
 
     const iframContainer = document.createElement("div");
     iframContainer.classList.add('embed-zenn-link');
-    iframContainer.innerHTML = `<iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(href)}" loading="lazy" frameborder="0" scrolling="no"></iframe>`
+    iframContainer.innerHTML = `<iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(href)}" frameborder="0" scrolling="no"></iframe>`
     linkElem.parentElement?.insertBefore(iframContainer, linkElem);
   })
 }
