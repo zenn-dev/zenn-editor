@@ -51,6 +51,9 @@ $ yarn build
 ```sh
 # cannot use yarn here
 $ npm run publish:all
+
+# publish as canary version
+$ npm run publish:canary
 ```
 
 ## ToDo
