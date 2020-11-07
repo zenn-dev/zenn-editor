@@ -35,6 +35,14 @@ function loadPrismLang(lang: string): Grammar | undefined {
   return langObject;
 }
 
+const fallbackLanguages:  {
+  [key:string]: string;
+} = {
+  "vue": "html",
+  "fish": "shell",
+  "sh": "shell"
+}
+
 /**
  * Select the language to use for highlighting, based on the provided options and the specified language.
  *
@@ -45,7 +53,9 @@ function loadPrismLang(lang: string): Grammar | undefined {
  * @return  The name of the language to use and the Prism language object for that language.
  */
 function selectLanguage(lang: string): [string, Grammar | undefined] {
-  const langToUse = lang?.toLowerCase();
+  const langNormalized = lang?.toLowerCase() || "";
+  const langAlias = fallbackLanguages[langNormalized]
+  const langToUse = langAlias || langNormalized
   const prismLang = loadPrismLang(langToUse);
   return [langToUse, prismLang];
 }
