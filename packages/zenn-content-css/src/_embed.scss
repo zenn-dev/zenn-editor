@@ -39,6 +39,19 @@
 .embed-slideshare iframe {
   border: 1px solid $c-contrast;
 }
+.embed-zenn-link {
+  margin: 1rem auto;
+  iframe {
+    height: 135px;
+    width: 100%;
+    display: block;
+  }
+}
+// .embed-zenn-link is appended just before <a/>. ref: zenn-init-embed
+.embed-zenn-link + a,
+.embed-zenn-link + a + br {
+  display: none;
+}
 
 // katex
 eqn {

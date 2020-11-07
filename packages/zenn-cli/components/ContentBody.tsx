@@ -8,15 +8,16 @@ type Props = {
 export const ContentBody: React.FC<Props> = ({ content, children }) => {
   return (
     <ContentWrapper>
-      <div className="znc" style={{ margin: `40px 0` }}>
+      <div style={{ margin: `40px 0` }}>
         {content ? (
           <div
+            className="znc"
             dangerouslySetInnerHTML={{
               __html: content || "✍ 本文を入力してください",
             }}
           />
         ) : (
-          children
+          <div className="znc">{children}</div>
         )}
       </div>
     </ContentWrapper>
