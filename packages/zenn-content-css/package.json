@@ -1,6 +1,6 @@
 {
   "name": "zenn-content-css",
-  "version": "0.1.53",
+  "version": "0.1.54-alpha.0",
   "license": "MIT",
   "description": "Zenn flavor content style.",
   "main": "lib/index.css",
