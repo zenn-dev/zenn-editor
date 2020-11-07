@@ -14,7 +14,7 @@ export const ChapterList: React.FC<Props> = ({
       <ListContainerTag>
         {chapters.map((chapter) => {
           return (
-            <li key={`ch${chapter.position}`} className="chapter-list-item">
+            <li key={`ch${chapter.slug}`} className="chapter-list-item">
               <Link
                 href="/books/[book_slug]/[chapter_slug]"
                 as={`/books/${bookSlug}/${chapter.slug}`}
