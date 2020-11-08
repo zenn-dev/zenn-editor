@@ -35,7 +35,7 @@ const generatePlaceholderChapters = (bookDirPath: string): void => {
 };
 
 export const exec: cliCommand = (argv) => {
-  const option: Options = {
+  const options: Options = {
     price: 0,
     published: "false",
     slug: "",
@@ -64,11 +64,12 @@ export const exec: cliCommand = (argv) => {
       console.log(NewBookHelpText);
       return;
     }
-    option.slug = args["--slug"] || generateSlug();
-    option.title = args["--title"] || "";
-    option.summary = args["--summary"] || "";
-    option.published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
-    option.price = args["--price"] || 0; // デフォルトは¥0
+
+    options.slug = args["--slug"] || generateSlug();
+    options.title = args["--title"] || "";
+    options.summary = args["--summary"] || "";
+    options.published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+    options.price = args["--price"] || 0; // デフォルトは¥0
   } catch (e) {
     if (e.code === "ARG_UNKNOWN_OPTION") {
       console.log(colors.red(InvalidOption));
@@ -76,7 +77,7 @@ export const exec: cliCommand = (argv) => {
     }
   }
 
-  const { price, published, slug, title, summary } = option;
+  const { slug, title, published, summary, price } = options;
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
     console.error(colors.red(`エラー：${errorMessage}`));
