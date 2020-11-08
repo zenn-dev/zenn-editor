@@ -3,31 +3,47 @@ import { cliCommand } from "..";
 import { build } from "./build";
 import chokidar from "chokidar";
 import socketIo from "socket.io";
-import { PreviewHelpText } from "../constants";
+import { InvalidOption, PreviewHelpText } from "../constants";
+import colors from "colors/safe";
+
+type Options = {
+  port: number;
+  shouldWatch: boolean;
+};
 
 export const exec: cliCommand = async (argv) => {
-  const args = arg(
-    {
-      // Types
-      "--port": Number,
-      "--no-watch": Boolean,
-      "--help": Boolean,
+  const options: Options = { shouldWatch: false, port: 8000 };
+  try {
+    const args = arg(
+      {
+        // Types
+        "--port": Number,
+        "--no-watch": Boolean,
+        "--help": Boolean,
 
-      // Alias
-      "-p": "--port",
-      "-h": "--help",
-    },
-    { argv }
-  );
+        // Alias
+        "-p": "--port",
+        "-h": "--help",
+      },
+      { argv }
+    );
 
-  const help = args["--help"];
-  if (help) {
-    console.log(PreviewHelpText);
-    return;
+    const help = args["--help"];
+    if (help) {
+      console.log(PreviewHelpText);
+      return;
+    }
+
+    options.port = args["--port"] || 8000;
+    options.shouldWatch = !args["--no-watch"];
+  } catch (e) {
+    if (e.code === "ARG_UNKNOWN_OPTION") {
+      console.log(colors.red(InvalidOption));
+      return;
+    }
   }
 
-  const port = args["--port"] || 8000;
-  const shouldWatch = !args["--no-watch"];
+  const { port, shouldWatch } = options;
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
