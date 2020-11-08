@@ -1,8 +1,8 @@
-type Props = {
-  cacheKey: string
+type Options = {
+  cacheKey?: string
 }
 
-export default function linkToCard({ cacheKey }: Props) {
+export default function linkToCard(options?: Options) {
   const targetLinks = document.querySelectorAll(".znc > p > a")
   targetLinks.forEach((linkElem)=>{
     const prevSibling = linkElem.previousSibling;
@@ -16,7 +16,7 @@ export default function linkToCard({ cacheKey }: Props) {
 
     const iframContainer = document.createElement("div");
     iframContainer.classList.add('embed-zenn-link');
-    iframContainer.innerHTML = `<iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(href)}&key=${cacheKey ? encodeURIComponent(cacheKey) : ''}" frameborder="0" scrolling="no"></iframe>`
+    iframContainer.innerHTML = `<iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(href)}&key=${options?.cacheKey ? encodeURIComponent(options.cacheKey) : ''}" frameborder="0" scrolling="no"></iframe>`
     linkElem.parentElement?.insertBefore(iframContainer, linkElem);
   })
 }
