@@ -58,7 +58,7 @@ export const exec: cliCommand = (argv) => {
       { argv }
     );
 
-    // if required help, show help text and return.
+    // Show help text and return if required.
     const help = args["--help"];
     if (help) {
       console.log(NewBookHelpText);

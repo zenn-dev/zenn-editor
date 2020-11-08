@@ -12,7 +12,7 @@ import { InvalidOption, NewArticleHelpText } from "./constants";
 
 const pickRandomEmoji = () => {
   // prettier-ignore
-  const emojiList = ["😺", "📘", "📚", "📑", "😊", "😎", "👻", "🤖", "😸", "😽", "💨", "💬", "💭", "👋", "👌", "👏", "🙌", "🙆", "🐕", "🐈", "🦁", "🐷", "🦔", "🐥", "🐡", "🐙", "🍣", "🕌", "🌟", "🔥", "🌊", "🎃", "✨", "🎉", "⛳", "🔖", "📝", "🗂", "📌"]
+  const emojiList =["😺","📘","📚","📑","😊","😎","👻","🤖","😸","😽","💨","💬","💭","👋", "👌","👏","🙌","🙆","🐕","🐈","🦁","🐷","🦔","🐥","🐡","🐙","🍣","🕌","🌟","🔥","🌊","🎃","✨","🎉","⛳","🔖","📝","🗂","📌"]
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 };
 
@@ -48,7 +48,7 @@ export const exec: cliCommand = (argv) => {
       { argv }
     );
 
-    // if required help, show help text and return.
+    // Show help text and return if required.
     const help = args["--help"];
     if (help) {
       console.log(NewArticleHelpText);
