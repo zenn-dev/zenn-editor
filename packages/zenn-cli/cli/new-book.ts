@@ -8,7 +8,7 @@ import {
   getSlugErrorMessage,
 } from "../utils/shared/slug-helper";
 import colors from "colors/safe";
-import { NewBookHelpText } from "./constants";
+import { invalidOption, newBookHelpText } from "./constants";
 
 const generatePlaceholderChapters = (bookDirPath: string): void => {
   const chapterBody = ["---", 'title: ""', "---"].join("\n") + "\n";
@@ -26,29 +26,48 @@ const generatePlaceholderChapters = (bookDirPath: string): void => {
   });
 };
 
-export const exec: cliCommand = (argv) => {
-  const args = arg(
-    {
-      // Types
-      "--slug": String,
-      "--title": String,
-      "--published": String,
-      "--summary": String,
-      "--price": Number,
-      "--help": Boolean,
-      // Alias
-      "-h": "--help",
-    },
-    { argv }
-  );
+function parseArgs(argv: string[]) {
+  try {
+    return arg(
+      {
+        // Types
+        "--slug": String,
+        "--title": String,
+        "--published": String,
+        "--summary": String,
+        "--price": Number,
+        "--help": Boolean,
+        // Alias
+        "-h": "--help",
+      },
+      { argv }
+    );
+  } catch (e) {
+    if (e.code === "ARG_UNKNOWN_OPTION") {
+      console.log(colors.red(invalidOption));
+    } else {
+      console.log(colors.red("エラーが発生しました"));
+    }
+    console.log(newBookHelpText);
+    return null;
+  }
+}
 
-  const help = args["--help"];
-  if (help) {
-    console.log(NewBookHelpText);
+export const exec: cliCommand = (argv) => {
+  const args = parseArgs(argv);
+  if (!args) return;
+
+  if (args["--help"]) {
+    console.log(newBookHelpText);
     return;
   }
 
   const slug = args["--slug"] || generateSlug();
+  const title = args["--title"] || "";
+  const summary = args["--summary"] || "";
+  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+  const price = args["--price"] || 0; // デフォルトは¥0
+
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
     console.error(colors.red(`エラー：${errorMessage}`));
@@ -60,10 +79,6 @@ export const exec: cliCommand = (argv) => {
   } catch (e) {
     // already exist => do nothing
   }
-  const title = args["--title"] || "";
-  const summary = args["--summary"] || "";
-  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
-  const price = args["--price"] || 0; // デフォルトは¥0
 
   const configYamlBody =
     [

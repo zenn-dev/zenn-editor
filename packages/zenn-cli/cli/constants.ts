@@ -13,7 +13,7 @@ Command:
 
 // exclude help about below options.
 // --no-watch              サーバーが `articles` 及び `books` の変更を監視しなくなる.
-export const PreviewHelpText = `
+export const previewHelpText = `
 Command:
   zenn preview      コンテンツをブラウザでプレビュー
 
@@ -34,7 +34,7 @@ Example:
 
 // exclude help about below options.
 // --published BOOL 記事の公開設定. true か false を指定する. デフォルトで"false".
-export const NewArticleHelpText = `
+export const newArticleHelpText = `
 Command:
   zenn new:article  新しい記事を追加
 
@@ -60,7 +60,7 @@ Example:
 // --published BOOL 記事の公開設定. true か false を指定する. デフォルトで"false".
 // --summary SUMMARY 本の紹介文. 有料の本であっても公開される.
 // --price PRICE    本の価格. 有料の場合200〜5000. デフォルトは0.
-export const NewBookHelpText = `
+export const newBookHelpText = `
 Command:
   zenn new:book     新しい本を追加
 
@@ -78,3 +78,5 @@ Example:
   👇詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
+
+export const invalidOption = `😿 不正なオプションが含まれています`;

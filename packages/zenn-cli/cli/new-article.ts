@@ -8,7 +8,7 @@ import {
   getSlugErrorMessage,
 } from "../utils/shared/slug-helper";
 import colors from "colors/safe";
-import { NewArticleHelpText } from "./constants";
+import { invalidOption, newArticleHelpText } from "./constants";
 
 const pickRandomEmoji = () => {
   // prettier-ignore
@@ -16,40 +16,57 @@ const pickRandomEmoji = () => {
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 };
 
-export const exec: cliCommand = (argv) => {
-  const args = arg(
-    {
-      // Types
-      "--slug": String,
-      "--title": String,
-      "--type": String,
-      "--emoji": String,
-      "--published": String,
-      "--help": Boolean,
-      // Alias
-      "-h": "--help",
-    },
-    { argv }
-  );
 
-  const help = args["--help"];
-  if (help) {
-    console.log(NewArticleHelpText);
+function parseArgs(argv: string[]) {
+  try {
+    return arg(
+      {
+        // Types
+        "--slug": String,
+        "--title": String,
+        "--type": String,
+        "--emoji": String,
+        "--published": String,
+        "--help": Boolean,
+        // Alias
+        "-h": "--help",
+      },
+      { argv }
+    );
+  } catch (e) {
+    if (e.code === "ARG_UNKNOWN_OPTION") {
+      console.log(colors.red(invalidOption));
+    } else {
+      console.log(colors.red("エラーが発生しました"));
+    }
+    console.log(newArticleHelpText);
+    return null;
+  }
+}
+
+export const exec: cliCommand = (argv) => {
+  const args = parseArgs(argv);
+  if (!args) return;
+
+  if (args["--help"]) {
+    console.log(newArticleHelpText);
     return;
   }
 
   const slug = args["--slug"] || generateSlug();
+  const title = args["--title"] || "";
+  const emoji = args["--emoji"] || pickRandomEmoji();
+  const type = args["--type"] === "idea" ? "idea" : "tech";
+  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
     console.error(colors.red(`エラー：${errorMessage}`));
     process.exit(1);
   }
+
   const fileName = `${slug}.md`;
   const filePath = path.join(process.cwd(), "articles", fileName);
-  const title = args["--title"] || "";
-  const emoji = args["--emoji"] || pickRandomEmoji();
-  const type = args["--type"] === "idea" ? "idea" : "tech";
-  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
 
   const fileBody =
     [
