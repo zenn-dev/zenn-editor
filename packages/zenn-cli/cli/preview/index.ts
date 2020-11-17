@@ -3,7 +3,7 @@ import { cliCommand } from "..";
 import { build } from "./build";
 import chokidar from "chokidar";
 import socketIo from "socket.io";
-import { InvalidOption, PreviewHelpText } from "../constants";
+import { invalidOption, previewHelpText } from "../constants";
 import colors from "colors/safe";
 
 type Options = {
@@ -31,7 +31,7 @@ export const exec: cliCommand = async (argv) => {
     // Show help text and return if required.
     const help = args["--help"];
     if (help) {
-      console.log(PreviewHelpText);
+      console.log(previewHelpText);
       return;
     }
 
@@ -39,7 +39,7 @@ export const exec: cliCommand = async (argv) => {
     options.shouldWatch = !args["--no-watch"];
   } catch (e) {
     if (e.code === "ARG_UNKNOWN_OPTION") {
-      console.log(colors.red(InvalidOption));
+      console.log(colors.red(invalidOption));
       return;
     }
   }

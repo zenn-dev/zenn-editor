@@ -8,7 +8,7 @@ import {
   getSlugErrorMessage,
 } from "../utils/shared/slug-helper";
 import colors from "colors/safe";
-import { InvalidOption, NewArticleHelpText } from "./constants";
+import { invalidOption, newArticleHelpText } from "./constants";
 
 const pickRandomEmoji = () => {
   // prettier-ignore
@@ -51,7 +51,7 @@ export const exec: cliCommand = (argv) => {
     // Show help text and return if required.
     const help = args["--help"];
     if (help) {
-      console.log(NewArticleHelpText);
+      console.log(newArticleHelpText);
       return;
     }
 
@@ -62,7 +62,7 @@ export const exec: cliCommand = (argv) => {
     options.published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
   } catch (e) {
     if (e.code === "ARG_UNKNOWN_OPTION") {
-      console.log(colors.red(InvalidOption));
+      console.log(colors.red(invalidOption));
       return;
     }
   }

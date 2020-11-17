@@ -8,7 +8,7 @@ import {
   getSlugErrorMessage,
 } from "../utils/shared/slug-helper";
 import colors from "colors/safe";
-import { InvalidOption, NewBookHelpText } from "./constants";
+import { invalidOption, newBookHelpText } from "./constants";
 
 type Options = {
   slug: string;
@@ -61,7 +61,7 @@ export const exec: cliCommand = (argv) => {
     // Show help text and return if required.
     const help = args["--help"];
     if (help) {
-      console.log(NewBookHelpText);
+      console.log(newBookHelpText);
       return;
     }
 
@@ -72,7 +72,7 @@ export const exec: cliCommand = (argv) => {
     options.price = args["--price"] || 0; // デフォルトは¥0
   } catch (e) {
     if (e.code === "ARG_UNKNOWN_OPTION") {
-      console.log(colors.red(InvalidOption));
+      console.log(colors.red(invalidOption));
       return;
     }
   }
