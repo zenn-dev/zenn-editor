@@ -16,24 +16,10 @@ const pickRandomEmoji = () => {
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 };
 
-type Options = {
-  slug: string;
-  title: string;
-  type: string;
-  emoji: string;
-  published: string;
-};
 
-export const exec: cliCommand = (argv) => {
-  const options: Options = {
-    emoji: "",
-    published: "",
-    slug: "",
-    title: "",
-    type: "",
-  };
+function parseArgs(argv: string[]) {
   try {
-    const args = arg(
+    return arg(
       {
         // Types
         "--slug": String,
@@ -47,32 +33,38 @@ export const exec: cliCommand = (argv) => {
       },
       { argv }
     );
-
-    // Show help text and return if required.
-    const help = args["--help"];
-    if (help) {
-      console.log(newArticleHelpText);
-      return;
-    }
-
-    options.slug = args["--slug"] || generateSlug();
-    options.title = args["--title"] || "";
-    options.emoji = args["--emoji"] || pickRandomEmoji();
-    options.type = args["--type"] === "idea" ? "idea" : "tech";
-    options.published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
   } catch (e) {
     if (e.code === "ARG_UNKNOWN_OPTION") {
       console.log(colors.red(invalidOption));
-      return;
+    } else {
+      console.log(colors.red("エラーが発生しました"));
     }
+    console.log(newArticleHelpText);
+    return null;
+  }
+}
+
+export const exec: cliCommand = (argv) => {
+  const args = parseArgs(argv);
+  if (!args) return;
+
+  if (args["--help"]) {
+    console.log(newArticleHelpText);
+    return;
   }
 
-  const { slug, title, emoji, type, published } = options;
+  const slug = args["--slug"] || generateSlug();
+  const title = args["--title"] || "";
+  const emoji = args["--emoji"] || pickRandomEmoji();
+  const type = args["--type"] === "idea" ? "idea" : "tech";
+  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
     console.error(colors.red(`エラー：${errorMessage}`));
     process.exit(1);
   }
+
   const fileName = `${slug}.md`;
   const filePath = path.join(process.cwd(), "articles", fileName);
 

@@ -6,15 +6,10 @@ import socketIo from "socket.io";
 import { invalidOption, previewHelpText } from "../constants";
 import colors from "colors/safe";
 
-type Options = {
-  port: number;
-  shouldWatch: boolean;
-};
 
-export const exec: cliCommand = async (argv) => {
-  const options: Options = { shouldWatch: false, port: 8000 };
+function parseArgs(argv: string[]) {
   try {
-    const args = arg(
+    return arg(
       {
         // Types
         "--port": Number,
@@ -27,27 +22,33 @@ export const exec: cliCommand = async (argv) => {
       },
       { argv }
     );
-
-    // Show help text and return if required.
-    const help = args["--help"];
-    if (help) {
-      console.log(previewHelpText);
-      return;
-    }
-
-    options.port = args["--port"] || 8000;
-    options.shouldWatch = !args["--no-watch"];
   } catch (e) {
     if (e.code === "ARG_UNKNOWN_OPTION") {
       console.log(colors.red(invalidOption));
-      return;
+    } else {
+      console.log(colors.red("エラーが発生しました"));
     }
+    console.log(previewHelpText);
+    return null;
+  }
+}
+
+export const exec: cliCommand = async (argv) => {
+  const args = parseArgs(argv);
+  if (!args) return;
+
+  if (args["--help"]) {
+    console.log(previewHelpText);
+    return;
   }
 
-  const { port, shouldWatch } = options;
+  const port = args["--port"] || 8000;
+  const shouldWatch = !args["--no-watch"];
+
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
   const server = await build({ port, previewUrl, srcDir });
+
   if (shouldWatch) {
     const watcher = chokidar.watch(`${process.cwd()}/{articles,books}/**/*`);
     const io = socketIo(server);

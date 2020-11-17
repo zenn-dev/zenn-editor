@@ -79,4 +79,4 @@ Example:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
-export const invalidOption = `不正なオプションが含まれています!`;
+export const invalidOption = `😿 不正なオプションが含まれています`;

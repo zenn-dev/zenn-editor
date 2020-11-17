@@ -10,14 +10,6 @@ import {
 import colors from "colors/safe";
 import { invalidOption, newBookHelpText } from "./constants";
 
-type Options = {
-  slug: string;
-  title: string;
-  published: string;
-  summary: string;
-  price: number;
-};
-
 const generatePlaceholderChapters = (bookDirPath: string): void => {
   const chapterBody = ["---", 'title: ""', "---"].join("\n") + "\n";
   ["example1.md", "example2.md"].forEach((chapterFileName) => {
@@ -34,16 +26,9 @@ const generatePlaceholderChapters = (bookDirPath: string): void => {
   });
 };
 
-export const exec: cliCommand = (argv) => {
-  const options: Options = {
-    price: 0,
-    published: "false",
-    slug: "",
-    summary: "",
-    title: "",
-  };
+function parseArgs(argv: string[]) {
   try {
-    const args = arg(
+    return arg(
       {
         // Types
         "--slug": String,
@@ -57,27 +42,32 @@ export const exec: cliCommand = (argv) => {
       },
       { argv }
     );
-
-    // Show help text and return if required.
-    const help = args["--help"];
-    if (help) {
-      console.log(newBookHelpText);
-      return;
-    }
-
-    options.slug = args["--slug"] || generateSlug();
-    options.title = args["--title"] || "";
-    options.summary = args["--summary"] || "";
-    options.published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
-    options.price = args["--price"] || 0; // デフォルトは¥0
   } catch (e) {
     if (e.code === "ARG_UNKNOWN_OPTION") {
       console.log(colors.red(invalidOption));
-      return;
+    } else {
+      console.log(colors.red("エラーが発生しました"));
     }
+    console.log(newBookHelpText);
+    return null;
+  }
+}
+
+export const exec: cliCommand = (argv) => {
+  const args = parseArgs(argv);
+  if (!args) return;
+
+  if (args["--help"]) {
+    console.log(newBookHelpText);
+    return;
   }
 
-  const { slug, title, published, summary, price } = options;
+  const slug = args["--slug"] || generateSlug();
+  const title = args["--title"] || "";
+  const summary = args["--summary"] || "";
+  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+  const price = args["--price"] || 0; // デフォルトは¥0
+
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
     console.error(colors.red(`エラー：${errorMessage}`));
