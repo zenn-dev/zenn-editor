@@ -8,7 +8,15 @@ import {
   getSlugErrorMessage,
 } from "../utils/shared/slug-helper";
 import colors from "colors/safe";
-import { NewBookHelpText } from "./constants";
+import { InvalidOption, NewBookHelpText } from "./constants";
+
+type Options = {
+  slug: string;
+  title: string;
+  published: string;
+  summary: string;
+  price: number;
+};
 
 const generatePlaceholderChapters = (bookDirPath: string): void => {
   const chapterBody = ["---", 'title: ""', "---"].join("\n") + "\n";
@@ -27,28 +35,49 @@ const generatePlaceholderChapters = (bookDirPath: string): void => {
 };
 
 export const exec: cliCommand = (argv) => {
-  const args = arg(
-    {
-      // Types
-      "--slug": String,
-      "--title": String,
-      "--published": String,
-      "--summary": String,
-      "--price": Number,
-      "--help": Boolean,
-      // Alias
-      "-h": "--help",
-    },
-    { argv }
-  );
+  const options: Options = {
+    price: 0,
+    published: "false",
+    slug: "",
+    summary: "",
+    title: "",
+  };
+  try {
+    const args = arg(
+      {
+        // Types
+        "--slug": String,
+        "--title": String,
+        "--published": String,
+        "--summary": String,
+        "--price": Number,
+        "--help": Boolean,
+        // Alias
+        "-h": "--help",
+      },
+      { argv }
+    );
 
-  const help = args["--help"];
-  if (help) {
-    console.log(NewBookHelpText);
-    return;
+    // Show help text and return if required.
+    const help = args["--help"];
+    if (help) {
+      console.log(NewBookHelpText);
+      return;
+    }
+
+    options.slug = args["--slug"] || generateSlug();
+    options.title = args["--title"] || "";
+    options.summary = args["--summary"] || "";
+    options.published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+    options.price = args["--price"] || 0; // デフォルトは¥0
+  } catch (e) {
+    if (e.code === "ARG_UNKNOWN_OPTION") {
+      console.log(colors.red(InvalidOption));
+      return;
+    }
   }
 
-  const slug = args["--slug"] || generateSlug();
+  const { slug, title, published, summary, price } = options;
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
     console.error(colors.red(`エラー：${errorMessage}`));
@@ -60,10 +89,6 @@ export const exec: cliCommand = (argv) => {
   } catch (e) {
     // already exist => do nothing
   }
-  const title = args["--title"] || "";
-  const summary = args["--summary"] || "";
-  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
-  const price = args["--price"] || 0; // デフォルトは¥0
 
   const configYamlBody =
     [

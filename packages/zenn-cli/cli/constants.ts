@@ -78,3 +78,5 @@ Example:
   👇詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
+
+export const InvalidOption = `不正なオプションが含まれています!`;
