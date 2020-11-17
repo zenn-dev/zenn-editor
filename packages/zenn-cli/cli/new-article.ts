@@ -8,7 +8,7 @@ import {
   getSlugErrorMessage,
 } from "../utils/shared/slug-helper";
 import colors from "colors/safe";
-import { NewArticleHelpText } from "./constants";
+import { InvalidOption, NewArticleHelpText } from "./constants";
 
 const pickRandomEmoji = () => {
   // prettier-ignore
@@ -16,29 +16,58 @@ const pickRandomEmoji = () => {
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 };
 
-export const exec: cliCommand = (argv) => {
-  const args = arg(
-    {
-      // Types
-      "--slug": String,
-      "--title": String,
-      "--type": String,
-      "--emoji": String,
-      "--published": String,
-      "--help": Boolean,
-      // Alias
-      "-h": "--help",
-    },
-    { argv }
-  );
+type Options = {
+  slug: string;
+  title: string;
+  type: string;
+  emoji: string;
+  published: string;
+};
 
-  const help = args["--help"];
-  if (help) {
-    console.log(NewArticleHelpText);
-    return;
+export const exec: cliCommand = (argv) => {
+  const options: Options = {
+    emoji: "",
+    published: "",
+    slug: "",
+    title: "",
+    type: "",
+  };
+  try {
+    const args = arg(
+      {
+        // Types
+        "--slug": String,
+        "--title": String,
+        "--type": String,
+        "--emoji": String,
+        "--published": String,
+        "--help": Boolean,
+        // Alias
+        "-h": "--help",
+      },
+      { argv }
+    );
+
+    // Show help text and return if required.
+    const help = args["--help"];
+    if (help) {
+      console.log(NewArticleHelpText);
+      return;
+    }
+
+    options.slug = args["--slug"] || generateSlug();
+    options.title = args["--title"] || "";
+    options.emoji = args["--emoji"] || pickRandomEmoji();
+    options.type = args["--type"] === "idea" ? "idea" : "tech";
+    options.published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+  } catch (e) {
+    if (e.code === "ARG_UNKNOWN_OPTION") {
+      console.log(colors.red(InvalidOption));
+      return;
+    }
   }
 
-  const slug = args["--slug"] || generateSlug();
+  const { slug, title, emoji, type, published } = options;
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
     console.error(colors.red(`エラー：${errorMessage}`));
@@ -46,10 +75,6 @@ export const exec: cliCommand = (argv) => {
   }
   const fileName = `${slug}.md`;
   const filePath = path.join(process.cwd(), "articles", fileName);
-  const title = args["--title"] || "";
-  const emoji = args["--emoji"] || pickRandomEmoji();
-  const type = args["--type"] === "idea" ? "idea" : "tech";
-  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
 
   const fileBody =
     [
