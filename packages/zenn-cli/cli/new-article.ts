@@ -16,7 +16,6 @@ const pickRandomEmoji = () => {
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 };
 
-
 function parseArgs(argv: string[]) {
   try {
     return arg(
