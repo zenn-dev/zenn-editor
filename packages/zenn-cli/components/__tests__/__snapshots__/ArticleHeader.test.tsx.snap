@@ -42,7 +42,7 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
             }
           }
         >
-          h
+          👩‍💻
         </span>
       </span>
     </div>
@@ -93,22 +93,6 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
         
         （アイデア）
       </span>
-    </div>
-    <div>
-      <div
-        className="content-header__error-title"
-      >
-        1
-        件の修正が必要です
-      </div>
-      <Unknown
-        errorMessage={
-          Object {
-            "isCritical": true,
-            "message": "絵文字（emoji）を1つだけ指定してください",
-          }
-        }
-      />
     </div>
     <a
       className="content-header__link"
