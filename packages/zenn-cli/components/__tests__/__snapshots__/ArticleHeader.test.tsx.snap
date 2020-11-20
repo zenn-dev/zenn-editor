@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
+<header
+  className="content-header"
+>
+  <Unknown>
+    <h1
+      className="content-header__title"
+    >
+      test article
+    </h1>
+    <div
+      className="content-header__row"
+    >
+      <span
+        className="content-header__row-title"
+      >
+        slug
+      </span>
+      <span
+        className="content-header__row-result"
+      >
+        dummy-article
+      </span>
+    </div>
+    <div
+      className="content-header__row"
+    >
+      <span
+        className="content-header__row-title"
+      >
+        emoji
+      </span>
+      <span
+        className="content-header__row-result"
+      >
+        <span
+          style={
+            Object {
+              "fontSize": "20px",
+            }
+          }
+        >
+          h
+        </span>
+      </span>
+    </div>
+    <div
+      className="content-header__row"
+    >
+      <span
+        className="content-header__row-title"
+      >
+        topics
+      </span>
+      <span
+        className="content-header__row-result"
+      >
+        <span
+          className="content-header__topic"
+        >
+          Zenn
+        </span>
+      </span>
+    </div>
+    <div
+      className="content-header__row"
+    >
+      <span
+        className="content-header__row-title"
+      >
+        published
+      </span>
+      <span
+        className="content-header__row-result"
+      >
+        false（下書き）
+      </span>
+    </div>
+    <div
+      className="content-header__row"
+    >
+      <span
+        className="content-header__row-title"
+      >
+        type
+      </span>
+      <span
+        className="content-header__row-result"
+      >
+        idea
+        
+        （アイデア）
+      </span>
+    </div>
+    <div>
+      <div
+        className="content-header__error-title"
+      >
+        1
+        件の修正が必要です
+      </div>
+      <Unknown
+        errorMessage={
+          Object {
+            "isCritical": true,
+            "message": "絵文字（emoji）を1つだけ指定してください",
+          }
+        }
+      />
+    </div>
+    <a
+      className="content-header__link"
+      href="https://zenn.dev/zenn/articles/zenn-cli-guide"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      記事の作成方法 →
+    </a>
+  </Unknown>
+</header>
+`;

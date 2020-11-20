@@ -1,3 +1,4 @@
+import React from "react";
 import { Article } from "@types";
 import { getArticleErrors } from "@utils/validator";
 import { ContentWrapper } from "@components/ContentWrapper";
