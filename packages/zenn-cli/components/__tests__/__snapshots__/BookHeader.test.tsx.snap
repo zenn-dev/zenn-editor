@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
+exports[`<BookHeader/> should render and match the snapshot 1`] = `
 <header
   className="content-header"
 >
@@ -8,7 +8,7 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
     <h1
       className="content-header__title"
     >
-      test article
+      testbookdummy
     </h1>
     <div
       className="content-header__row"
@@ -21,7 +21,8 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
       <span
         className="content-header__row-result"
       >
-        dummy-article
+         
+        test-book-dummy
       </span>
     </div>
     <div
@@ -30,20 +31,19 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
       <span
         className="content-header__row-title"
       >
-        emoji
+        summary
       </span>
       <span
         className="content-header__row-result"
-      >
-        <span
-          style={
-            Object {
-              "fontSize": "20px",
-            }
+        style={
+          Object {
+            "whiteSpace": "pre-line",
           }
-        >
-          😿
-        </span>
+        }
+      >
+        OK
+OK
+OK
       </span>
     </div>
     <div
@@ -60,7 +60,7 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
         <span
           className="content-header__topic"
         >
-          Zenn
+          zenn
         </span>
       </span>
     </div>
@@ -84,23 +84,46 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
       <span
         className="content-header__row-title"
       >
-        type
+        price
       </span>
       <span
         className="content-header__row-result"
       >
-        idea
+        100
         
-        （アイデア）
       </span>
+    </div>
+    <div>
+      <div
+        className="content-header__error-title"
+      >
+        2
+        件の修正が必要です
+      </div>
+      <Unknown
+        errorMessage={
+          Object {
+            "isCritical": true,
+            "message": "price（本の価格）を有料にする場合、200〜5000の間で指定してください",
+          }
+        }
+      />
+      <Unknown
+        errorMessage={
+          Object {
+            "isCritical": false,
+            "message": "本のカバー画像（cover.pngもしくはcover.jpg）を「/books/test-book-dummy」ディレクトリ内に配置してください",
+          }
+        }
+      />
     </div>
     <a
       className="content-header__link"
-      href="https://zenn.dev/zenn/articles/zenn-cli-guide"
+      href="https://zenn.dev/zenn/articles/zenn-cli-guide#cliで本（book）を管理する"
       rel="noopener noreferrer"
       target="_blank"
     >
-      記事の作成方法 →
+      本の作成方法 →
     </a>
   </Unknown>
 </header>

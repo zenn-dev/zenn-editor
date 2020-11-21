@@ -6,7 +6,7 @@ import { createRenderer } from "react-test-renderer/shallow";
 const renderer = createRenderer();
 const dummyArticle: Article = {
   content: "test",
-  emoji: "👩‍💻",
+  emoji: "😿",
   published: false,
   slug: "dummy-article",
   tags: [],

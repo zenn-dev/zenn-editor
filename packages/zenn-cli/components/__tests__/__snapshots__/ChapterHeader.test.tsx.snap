@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChapterHeader /> should render and match the snapshot 1`] = `
+<header
+  className="content-header"
+>
+  <Unknown>
+    <div
+      className="content-header__chapter-info"
+    />
+    <h1
+      className="content-header__title"
+    >
+      No Title
+    </h1>
+    <div
+      className="content-header__row"
+    >
+      <span
+        className="content-header__row-title"
+      >
+        slug
+      </span>
+      <span
+        className="content-header__row-result"
+      >
+        
+      </span>
+    </div>
+    <div>
+      <div
+        className="content-header__error-title"
+      >
+        2
+        件の修正が必要です
+      </div>
+      <Unknown
+        errorMessage={
+          Object {
+            "isCritical": true,
+            "message": "チャプターのslugの値（）が不正です。半角英数字（a-z0-9）とハイフン（-）の1〜50字の組み合わせにしてください",
+          }
+        }
+      />
+      <Unknown
+        errorMessage={
+          Object {
+            "isCritical": true,
+            "message": "title（タイトル）を入力してください",
+          }
+        }
+      />
+    </div>
+    <a
+      className="content-header__link"
+      href=" https://zenn.dev/zenn/articles/zenn-cli-guide#cliで本（book）を管理する"
+      target="_blank"
+    >
+      チャプターのmdファイルの作成方法 →
+    </a>
+  </Unknown>
+</header>
+`;
