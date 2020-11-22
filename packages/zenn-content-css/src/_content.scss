@@ -4,7 +4,7 @@ em {
   font-style: italic;
 }
 strong {
-  font-weight: 700;
+  font-weight: 600;
 }
 a {
   color: #0f83fd;
@@ -86,7 +86,7 @@ ol {
       content: counter(number);
       counter-increment: number;
       background: rgba(2, 13, 60, 0.6);
-      font-weight: 700;
+      font-weight: 600;
     }
   }
 }
@@ -169,8 +169,8 @@ hr {
 blockquote {
   font-size: 0.95rem;
   margin: 1.4rem 0;
-  border-left: solid 3px #626e77;
-  padding: 0.2em 0 0.2em 0.9em;
+  border-left: solid 3px #b3bfc7;
+  padding: 0 0 0 0.7em;
   color: #626e77;
   p {
     margin: 1rem 0;
@@ -203,7 +203,7 @@ td {
   border: solid 1px $c-gray-border;
 }
 th {
-  font-weight: 700;
+  font-weight: 600;
   background: $c-primary-bg;
 }
 code {
@@ -220,7 +220,7 @@ pre {
   background: $c-contrast;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border-radius: 5px;
+  border-radius: 3px;
   word-break: normal; // iOSで折り返されるのを防ぐ
   word-wrap: normal; // iOSで折り返されるのを防ぐ
   /* flex + codeの隣に疑似要素を配置することで横スクロール時の右端の余白を作る */
@@ -236,20 +236,21 @@ pre {
     background: transparent;
     font-size: 0.9em;
     color: #fff;
-    @include mq(sm) {
-      font-size: 13px;
-    }
   }
   & > code {
     display: block;
     padding: 1.1rem; // このようにしないとpreのスクロールバーがコードに重なってしまう
+    @include mq(sm) {
+      padding: 1rem 0.8rem;
+      font-size: 13px;
+    }
   }
 }
 .code-block-container {
   position: relative;
   margin: 1.3rem 0;
   background: $c-contrast;
-  border-radius: 5px;
+  border-radius: 3px;
   pre {
     background: transparent;
     margin: 0;
