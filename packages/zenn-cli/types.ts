@@ -59,3 +59,10 @@ export type ItemValidator = {
   getMessage: (item?: Item) => string;
   isInvalid: (item: Item) => boolean;
 };
+
+export type Profile = {
+  content?: string;
+  published?: boolean;
+  name?: string;
+  favoriteSkills?: string[];
+}
