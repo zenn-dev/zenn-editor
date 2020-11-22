@@ -7,6 +7,12 @@ emoji: 👩‍💻
 published: false
 ---
 
+
+$a,b,c$は[hoge](https://hoge.fuga)を参照。
+$a,b,c$は[hoge](http://hoge.fuga)を参照。
+$a,b,c$は[hoge](http://hoge.fuga)$を参照。
+$a,b,c$は[$a](http://hoge.fuga)を参照。
+
 [this $ should be escaped](https://docs.angularjs.org/api/ng/service/$http#json-vulnerability-protection)
 [this $$ should be escaped](https://docs.angularjs.org/api/ng/service/$$http#json-vulnerability-protection)
 

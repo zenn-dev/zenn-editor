@@ -1022,6 +1022,11 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@catnose99/markdown-it-texmath@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@catnose99/markdown-it-texmath/-/markdown-it-texmath-1.0.0.tgz#a581e2e7ebe2051b4f8dab3060895eb6d939c5a2"
+  integrity sha512-bWh2Jn2WU21iZvCFWqskITi+E4Pi9fVy7i7VMvkaNMrxJBcGKfTAXzQN4MCoRA6Fsu07g87uN10G22hK6gpMRg==
+
 "@eslint/eslintrc@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.1.3.tgz#7d1a2b2358552cc04834c0979bd4275362e37085"
@@ -6716,10 +6721,6 @@ markdown-it-task-lists@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/markdown-it-task-lists/-/markdown-it-task-lists-2.1.1.tgz#f68f4d2ac2bad5a2c373ba93081a1a6848417088"
   integrity sha512-TxFAc76Jnhb2OUu+n3yz9RMu4CwGfaT788br6HhEDlvWfdeJcLUsxk1Hgw2yJio0OXsxv7pyIPmvECY7bMbluA==
-
-"markdown-it-texmath@git+https://github.com/catnose99/markdown-it-texmath.git":
-  version "0.8.0"
-  resolved "git+https://github.com/catnose99/markdown-it-texmath.git#4ac4dee60ee1118cc3dcb87d35dadcf361e57e79"
 
 markdown-it@^11.0.0:
   version "11.0.1"
