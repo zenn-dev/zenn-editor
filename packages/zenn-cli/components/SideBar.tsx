@@ -67,6 +67,11 @@ export const SideBar: React.FC<{
           />
         ))}
       </div>
+      <div className="sidebar-collection__title">
+        <Link href="/profile" passHref>
+          ✏️　Your Profile
+        </Link>
+      </div>
       <a
         href="https://zenn.dev/dashboard/uploader"
         className="sidebar-external-link"
