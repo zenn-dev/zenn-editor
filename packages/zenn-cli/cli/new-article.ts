@@ -27,7 +27,7 @@ function parseArgs(argv: string[]) {
         "--type": String,
         "--emoji": String,
         "--published": String,
-        "--pretty": Boolean,
+        "--machine-readable": Boolean,
         "--help": Boolean,
         // Alias
         "-h": "--help",
@@ -59,6 +59,7 @@ export const exec: cliCommand = (argv) => {
   const emoji = args["--emoji"] || pickRandomEmoji();
   const type = args["--type"] === "idea" ? "idea" : "tech";
   const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+  const machineReadable = args["--machine-readable"] === true // デフォルトはfalse
 
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
@@ -86,7 +87,11 @@ export const exec: cliCommand = (argv) => {
       fileBody,
       { flag: "wx" } // Don't overwrite
     );
-    console.log(`📄${colors.green(fileName)} created.`);
+    if (machineReadable) {
+      console.log(fileName);
+    } else {
+      console.log(`📄${colors.green(fileName)} created.`);
+    }
   } catch (e) {
     console.log(colors.red("エラーが発生しました") + e);
   }
