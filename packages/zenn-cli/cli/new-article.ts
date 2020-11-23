@@ -27,6 +27,7 @@ function parseArgs(argv: string[]) {
         "--type": String,
         "--emoji": String,
         "--published": String,
+        "--pretty": Boolean,
         "--help": Boolean,
         // Alias
         "-h": "--help",
