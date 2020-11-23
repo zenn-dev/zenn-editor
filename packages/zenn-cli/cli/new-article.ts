@@ -59,7 +59,7 @@ export const exec: cliCommand = (argv) => {
   const emoji = args["--emoji"] || pickRandomEmoji();
   const type = args["--type"] === "idea" ? "idea" : "tech";
   const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
-  const machineReadable = args["--machine-readable"] === true // デフォルトはfalse
+  const machineReadable = args["--machine-readable"] === true;
 
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);

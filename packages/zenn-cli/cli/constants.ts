@@ -46,7 +46,7 @@ Options:
   --title TITLE      記事のタイトル
   --type  TYPE       記事のタイプ。tech (技術記事) / idea (アイデア記事) のどちらかから選択
   --emoji EMOJI      アイキャッチとして使われる絵文字（1文字だけ）
-  --machine-readable 他のスクリプトなどで処理に適した形で出力する
+  --machine-readable 作成成功時にファイル名のみを出力する
    
   --help, -h       このヘルプを表示
 
@@ -57,10 +57,6 @@ Example:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
-// --title TITLE    記事のタイトル
-// --published BOOL 記事の公開設定. true か false を指定する. デフォルトで"false".
-// --summary SUMMARY 本の紹介文. 有料の本であっても公開される.
-// --price PRICE    本の価格. 有料の場合200〜5000. デフォルトは0.
 export const newBookHelpText = `
 Command:
   zenn new:book     新しい本を追加
@@ -69,9 +65,13 @@ Usage:
   npx zenn new:book [options]
 
 Options:
-  --slug SLUG    記事のスラッグ。\`a-z0-9\`とハイフン(\`-\`)の12〜50字の組み合わせにする必要がある
-   
-  --help, -h     このヘルプを表示
+  --slug SLUG        本のスラッグ。\`a-z0-9\`とハイフン(\`-\`)の12〜50字の組み合わせにする必要がある
+  --title TITLE      本のタイトル
+  --published BOOL   本の公開設定。 true か false を指定する. デフォルトで"false"
+  --summary SUMMARY  本の紹介文。有料の本であっても公開される
+  --price PRICE      本の価格.。有料の場合200〜5000. デフォルトは0
+
+  --help, -h        このヘルプを表示
 
 Example:
   npx zenn new:book --slug enjoy-zenn-with-client
