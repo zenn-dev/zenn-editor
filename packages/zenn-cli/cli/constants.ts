@@ -11,19 +11,19 @@ Command:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
-// exclude help about below options.
 // --no-watch              サーバーが `articles` 及び `books` の変更を監視しなくなる.
 export const previewHelpText = `
 Command:
-  zenn preview      コンテンツをブラウザでプレビュー
+  zenn preview          コンテンツをブラウザでプレビュー
 
 Usage:
   npx zenn preview [options]
 
 Options:
-  --port PORT, -p PORT    起動するサーバーに指定したいポート. デフォルトは8000
+  --port PORT, -p PORT  起動するサーバーに指定したいポート. デフォルトは8000
+  --no-watch            ホットリロードを無効化
   
-  --help, -h              このヘルプを表示
+  --help, -h            このヘルプを表示
 
 Example:
   npx zenn preview --port 3000
