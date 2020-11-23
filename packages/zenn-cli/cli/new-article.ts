@@ -17,7 +17,7 @@ const pickRandomEmoji = () => {
 };
 
 
-function parseArgs(argv: string[]) {
+function parseArgs(argv: string[]|undefined) {
   try {
     return arg(
       {
