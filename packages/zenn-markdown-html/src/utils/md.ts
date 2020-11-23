@@ -26,7 +26,7 @@ md.use(markdownItPrism)
   .use(require("markdown-it-custom-block"), optionCustomBlock)
   .use(mdContainer, "details", mdContainerDetails)
   .use(mdContainer, "message", mdContainerMessage)
-  .use(require("markdown-it-texmath"), {
+  .use(require("@catnose99/markdown-it-texmath"), {
     engine: require("katex"),
     delimiters: "dollars",
     katexOptions: { macros: { "\\RR": "\\mathbb{R}" } },

@@ -6,7 +6,8 @@ import socketIo from "socket.io";
 import { invalidOption, previewHelpText } from "../constants";
 import colors from "colors/safe";
 
-function parseArgs(argv: string[]) {
+
+function parseArgs(argv: string[]|undefined) {
   try {
     return arg(
       {

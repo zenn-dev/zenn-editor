@@ -17,6 +17,7 @@
     "typescript": "^3.9.3"
   },
   "dependencies": {
+    "@catnose99/markdown-it-texmath": "^1.0.0",
     "@steelydylan/markdown-it-imsize": "^1.0.2",
     "@types/prismjs": "^1.16.1",
     "katex": "^0.11.1",
@@ -28,7 +29,6 @@
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "markdown-it-texmath": "git+https://github.com/catnose99/markdown-it-texmath.git",
     "prismjs": "^1.22.0"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",

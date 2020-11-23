@@ -26,7 +26,7 @@ const generatePlaceholderChapters = (bookDirPath: string): void => {
   });
 };
 
-function parseArgs(argv: string[]) {
+function parseArgs(argv: string[]|undefined) {
   try {
     return arg(
       {
