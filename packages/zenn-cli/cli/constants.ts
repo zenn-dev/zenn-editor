@@ -32,8 +32,6 @@ Example:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
-// exclude help about below options.
-// --published BOOL 記事の公開設定. true か false を指定する. デフォルトで"false".
 export const newArticleHelpText = `
 Command:
   zenn new:article  新しい記事を追加
