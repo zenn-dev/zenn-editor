@@ -26,7 +26,7 @@ function parseArgs(argv: string[]) {
         "--title": String,
         "--type": String,
         "--emoji": String,
-        "--published": String,
+        "--published": Boolean,
         "--help": Boolean,
         // Alias
         "-h": "--help",
@@ -57,7 +57,7 @@ export const exec: cliCommand = (argv) => {
   const title = args["--title"] || "";
   const emoji = args["--emoji"] || pickRandomEmoji();
   const type = args["--type"] === "idea" ? "idea" : "tech";
-  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+  const published = args["--published"] ? "true" : "false"; // デフォルトはfalse
 
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);

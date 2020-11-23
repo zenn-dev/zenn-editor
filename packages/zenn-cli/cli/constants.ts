@@ -32,8 +32,6 @@ Example:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
-// exclude help about below options.
-// --published BOOL 記事の公開設定. true か false を指定する. デフォルトで"false".
 export const newArticleHelpText = `
 Command:
   zenn new:article  新しい記事を追加
@@ -42,11 +40,12 @@ Usage:
   npx zenn new:article [options]
 
 Options:
-  --slug  SLUG     記事のスラッグ。\`a-z0-9\`とハイフン(\`-\`)の12〜50字の組み合わせにする必要がある
-  --title TITLE    記事のタイトル
-  --type  TYPE     記事のタイプ。tech (技術記事) / idea (アイデア記事) のどちらかから選択
-  --emoji EMOJI    アイキャッチとして使われる絵文字（1文字だけ）
-   
+  --slug      SLUG     記事のスラッグ。\`a-z0-9\`とハイフン(\`-\`)の12〜50字の組み合わせにする必要がある
+  --title     TITLE    記事のタイトル
+  --type      TYPE     記事のタイプ。tech (技術記事) / idea (アイデア記事) のどちらかから選択
+  --emoji     EMOJI    アイキャッチとして使われる絵文字（1文字だけ）
+  --published          記事を公開する
+
   --help, -h       このヘルプを表示
 
 Example:
