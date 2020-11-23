@@ -16,8 +16,7 @@ const pickRandomEmoji = () => {
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 };
 
-
-function parseArgs(argv: string[]|undefined) {
+function parseArgs(argv: string[] | undefined) {
   try {
     return arg(
       {
@@ -26,7 +25,8 @@ function parseArgs(argv: string[]|undefined) {
         "--title": String,
         "--type": String,
         "--emoji": String,
-        "--published": Boolean,
+        "--published": String,
+        "--machine-readable": Boolean,
         "--help": Boolean,
         // Alias
         "-h": "--help",
@@ -57,7 +57,8 @@ export const exec: cliCommand = (argv) => {
   const title = args["--title"] || "";
   const emoji = args["--emoji"] || pickRandomEmoji();
   const type = args["--type"] === "idea" ? "idea" : "tech";
-  const published = args["--published"] ? "true" : "false"; // デフォルトはfalse
+  const published = args["--published"] === "true" ? "true" : "false"; // デフォルトはfalse
+  const machineReadable = args["--machine-readable"] === true;
 
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
@@ -85,7 +86,11 @@ export const exec: cliCommand = (argv) => {
       fileBody,
       { flag: "wx" } // Don't overwrite
     );
-    console.log(`📄${colors.green(fileName)} created.`);
+    if (machineReadable) {
+      console.log(fileName);
+    } else {
+      console.log(`📄${colors.green(fileName)} created.`);
+    }
   } catch (e) {
     console.log(colors.red("エラーが発生しました") + e);
   }
