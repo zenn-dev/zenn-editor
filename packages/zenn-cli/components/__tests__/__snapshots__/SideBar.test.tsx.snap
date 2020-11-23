@@ -14,10 +14,10 @@ exports[`<SideBar /> should render and match the snapshot 1`] = `
           "items": Array [
             Object {
               "href": "",
-              "name": "",
+              "name": "test-navigation",
             },
           ],
-          "name": "",
+          "name": "test-navigations",
         }
       }
     />

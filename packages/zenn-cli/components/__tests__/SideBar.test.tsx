@@ -5,8 +5,8 @@ import { NavCollection, NavCollections } from "@types";
 
 const renderer = createRenderer();
 const dummyNavigation: NavCollection = {
-  items: [{ name: "", href: "" }],
-  name: "",
+  items: [{ name: "test-navigation", href: "" }],
+  name: "test-navigations",
 };
 const dummyNavigations: NavCollections = [dummyNavigation];
 

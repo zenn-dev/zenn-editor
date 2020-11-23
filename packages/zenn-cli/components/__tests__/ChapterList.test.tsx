@@ -5,11 +5,11 @@ import { ChapterList } from "@components/ChapterList";
 
 const renderer = createRenderer();
 const dummyChapter: Chapter = {
-  content: "",
+  content: "test chapter",
   free: false,
   position: undefined,
-  slug: "",
-  title: "",
+  slug: "test-chapter-dummy",
+  title: "dummy chapter",
 };
 const dummyBookSlug = "dummy_book_slug_name";
 

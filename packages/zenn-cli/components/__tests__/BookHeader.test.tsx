@@ -11,9 +11,9 @@ const dummyBook: Book = {
   coverDataUrl: "",
   price: 100,
   published: false,
-  slug: "test-book-dummy",
+  slug: "dummy-book-test",
   summary: "OK\nOK\nOK",
-  title: "testbookdummy",
+  title: "test book",
   topics: ["zenn"],
 };
 describe("<BookHeader/>", () => {

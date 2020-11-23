@@ -8,10 +8,10 @@ const dummyArticle: Article = {
   content: "test",
   emoji: "😿",
   published: false,
-  slug: "dummy-article",
+  slug: "dummy-article-test",
   tags: [],
   title: "test article",
-  topics: ["Zenn"],
+  topics: ["zenn"],
   type: "idea",
 };
 describe("<ArticleHeader />", () => {

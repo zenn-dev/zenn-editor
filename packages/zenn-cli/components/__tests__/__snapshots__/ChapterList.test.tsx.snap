@@ -7,7 +7,7 @@ exports[`<ChapterList /> should render and match the snapshot 1`] = `
       className="chapter-list-item"
     >
       <Link
-        as="/books/dummy_book_slug_name/"
+        as="/books/dummy_book_slug_name/test-chapter-dummy"
         href="/books/[book_slug]/[chapter_slug]"
         passHref={true}
       >
@@ -17,13 +17,13 @@ exports[`<ChapterList /> should render and match the snapshot 1`] = `
           <span
             className="chapter-list-title"
           >
-            タイトルなし
+            dummy chapter
           </span>
           <span
             className="chapter-list-filename"
           >
             （
-            
+            test-chapter-dummy
             .md）
           </span>
         </a>

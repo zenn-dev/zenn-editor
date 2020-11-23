@@ -8,7 +8,7 @@ exports[`<BookHeader/> should render and match the snapshot 1`] = `
     <h1
       className="content-header__title"
     >
-      testbookdummy
+      test book
     </h1>
     <div
       className="content-header__row"
@@ -22,7 +22,7 @@ exports[`<BookHeader/> should render and match the snapshot 1`] = `
         className="content-header__row-result"
       >
          
-        test-book-dummy
+        dummy-book-test
       </span>
     </div>
     <div
@@ -112,7 +112,7 @@ OK
         errorMessage={
           Object {
             "isCritical": false,
-            "message": "本のカバー画像（cover.pngもしくはcover.jpg）を「/books/test-book-dummy」ディレクトリ内に配置してください",
+            "message": "本のカバー画像（cover.pngもしくはcover.jpg）を「/books/dummy-book-test」ディレクトリ内に配置してください",
           }
         }
       />

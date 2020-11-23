@@ -21,7 +21,7 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
       <span
         className="content-header__row-result"
       >
-        dummy-article
+        dummy-article-test
       </span>
     </div>
     <div
@@ -60,7 +60,7 @@ exports[`<ArticleHeader /> should render and match the snapshot 1`] = `
         <span
           className="content-header__topic"
         >
-          Zenn
+          zenn
         </span>
       </span>
     </div>
