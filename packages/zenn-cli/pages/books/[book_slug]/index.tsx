@@ -50,10 +50,12 @@ const Page: NextPage<Props> = (props) => {
                 <>
                   <h1>チャプターを編集する</h1>
                   {!isConfigPositionMode && (
-                    <div className="msg alert">
+                    <div className="msg">
                       <code>config.yaml</code>に<code>chapters</code>
-                      が指定されていません。<code>数字.md</code>
-                      というチャプター番号の指定の仕方は非推奨であり、今後廃止される可能性があります（
+                      が指定されていません。 <code>config.yaml</code>
+                      にチャプターの並び順を指定するか、各チャプターのファイル名を
+                      <code>チャプター番号.スラッグ.md</code>
+                      としてください（
                       <a href="https://zenn.dev/zenn/articles/deprecated-book-deployment">
                         詳細
                       </a>
