@@ -58,5 +58,11 @@ export const exec: cliCommand = async (argv) => {
         });
       });
     });
+    process.on("SIGINT", function () {
+      // `Ctrl-C`の signalを奪って正常終了させる.
+      io.close();
+      watcher.close();
+      process.exit();
+    });
   }
 };
