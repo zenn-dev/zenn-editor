@@ -5,6 +5,7 @@ import chokidar from "chokidar";
 import socketIo from "socket.io";
 import { invalidOption, previewHelpText } from "../constants";
 import colors from "colors/safe";
+import open from "open";
 
 function parseArgs(argv: string[] | undefined) {
   try {
@@ -13,6 +14,7 @@ function parseArgs(argv: string[] | undefined) {
         // Types
         "--port": Number,
         "--no-watch": Boolean,
+        "--open": Boolean,
         "--help": Boolean,
 
         // Alias
@@ -43,6 +45,7 @@ export const exec: cliCommand = async (argv) => {
 
   const port = args["--port"] || 8000;
   const shouldWatch = !args["--no-watch"];
+  const shouldOpen = args["--open"];
 
   const previewUrl = `http://localhost:${port}`;
   const srcDir = `${__dirname}/../../../.`; // refer ".next" dir from dist/cli/preview/index.js
@@ -51,13 +54,12 @@ export const exec: cliCommand = async (argv) => {
   if (shouldWatch) {
     const watcher = chokidar.watch(`${process.cwd()}/{articles,books}/**/*`);
     const io = socketIo(server);
-    watcher.on("ready", () => {
-      io.on("connection", (socket) => {
-        watcher.once("all", async () => {
-          socket.emit("reload");
-        });
+    io.on("connection", (socket) => {
+      watcher.once("all", async () => {
+        socket.emit("reload");
       });
     });
+
     process.on("SIGINT", function () {
       // `Ctrl-C`の signalを奪って正常終了させる.
       io.close();
@@ -65,4 +67,5 @@ export const exec: cliCommand = async (argv) => {
       process.exit();
     });
   }
+  if (shouldOpen) open(previewUrl);
 };
