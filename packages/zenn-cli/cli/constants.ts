@@ -11,7 +11,6 @@ Command:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
-// --no-watch              サーバーが `articles` 及び `books` の変更を監視しなくなる.
 export const previewHelpText = `
 Command:
   zenn preview          コンテンツをブラウザでプレビュー
