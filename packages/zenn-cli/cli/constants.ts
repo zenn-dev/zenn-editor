@@ -22,6 +22,7 @@ Usage:
 Options:
   --port PORT, -p PORT  起動するサーバーに指定したいポート. デフォルトは8000
   --no-watch            ホットリロードを無効化
+  --open                起動時にブラウザを開く
   
   --help, -h            このヘルプを表示
 
