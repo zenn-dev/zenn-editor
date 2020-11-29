@@ -14,8 +14,11 @@
   ],
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier components cli pages --write",
     "start": "next -p 3002",
     "dev": "next -p 3002",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build:bin": "rimraf dist/* && tsc --project tsconfig.cli.json",
     "build:next": "next build && rimraf .next/cache",
     "build": "npm run lint && npm run build:bin & npm run build:next",
@@ -44,9 +47,11 @@
     "zenn-markdown-html": "^0.1.58"
   },
   "devDependencies": {
+    "@testing-library/react": "^11.2.1",
     "@types/emoji-regex": "^8.0.0",
     "@types/escape-html": "^1.0.0",
     "@types/fs-extra": "^9.0.1",
+    "@types/jest": "^26.0.15",
     "@types/node": "^14.0.5",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
@@ -60,9 +65,12 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.5",
+    "jest": "^26.6.3",
     "prettier": "^2.0.5",
+    "react-test-renderer": "^16.13.1",
     "rimraf": "^3.0.2",
     "sass": "^1.26.8",
+    "ts-jest": "^26.4.4",
     "typescript": "^3.9.3"
   },
   "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",

@@ -1,3 +1,5 @@
+import React from "react";
+
 export const BookBodyPlaceholder: React.FC = () => (
   <>
     <h1>📝 チャプターを作成する</h1>
