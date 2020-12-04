@@ -40,7 +40,8 @@ const fallbackLanguages:  {
 } = {
   "vue": "html",
   "fish": "shell",
-  "sh": "shell"
+  "sh": "shell",
+  "cwl": "yaml"
 }
 
 /**
