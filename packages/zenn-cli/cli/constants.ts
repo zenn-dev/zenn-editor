@@ -22,7 +22,7 @@ Options:
   --port PORT, -p PORT  起動するサーバーに指定したいポート. デフォルトは8000
   --no-watch            ホットリロードを無効化
   --open                プレビュー立ち上げ時にブラウザを開く
-  
+
   --help, -h            このヘルプを表示
 
 Example:
@@ -50,7 +50,7 @@ Options:
   --help, -h       このヘルプを表示
 
 Example:
-  npx zenn new:article --slug enjoy-zenn-with-client --title タイトル --type idea --emoji ✨ 
+  npx zenn new:article --slug enjoy-zenn-with-client --title タイトル --type idea --emoji ✨
 
   👇詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
