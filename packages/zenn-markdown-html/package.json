@@ -7,6 +7,8 @@
     "lib"
   ],
   "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "build": "rimraf lib/* && tsc -p .",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
