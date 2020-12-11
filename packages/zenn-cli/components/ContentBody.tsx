@@ -1,5 +1,5 @@
-import React from "react";
-import { ContentWrapper } from "@components/ContentWrapper";
+import React from 'react';
+import { ContentWrapper } from '@components/ContentWrapper';
 
 type Props = {
   content?: string;
@@ -14,7 +14,7 @@ export const ContentBody: React.FC<Props> = ({ content, children }) => {
           <div
             className="znc"
             dangerouslySetInnerHTML={{
-              __html: content || "✍ 本文を入力してください",
+              __html: content || '✍ 本文を入力してください',
             }}
           />
         ) : (

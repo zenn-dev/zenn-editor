@@ -1,5 +1,5 @@
-import { SideBar } from "@components/SideBar";
-import { NavCollections } from "@types";
+import { SideBar } from '@components/SideBar';
+import { NavCollections } from '@types';
 
 type Props = {
   navCollections: NavCollections;

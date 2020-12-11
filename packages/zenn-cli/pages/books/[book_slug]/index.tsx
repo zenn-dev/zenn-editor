@@ -1,19 +1,19 @@
-import { useMemo } from "react";
-import Head from "next/head";
-import { NextPage, GetServerSideProps } from "next";
-import escapeHtml from "escape-html";
+import { useMemo } from 'react';
+import Head from 'next/head';
+import { NextPage, GetServerSideProps } from 'next';
+import escapeHtml from 'escape-html';
 
-import { BookHeader } from "@components/BookHeader";
-import { MainContainer } from "@components/MainContainer";
-import { ContentBody } from "@components/ContentBody";
-import { ChapterList } from "@components/ChapterList";
-import { BookBodyPlaceholder } from "@components/BookBodyPlaceholder";
+import { BookHeader } from '@components/BookHeader';
+import { MainContainer } from '@components/MainContainer';
+import { ContentBody } from '@components/ContentBody';
+import { ChapterList } from '@components/ChapterList';
+import { BookBodyPlaceholder } from '@components/BookBodyPlaceholder';
 
-import { getAllContentsNavCollections } from "@utils/nav-collections";
-import { getBookBySlug } from "@utils/api/books";
-import { getChapters } from "@utils/api/chapters";
+import { getAllContentsNavCollections } from '@utils/nav-collections';
+import { getBookBySlug } from '@utils/api/books';
+import { getChapters } from '@utils/api/chapters';
 
-import { Book, Chapter, NavCollections } from "@types";
+import { Book, Chapter, NavCollections } from '@types';
 
 type Props = {
   book: Book;
@@ -39,7 +39,7 @@ const Page: NextPage<Props> = (props) => {
   return (
     <>
       <Head>
-        <title>{book.title || "無題"}のプレビュー</title>
+        <title>{book.title || '無題'}のプレビュー</title>
       </Head>
       <MainContainer navCollections={props.allContentsNavCollection}>
         <article>
@@ -99,7 +99,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   if (!book) {
     if (res) {
-      res.setHeader("content-type", "text/html; charset=utf-8");
+      res.setHeader('content-type', 'text/html; charset=utf-8');
       res.statusCode = 404;
       res.end(
         `本の設定ファイル（books/${escapeHtml(

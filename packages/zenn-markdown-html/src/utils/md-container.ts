@@ -1,4 +1,4 @@
-import { escapeHtml } from "./md-utils";
+import { escapeHtml } from './md-utils';
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container
 
@@ -14,13 +14,13 @@ export const mdContainerDetails = {
     if (tokens[idx].nesting === 1) {
       // opening tag
       return (
-        "<details><summary>" +
+        '<details><summary>' +
         escapeHtml(m[1]) +
         '</summary><div class="details-content">'
       );
     } else {
       // closing tag
-      return "</div></details>\n";
+      return '</div></details>\n';
     }
   },
 };
@@ -41,7 +41,7 @@ export const mdContainerMessage = {
       return '<div class="msg ' + escapeHtml(m[1]) + '">';
     } else {
       // closing tag
-      return "</div>\n";
+      return '</div>\n';
     }
   },
 };

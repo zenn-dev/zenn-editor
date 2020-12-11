@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Book, ErrorMessage } from "@types";
-import { getBookErrors } from "@utils/validator";
-import { ContentWrapper } from "@components/ContentWrapper";
-import { ErrorRow } from "@components/ErrorRow";
+import React, { useRef, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Book, ErrorMessage } from '@types';
+import { getBookErrors } from '@utils/validator';
+import { ContentWrapper } from '@components/ContentWrapper';
+import { ErrorRow } from '@components/ErrorRow';
 
 type Props = { book: Book };
 
@@ -14,7 +14,7 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
   const coverRatioError: ErrorMessage = {
     isCritical: true,
     message:
-      "カバー画像の「幅 : 高さ」の比率は「1 : 1.4」にしてください（最終的に幅500px・高さ700pxにリサイズされます）",
+      'カバー画像の「幅 : 高さ」の比率は「1 : 1.4」にしてください（最終的に幅500px・高さ700pxにリサイズされます）',
   };
 
   const errorMessages = isCoverRatioError
@@ -45,7 +45,7 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
           </div>
         )}
 
-        <h1 className="content-header__title">{book.title || "No Title"}</h1>
+        <h1 className="content-header__title">{book.title || 'No Title'}</h1>
 
         <div className="content-header__row">
           <span className="content-header__row-title">slug</span>
@@ -56,9 +56,9 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
           <span className="content-header__row-title">summary</span>
           <span
             className="content-header__row-result"
-            style={{ whiteSpace: "pre-line" }}
+            style={{ whiteSpace: 'pre-line' }}
           >
-            {book.summary || "指定が必要です"}
+            {book.summary || '指定が必要です'}
           </span>
         </div>
 
@@ -71,7 +71,7 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
                     {t}
                   </span>
                 ))
-              : "指定が必要です"}
+              : '指定が必要です'}
           </span>
         </div>
 
@@ -79,7 +79,7 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
           <div className="content-header__row">
             <span className="content-header__row-title">published</span>
             <span className="content-header__row-result">
-              {book.published ? "✅（公開）" : "false（下書き）"}
+              {book.published ? '✅（公開）' : 'false（下書き）'}
             </span>
           </div>
         )}
@@ -89,7 +89,7 @@ export const BookHeader: React.FC<Props> = ({ book }) => {
             <span className="content-header__row-title">price</span>
             <span className="content-header__row-result">
               {book.price?.toString()}
-              {book.price === 0 ? "（無料公開）" : ""}
+              {book.price === 0 ? '（無料公開）' : ''}
             </span>
           </div>
         )}

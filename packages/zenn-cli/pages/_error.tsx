@@ -1,5 +1,5 @@
-import { NextPage } from "next";
-import Head from "next/head";
+import { NextPage } from 'next';
+import Head from 'next/head';
 
 type Props = { statusCode: number };
 

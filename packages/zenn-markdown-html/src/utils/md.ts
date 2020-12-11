@@ -1,35 +1,35 @@
 // plugis
-import { md } from "./md-utils";
-import markdownItImSize from "@steelydylan/markdown-it-imsize";
-import markdownItAnchor from "markdown-it-anchor";
-import { rendererFence } from "./md-renderer-fence";
-import markdownItPrism from "./prism";
-const mdContainer = require("markdown-it-container");
+import { md } from './md-utils';
+import markdownItImSize from '@steelydylan/markdown-it-imsize';
+import markdownItAnchor from 'markdown-it-anchor';
+import { rendererFence } from './md-renderer-fence';
+import markdownItPrism from './prism';
+const mdContainer = require('markdown-it-container');
 
 // options
-import { mdContainerDetails, mdContainerMessage } from "./md-container";
-import { optionCustomBlock } from "./md-custom-block";
+import { mdContainerDetails, mdContainerMessage } from './md-container';
+import { optionCustomBlock } from './md-custom-block';
 
 md.use(markdownItPrism)
-  .use(require("markdown-it-footnote"))
+  .use(require('markdown-it-footnote'))
   .use(rendererFence)
   .use(markdownItImSize)
-  .use(require("markdown-it-task-lists"), { enabled: true })
+  .use(require('markdown-it-task-lists'), { enabled: true })
   .use(markdownItAnchor, { level: [1, 2, 3] })
-  .use(require("markdown-it-inline-comments"))
-  .use(require("markdown-it-link-attributes"), {
+  .use(require('markdown-it-inline-comments'))
+  .use(require('markdown-it-link-attributes'), {
     pattern: /^(?!https:\/\/zenn\.dev\/)/,
     attrs: {
-      rel: "nofollow",
+      rel: 'nofollow',
     },
   })
-  .use(require("markdown-it-custom-block"), optionCustomBlock)
-  .use(mdContainer, "details", mdContainerDetails)
-  .use(mdContainer, "message", mdContainerMessage)
-  .use(require("@catnose99/markdown-it-texmath"), {
-    engine: require("katex"),
-    delimiters: "dollars",
-    katexOptions: { macros: { "\\RR": "\\mathbb{R}" } },
+  .use(require('markdown-it-custom-block'), optionCustomBlock)
+  .use(mdContainer, 'details', mdContainerDetails)
+  .use(mdContainer, 'message', mdContainerMessage)
+  .use(require('@catnose99/markdown-it-texmath'), {
+    engine: require('katex'),
+    delimiters: 'dollars',
+    katexOptions: { macros: { '\\RR': '\\mathbb{R}' } },
   });
 
 // custom footnote

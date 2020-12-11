@@ -1,1 +1,1 @@
-declare module "markdown-it-anchor"
+declare module 'markdown-it-anchor';

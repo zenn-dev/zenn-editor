@@ -1,18 +1,18 @@
-import { useEffect } from "react";
-import { NextPage, GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-import Head from "next/head";
+import { useEffect } from 'react';
+import { NextPage, GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
 
-import escapeHtml from "escape-html";
-import markdownToHtml from "zenn-markdown-html";
-import initEmbed from "zenn-init-embed";
+import escapeHtml from 'escape-html';
+import markdownToHtml from 'zenn-markdown-html';
+import initEmbed from 'zenn-init-embed';
 
-import { ContentBody } from "@components/ContentBody";
-import { ArticleHeader } from "@components/ArticleHeader";
-import { MainContainer } from "@components/MainContainer";
-import { getAllContentsNavCollections } from "@utils/nav-collections";
-import { getArticleBySlug } from "@utils/api/articles";
-import { Article, NavCollections } from "@types";
+import { ContentBody } from '@components/ContentBody';
+import { ArticleHeader } from '@components/ArticleHeader';
+import { MainContainer } from '@components/MainContainer';
+import { getAllContentsNavCollections } from '@utils/nav-collections';
+import { getArticleBySlug } from '@utils/api/articles';
+import { Article, NavCollections } from '@types';
 
 type Props = {
   article: Article;
@@ -30,7 +30,7 @@ const Page: NextPage<Props> = (props) => {
   return (
     <>
       <Head>
-        <title>{article.title || "無題"}のプレビュー</title>
+        <title>{article.title || '無題'}のプレビュー</title>
       </Head>
       <MainContainer navCollections={props.allContentsNavCollections}>
         <article>
@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   if (!article) {
     if (res) {
-      res.setHeader("content-type", "text/html; charset=utf-8");
+      res.setHeader('content-type', 'text/html; charset=utf-8');
       res.end(`articles/${escapeHtml(slug)}.mdが見つかりませんでした`);
       return {
         props: {} as any,

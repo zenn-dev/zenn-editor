@@ -1,11 +1,11 @@
-import fs from "fs-extra";
-import path from "path";
-import matter from "gray-matter";
-import { Chapter, ChapterMeta } from "@types";
-import { throwWithConsoleError } from "@utils/errors";
+import fs from 'fs-extra';
+import path from 'path';
+import matter from 'gray-matter';
+import { Chapter, ChapterMeta } from '@types';
+import { throwWithConsoleError } from '@utils/errors';
 
 function getBookDirPath(bookSlug: string): string {
-  return path.join(process.cwd(), "books", bookSlug);
+  return path.join(process.cwd(), 'books', bookSlug);
 }
 
 export function getChapterMdNames(bookSlug: string): string[] {
@@ -24,7 +24,7 @@ export function getChapterMdNames(bookSlug: string): string[] {
 
 // ["1.md", "something.md"] => ["1","something"]
 export function getChapterSlugList(bookSlug: string) {
-  return getChapterMdNames(bookSlug)?.map((n) => n.replace(/\.md$/, ""));
+  return getChapterMdNames(bookSlug)?.map((n) => n.replace(/\.md$/, ''));
 }
 
 export function getChapters(
@@ -34,16 +34,16 @@ export function getChapters(
   const slugs = getChapterSlugList(bookSlug);
 
   if (configYamlChapters && !Array.isArray(configYamlChapters)) {
-    throw "🚩 config.yamlのchaptersには配列のみを指定できます";
+    throw '🚩 config.yamlのchaptersには配列のみを指定できます';
   }
 
   const configYamlChapterSlugList = configYamlChapters?.map((slug) => {
-    if (/ - /.test(slug) || typeof slug !== "string") {
+    if (/ - /.test(slug) || typeof slug !== 'string') {
       console.error(
-        "🚩 config.yamlの「chapters」には一次元配列のみ指定できます。ネストすることはできません"
+        '🚩 config.yamlの「chapters」には一次元配列のみ指定できます。ネストすることはできません'
       );
     }
-    return slug.replace(/\.md/, "");
+    return slug.replace(/\.md/, '');
   });
 
   if (configYamlChapterSlugList?.length) {
@@ -71,12 +71,12 @@ export function getChapters(
 
 function readChapterFile(bookSlug: string, chapterSlug: string) {
   const fullPath = path.join(
-    getBookDirPath(bookSlug.replace(/[/\\]/g, "")), // Prevent directory traversal
-    `${chapterSlug.replace(/[/\\]/g, "")}.md`
+    getBookDirPath(bookSlug.replace(/[/\\]/g, '')), // Prevent directory traversal
+    `${chapterSlug.replace(/[/\\]/g, '')}.md`
   );
   let fileRaw;
   try {
-    fileRaw = fs.readFileSync(fullPath, "utf8");
+    fileRaw = fs.readFileSync(fullPath, 'utf8');
   } catch (e) {
     return null;
   }

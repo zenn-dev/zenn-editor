@@ -1,8 +1,8 @@
-import React from "react";
-import { Chapter } from "@types";
-import { getChapterErrors } from "@utils/validator";
-import { ContentWrapper } from "@components/ContentWrapper";
-import { ErrorRow } from "@components/ErrorRow";
+import React from 'react';
+import { Chapter } from '@types';
+import { getChapterErrors } from '@utils/validator';
+import { ContentWrapper } from '@components/ContentWrapper';
+import { ErrorRow } from '@components/ErrorRow';
 
 type Props = { chapter: Chapter };
 
@@ -18,13 +18,13 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
           )}
         </div>
 
-        <h1 className="content-header__title">{chapter.title || "No Title"}</h1>
+        <h1 className="content-header__title">{chapter.title || 'No Title'}</h1>
 
         <div className="content-header__row">
           <span className="content-header__row-title">slug</span>
           <span className="content-header__row-result">
             {/* slug of 1.test.md is "test" */}
-            {chapter.slug.replace(/[0-9]{1,2}./, "")}
+            {chapter.slug.replace(/[0-9]{1,2}./, '')}
           </span>
         </div>
 

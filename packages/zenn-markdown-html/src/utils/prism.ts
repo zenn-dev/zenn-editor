@@ -1,6 +1,6 @@
-import Prism, { Grammar } from "prismjs";
-import loadLanguages from "prismjs/components/";
-import MarkdownIt from "markdown-it";
+import Prism, { Grammar } from 'prismjs';
+import loadLanguages from 'prismjs/components/';
+import MarkdownIt from 'markdown-it';
 
 interface Options {
   plugins: string[];
@@ -35,14 +35,14 @@ function loadPrismLang(lang: string): Grammar | undefined {
   return langObject;
 }
 
-const fallbackLanguages:  {
-  [key:string]: string;
+const fallbackLanguages: {
+  [key: string]: string;
 } = {
-  "vue": "html",
-  "fish": "shell",
-  "sh": "shell",
-  "cwl": "yaml"
-}
+  vue: 'html',
+  fish: 'shell',
+  sh: 'shell',
+  cwl: 'yaml',
+};
 
 /**
  * Select the language to use for highlighting, based on the provided options and the specified language.
@@ -54,9 +54,9 @@ const fallbackLanguages:  {
  * @return  The name of the language to use and the Prism language object for that language.
  */
 function selectLanguage(lang: string): [string, Grammar | undefined] {
-  const langNormalized = lang?.toLowerCase() || "";
-  const langAlias = fallbackLanguages[langNormalized]
-  const langToUse = langAlias || langNormalized
+  const langNormalized = lang?.toLowerCase() || '';
+  const langAlias = fallbackLanguages[langNormalized];
+  const langToUse = langAlias || langNormalized;
   const prismLang = loadPrismLang(langToUse);
   return [langToUse, prismLang];
 }
@@ -84,7 +84,7 @@ function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
     ? ` class="${markdownit.options.langPrefix}${markdownit.utils.escapeHtml(
         langToUse
       )}"`
-    : "";
+    : '';
   return `<pre${classAttribute}><code${classAttribute}>${code}</code></pre>`;
 }
 
