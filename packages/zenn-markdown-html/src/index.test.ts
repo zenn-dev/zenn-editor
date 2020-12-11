@@ -1,5 +1,4 @@
 import markdownToHtml from './index';
-import { markdownToCommentHtml } from './comment';
 
 describe('Convert markdown to html', () => {
   test('should convert ## to h2 with id', () => {
@@ -98,6 +97,39 @@ describe('No XSS Vulnerability', () => {
     expect(consoleSpy).toHaveBeenCalled();
     expect(html).toContain(
       '<pre class="language-&quot;&gt;&lt;img/onerror=&quot;alert(location)&quot;src=.&gt;"><code class="language-&quot;&gt;&lt;img/onerror=&quot;alert(location)&quot;src=.&gt;">'
+    );
+  });
+});
+
+describe('convert $ mark properly', () => {
+  test('should keep $ around link href', () => {
+    const html = markdownToHtml('$a,b,c$は[hoge](https://hoge.fuga)を参照');
+    expect(html).toMatch(/<eq>.*<\/eq>は/);
+    expect(html).toContain(
+      '<a href="https://hoge.fuga" rel="nofollow">hoge</a>を参照'
+    );
+  });
+
+  test('should keep $ around link href', () => {
+    const html = markdownToHtml('$a,b,c$は[hoge](http://hoge.fuga)$を参照');
+    expect(html).toMatch(/<eq>.*<\/eq>は/);
+    expect(html).toContain(
+      '<a href="http://hoge.fuga" rel="nofollow">hoge</a>$を参照'
+    );
+  });
+  test('should keep $ around link href', () => {
+    const html = markdownToHtml('$a,b,c$は[$hoge](http://hoge.fuga)を参照');
+    expect(html).toMatch(/<eq>.*<\/eq>は/);
+    expect(html).toContain(
+      '<a href="http://hoge.fuga" rel="nofollow">$hoge</a>を参照'
+    );
+  });
+  test('should keep $ around link href', () => {
+    const html = markdownToHtml(
+      '[this $ should be escaped](https://docs.angularjs.org/api/ng/service/$http)'
+    );
+    expect(html).toContain(
+      '<a href="https://docs.angularjs.org/api/ng/service/$http" rel="nofollow">this $ should be escaped</a>'
     );
   });
 });
