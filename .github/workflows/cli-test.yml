@@ -16,6 +16,9 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Run tests
+      - name: Run tests for zenn-markdown-html
+        run: yarn test
+        working-directory: packages/zenn-markdown-html
+      - name: Run tests for zenn-cli
         run: yarn test --updateSnapshot
         working-directory: packages/zenn-cli
