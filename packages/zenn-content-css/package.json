@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build": "node-sass ./src/index.scss ./lib/index.css --output-style compressed",
-    "dev": "node-sass-chokidar ./src -o ./lib --watch"
+    "dev": "node-sass-chokidar ./src -o ./lib --watch",
+    "test": "echo 'no test yet'"
   },
   "devDependencies": {
     "node-sass": "^4.14.1",

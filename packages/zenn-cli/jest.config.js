@@ -61,9 +61,9 @@ module.exports = {
 
   // A set of global variables that need to be available in all test environments
   globals: {
-    "ts-jest": {
+    'ts-jest': {
       // avoid "jsx" treated as "preserved"
-      tsconfig: "<rootDir>/tsconfig.test.json",
+      tsconfig: '<rootDir>/tsconfig.test.json',
     },
   },
 
@@ -77,19 +77,19 @@ module.exports = {
 
   // An array of file extensions your modules use
   moduleFileExtensions: [
-    "js",
+    'js',
     //   "json",
-    "jsx",
-    "ts",
-    "tsx",
+    'jsx',
+    'ts',
+    'tsx',
     //   "node"
   ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    "^@components/(.*)$": "<rootDir>/components/$1",
-    "^@utils/(.*)$": "<rootDir>/utils/$1",
-    "^@types": "<rootDir>/types",
+    '^@components/(.*)$': '<rootDir>/components/$1',
+    '^@utils/(.*)$': '<rootDir>/utils/$1',
+    '^@types': '<rootDir>/types',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -102,7 +102,7 @@ module.exports = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: "ts-jest",
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -144,7 +144,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "node",
+  testEnvironment: 'node',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -153,7 +153,7 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"],
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
@@ -177,7 +177,7 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    '^.+\\.tsx?$': 'ts-jest',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
