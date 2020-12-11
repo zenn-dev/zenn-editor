@@ -132,4 +132,9 @@ describe('convert $ mark properly', () => {
       '<a href="https://docs.angularjs.org/api/ng/service/$http" rel="nofollow">this $ should be escaped</a>'
     );
   });
+
+  test('should raise error', () => {
+    const html = markdownToHtml('error');
+    expect(html).toContain('another');
+  });
 });
