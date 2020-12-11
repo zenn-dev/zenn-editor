@@ -1,6 +1,14 @@
 ## Test
 
-How zenn-editor is tested
+How to test zenn-editor
+
+```bash
+# from root dir
+$yarn test
+```
+
+When Pull Request is created, testing should be automatically excuted by GitHub actions.
+
 ### kind of tests
 - unit test
 - snapshot test

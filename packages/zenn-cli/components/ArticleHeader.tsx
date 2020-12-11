@@ -1,8 +1,8 @@
-import React from "react";
-import { Article } from "@types";
-import { getArticleErrors } from "@utils/validator";
-import { ContentWrapper } from "@components/ContentWrapper";
-import { ErrorRow } from "@components/ErrorRow";
+import React from 'react';
+import { Article } from '@types';
+import { getArticleErrors } from '@utils/validator';
+import { ContentWrapper } from '@components/ContentWrapper';
+import { ErrorRow } from '@components/ErrorRow';
 
 type Props = { article: Article };
 
@@ -12,7 +12,7 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
   return (
     <header className="content-header">
       <ContentWrapper>
-        <h1 className="content-header__title">{article.title || "No Title"}</h1>
+        <h1 className="content-header__title">{article.title || 'No Title'}</h1>
 
         <div className="content-header__row">
           <span className="content-header__row-title">slug</span>
@@ -23,9 +23,9 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
           <span className="content-header__row-title">emoji</span>
           <span className="content-header__row-result">
             {article.emoji ? (
-              <span style={{ fontSize: "20px" }}>{article.emoji}</span>
+              <span style={{ fontSize: '20px' }}>{article.emoji}</span>
             ) : (
-              "指定が必要です"
+              '指定が必要です'
             )}
           </span>
         </div>
@@ -39,7 +39,7 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
                     {t}
                   </span>
                 ))
-              : "指定が必要です"}
+              : '指定が必要です'}
           </span>
         </div>
 
@@ -47,7 +47,7 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
           <div className="content-header__row">
             <span className="content-header__row-title">published</span>
             <span className="content-header__row-result">
-              {article.published ? "✅（公開）" : "false（下書き）"}
+              {article.published ? '✅（公開）' : 'false（下書き）'}
             </span>
           </div>
         )}
@@ -55,9 +55,9 @@ export const ArticleHeader: React.FC<Props> = ({ article }) => {
         <div className="content-header__row">
           <span className="content-header__row-title">type</span>
           <span className="content-header__row-result">
-            {article.type || "指定が必要です"}
-            {article.type === "tech" ? "（技術記事）" : ""}
-            {article.type === "idea" ? "（アイデア）" : ""}
+            {article.type || '指定が必要です'}
+            {article.type === 'tech' ? '（技術記事）' : ''}
+            {article.type === 'idea' ? '（アイデア）' : ''}
           </span>
         </div>
 

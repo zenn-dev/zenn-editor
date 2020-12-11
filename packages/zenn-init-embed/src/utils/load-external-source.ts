@@ -4,24 +4,19 @@ type LoadScriptProps = {
   funcToRefresh?: () => void;
 };
 
-export function loadScript({
-  src,
-  id,
-  funcToRefresh,
-}: LoadScriptProps) {
-  
+export function loadScript({ src, id, funcToRefresh }: LoadScriptProps) {
   const identicalScript = id ? document.getElementById(id) : null;
   if (identicalScript) {
-    if(funcToRefresh) funcToRefresh()
-    return
+    if (funcToRefresh) funcToRefresh();
+    return;
   }
 
   return new Promise((resolve, reject) => {
-    let script = document.createElement("script");
-    script.setAttribute("src", src);
+    const script = document.createElement('script');
+    script.setAttribute('src', src);
     document.head.appendChild(script);
     script.onload = () => {
-      if (id) script.setAttribute("id", id);
+      if (id) script.setAttribute('id', id);
       resolve();
     };
     script.onerror = (e) => reject(e);
@@ -36,9 +31,9 @@ type LoadStylesheetProps = {
 export function loadStylesheet({ href, id }: LoadStylesheetProps) {
   if (document.getElementById(id)) return; // already loaded
 
-  const link = document.createElement("link");
-  link.setAttribute("rel", "stylesheet");
-  link.setAttribute("id", id);
-  link.setAttribute("href", href);
+  const link = document.createElement('link');
+  link.setAttribute('rel', 'stylesheet');
+  link.setAttribute('id', id);
+  link.setAttribute('href', href);
   document.head.appendChild(link);
 }

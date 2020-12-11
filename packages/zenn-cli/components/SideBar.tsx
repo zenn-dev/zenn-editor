@@ -1,12 +1,12 @@
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { NavCollections, NavCollection, NavItem } from "@types";
+import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { NavCollections, NavCollection, NavItem } from '@types';
 
 const SideBarNavItem: React.FC<{ navItem: NavItem }> = ({ navItem }) => {
   const router = useRouter();
   const className = `sidebar-nav-item ${
-    router.asPath === navItem.as ? "active" : ""
+    router.asPath === navItem.as ? 'active' : ''
   }`;
   return (
     <Link href={navItem.href} as={navItem.as} passHref>

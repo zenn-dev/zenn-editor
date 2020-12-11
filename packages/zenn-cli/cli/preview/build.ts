@@ -1,6 +1,6 @@
-import { createServer, Server } from "http";
-import { parse } from "url";
-import next from "next";
+import { createServer, Server } from 'http';
+import { parse } from 'url';
+import next from 'next';
 
 type BuildArgs = {
   srcDir: string;
@@ -20,7 +20,7 @@ export const build = async ({
     const server = createServer((req, res) => {
       const requestUrl = req.url;
       if (!requestUrl) {
-        return console.error("Undefined request url");
+        return console.error('Undefined request url');
       }
       const parsedUrl = parse(requestUrl, true);
       handle(req, res, parsedUrl);

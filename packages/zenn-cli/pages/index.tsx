@@ -1,9 +1,9 @@
-import { NextPage, GetServerSideProps } from "next";
-import Head from "next/head";
-import { MainContainer } from "@components/MainContainer";
-import { ContentWrapper } from "@components/ContentWrapper";
-import { NavCollections } from "@types";
-import { getAllContentsNavCollections } from "@utils/nav-collections";
+import { NextPage, GetServerSideProps } from 'next';
+import Head from 'next/head';
+import { MainContainer } from '@components/MainContainer';
+import { ContentWrapper } from '@components/ContentWrapper';
+import { NavCollections } from '@types';
+import { getAllContentsNavCollections } from '@utils/nav-collections';
 
 type Props = {
   allContentsNavCollections: NavCollections;

@@ -53,7 +53,7 @@
   display: none;
 }
 
-// katex
+// prevent katex overflow
 eqn {
   display: block;
   overflow-x: auto;

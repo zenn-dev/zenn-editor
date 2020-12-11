@@ -1,5 +1,5 @@
-import escapeHtml from "escape-html";
-import initEmojiRegex from "emoji-regex/text.js";
+import escapeHtml from 'escape-html';
+import initEmojiRegex from 'emoji-regex/text.js';
 
 const emojiRegex = initEmojiRegex();
 
@@ -11,14 +11,14 @@ import {
   ItemValidator,
   ErrorMessages,
   ErrorMessage,
-} from "@types";
+} from '@types';
 
 import {
   validateSlug,
   getSlugErrorMessage,
   validateChapterSlug,
   getChapterSlugErrorMessage,
-} from "@utils/shared/slug-helper";
+} from '@utils/shared/slug-helper';
 
 const validateItemSlug: ItemValidator = {
   isCritical: true,
@@ -28,13 +28,13 @@ const validateItemSlug: ItemValidator = {
 
 const validateMissingTitle: ItemValidator = {
   isCritical: true,
-  getMessage: () => "title（タイトル）を入力してください",
+  getMessage: () => 'title（タイトル）を入力してください',
   isInvalid: (item: Item) => !item.title?.length,
 };
 
 const validateTitleLength: ItemValidator = {
   isCritical: true,
-  getMessage: () => "タイトルは60字以内にしてください",
+  getMessage: () => 'タイトルは60字以内にしてください',
   isInvalid: (item: Item) => {
     return item.title && item.title?.length > 60;
   },
@@ -45,13 +45,13 @@ const validateArticleType: ItemValidator = {
   getMessage: () =>
     'type（記事のタイプ）にtechもしくはideaを指定してください。技術記事の場合はtechを指定してください<br/><a href="https://zenn.dev/tech-or-idea" target="_blank">詳細はこちら →</a>',
   isInvalid: (item: Article) => {
-    return !item.type || !(item.type === "tech" || item.type === "idea");
+    return !item.type || !(item.type === 'tech' || item.type === 'idea');
   },
 };
 
 const validateEmojiFormat: ItemValidator = {
   isCritical: true,
-  getMessage: () => "絵文字（emoji）を1つだけ指定してください",
+  getMessage: () => '絵文字（emoji）を1つだけ指定してください',
   isInvalid: (item: Article) => {
     const emoji = item?.emoji;
     if (!emoji) return false;
@@ -78,30 +78,30 @@ const validateMissingTopics: ItemValidator = {
 
 const validateTooManyTopis: ItemValidator = {
   isCritical: true,
-  getMessage: () => "topicsは最大5つまで指定できます",
+  getMessage: () => 'topicsは最大5つまで指定できます',
   isInvalid: (item: Article | Book) =>
     Array.isArray(item.topics) && item.topics.length > 5,
 };
 
 const validateInvalidTopicLetters: ItemValidator = {
   getMessage: () =>
-    "topicsに記号やスペースを使用することはできません。例えばC++は「cpp」、C#は「csharp」と記載してください",
+    'topicsに記号やスペースを使用することはできません。例えばC++は「cpp」、C#は「csharp」と記載してください',
   isInvalid: (item: Article | Book) =>
     Array.isArray(item.topics) &&
     !!item.topics.find((t) => {
-      if (typeof t !== "string") return true;
+      if (typeof t !== 'string') return true;
       return t.match(/[ -/:-@[-`{-~]/g);
     }),
 };
 
 const validateUseTags: ItemValidator = {
-  getMessage: () => "tagではなくtopicsを使ってください",
+  getMessage: () => 'tagではなくtopicsを使ってください',
   isInvalid: (item: any) => item.tags?.length,
 };
 
 const validateBookSummary: ItemValidator = {
   isCritical: true,
-  getMessage: () => "summary（本の説明）の記載は必須です",
+  getMessage: () => 'summary（本の説明）の記載は必須です',
   isInvalid: (item: Book) => !item.summary?.length,
 };
 
@@ -109,20 +109,20 @@ const validateBookPriceType: ItemValidator = {
   isCritical: true,
   getMessage: () =>
     'price（本の価格）は文字列ではなく数字で指定してください（"で囲まないでください）',
-  isInvalid: (item: Book) => typeof item.price !== "number",
+  isInvalid: (item: Book) => typeof item.price !== 'number',
 };
 
 const validateBookPriceRange: ItemValidator = {
   isCritical: true,
   getMessage: () =>
-    "price（本の価格）を有料にする場合、200〜5000の間で指定してください",
+    'price（本の価格）を有料にする場合、200〜5000の間で指定してください',
   isInvalid: (item: Book) =>
     item.price && item.price !== 0 && (item.price > 5000 || item.price < 200),
 };
 
 const validateBookPriceFraction: ItemValidator = {
   isCritical: true,
-  getMessage: () => "price（本の価格）は100円単位で指定してください",
+  getMessage: () => 'price（本の価格）は100円単位で指定してください',
   isInvalid: (item: Book) => item.price && item.price % 100 !== 0,
 };
 

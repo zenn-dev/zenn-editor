@@ -1,5 +1,5 @@
-import { cliCommand } from ".";
-import { commandListText } from "./constants";
+import { cliCommand } from '.';
+import { commandListText } from './constants';
 
 export const exec: cliCommand = () => {
   console.log(commandListText);

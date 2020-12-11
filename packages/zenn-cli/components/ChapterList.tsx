@@ -1,6 +1,6 @@
-import React from "react";
-import Link from "next/link";
-import { Chapter } from "@types";
+import React from 'react';
+import Link from 'next/link';
+import { Chapter } from '@types';
 
 type Props = { bookSlug: string; chapters: Chapter[]; unordered?: boolean };
 
@@ -9,7 +9,7 @@ export const ChapterList: React.FC<Props> = ({
   bookSlug,
   unordered,
 }) => {
-  const ListContainerTag = unordered ? "ul" : "ol";
+  const ListContainerTag = unordered ? 'ul' : 'ol';
   return (
     <div>
       <ListContainerTag>

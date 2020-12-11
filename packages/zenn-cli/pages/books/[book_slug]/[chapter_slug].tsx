@@ -1,17 +1,17 @@
-import Head from "next/head";
-import { NextPage, GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import Head from 'next/head';
+import { NextPage, GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-import markdownToHtml from "zenn-markdown-html";
-import initEmbed from "zenn-init-embed";
-import { ContentBody } from "@components/ContentBody";
-import { ChapterHeader } from "@components/ChapterHeader";
-import { MainContainer } from "@components/MainContainer";
-import { getBookNavCollections } from "@utils/nav-collections";
-import { getChapter } from "@utils/api/chapters";
+import markdownToHtml from 'zenn-markdown-html';
+import initEmbed from 'zenn-init-embed';
+import { ContentBody } from '@components/ContentBody';
+import { ChapterHeader } from '@components/ChapterHeader';
+import { MainContainer } from '@components/MainContainer';
+import { getBookNavCollections } from '@utils/nav-collections';
+import { getChapter } from '@utils/api/chapters';
 
-import { Chapter, NavCollections } from "@types";
+import { Chapter, NavCollections } from '@types';
 
 type Props = {
   chapter: Chapter;

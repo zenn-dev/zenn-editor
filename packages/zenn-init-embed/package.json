@@ -1,14 +1,16 @@
 {
   "name": "zenn-init-embed",
   "version": "0.1.58",
-  "description": "Init embedded contents such as Twitter, Katex.",
+  "description": "Init embedded contents such as Twitter",
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
   "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "build": "rimraf lib/* && tsc -p .",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "echo 'no test yet'"
   },
   "devDependencies": {
     "@types/node": "^14.0.5",

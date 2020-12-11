@@ -1,20 +1,20 @@
-import React from "react";
-import { createRenderer } from "react-test-renderer/shallow";
-import { Book, Chapter } from "@types";
-import { ChapterList } from "@components/ChapterList";
+import React from 'react';
+import { createRenderer } from 'react-test-renderer/shallow';
+import { Book, Chapter } from '@types';
+import { ChapterList } from '@components/ChapterList';
 
 const renderer = createRenderer();
 const dummyChapter: Chapter = {
-  content: "test chapter",
+  content: 'test chapter',
   free: false,
   position: undefined,
-  slug: "test-chapter-dummy",
-  title: "dummy chapter",
+  slug: 'test-chapter-dummy',
+  title: 'dummy chapter',
 };
-const dummyBookSlug = "dummy_book_slug_name";
+const dummyBookSlug = 'dummy_book_slug_name';
 
-describe("<ChapterList />", () => {
-  it("should render and match the snapshot", () => {
+describe('<ChapterList />', () => {
+  it('should render and match the snapshot', () => {
     renderer.render(
       <ChapterList chapters={[dummyChapter]} bookSlug={dummyBookSlug} />
     );

@@ -1,11 +1,11 @@
-import { escapeHtml } from "./md-utils";
+import { escapeHtml } from './md-utils';
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container
 
 // ::: details Detail
 //   summary comes here
 // :::
-export const mdContainerDetails = {
+export const containerDetailsOptions = {
   validate: function (params: string) {
     return params.trim().match(/^details\s+(.*)$/);
   },
@@ -14,13 +14,13 @@ export const mdContainerDetails = {
     if (tokens[idx].nesting === 1) {
       // opening tag
       return (
-        "<details><summary>" +
+        '<details><summary>' +
         escapeHtml(m[1]) +
         '</summary><div class="details-content">'
       );
     } else {
       // closing tag
-      return "</div></details>\n";
+      return '</div></details>\n';
     }
   },
 };
@@ -29,7 +29,7 @@ export const mdContainerDetails = {
 // :::
 const msgClassRegex = /^message\s*([0-9a-z -_]{0,15})$/;
 
-export const mdContainerMessage = {
+export const containerMessageOptions = {
   validate: function (params: string) {
     return params.trim().match(msgClassRegex);
   },
@@ -41,7 +41,7 @@ export const mdContainerMessage = {
       return '<div class="msg ' + escapeHtml(m[1]) + '">';
     } else {
       // closing tag
-      return "</div>\n";
+      return '</div>\n';
     }
   },
 };

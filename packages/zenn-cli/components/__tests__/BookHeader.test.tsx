@@ -1,23 +1,23 @@
-import React from "react";
-import { Book } from "@types";
-import { createRenderer } from "react-test-renderer/shallow";
-import { BookHeader } from "@components/BookHeader";
+import React from 'react';
+import { Book } from '@types';
+import { createRenderer } from 'react-test-renderer/shallow';
+import { BookHeader } from '@components/BookHeader';
 
 const renderer = createRenderer();
-const useRouter = jest.spyOn(require("next/router"), "useRouter");
+const useRouter = jest.spyOn(require('next/router'), 'useRouter');
 
 const dummyBook: Book = {
   chapters: [],
-  coverDataUrl: "",
+  coverDataUrl: '',
   price: 100,
   published: false,
-  slug: "dummy-book-test",
-  summary: "OK\nOK\nOK",
-  title: "test book",
-  topics: ["zenn"],
+  slug: 'dummy-book-test',
+  summary: 'OK\nOK\nOK',
+  title: 'test book',
+  topics: ['zenn'],
 };
-describe("<BookHeader/>", () => {
-  it("should render and match the snapshot", () => {
+describe('<BookHeader/>', () => {
+  it('should render and match the snapshot', () => {
     // mock useRouter()
     // See this link: https://github.com/vercel/next.js/issues/7479
     useRouter.mockImplementationOnce(() => ({

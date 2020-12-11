@@ -1,8 +1,8 @@
-import escapeHtml from "escape-html";
-const cryptoRandomString = require("crypto-random-string");
+import escapeHtml from 'escape-html';
+const cryptoRandomString = require('crypto-random-string');
 
 export const generateSlug = (): string => {
-  return cryptoRandomString({ length: 20, type: "hex" });
+  return cryptoRandomString({ length: 20, type: 'hex' });
 };
 
 export const validateSlug = (slug: string): boolean => {

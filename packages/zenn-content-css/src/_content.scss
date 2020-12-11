@@ -170,7 +170,7 @@ blockquote {
   font-size: 0.95rem;
   margin: 1.4rem 0;
   border-left: solid 3px #b3bfc7;
-  padding: 0 0 0 0.7em;
+  padding: 2px 0 2px 0.7em; /* 上下にpaddingをわずかでも設定しておくと、固定ヘッダー対策で見出しにネガティブマージンが指定されたときにも崩れない。ref: https://github.com/zenn-dev/zenn-roadmap/issues/191 */
   color: #626e77;
   p {
     margin: 1rem 0;

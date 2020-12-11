@@ -1,19 +1,19 @@
-import path from "path";
-import fs from "fs-extra";
+import path from 'path';
+import fs from 'fs-extra';
 
-import { cliCommand } from ".";
+import { cliCommand } from '.';
 
 export const exec: cliCommand = () => {
   const projectRoot = process.cwd();
-  const mkDirNames = ["articles", "books"];
+  const mkDirNames = ['articles', 'books'];
 
   mkDirNames.forEach((dirName) => {
     try {
       fs.mkdirpSync(path.join(projectRoot, dirName));
       fs.writeFileSync(
-        path.join(projectRoot, dirName, ".keep"),
-        "",
-        { flag: "wx" } // Don't overwrite
+        path.join(projectRoot, dirName, '.keep'),
+        '',
+        { flag: 'wx' } // Don't overwrite
       );
     } catch (e) {
       console.log(`Generating ${dirName} skipped.`);
@@ -23,9 +23,9 @@ export const exec: cliCommand = () => {
   // generate .gitignore
   try {
     fs.writeFileSync(
-      path.join(projectRoot, ".gitignore"),
-      ["node_modules", ".DS_Store"].join("\n"),
-      { flag: "wx" } // Don't overwrite
+      path.join(projectRoot, '.gitignore'),
+      ['node_modules', '.DS_Store'].join('\n'),
+      { flag: 'wx' } // Don't overwrite
     );
   } catch (e) {
     console.log(`Generating .gitignore skipped.`);
@@ -34,13 +34,13 @@ export const exec: cliCommand = () => {
   // generate README.md
   try {
     fs.writeFileSync(
-      path.join(projectRoot, "README.md"),
+      path.join(projectRoot, 'README.md'),
       [
-        "# Zenn Contents\n",
-        "* [📘 How to use](https://zenn.dev/zenn/articles/zenn-cli-guide)",
-        "* [📘 Markdown guide](https://zenn.dev/zenn/articles/markdown-guide)",
-      ].join("\n"),
-      { flag: "wx" } // Don't overwrite
+        '# Zenn Contents\n',
+        '* [📘 How to use](https://zenn.dev/zenn/articles/zenn-cli-guide)',
+        '* [📘 Markdown guide](https://zenn.dev/zenn/articles/markdown-guide)',
+      ].join('\n'),
+      { flag: 'wx' } // Don't overwrite
     );
   } catch (e) {
     console.log(`Generating README.md skipped.`);

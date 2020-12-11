@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { AppProps } from "next/app";
-import Head from "next/head";
+import React, { useEffect } from 'react';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
 
-import "zenn-content-css";
-import "@styles/index.scss";
+import 'zenn-content-css';
+import '@styles/index.scss';
 
 declare global {
   interface Window {
@@ -14,11 +14,11 @@ declare global {
 export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const { body } = document;
-    const script = document.createElement("script");
-    script.src = "/socket.io/socket.io.js";
+    const script = document.createElement('script');
+    script.src = '/socket.io/socket.io.js';
 
     script.onerror = () => {
-      console.log("Hot reload disabled.");
+      console.log('Hot reload disabled.');
       return true;
     };
 
@@ -29,7 +29,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         reconnectionDelayMax: 5000,
         reconnectionAttempts: 99999,
       });
-      socket.on("reload", () => {
+      socket.on('reload', () => {
         location.reload();
       });
     };
@@ -43,6 +43,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
         />
       </Head>
       <Component {...pageProps} />

@@ -1,36 +1,28 @@
 // plugis
-import { md } from "./md-utils";
-import markdownItImSize from "@steelydylan/markdown-it-imsize";
-import markdownItAnchor from "markdown-it-anchor";
-import { rendererFence } from "./md-renderer-fence";
-import markdownItPrism from "./prism";
-const mdContainer = require("markdown-it-container");
+import { mdBase as md } from './md-utils';
 
-// options
-import { mdContainerDetails, mdContainerMessage } from "./md-container";
-import { optionCustomBlock } from "./md-custom-block";
+import {
+  containerDetailsOptions,
+  containerMessageOptions,
+} from './md-container';
+import { customBlockOptions } from './md-custom-block';
 
-md.use(markdownItPrism)
-  .use(require("markdown-it-footnote"))
-  .use(rendererFence)
-  .use(markdownItImSize)
-  .use(require("markdown-it-task-lists"), { enabled: true })
+import markdownItImSize from '@steelydylan/markdown-it-imsize';
+import markdownItAnchor from 'markdown-it-anchor';
+const mdContainer = require('markdown-it-container');
+const mdFootnote = require('markdown-it-footnote');
+const mdTaskLists = require('markdown-it-task-lists');
+const mdInlineComments = require('markdown-it-inline-comments');
+const mdCustomBlock = require('markdown-it-custom-block');
+
+md.use(markdownItImSize)
   .use(markdownItAnchor, { level: [1, 2, 3] })
-  .use(require("markdown-it-inline-comments"))
-  .use(require("markdown-it-link-attributes"), {
-    pattern: /^(?!https:\/\/zenn\.dev\/)/,
-    attrs: {
-      rel: "nofollow",
-    },
-  })
-  .use(require("markdown-it-custom-block"), optionCustomBlock)
-  .use(mdContainer, "details", mdContainerDetails)
-  .use(mdContainer, "message", mdContainerMessage)
-  .use(require("@catnose99/markdown-it-texmath"), {
-    engine: require("katex"),
-    delimiters: "dollars",
-    katexOptions: { macros: { "\\RR": "\\mathbb{R}" } },
-  });
+  .use(mdContainer, 'details', containerDetailsOptions)
+  .use(mdContainer, 'message', containerMessageOptions)
+  .use(mdFootnote)
+  .use(mdTaskLists, { enabled: true })
+  .use(mdInlineComments)
+  .use(mdCustomBlock, customBlockOptions);
 
 // custom footnote
 md.renderer.rules.footnote_block_open = () =>

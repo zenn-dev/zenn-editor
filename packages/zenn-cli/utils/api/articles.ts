@@ -1,13 +1,13 @@
-import fs from "fs-extra";
-import path from "path";
-import matter from "gray-matter";
-import { Article } from "@types";
-import { throwWithConsoleError } from "@utils/errors";
+import fs from 'fs-extra';
+import path from 'path';
+import matter from 'gray-matter';
+import { Article } from '@types';
+import { throwWithConsoleError } from '@utils/errors';
 
-const articlesDirectory = path.join(process.cwd(), "articles");
+const articlesDirectory = path.join(process.cwd(), 'articles');
 
 function getAllArticleSlugs(): string[] {
-  return getArticleMdNames()?.map((n) => n.replace(/\.md$/, ""));
+  return getArticleMdNames()?.map((n) => n.replace(/\.md$/, ''));
 }
 
 function getArticleMdNames(): string[] {
@@ -16,7 +16,7 @@ function getArticleMdNames(): string[] {
     allFiles = fs.readdirSync(articlesDirectory);
   } catch (e) {
     throwWithConsoleError(
-      "プロジェクトルートにarticlesディレクトリを作成してください"
+      'プロジェクトルートにarticlesディレクトリを作成してください'
     );
   }
   const mdRegex = /\.md$/;
@@ -29,11 +29,11 @@ export function getArticleBySlug(
 ): Article {
   const fullPath = path.join(
     articlesDirectory,
-    `${slug.replace(/[/\\]/g, "")}.md` // Prevent directory traversal
+    `${slug.replace(/[/\\]/g, '')}.md` // Prevent directory traversal
   );
   let fileRaw;
   try {
-    fileRaw = fs.readFileSync(fullPath, "utf8");
+    fileRaw = fs.readFileSync(fullPath, 'utf8');
   } catch (e) {
     return null;
   }
@@ -46,7 +46,7 @@ export function getArticleBySlug(
       slug,
     };
     fields.forEach((field) => {
-      if (field === "content") {
+      if (field === 'content') {
         item[field] = content;
       }
       if (data[field] !== undefined) {

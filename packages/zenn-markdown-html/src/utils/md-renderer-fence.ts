@@ -1,7 +1,7 @@
-import MarkdownIt from "markdown-it";
-import { escapeHtml } from "markdown-it/lib/common/utils";
+import MarkdownIt from 'markdown-it';
+import { escapeHtml } from 'markdown-it/lib/common/utils';
 
-export function rendererFence(md: MarkdownIt) {
+export function mdRendererFence(md: MarkdownIt) {
   // default renederer
   const defaultRender =
     md.renderer.rules.fence ||
@@ -14,7 +14,7 @@ export function rendererFence(md: MarkdownIt) {
     const [tokens, idx] = args;
     // e.g. info = "js:fooBar.js"
     const langInfo = tokens[idx].info.split(/:/);
-    const langName = langInfo?.length ? langInfo[0].trim() : ""; // e.g "js"
+    const langName = langInfo?.length ? langInfo[0].trim() : ''; // e.g "js"
     const filename = langName.length && langInfo[1] ? langInfo[1] : null; // e.g "fooBar.js"
 
     // override info (e.g "js:fooBar.js" -> "js")
@@ -26,7 +26,7 @@ export function rendererFence(md: MarkdownIt) {
       ? `<div class="code-block-filename-container"><span class="code-block-filename">${escapeHtml(
           filename
         )}</span></div>`
-      : "";
+      : '';
 
     return `
       <div class="code-block-container">
