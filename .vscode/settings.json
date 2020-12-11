@@ -1,7 +1,5 @@
 {
-  "eslint.workingDirectories": ["./frontend"],
-  "editor.formatOnSave": false,
-  "vetur.validation.template": false,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   }
