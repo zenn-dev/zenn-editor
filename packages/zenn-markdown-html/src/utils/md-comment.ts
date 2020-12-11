@@ -1,11 +1,8 @@
+import { md as commentMd } from "./md-utils";
 import markdownItPrism from "./prism";
 
 // コメントでは一部のHTMLのみ許可する
 import { rendererFence } from "./md-renderer-fence";
-const commentMd = require("markdown-it")({
-  breaks: true,
-  linkify: true,
-});
 
 commentMd
   .use(markdownItPrism)
