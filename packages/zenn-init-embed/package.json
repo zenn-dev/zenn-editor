@@ -1,6 +1,6 @@
 {
   "name": "zenn-init-embed",
-  "version": "0.1.58",
+  "version": "0.1.60",
   "description": "Init embedded contents such as Twitter",
   "main": "lib/index.js",
   "files": [
