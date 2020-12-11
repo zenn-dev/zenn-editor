@@ -18,7 +18,7 @@
     "format": "prettier components cli pages --write",
     "start": "next -p 3002",
     "dev": "next -p 3002",
-    "test": "jest",
+    "test": "jest --updateSnapshot",
     "test:watch": "jest --watch",
     "build:bin": "rimraf dist/* && tsc --project tsconfig.cli.json",
     "build:next": "next build && rimraf .next/cache",
