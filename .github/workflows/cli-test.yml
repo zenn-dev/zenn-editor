@@ -1,4 +1,4 @@
-name: Test zenn-cli
+name: Test zenn-editor
 
 on:
   pull_request:
