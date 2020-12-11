@@ -5,7 +5,7 @@ import { escapeHtml } from './md-utils';
 // ::: details Detail
 //   summary comes here
 // :::
-export const mdContainerDetails = {
+export const containerDetailsOptions = {
   validate: function (params: string) {
     return params.trim().match(/^details\s+(.*)$/);
   },
@@ -29,7 +29,7 @@ export const mdContainerDetails = {
 // :::
 const msgClassRegex = /^message\s*([0-9a-z -_]{0,15})$/;
 
-export const mdContainerMessage = {
+export const containerMessageOptions = {
   validate: function (params: string) {
     return params.trim().match(msgClassRegex);
   },

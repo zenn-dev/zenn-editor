@@ -1,7 +1,7 @@
 import MarkdownIt from 'markdown-it';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 
-export function rendererFence(md: MarkdownIt) {
+export function mdRendererFence(md: MarkdownIt) {
   // default renederer
   const defaultRender =
     md.renderer.rules.fence ||

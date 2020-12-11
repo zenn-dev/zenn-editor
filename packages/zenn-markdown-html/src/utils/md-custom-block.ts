@@ -3,7 +3,7 @@ import { escapeHtml } from './md-utils';
 // e.g.
 // @[youtube](youtube-video-id)
 
-export const optionCustomBlock = {
+export const customBlockOptions = {
   youtube(videoId: string) {
     if (!videoId?.match(/^[a-zA-Z0-9_-]+$/)) {
       return 'YouTubeのvideoIDが不正です';
