@@ -14,7 +14,6 @@ const mdFootnote = require('markdown-it-footnote');
 const mdTaskLists = require('markdown-it-task-lists');
 const mdInlineComments = require('markdown-it-inline-comments');
 const mdCustomBlock = require('markdown-it-custom-block');
-const mdTexMath = require('@catnose99/markdown-it-texmath');
 
 md.use(markdownItImSize)
   .use(markdownItAnchor, { level: [1, 2, 3] })
@@ -23,12 +22,7 @@ md.use(markdownItImSize)
   .use(mdFootnote)
   .use(mdTaskLists, { enabled: true })
   .use(mdInlineComments)
-  .use(mdCustomBlock, customBlockOptions)
-  .use(mdTexMath, {
-    engine: require('katex'),
-    delimiters: 'dollars',
-    katexOptions: { macros: { '\\RR': '\\mathbb{R}' } },
-  });
+  .use(mdCustomBlock, customBlockOptions);
 
 // custom footnote
 md.renderer.rules.footnote_block_open = () =>
