@@ -11,7 +11,7 @@
     "lint": "lerna run lint --stream",
     "lint:fix": "lerna run lint:fix --stream",
     "build": "lerna run build --stream",
-    "publish:all": "npm run build && lerna publish",
+    "publish:all": "npm run test && npm run build && lerna publish",
     "publish:canary": "npm run build && lerna publish --canary"
   },
   "repository": {
