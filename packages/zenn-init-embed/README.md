@@ -1,5 +1,5 @@
 # Zenn Init Embed
-Load embed scripts(Twitter, katex...) on client.
+Load embed scripts on client.
 
 ```js
 import initEmbed from "zenn-init-embed";

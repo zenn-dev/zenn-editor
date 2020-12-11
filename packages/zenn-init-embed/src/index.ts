@@ -1,8 +1,7 @@
-import { loadScript, loadStylesheet } from './utils/load-external-source';
+import { loadScript } from './utils/load-external-source';
 
 export default async function () {
   initTweet();
-  initKatex();
 }
 
 declare let twttr: any;
@@ -17,13 +16,5 @@ async function initTweet() {
     funcToRefresh: () => {
       twttr?.widgets?.load(); // render again if alread script loaded
     },
-  });
-}
-
-async function initKatex() {
-  if (!document.querySelector('.katex')) return;
-  loadStylesheet({
-    id: 'katex-css',
-    href: 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css',
   });
 }
