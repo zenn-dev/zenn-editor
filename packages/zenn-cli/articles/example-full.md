@@ -8,6 +8,7 @@ emoji: 👩‍💻
 published: false
 ---
 
+
 先日、こんな記事を見かけました。
 
 **[テックブログは続かない - note.com](https://note.com/makaibito/n/n2d9e84a959c0)**

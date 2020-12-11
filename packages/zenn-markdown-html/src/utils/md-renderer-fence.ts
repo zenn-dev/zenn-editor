@@ -1,5 +1,4 @@
 import MarkdownIt from 'markdown-it';
-import { escapeHtml } from 'markdown-it/lib/common/utils';
 
 export function mdRendererFence(md: MarkdownIt) {
   // default renederer
@@ -23,7 +22,7 @@ export function mdRendererFence(md: MarkdownIt) {
     if (tokens[idx].content.length === 0) return originalHTML;
 
     const filenameHTML = filename
-      ? `<div class="code-block-filename-container"><span class="code-block-filename">${escapeHtml(
+      ? `<div class="code-block-filename-container"><span class="code-block-filename">${md.utils.escapeHtml(
           filename
         )}</span></div>`
       : '';

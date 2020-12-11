@@ -1,4 +1,5 @@
-import { escapeHtml } from './md-utils';
+import { escapeHtml } from 'markdown-it/lib/common/utils';
+
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container
 
