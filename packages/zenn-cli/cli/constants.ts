@@ -7,7 +7,7 @@ Command:
   zenn -v           zenn-cliのバージョンを表示
   zenn help         ヘルプ
 
-  👇詳細
+  👇  詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
@@ -22,13 +22,13 @@ Options:
   --port PORT, -p PORT  起動するサーバーに指定したいポート. デフォルトは8000
   --no-watch            ホットリロードを無効化
   --open                プレビュー立ち上げ時にブラウザを開く
-  
+
   --help, -h            このヘルプを表示
 
 Example:
   npx zenn preview --port 3000
 
-  👇詳細
+  👇  詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
@@ -52,7 +52,7 @@ Options:
 Example:
   npx zenn new:article --slug enjoy-zenn-with-client --title タイトル --type idea --emoji ✨ 
 
-  👇詳細
+  👇  詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
@@ -75,7 +75,7 @@ Options:
 Example:
   npx zenn new:book --slug enjoy-zenn-with-client
 
-  👇詳細
+  👇  詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
