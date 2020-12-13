@@ -97,10 +97,7 @@ function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
  * @param useroptions
  *        The options this plugin is being initialised with.
  */
-export default function markdownItPrism(
-  markdownit: MarkdownIt,
-  useroptions: Options
-): void {
+export function mdPrism(markdownit: MarkdownIt, useroptions: Options): void {
   const options = Object.assign({}, DEFAULTS, useroptions);
 
   options.init(Prism);
