@@ -1,6 +1,6 @@
 import markdownIt from 'markdown-it';
 import { mdLineNumber } from './utils/md-line-number';
-
+import { linkToCard } from './utils/link-to-card';
 // plugis
 import { defaultPlugin } from './utils/md-default';
 import {
@@ -39,7 +39,9 @@ md.renderer.rules.footnote_block_open = () =>
 
 const markdownToHtml = (text: string): string => {
   if (!(text && text.length)) return text;
-  return md.render(text);
+  const rawHtml = md.render(text);
+  if (!rawHtml) return '';
+  return linkToCard(rawHtml);
 };
 export default markdownToHtml;
 
