@@ -8,6 +8,10 @@ emoji: 👩‍💻
 published: false
 ---
 
+https://docs.angularjs.org/api/ng/service/$http#json-vulnerability-protection
+
+ssssffsss
+
 ![](https://octodex.github.com/images/stormtroopocat.jpg =200x)
 *captions*
 

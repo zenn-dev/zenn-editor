@@ -1,9 +1,11 @@
 import markdownToHtml from './index';
 
 describe('Convert markdown to html', () => {
-  test('should convert ## to h2 with id', () => {
-    const html = markdownToHtml('## hey');
-    expect(html).toContain('<h2 id="hey">hey</h2>');
+  test('should convert markdown to html properly', () => {
+    const html = markdownToHtml('Hello\n## hey\n\n- first\n- second\n');
+    expect(html).toContain(`<p>Hello</p>`);
+    expect(html).toContain(`<h2 id="hey">hey</h2>`);
+    expect(html).toContain(`<ul>\n<li>first</li>\n<li>second</li>\n</ul>\n`);
   });
 
   test('should generate tweet html', () => {
@@ -34,23 +36,72 @@ describe('Convert markdown to html', () => {
 
 describe('Linkify', () => {
   test('should likify url with className "linkified"', () => {
-    const html = markdownToHtml('https://zenn.dev/example');
+    const html = markdownToHtml('URL is https://zenn.dev/example');
     expect(html).toContain(
-      '<a href="https://zenn.dev/example" class="linkified">https://zenn.dev/example</a>'
-    );
-  });
-
-  test('should likify url with className "linkified"', () => {
-    const html = markdownToHtml('https://zenn.dev/example');
-    expect(html).toContain(
-      '<a href="https://zenn.dev/example" class="linkified">https://zenn.dev/example</a>'
+      'URL is <a href="https://zenn.dev/example" class="linkified">https://zenn.dev/example</a>'
     );
   });
 
   test('should likify url with nofollow if host is not zenn.dev', () => {
-    const html = markdownToHtml('https://example.com');
+    const html = markdownToHtml('URL is https://example.com');
     expect(html).toContain(
-      '<a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a>'
+      'URL is <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a>'
+    );
+  });
+
+  test('should convert links to card if prev elem is br', () => {
+    const html = markdownToHtml('foo\nhttps://example.com');
+    expect(html).toEqual(
+      `<p>foo\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n`
+    );
+  });
+
+  test('should convert links to card if first element in p', () => {
+    const html = markdownToHtml('foo\n\nhttps://example.com');
+    expect(html).toEqual(
+      `<p>foo</p>\n<p><div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n`
+    );
+  });
+
+  test('should not convert links to card if text exists before url', () => {
+    const html = markdownToHtml('foo https://example.com');
+    expect(html).toEqual(
+      '<p>foo <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></p>\n'
+    );
+  });
+
+  test('should not convert intetional links to card', () => {
+    const html = markdownToHtml('[https://example.com](https://example.com)');
+    expect(html).toEqual(
+      '<p><a href="https://example.com" rel="nofollow">https://example.com</a></p>\n'
+    );
+  });
+
+  test('should not convert links inside list', () => {
+    const html = markdownToHtml('- https://example.com\n- second');
+    expect(html).toEqual(
+      '<ul>\n<li><a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></li>\n<li>second</li>\n</ul>\n'
+    );
+  });
+
+  test('should not convert links inside block', () => {
+    const html = markdownToHtml(':::message alert\nhttps://example.com\n:::');
+    expect(html).toEqual(
+      '<div class="msg alert"><p><a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></p>\n</div>\n'
+    );
+  });
+
+  test('should not convert links inside list', () => {
+    const html = markdownToHtml('- https://example.com\n- second');
+    expect(html).toEqual(
+      '<ul>\n<li><a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></li>\n<li>second</li>\n</ul>\n'
+    );
+  });
+
+  test('should not convert links if text follows', () => {
+    const html = markdownToHtml('https://example.com foo');
+    expect(html).toEqual(
+      '<p><a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a> foo</p>\n'
     );
   });
 });
@@ -103,25 +154,25 @@ describe('No XSS Vulnerability', () => {
 
 describe('convert $ mark properly', () => {
   test('should keep $ around link href', () => {
-    const html = markdownToHtml('$a,b,c$は[hoge](https://hoge.fuga)を参照');
-    expect(html).toMatch(/<eq>.*<\/eq>は/);
+    const html = markdownToHtml('$a,b,c$foo[hoge](https://hoge.fuga)bar');
+    expect(html).toMatch(/<eq>.*<\/eq>foo/);
     expect(html).toContain(
-      '<a href="https://hoge.fuga" rel="nofollow">hoge</a>を参照'
+      '<a href="https://hoge.fuga" rel="nofollow">hoge</a>bar'
     );
   });
 
   test('should keep $ around link href', () => {
-    const html = markdownToHtml('$a,b,c$は[hoge](http://hoge.fuga)$を参照');
-    expect(html).toMatch(/<eq>.*<\/eq>は/);
+    const html = markdownToHtml('$a,b,c$foo[hoge](http://hoge.fuga)$bar');
+    expect(html).toMatch(/<eq>.*<\/eq>foo/);
     expect(html).toContain(
-      '<a href="http://hoge.fuga" rel="nofollow">hoge</a>$を参照'
+      '<a href="http://hoge.fuga" rel="nofollow">hoge</a>$bar'
     );
   });
   test('should keep $ around link href', () => {
-    const html = markdownToHtml('$a,b,c$は[$hoge](http://hoge.fuga)を参照');
-    expect(html).toMatch(/<eq>.*<\/eq>は/);
+    const html = markdownToHtml('$a,b,c$foo[$hoge](http://hoge.fuga)bar');
+    expect(html).toMatch(/<eq>.*<\/eq>foo/);
     expect(html).toContain(
-      '<a href="http://hoge.fuga" rel="nofollow">$hoge</a>を参照'
+      '<a href="http://hoge.fuga" rel="nofollow">$hoge</a>bar'
     );
   });
   test('should keep $ around link href', () => {
