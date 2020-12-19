@@ -104,7 +104,19 @@ describe('Linkify', () => {
       '<p><a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a> foo</p>\n'
     );
   });
+
+  test('should not convert a link with any text in same paragraph', () => {
+    const html = markdownToHtml(
+      `a: https://example.com\nb: https://example.com`
+    );
+    expect(html).toEqual(
+      '<p>a: <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a><br>\nb: <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></p>\n'
+    );
+  });
 });
+
+//zenn.dev/okuoku/scraps/b485da18176fdc
+//zenn.dev/okuoku/scraps/c236209827218e
 
 describe('No XSS Vulnerability', () => {
   test('should excape script tag', () => {
