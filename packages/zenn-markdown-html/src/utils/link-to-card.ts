@@ -6,21 +6,28 @@ export function linkToCard(html: string) {
   const $ = cheerio.load(html);
 
   $('body > p > .linkified').each(function (this: cheerio.Element) {
-    // 前に要素がない かつ 直前にテキストが存在しない
-    const isPrevEmpty =
-      !$(this).prev().get(0) &&
-      $(this).get(0)?.previousSibling?.type !== 'text';
-
-    // 直前にbrタグ
-    const isPrevBrTag = $(this).prev().get(0)?.tagName === 'br';
-
-    if (!(isPrevEmpty || isPrevBrTag)) return;
+    // 直前にテキストが存在する場合は変換しない
+    const isPrevAnyText =
+      $(this).get(0)?.previousSibling?.type === 'text' &&
+      $(this).get(0).previousSibling.data !== '\n';
+    if (isPrevAnyText) return;
 
     // 直後にテキストが存在する場合は変換しない
-    if ($(this).get(0)?.nextSibling?.type === 'text') return;
+    const isNextAnyText = $(this).get(0)?.nextSibling?.type === 'text';
+    if (isNextAnyText) return;
+
+    // 前に要素がない
+    const isPrevNoElement = !$(this).prev().get(0);
+
+    // 直前にbrタグ
+    const isPrevBr = $(this).prev().get(0)?.tagName === 'br';
+
+    const isPrevEmpty = isPrevNoElement || isPrevBr;
+
+    if (!isPrevEmpty) return;
 
     const url = $(this).attr('href');
-    if (isPrevBrTag) {
+    if (isPrevBr) {
       $(this).prev('br')?.remove();
     }
     if (url) {
