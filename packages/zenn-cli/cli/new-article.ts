@@ -89,7 +89,7 @@ export const exec: cliCommand = (argv) => {
     if (machineReadable) {
       console.log(fileName);
     } else {
-      console.log(`📄${colors.green(fileName)} created.`);
+      console.log(`📄 ${colors.green(fileName)} created.`);
     }
   } catch (e) {
     console.log(colors.red('エラーが発生しました') + e);
