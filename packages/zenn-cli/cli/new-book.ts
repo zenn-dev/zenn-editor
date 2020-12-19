@@ -19,7 +19,7 @@ const generatePlaceholderChapters = (bookDirPath: string): void => {
         chapterBody,
         { flag: 'wx' } // Don't overwrite
       );
-      console.log(`Chapter 📄${colors.green(chapterFileName)} created.`);
+      console.log(`Chapter 📄 ${colors.green(chapterFileName)} created.`);
     } catch (e) {
       console.log(colors.red('チャプターファイルの作成時にエラーが発生') + e);
     }
@@ -101,7 +101,7 @@ export const exec: cliCommand = (argv) => {
       configYamlBody,
       { flag: 'wx' } // Don't overwrite
     );
-    console.log(`🛠${colors.green(`books/${slug}/config.yaml`)} created.`);
+    console.log(`🛠 ${colors.green(`books/${slug}/config.yaml`)} created.`);
   } catch (e) {
     console.log(colors.red('エラーが発生しました') + e);
     process.exit(1);
