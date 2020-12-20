@@ -7,7 +7,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": false,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "rootDir": ".",
     "outDir": "./dist"
   },
