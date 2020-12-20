@@ -10,7 +10,8 @@ export type cliCommand = (argv?: string[]) => void;
 
 const commands: { [command: string]: () => Promise<cliCommand> } = {
   preview: async () => await import('./preview').then((i) => i.exec),
-  help: async () => await import('./help').then((i) => i.exec),
+  '-h': async () => await import('./help').then((i) => i.exec),
+  '--help': async () => await import('./help').then((i) => i.exec),
   init: async () => await import('./init').then((i) => i.exec),
   'new:article': async () => await import('./new-article').then((i) => i.exec),
   'new:book': async () => await import('./new-book').then((i) => i.exec),
