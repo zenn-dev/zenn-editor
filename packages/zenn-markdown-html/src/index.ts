@@ -1,6 +1,7 @@
 import markdownIt from 'markdown-it';
 import { mdLineNumber } from './utils/md-line-number';
 import { linkToCard } from './utils/link-to-card';
+import { twitterEmbed } from './utils/twitter-embed';
 
 // plugis
 import {
@@ -62,7 +63,7 @@ const markdownToHtml = (text: string): string => {
   if (!(text && text.length)) return text;
   const rawHtml = md.render(text);
   if (!rawHtml) return '';
-  return linkToCard(rawHtml);
+  return linkToCard(twitterEmbed(rawHtml));
 };
 export default markdownToHtml;
 

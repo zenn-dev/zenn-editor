@@ -11,7 +11,7 @@ describe('Convert markdown to html', () => {
   test('should generate tweet html', () => {
     const html = markdownToHtml('@[tweet](https://twitter.com/jack/status/20)');
     expect(html).toContain(
-      '<div class="embed-tweet tweet-container"><blockquote class="twitter-tweet"><a href="https://twitter.com/jack/status/20"></a></blockquote></div>'
+      '<twitter-embed href="https://twitter.com/jack/status/20"></twitter-embed>'
     );
   });
 

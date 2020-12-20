@@ -295,3 +295,7 @@ here be dragons
 ::: message alert
 here be dragons
 :::
+
+### Twitter Embed
+
+@[tweet](https://twitter.com/jack/status/20)

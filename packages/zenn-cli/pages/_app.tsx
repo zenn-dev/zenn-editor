@@ -13,6 +13,7 @@ declare global {
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
+    import('zenn-embed-elements');
     const { body } = document;
     const script = document.createElement('script');
     script.src = '/socket.io/socket.io.js';

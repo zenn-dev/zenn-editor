@@ -1,11 +1,8 @@
-import { useEffect } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import escapeHtml from 'escape-html';
 import markdownToHtml from 'zenn-markdown-html';
-import initEmbed from 'zenn-init-embed';
 
 import { ContentBody } from '@components/ContentBody';
 import { ArticleHeader } from '@components/ArticleHeader';
@@ -21,11 +18,6 @@ type Props = {
 
 const Page: NextPage<Props> = (props) => {
   const { article } = props;
-  const router = useRouter();
-
-  useEffect(() => {
-    initEmbed(); // reInit everytime page changes
-  }, [router.asPath]);
 
   return (
     <>
