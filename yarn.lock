@@ -12621,9 +12621,7 @@ yeast@0.1.2:
   resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
   integrity sha1-AI4G2AlDIMNy28L47XagymyKxBk=
 
-zenn-embed-elements@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/zenn-embed-elements/-/zenn-embed-elements-0.1.0.tgz#c8c236404a7d30d8570b3f9dd6b85301fcbb20ed"
-  integrity sha512-XwRBmay7CkAn8b3DQeyM63Bd5K7KW7VKuHs/G1vDqXPml0ArtXf0PY0DWOAD28f7WXTdgzLufEbDjL6lkQEuBw==
-  dependencies:
-    zenn-init-embed "^0.1.60"
+zenn-embed-elements@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/zenn-embed-elements/-/zenn-embed-elements-0.1.1.tgz#fe910dcea01393a9b1847cb969b6ca1aa30edf86"
+  integrity sha512-63EO7PwsZyZqzMkJgdJkzJgTUIfb3SsTIpI1K9WH14vP1bebdfRev9NCzvT5xKVeLZJg3spJGwt8YVH+aunlWA==
