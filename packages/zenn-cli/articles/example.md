@@ -9,10 +9,6 @@ published: false
 ---
 
 Test
-
-
-<!-- this is not shown -->
-
 Test
 
 # h1 Heading
@@ -147,11 +143,12 @@ console.log(foo(5));
 console.log(aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa);
 ```
 
+
 ## Tables
 
 | Option | Description |
 | ------ | ----------- |
-| data   | path to data files to supply the data that will be passed into templates. |
+| data   | path to <br> data files to supply the data that will be passed into templates. |
 | engine | engine to be used for processing templates. Handlebars is the default. |
 | ext    | extension to be used for dest files. |
 

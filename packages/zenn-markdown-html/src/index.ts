@@ -11,6 +11,7 @@ import { mdRendererFence } from './utils/md-renderer-fence';
 import { mdLinkifyClass } from './utils/md-linkify-class';
 import { mdPrism } from './utils/md-prism';
 import { mdKatex } from './utils/md-katex';
+import { mdBr } from './utils/md-br';
 import { customBlockOptions } from './utils/md-custom-block';
 import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
@@ -29,7 +30,8 @@ const md = markdownIt({
 
 md.linkify.set({ fuzzyLink: false });
 
-md.use(mdPrism)
+md.use(mdBr)
+  .use(mdPrism)
   .use(mdRendererFence)
   .use(markdownItImSize)
   .use(markdownItAnchor, { level: [1, 2, 3] })
