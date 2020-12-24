@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/cheerio": "^0.22.23",
     "@types/jest": "^26.0.19",
+    "@types/katex": "^0.11.0",
     "@types/markdown-it": "^10.0.1",
     "@types/node": "^14.0.5",
     "jest": "^26.6.3",
@@ -23,7 +24,6 @@
     "typescript": "^3.9.3"
   },
   "dependencies": {
-    "@catnose99/markdown-it-texmath": "^1.0.0",
     "@steelydylan/markdown-it-imsize": "^1.0.2",
     "@types/prismjs": "^1.16.1",
     "cheerio": "^1.0.0-rc.3",

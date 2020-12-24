@@ -10,6 +10,8 @@ import {
 import { mdRendererFence } from './utils/md-renderer-fence';
 import { mdLinkifyClass } from './utils/md-linkify-class';
 import { mdPrism } from './utils/md-prism';
+import { mdKatex } from './utils/md-katex';
+import { mdBr } from './utils/md-br';
 import { customBlockOptions } from './utils/md-custom-block';
 import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
@@ -20,7 +22,6 @@ const mdTaskLists = require('markdown-it-task-lists');
 const mdInlineComments = require('markdown-it-inline-comments');
 const mdCustomBlock = require('markdown-it-custom-block');
 const mdLinkAttributes = require('markdown-it-link-attributes');
-const mdTexMath = require('@catnose99/markdown-it-texmath');
 
 const md = markdownIt({
   breaks: true,
@@ -29,7 +30,8 @@ const md = markdownIt({
 
 md.linkify.set({ fuzzyLink: false });
 
-md.use(mdPrism)
+md.use(mdBr)
+  .use(mdPrism)
   .use(mdRendererFence)
   .use(markdownItImSize)
   .use(markdownItAnchor, { level: [1, 2, 3] })
@@ -39,17 +41,13 @@ md.use(mdPrism)
   .use(mdTaskLists, { enabled: true })
   .use(mdInlineComments)
   .use(mdCustomBlock, customBlockOptions)
-  .use(mdTexMath, {
-    engine: require('katex'),
-    delimiters: 'dollars',
-    katexOptions: { macros: { '\\RR': '\\mathbb{R}' } },
-  })
   .use(mdLinkAttributes, {
     pattern: /^(?!https:\/\/zenn\.dev\/)/,
     attrs: {
       rel: 'nofollow',
     },
   })
+  .use(mdKatex)
   .use(mdLinkifyClass);
 
 // custom footnote

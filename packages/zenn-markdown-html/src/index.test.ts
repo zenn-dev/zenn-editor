@@ -131,7 +131,7 @@ describe('No XSS Vulnerability', () => {
     expect(html).toMatch('<p>javascript:alert(1)</p>');
   });
 
-  test('should keep img tag around tex syntax', () => {
+  test('should escape img tag around tex syntax', () => {
     const html = markdownToHtml(`
       $$"<img/src=./ onerror=alert(location)>
       any
@@ -141,13 +141,13 @@ describe('No XSS Vulnerability', () => {
     );
   });
 
-  test('should keep img tag around tex syntax', () => {
+  test('should escape img tag around tex syntax', () => {
     const html = markdownToHtml(`$$
       e^{i\theta"<img/src=./ onerror=alert(location)>} = \\cos\theta + i\\sin\thetae^{i\theta} 
     $$`);
     expect(html).toContain('&quot;&lt;img/src=./ onerror=alert(location)&gt;');
   });
-  test('should keep img tag around code fence', () => {
+  test('should escape img tag around code fence', () => {
     // make console.warn silent
     const consoleSpy = jest.spyOn(console, 'warn');
     consoleSpy.mockImplementation((x) => x);
@@ -194,5 +194,29 @@ describe('convert $ mark properly', () => {
     expect(html).toContain(
       '<a href="https://docs.angularjs.org/api/ng/service/$http" rel="nofollow">this $ should be escaped</a>'
     );
+  });
+});
+
+describe('should preserve br tag', () => {
+  test('should preserve br tag inside paragraph', () => {
+    const html = markdownToHtml('foo<br>bar');
+    expect(html).toMatch(/<p>foo<br>bar<\/p>/);
+  });
+  test('should preserve br tag inside table', () => {
+    const tableString = [
+      `| a | b |`,
+      `| --- | --- |`,
+      `| foo<br>bar | c |`,
+    ].join('\n');
+    const html = markdownToHtml(tableString);
+    expect(html).toContain('foo<br>bar');
+  });
+  test('should escape br tag inside inline code', () => {
+    const html = markdownToHtml('foo`<br>`bar');
+    expect(html).toMatch(/<p>foo<code>&lt;br&gt;<\/code>bar<\/p>/);
+  });
+  test('should escape br tag inside code block', () => {
+    const html = markdownToHtml('```\n<br>\n```');
+    expect(html).toContain('&lt;br&gt;');
   });
 });
