@@ -1,6 +1,6 @@
 import markdownIt from 'markdown-it';
 import { mdLineNumber } from './utils/md-line-number';
-import { linkToCard } from './utils/link-to-card';
+import { processDOM } from './utils/process-dom';
 
 // plugis
 import {
@@ -60,7 +60,7 @@ const markdownToHtml = (text: string): string => {
   if (!(text && text.length)) return text;
   const rawHtml = md.render(text);
   if (!rawHtml) return '';
-  return linkToCard(rawHtml);
+  return processDOM(rawHtml);
 };
 export default markdownToHtml;
 

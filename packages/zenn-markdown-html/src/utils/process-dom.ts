@@ -1,10 +1,8 @@
 import cheerio from 'cheerio';
 
-export function linkToCard(html: string) {
-  if (!html || html.length < 5) return html;
+type cheerioProcesser = (cheerioRoot: cheerio.Root) => void;
 
-  const $ = cheerio.load(html);
-
+const linkToCard: cheerioProcesser = function ($) {
   $('body > p > .linkified').each(function (this: cheerio.Element) {
     // 直前にテキストが存在する場合は変換しない
     const isPrevAnyText =
@@ -38,6 +36,13 @@ export function linkToCard(html: string) {
       );
     }
   });
+};
+
+export function processDOM(html: string) {
+  if (!html || html.length < 5) return html;
+
+  const $ = cheerio.load(html);
+  linkToCard($);
   // cheerioで自動でhtmlとbodyが付与されてしまうため、除く
   // ref: https://github.com/cheeriojs/cheerio/issues/1031
   // workaround: https://zenn.dev/catnose99/articles/76d77ac4a352d3
