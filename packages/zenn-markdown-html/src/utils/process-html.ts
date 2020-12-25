@@ -44,8 +44,9 @@ const linkToEmbed: cheerioProcesser = function ($) {
     // 前に要素がない
     const isPrevNoElement = !$(this).prev().get(0);
 
-    // 直前にbrタグ
+    // 直前・直後にbrタグ
     const isPrevBr = $(this).prev().get(0)?.tagName === 'br';
+    const isNextBr = $(this).next().get(0)?.tagName === 'br';
 
     const isPrevEmpty = isPrevNoElement || isPrevBr;
 
@@ -54,8 +55,12 @@ const linkToEmbed: cheerioProcesser = function ($) {
     const url = $(this).attr('href');
     if (!url) return;
 
+    // 前後のbrタグはスペースを広げすぎてしまうため削除
     if (isPrevBr) {
       $(this).prev('br')?.remove();
+    }
+    if (isNextBr) {
+      $(this).next('br')?.remove();
     }
 
     let replacedHtml = '';
