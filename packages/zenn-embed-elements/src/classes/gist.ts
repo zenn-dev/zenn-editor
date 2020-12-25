@@ -5,13 +5,30 @@ type GistApiResponse = {
   div: string;
 };
 
+// ホットリロード等、再レンダリング時のちらつきを防ぐためにhtmlの値をキャッシュする（リロードで消える）
+const resultHtmlStore: {
+  [cacheKey: string]: string;
+} = {};
+
 export class EmbedGist extends HTMLElement {
+  constructor() {
+    super();
+    const shadowRoot = this.attachShadow({ mode: 'open' });
+    const cachedHtml = resultHtmlStore[this.getCacheKey()];
+    if (cachedHtml) {
+      shadowRoot.innerHTML = cachedHtml;
+    }
+  }
+
   render(data: GistApiResponse) {
-    const shadowRoot = this.attachShadow({ mode: 'closed' });
-    shadowRoot.innerHTML = `
-      <link rel="stylesheet" href="${data.stylesheet}">
-      <div>${data.div}</div>
-    `;
+    if (!(this.shadowRoot && data.stylesheet && data.div)) {
+      this.renderError();
+      return;
+    }
+    const resultHtml = `<link rel="stylesheet" href="${data.stylesheet}"><div>${data.div}</div>`;
+    // gistのhtmlをキャッシュする
+    resultHtmlStore[this.getCacheKey()] = resultHtml;
+    this.shadowRoot.innerHTML = resultHtml;
   }
 
   renderError() {
@@ -21,10 +38,20 @@ export class EmbedGist extends HTMLElement {
     </div>`;
   }
 
+  getCacheKey() {
+    return encodeURIComponent(
+      this.getAttribute('page-url') ||
+        '' + this.getAttribute('encoded-filename') ||
+        ''
+    );
+  }
+
   async connectedCallback() {
+    // キャッシュがある場合は再リクエストしない
+    if (resultHtmlStore[this.getCacheKey()]) return;
+
     const pageUrl = this.getAttribute('page-url');
     const encodedFileName = this.getAttribute('encoded-filename');
-
     if (!pageUrl) return;
 
     const requestURL =
