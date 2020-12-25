@@ -31,8 +31,6 @@ export class EmbedGist extends HTMLElement {
       pageUrlToRequestUrl(pageUrl) +
       (encodedFileName?.length ? `?file=${encodedFileName}` : '');
 
-    console.log(requestURL);
-
     try {
       const data = await getByJsonp<GistApiResponse>(requestURL);
       this.render(data);
@@ -41,16 +39,6 @@ export class EmbedGist extends HTMLElement {
       this.renderError();
     }
   }
-}
-
-function getGistData(pageUrl: string, file?: string) {
-  /**
-   * originalURL は
-   * - https://gist.github.com/foo/bar.json
-   * - https://gist.github.com/foo/bar.json?file=example.js
-   * のような形式
-   */
-  // const [gistURL, filename] = originalURL.split('?file=');
 }
 
 function pageUrlToRequestUrl(url: string) {
