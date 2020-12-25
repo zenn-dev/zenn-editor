@@ -1,3 +1,5 @@
+// TODO: define-custom-elements（別ファイル）の導入に伴い廃止する
+// ただし、DB上の既存のHTMLを置換してから廃止すること
 import { loadScript } from './utils/load-external-source';
 
 export default async function () {

@@ -1,0 +1,24 @@
+{
+  "name": "zenn-embed-elements",
+  "version": "0.1.60",
+  "description": "Web components for embedded contents.",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "build": "rimraf lib/* && tsc -p .",
+    "test": "echo 'no test yet'"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.5",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.3"
+  },
+  "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -13,7 +13,7 @@ declare global {
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    const { body } = document;
+    import('zenn-embed-elements');
     const script = document.createElement('script');
     script.src = '/socket.io/socket.io.js';
 
@@ -33,7 +33,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         location.reload();
       });
     };
-    body.append(script);
+    document.body.append(script);
   }, []);
 
   return (

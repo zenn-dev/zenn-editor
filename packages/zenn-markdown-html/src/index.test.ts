@@ -113,10 +113,31 @@ describe('Linkify', () => {
       '<p>a: <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a><br>\nb: <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></p>\n'
     );
   });
-});
 
-//zenn.dev/okuoku/scraps/b485da18176fdc
-//zenn.dev/okuoku/scraps/c236209827218e
+  test('should convert a gist-link with gist-element', () => {
+    const html = markdownToHtml(
+      `https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23`
+    );
+    expect(html).toEqual(
+      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename></embed-gist></div></p>\n'
+    );
+  });
+
+  test('should convert a gist-link with gist-element with file', () => {
+    const html = markdownToHtml(
+      `https://gist.github.com/foo/bar?file=test.json`
+    );
+    expect(html).toEqual(
+      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json"></embed-gist></div></p>\n'
+    );
+  });
+  test('should convert a gist-link with gist-element with encoded file', () => {
+    const html = markdownToHtml(`https://gist.github.com/foo/bar?file=あ漢字$`);
+    expect(html).toEqual(
+      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="%25E3%2581%2582%25E6%25BC%25A2%25E5%25AD%2597%24"></embed-gist></div></p>\n'
+    );
+  });
+});
 
 describe('No XSS Vulnerability', () => {
   test('should excape script tag', () => {

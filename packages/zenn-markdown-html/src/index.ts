@@ -1,6 +1,6 @@
 import markdownIt from 'markdown-it';
 import { mdLineNumber } from './utils/md-line-number';
-import { processDOM } from './utils/process-dom';
+import { processHtml } from './utils/process-html';
 
 // plugis
 import {
@@ -60,7 +60,7 @@ const markdownToHtml = (text: string): string => {
   if (!(text && text.length)) return text;
   const rawHtml = md.render(text);
   if (!rawHtml) return '';
-  return processDOM(rawHtml);
+  return processHtml(rawHtml);
 };
 export default markdownToHtml;
 
