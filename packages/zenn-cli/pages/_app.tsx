@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps, router }: AppProps) {
   useEffect(() => {
     import('zenn-embed-elements');
     const script = document.createElement('script');
@@ -30,7 +30,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         reconnectionAttempts: 99999,
       });
       socket.on('reload', () => {
-        location.reload();
+        // better performance than location.reload
+        router.replace(router.pathname, router.asPath);
       });
     };
     document.body.append(script);
