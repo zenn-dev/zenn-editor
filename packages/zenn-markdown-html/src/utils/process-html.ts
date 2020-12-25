@@ -1,4 +1,5 @@
 import cheerio from 'cheerio';
+import { katexClassName } from './constants';
 
 type cheerioProcesser = (cheerioRoot: cheerio.Root) => void;
 
@@ -73,13 +74,30 @@ const linkToEmbed: cheerioProcesser = function ($) {
   });
 };
 
+function checkIsKatex(text: string) {
+  return text.indexOf(katexClassName) !== -1; // fastest way...?
+}
+
 export function processHtml(html: string) {
   if (!html || html.length < 5) return html;
 
+  const isKatex = checkIsKatex(html);
+
   const $ = cheerio.load(html);
   linkToEmbed($);
-  // cheerioで自動でhtmlとbodyが付与されてしまうため、除く
-  // ref: https://github.com/cheeriojs/cheerio/issues/1031
-  // workaround: https://zenn.dev/catnose99/articles/76d77ac4a352d3
-  return $(`body`).html() || '';
+
+  /**
+   * cheerioで自動でhtmlとbodyが付与されてしまうため、除く
+   * - ref: https://github.com/cheeriojs/cheerio/issues/1031
+   * - workaround: https://zenn.dev/catnose99/articles/76d77ac4a352d3
+   */
+  let processedHtml = $(`body`).html() || '';
+
+  /**
+   * katex記法が存在するときのみstylesheetを読みこむ
+   */
+  if (isKatex) {
+    processedHtml = `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"/>${processedHtml}`;
+  }
+  return processedHtml;
 }

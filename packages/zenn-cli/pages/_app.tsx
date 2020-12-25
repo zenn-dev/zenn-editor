@@ -45,10 +45,6 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
         />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
-        />
       </Head>
       <Component {...pageProps} />
     </>
