@@ -17,26 +17,26 @@ export class EmbedTweet extends HTMLElement {
   }
 
   render() {
-    const href = this.getAttribute('href');
-    if (!href) {
+    const url = this.getAttribute('page-url');
+    if (!url) {
       this.renderError();
       return;
     }
 
     this.innerHTML = `<div class="${this.targetClass} tweet-container">
-      <a href="${href}"></a>
+      <a href="${url}"></a>
   </div>`;
   }
 
   async connectedCallback() {
-    const href = this.getAttribute('href') ?? '';
+    const url = this.getAttribute('page-url') ?? '';
     this.render();
     try {
       await loadScript({
         src: 'https://platform.twitter.com/widgets.js',
         id: 'embed-tweet',
       });
-      const match = href?.match(
+      const match = url?.match(
         /https?:\/\/twitter.com\/(.*?)\/status\/(.*?)\/?$/
       );
       if (match && match[2]) {
