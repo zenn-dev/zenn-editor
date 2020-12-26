@@ -26,6 +26,7 @@ https://gist.github.com/hofmannsven/9164408?file=my.cnf
 @[jsfiddle](https://jsfiddle.net/9wkngdue/embedded)
 @[codepen](https://codepen.io/noeldelgado/pen/BaogqYy?default-tab=result)
 @[tweet](https://twitter.com/jack/status/20)
+@[tweet](https://twitter.com/steelydylan/status/1266650200388452353)
 
 
 👇must raise error

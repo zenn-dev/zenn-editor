@@ -5,7 +5,8 @@ export class EmbedTwitter extends HTMLElement {
 
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' });
+    // TODO できそうならshadow DOMにする
+    // this.attachShadow({ mode: 'open' });
   }
 
   renderError() {
@@ -17,28 +18,33 @@ export class EmbedTwitter extends HTMLElement {
 
   render() {
     const href = this.getAttribute('href');
-    if (!this.shadowRoot || !href) {
+    if (!href) {
       this.renderError();
       return;
     }
 
-    this.shadowRoot.innerHTML = `<div class="${this.targetClass} tweet-container">
-    <blockquote class="twitter-tweet">
+    this.innerHTML = `<div class="${this.targetClass} tweet-container">
       <a href="${href}"></a>
-    </blockquote>
   </div>`;
   }
 
   async connectedCallback() {
+    const href = this.getAttribute('href') ?? '';
     this.render();
     try {
       await loadScript({
         src: 'https://platform.twitter.com/widgets.js',
         id: 'embed-tweet',
       });
-      (window as any).twttr?.widgets?.load(
-        this.shadowRoot?.querySelector(`.${this.targetClass}`)
+      const match = href?.match(
+        /https?:\/\/twitter.com\/(.*?)\/status\/(.*?)\/?$/
       );
+      if (match && match[2]) {
+        (window as any).twttr?.widgets?.createTweet(
+          match[2],
+          this.querySelector(`.${this.targetClass}`)
+        );
+      }
     } catch {
       this.renderError();
     }
