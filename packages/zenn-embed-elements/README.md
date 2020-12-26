@@ -10,5 +10,5 @@ useEffect(()=> import("zenn-embed-elements"),[])
 Then, use these elements are wherever you want.
 ```html
 <embed-tweet src="https://tweeturl..." />
-<embed-gists src="https://gistsurl..." />
+<embed-gist src="https://gistsurl..." />
 ```
