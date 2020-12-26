@@ -54,10 +54,8 @@ export const exec: cliCommand = async (argv) => {
   if (shouldWatch) {
     const watcher = chokidar.watch(`${process.cwd()}/{articles,books}/**/*`);
     const io = socketIo(server);
-    io.on('connection', (socket) => {
-      watcher.once('all', async () => {
-        socket.emit('reload');
-      });
+    watcher.on('change', () => {
+      io.emit('reload');
     });
 
     process.on('SIGINT', function () {

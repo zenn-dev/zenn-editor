@@ -113,10 +113,31 @@ describe('Linkify', () => {
       '<p>a: <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a><br>\nb: <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></p>\n'
     );
   });
-});
 
-//zenn.dev/okuoku/scraps/b485da18176fdc
-//zenn.dev/okuoku/scraps/c236209827218e
+  test('should convert a gist-link with gist-element', () => {
+    const html = markdownToHtml(
+      `https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23`
+    );
+    expect(html).toEqual(
+      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename></embed-gist></div></p>\n'
+    );
+  });
+
+  test('should convert a gist-link with gist-element with file', () => {
+    const html = markdownToHtml(
+      `https://gist.github.com/foo/bar?file=test.json`
+    );
+    expect(html).toEqual(
+      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json"></embed-gist></div></p>\n'
+    );
+  });
+  test('should convert a gist-link with gist-element with encoded file', () => {
+    const html = markdownToHtml(`https://gist.github.com/foo/bar?file=あ漢字$`);
+    expect(html).toEqual(
+      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="%25E3%2581%2582%25E6%25BC%25A2%25E5%25AD%2597%24"></embed-gist></div></p>\n'
+    );
+  });
+});
 
 describe('No XSS Vulnerability', () => {
   test('should excape script tag', () => {
@@ -167,7 +188,7 @@ describe('No XSS Vulnerability', () => {
 describe('convert $ mark properly', () => {
   test('should keep $ around link href', () => {
     const html = markdownToHtml('$a,b,c$foo[hoge](https://hoge.fuga)bar');
-    expect(html).toMatch(/<eq>.*<\/eq>foo/);
+    expect(html).toMatch(/<eq class="zenn-katex">.*<\/eq>foo/);
     expect(html).toContain(
       '<a href="https://hoge.fuga" rel="nofollow">hoge</a>bar'
     );
@@ -175,14 +196,14 @@ describe('convert $ mark properly', () => {
 
   test('should keep $ around link href', () => {
     const html = markdownToHtml('$a,b,c$foo[hoge](http://hoge.fuga)$bar');
-    expect(html).toMatch(/<eq>.*<\/eq>foo/);
+    expect(html).toMatch(/<eq class="zenn-katex">.*<\/eq>foo/);
     expect(html).toContain(
       '<a href="http://hoge.fuga" rel="nofollow">hoge</a>$bar'
     );
   });
   test('should keep $ around link href', () => {
     const html = markdownToHtml('$a,b,c$foo[$hoge](http://hoge.fuga)bar');
-    expect(html).toMatch(/<eq>.*<\/eq>foo/);
+    expect(html).toMatch(/<eq class="zenn-katex">.*<\/eq>foo/);
     expect(html).toContain(
       '<a href="http://hoge.fuga" rel="nofollow">$hoge</a>bar'
     );
@@ -193,6 +214,15 @@ describe('convert $ mark properly', () => {
     );
     expect(html).toContain(
       '<a href="https://docs.angularjs.org/api/ng/service/$http" rel="nofollow">this $ should be escaped</a>'
+    );
+  });
+});
+
+describe('should include katex stylesheet link', () => {
+  test('should include katex stylesheet when markdown includes katex syntax', () => {
+    const html = markdownToHtml('$a,b,c$');
+    expect(html).toContain(
+      `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"/>`
     );
   });
 });

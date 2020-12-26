@@ -11,9 +11,9 @@ declare global {
   }
 }
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps, router }: AppProps) {
   useEffect(() => {
-    const { body } = document;
+    import('zenn-embed-elements');
     const script = document.createElement('script');
     script.src = '/socket.io/socket.io.js';
 
@@ -30,10 +30,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         reconnectionAttempts: 99999,
       });
       socket.on('reload', () => {
-        location.reload();
+        // better performance than location.reload
+        router.replace(router.pathname, router.asPath);
       });
     };
-    body.append(script);
+    document.body.append(script);
   }, []);
 
   return (
@@ -43,10 +44,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
         />
       </Head>
       <Component {...pageProps} />

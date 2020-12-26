@@ -4,6 +4,7 @@
 
 import MarkdownIt from 'markdown-it';
 import katex from 'katex';
+import { katexClassName } from './constants';
 
 type PreHandler = (str: string, begin: number) => boolean;
 type PostHandler = (str: string, begin: number) => boolean;
@@ -36,7 +37,7 @@ const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline_double',
     rex: /\${2}((?:\S)|(?:\S(?!.*\]\(http).*?\S))\${2}/gy, // fixed so that the expression [$something](https://something.com/$example) is skipped.
-    tmpl: '<section><eqn>$1</eqn></section>',
+    tmpl: `<section class=${katexClassName}><eqn>$1</eqn></section>`,
     tag: '$$',
     displayMode: true,
     pre: preHandler,
@@ -45,7 +46,7 @@ const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline',
     rex: /\$((?:\S)|(?:\S(?!.*\]\(http.*\$.*\)).*?\S))\$/gy, // fixed so that the expression [$something](https://something.com/$example) is skipped. (?:\S(?!.*\]\(http.*\$.*\)) means somthing like "](https://hoge.com/$/hoge)"
-    tmpl: '<eq>$1</eq>',
+    tmpl: `<eq class="${katexClassName}">$1</eq>`,
     tag: '$',
     pre: preHandler,
     post: postHandler,
@@ -56,13 +57,13 @@ const blockRules: HandlingRule[] = [
   {
     name: 'math_block_eqno',
     rex: /\${2}([^$]+?)\${2}\s*?\(([^)\s]+?)\)/gmy,
-    tmpl: '<section class="eqno"><eqn>$1</eqn><span>($2)</span></section>',
+    tmpl: `<section class="${katexClassName} eqno"><eqn>$1</eqn><span>($2)</span></section>`,
     tag: '$$',
   },
   {
     name: 'math_block',
     rex: /\${2}([^$]+?)\${2}/gmy,
-    tmpl: '<section><eqn>$1</eqn></section>',
+    tmpl: `<section class="${katexClassName}"><eqn>$1</eqn></section>`,
     tag: '$$',
   },
 ];

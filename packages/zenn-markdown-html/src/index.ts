@@ -1,6 +1,6 @@
 import markdownIt from 'markdown-it';
 import { mdLineNumber } from './utils/md-line-number';
-import { linkToCard } from './utils/link-to-card';
+import { processHtml } from './utils/process-html';
 
 // plugis
 import {
@@ -50,7 +50,7 @@ md.use(mdBr)
   .use(mdKatex)
   .use(mdLinkifyClass);
 
-// custom footnote
+// custom footnote => TODO: ファイルを分ける
 md.renderer.rules.footnote_block_open = () =>
   '<section class="footnotes">\n' +
   '<div class="footnotes-title"><img src="https://twemoji.maxcdn.com/2/svg/1f58b.svg" class="emoji footnotes-twemoji" loading="lazy" width="20" height="20">脚注</div>\n' +
@@ -60,7 +60,7 @@ const markdownToHtml = (text: string): string => {
   if (!(text && text.length)) return text;
   const rawHtml = md.render(text);
   if (!rawHtml) return '';
-  return linkToCard(rawHtml);
+  return processHtml(rawHtml);
 };
 export default markdownToHtml;
 
