@@ -1,52 +1,76 @@
 import { loadScript } from '../utils/load-script';
 
+/**
+ * iframeの高さを取ってキャッシュすることで、ホットリロードでのガタツキを防ぐ
+ */
+const heightStore: {
+  [tweetId: string]: string;
+} = {};
+const containerClassName = 'embed-tweet';
+const fallbackLinkClassName = 'embed-tweet-link';
+
 export class EmbedTweet extends HTMLElement {
-  targetClass = 'embed-tweet';
+  url?: string;
+  tweetId?: string;
 
   constructor() {
     super();
-    // TODO できそうならshadow DOMにする
-    // this.attachShadow({ mode: 'open' });
-  }
-
-  renderError() {
-    this.innerHTML = `<div style="text-align: center; margin: 1.5rem 0; color: gray; font-size: 0.9rem;">
-    Tweetの読み込みに失敗しました<br>  
-    ${this.getAttribute('src')}
-    </div>`;
-  }
-
-  render() {
     const url = this.getAttribute('src');
-    if (!url) {
-      this.renderError();
-      return;
+    if (!url) return;
+    this.url = url;
+    const match = url.match(/https?:\/\/twitter.com\/(.*?)\/status\/(.*?)\/?$/);
+    if (match && match[2]) {
+      this.tweetId = match[2];
     }
-
-    this.innerHTML = `<div class="${this.targetClass} tweet-container">
-      <a href="${url}"></a>
-  </div>`;
   }
 
   async connectedCallback() {
-    const url = this.getAttribute('src') ?? '';
     this.render();
-    try {
+    this.embedTweet();
+  }
+
+  render() {
+    const attribute =
+      this.tweetId && heightStore[this.tweetId]
+        ? `style="min-height: ${encodeURIComponent(
+            heightStore[this.tweetId]
+          )};"`
+        : '';
+    this.innerHTML = `<div class="${containerClassName} tweet-container" ${attribute}>
+      <a href="${this.url}" class="${fallbackLinkClassName}">${this.url}</a>
+    </div>`;
+  }
+
+  async embedTweet() {
+    const tweetId = this.tweetId;
+    if (!(this.url && tweetId)) {
+      console.log(`Invalid tweet URL:${this.url}`);
+      return;
+    }
+
+    if (!(window as any).twttr?.ready) {
       await loadScript({
         src: 'https://platform.twitter.com/widgets.js',
-        id: 'embed-tweet',
+        id: 'twitter-widgets',
       });
-      const match = url?.match(
-        /https?:\/\/twitter.com\/(.*?)\/status\/(.*?)\/?$/
-      );
-      if (match && match[2]) {
-        (window as any).twttr?.widgets?.createTweet(
-          match[2],
-          this.querySelector(`.${this.targetClass}`)
-        );
-      }
-    } catch {
-      this.renderError();
     }
+
+    const container = this.querySelector(`.${containerClassName}`);
+    (window as any).twttr?.widgets
+      ?.createTweet(this.tweetId, container, {
+        align: 'center',
+      })
+      .then(() => {
+        /**
+         * createTweetではJSONPを使っている（？）ためか、catch でエラーハンドリングができない
+         * => fallback用のリンクをはじめから表示しておき、埋め込みが成功したら削除する
+         */
+        this.querySelector(`.${fallbackLinkClassName}`)?.remove();
+        const iframe = this.querySelector('iframe');
+        if (!iframe) return;
+        setTimeout(() => {
+          heightStore[tweetId] = iframe.style.height;
+        }, 1000); // 正確な高さを取るために少し待つ
+      });
   }
 }
