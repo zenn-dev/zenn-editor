@@ -1,6 +1,6 @@
 import { loadScript } from '../utils/load-script';
 
-export class EmbedTwitter extends HTMLElement {
+export class EmbedTweet extends HTMLElement {
   targetClass = 'embed-tweet';
 
   constructor() {
@@ -11,7 +11,7 @@ export class EmbedTwitter extends HTMLElement {
 
   renderError() {
     this.innerHTML = `<div style="text-align: center; margin: 1.5rem 0; color: gray; font-size: 0.9rem;">
-    Twitterの読み込みに失敗しました<br>  
+    Tweetの読み込みに失敗しました<br>  
     ${this.getAttribute('page-url')}
     </div>`;
   }

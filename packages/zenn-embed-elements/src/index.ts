@@ -1,5 +1,5 @@
 import { EmbedGist } from './classes/gist';
-import { EmbedTwitter } from './classes/twitter';
+import { EmbedTweet } from './classes/tweet';
 
 customElements.define('embed-gist', EmbedGist);
-customElements.define('embed-twitter', EmbedTwitter);
+customElements.define('embed-tweet', EmbedTweet);

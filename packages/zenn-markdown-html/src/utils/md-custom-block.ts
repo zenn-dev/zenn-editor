@@ -67,6 +67,6 @@ export const customBlockOptions = {
     if (!str?.match(/^https:\/\/twitter\.com\/[a-zA-Z0-9_\-/]+$/)) {
       return 'ツイートページのURLを指定してください';
     }
-    return `<embed-twitter href="${str}"></embed-twitter>`;
+    return `<embed-tweet href="${str}"></embed-tweet>`;
   },
 };
