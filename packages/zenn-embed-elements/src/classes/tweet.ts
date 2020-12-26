@@ -12,12 +12,12 @@ export class EmbedTweet extends HTMLElement {
   renderError() {
     this.innerHTML = `<div style="text-align: center; margin: 1.5rem 0; color: gray; font-size: 0.9rem;">
     Tweetの読み込みに失敗しました<br>  
-    ${this.getAttribute('page-url')}
+    ${this.getAttribute('src')}
     </div>`;
   }
 
   render() {
-    const url = this.getAttribute('page-url');
+    const url = this.getAttribute('src');
     if (!url) {
       this.renderError();
       return;
@@ -29,7 +29,7 @@ export class EmbedTweet extends HTMLElement {
   }
 
   async connectedCallback() {
-    const url = this.getAttribute('page-url') ?? '';
+    const url = this.getAttribute('src') ?? '';
     this.render();
     try {
       await loadScript({
