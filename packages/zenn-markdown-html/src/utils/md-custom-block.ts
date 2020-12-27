@@ -1,4 +1,12 @@
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { generateTweetHtml } from './helper';
+import {
+  isTweetUrl,
+  isStackblitzUrl,
+  isCodesandboxUrl,
+  isCodepenUrl,
+  isJsfiddleUrl,
+} from './url-matcher';
 
 // ref: https://github.com/posva/markdown-it-custom-block
 // e.g.
@@ -29,7 +37,7 @@ export const customBlockOptions = {
     )}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></div>`;
   },
   jsfiddle(str: string) {
-    if (!str?.match(/^(http|https):\/\/jsfiddle\.net\/[a-zA-Z0-9_,/-]+$/)) {
+    if (!isJsfiddleUrl(str)) {
       return 'jsfiddleのURLが不正です';
     }
     // URLを~/embedded/とする
@@ -41,7 +49,7 @@ export const customBlockOptions = {
     return `<div class="embed-jsfiddle"><iframe src="${url}" scrolling="no" frameborder="no" allowfullscreen allowtransparency="true" loading="lazy"></iframe></div>`;
   },
   codepen(str: string) {
-    if (!str?.match(/^https:\/\/codepen\.io\/[a-zA-Z0-9]/)) {
+    if (!isCodepenUrl(str)) {
       return 'CodePenのURLが不正です';
     }
     const url = new URL(str.replace('/pen/', '/embed/'));
@@ -49,24 +57,19 @@ export const customBlockOptions = {
     return `<div class="embed-codepen"><iframe src="${url}" scrolling="no" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy"></iframe></div>`;
   },
   codesandbox(str: string) {
-    if (
-      !/^https:\/\/codesandbox\.io\/embed\/[a-zA-Z0-9\-_/.@?&=%]+$/.test(str)
-    ) {
+    if (!isCodesandboxUrl(str)) {
       return '「https://codesandbox.io/embed/」から始まる正しいURLを入力してください';
     }
     return `<div class="embed-codesandbox"><iframe src="${str}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>`;
   },
   stackblitz(str: string) {
-    if (!/^https:\/\/stackblitz\.com\/[a-zA-Z0-9\-_/.@?&=%]+$/.test(str)) {
+    if (!isStackblitzUrl(str)) {
       return 'StackBlitzのembed用のURLを指定してください';
     }
     return `<div class="embed-stackblitz"><iframe src="${str}" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy" allowfullscreen></iframe></div>`;
   },
-  // クライアントでhttps://platform.twitter.com/widgets.jsを読み込む必要あり
   tweet(str: string) {
-    if (!str?.match(/^https:\/\/twitter\.com\/[a-zA-Z0-9_\-/]+$/)) {
-      return 'ツイートページのURLを指定してください';
-    }
-    return `<embed-tweet page-url="${str}"></embed-tweet>`;
+    if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
+    return generateTweetHtml(str);
   },
 };

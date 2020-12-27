@@ -1,12 +1,4 @@
-// twitter
-.tweet-container {
-  margin: 1.5rem 0;
-}
-.twitter-tweet {
-  margin-left: auto;
-  margin-right: auto;
-}
-// gist
+.embed-tweet,
 .embed-gist,
 .embed-speakerdeck,
 .embed-slideshare,
@@ -46,11 +38,6 @@
     width: 100%;
     display: block;
   }
-}
-// .embed-zenn-link is appended just before <a/>. ref: zenn-init-embed
-.embed-zenn-link + a,
-.embed-zenn-link + a + br {
-  display: none;
 }
 
 // prevent katex overflow

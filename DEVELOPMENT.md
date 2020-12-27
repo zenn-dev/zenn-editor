@@ -5,7 +5,7 @@
 ## Stack
 - **zenn-cli**: Preview local markdown contents.
 - **zenn-content-css**: Zenn flavored markdown styles.
-- **zenn-init-embed**: Enable embedded contents (e.g. YouTube, CodePen...)
+- **zenn-embed-elements**: Web components for embedded contents such as Twitter, Gists.
 - **zenn-markdown-html**: Convert markdown text to html.
 
 ### add new package to zenn-packages

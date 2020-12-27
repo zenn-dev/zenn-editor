@@ -8,10 +8,20 @@ describe('Convert markdown to html', () => {
     expect(html).toContain(`<ul>\n<li>first</li>\n<li>second</li>\n</ul>\n`);
   });
 
-  test('should generate tweet html', () => {
-    const html = markdownToHtml('@[tweet](https://twitter.com/jack/status/20)');
+  test('should generate codesandbox html', () => {
+    const html = markdownToHtml(
+      '@[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)'
+    );
     expect(html).toContain(
-      '<embed-tweet page-url="https://twitter.com/jack/status/20"></embed-tweet>'
+      '<div class="embed-codesandbox"><iframe src="https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&amp;hidenavigation=1&amp;theme=dark" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>'
+    );
+  });
+  test('should not generate codesandbox html with invalid url', () => {
+    const html = markdownToHtml(
+      '@[codesandbox](https://codesandbox.io/embed/guess-movie-er")'
+    );
+    expect(html).toContain(
+      '&#x300C;https://codesandbox.io/embed/&#x300D;&#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x6B63;&#x3057;&#x3044;URL&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;'
     );
   });
 
@@ -52,7 +62,7 @@ describe('Linkify', () => {
   test('should convert links to card if prev elem is br', () => {
     const html = markdownToHtml('foo\nhttps://example.com');
     expect(html).toEqual(
-      `<p>foo\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n`
+      `<p>foo<br style="display: none">\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n`
     );
   });
 
@@ -120,6 +130,15 @@ describe('Linkify', () => {
     );
     expect(html).toEqual(
       '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename></embed-gist></div></p>\n'
+    );
+  });
+
+  test('should convert a tweet-link with tweet-element', () => {
+    const html = markdownToHtml(
+      `https://twitter.com/realDonaldTrump/status/1324353932022480896`
+    );
+    expect(html).toEqual(
+      '<p><div class="embed-tweet"><embed-tweet src="https://twitter.com/realDonaldTrump/status/1324353932022480896"></embed-tweet></div></p>\n'
     );
   });
 

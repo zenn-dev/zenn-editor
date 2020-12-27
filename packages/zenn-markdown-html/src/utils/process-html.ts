@@ -1,14 +1,9 @@
 import cheerio from 'cheerio';
 import { katexClassName } from './constants';
+import { isGistUrl, isTweetUrl } from './url-matcher';
+import { generateTweetHtml } from './helper';
 
 type cheerioProcesser = (cheerioRoot: cheerio.Root) => void;
-
-// Thanks: https://github.com/forem/forem/blob/d2d9984f28b1d0662f2a858b325a0e6b7a27a24c/app/liquid_tags/gist_tag.rb
-function isGistUrl(url: string): boolean {
-  return !!url.match(
-    /^https:\/\/gist\.github\.com\/([a-zA-Z0-9](-?[a-zA-Z0-9]){0,38})\/([a-zA-Z0-9]){1,32}(\/[a-zA-Z0-9]+)?(\?file=.+)?$/
-  );
-}
 
 function generateCardHtml(url: string) {
   return `<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(
@@ -56,16 +51,18 @@ const linkToEmbed: cheerioProcesser = function ($) {
     const url = $(this).attr('href');
     if (!url) return;
 
-    // 前後のbrタグはスペースを広げすぎてしまうため削除
+    // 前後のbrタグはスペースを広げすぎてしまうため非表示に
     if (isPrevBr) {
-      $(this).prev('br')?.remove();
+      $(this).prev('br').attr({ style: 'display: none' });
     }
     if (isNextBr) {
-      $(this).next('br')?.remove();
+      $(this).next('br').attr({ style: 'display: none' });
     }
 
     let replacedHtml = '';
-    if (isGistUrl(url)) {
+    if (isTweetUrl(url)) {
+      replacedHtml = generateTweetHtml(url);
+    } else if (isGistUrl(url)) {
       replacedHtml = generateGistHtml(url);
     } else {
       replacedHtml = generateCardHtml(url);

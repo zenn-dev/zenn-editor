@@ -47,7 +47,6 @@
     "update-notifier": "^5.0.1",
     "zenn-content-css": "^0.1.60",
     "zenn-embed-elements": "^0.1.60",
-    "zenn-init-embed": "^0.1.60",
     "zenn-markdown-html": "^0.1.63"
   },
   "devDependencies": {

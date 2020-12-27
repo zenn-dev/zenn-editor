@@ -19,7 +19,7 @@ https://gist.github.com/hofmannsven/9164408?file=my.cnf
 
 
 @[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)
-@[stackblitz](https://stackblitz.com/edit/angular-i8x98w?embed=1&file=src/app/app.component.html)
+@[stackblitz](https://stackblitz.com/edit/angular-examples)
 @[youtube](ApXoWvfEYVU)
 @[slideshare](EP6Yf9I2idPXCb)
 @[speakerdeck](f8653c8c6ffc4f54bb4683daa8c1a284)
