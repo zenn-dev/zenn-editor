@@ -52,7 +52,7 @@ describe('Linkify', () => {
   test('should convert links to card if prev elem is br', () => {
     const html = markdownToHtml('foo\nhttps://example.com');
     expect(html).toEqual(
-      `<p>foo\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n`
+      `<p>foo<br style="display: none">\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n`
     );
   });
 
