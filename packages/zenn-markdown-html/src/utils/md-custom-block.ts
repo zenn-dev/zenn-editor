@@ -1,6 +1,7 @@
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 import { generateTweetHtml } from './helper';
 import {
+  isGistUrl,
   isTweetUrl,
   isStackblitzUrl,
   isCodesandboxUrl,
@@ -71,5 +72,18 @@ export const customBlockOptions = {
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
     return generateTweetHtml(str);
+  },
+  gist(str: string) {
+    if (!isGistUrl(str)) return 'GitHub GistのページURLを指定してください';
+    /**
+     * gistのURL は
+     * - https://gist.github.com/foo/bar.json
+     * - https://gist.github.com/foo/bar.json?file=example.js
+     * のような形式
+     */
+    const [pageUrl, file] = str.split('?file=');
+    return `<div class="embed-gist"><embed-gist page-url="${pageUrl}" encoded-filename="${
+      file ? encodeURIComponent(file) : ''
+    }" /></div>`;
   },
 };

@@ -24,6 +24,30 @@ describe('Convert markdown to html', () => {
       '&#x300C;https://codesandbox.io/embed/&#x300D;&#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x6B63;&#x3057;&#x3044;URL&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;'
     );
   });
+  test('should convert a gist-link with gist-element', () => {
+    const html = markdownToHtml(
+      `@[gist](https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23)`
+    );
+    expect(html).toEqual(
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename></embed-gist></div>\n'
+    );
+  });
+  test('should convert a gist-link with gist-element with file', () => {
+    const html = markdownToHtml(
+      `@[gist](https://gist.github.com/foo/bar?file=test.json)`
+    );
+    expect(html).toEqual(
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json"></embed-gist></div>\n'
+    );
+  });
+  test('should convert a gist-link with gist-element with encoded file', () => {
+    const html = markdownToHtml(
+      `@[gist](https://gist.github.com/foo/bar?file=あ漢字$)`
+    );
+    expect(html).toEqual(
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="%E3%81%82%E6%BC%A2%E5%AD%97%24"></embed-gist></div>\n'
+    );
+  });
 
   test('should generate valid message box html', () => {
     const html = markdownToHtml(':::message alert\nhello\n:::');
@@ -124,36 +148,12 @@ describe('Linkify', () => {
     );
   });
 
-  test('should convert a gist-link with gist-element', () => {
-    const html = markdownToHtml(
-      `https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23`
-    );
-    expect(html).toEqual(
-      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename></embed-gist></div></p>\n'
-    );
-  });
-
   test('should convert a tweet-link with tweet-element', () => {
     const html = markdownToHtml(
       `https://twitter.com/realDonaldTrump/status/1324353932022480896`
     );
     expect(html).toEqual(
       '<p><div class="embed-tweet"><embed-tweet src="https://twitter.com/realDonaldTrump/status/1324353932022480896"></embed-tweet></div></p>\n'
-    );
-  });
-
-  test('should convert a gist-link with gist-element with file', () => {
-    const html = markdownToHtml(
-      `https://gist.github.com/foo/bar?file=test.json`
-    );
-    expect(html).toEqual(
-      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json"></embed-gist></div></p>\n'
-    );
-  });
-  test('should convert a gist-link with gist-element with encoded file', () => {
-    const html = markdownToHtml(`https://gist.github.com/foo/bar?file=あ漢字$`);
-    expect(html).toEqual(
-      '<p><div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="%25E3%2581%2582%25E6%25BC%25A2%25E5%25AD%2597%24"></embed-gist></div></p>\n'
     );
   });
 });

@@ -1,6 +1,6 @@
 import cheerio from 'cheerio';
 import { katexClassName } from './constants';
-import { isGistUrl, isTweetUrl } from './url-matcher';
+import { isTweetUrl } from './url-matcher';
 import { generateTweetHtml } from './helper';
 
 type cheerioProcesser = (cheerioRoot: cheerio.Root) => void;
@@ -9,20 +9,6 @@ function generateCardHtml(url: string) {
   return `<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(
     url
   )}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
-}
-
-function generateGistHtml(url: string) {
-  /**
-   * gistのURL は
-   * - https://gist.github.com/foo/bar.json
-   * - https://gist.github.com/foo/bar.json?file=example.js
-   * のような形式
-   */
-  const [pageUrl, file] = url.split('?file=');
-
-  return `<div class="embed-gist"><embed-gist page-url="${pageUrl}" encoded-filename="${
-    file ? encodeURIComponent(file) : ''
-  }" /></div>`;
 }
 
 const linkToEmbed: cheerioProcesser = function ($) {
@@ -62,8 +48,6 @@ const linkToEmbed: cheerioProcesser = function ($) {
     let replacedHtml = '';
     if (isTweetUrl(url)) {
       replacedHtml = generateTweetHtml(url);
-    } else if (isGistUrl(url)) {
-      replacedHtml = generateGistHtml(url);
     } else {
       replacedHtml = generateCardHtml(url);
     }
