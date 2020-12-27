@@ -47,11 +47,6 @@
     display: block;
   }
 }
-// .embed-zenn-link is appended just before <a/>. ref: zenn-init-embed
-.embed-zenn-link + a,
-.embed-zenn-link + a + br {
-  display: none;
-}
 
 // prevent katex overflow
 eqn {
