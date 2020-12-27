@@ -6,7 +6,7 @@ import { loadScript } from '../utils/load-script';
 const heightStore: {
   [tweetId: string]: string;
 } = {};
-const containerClassName = 'embed-tweet';
+const containerClassName = 'embed-tweet-container';
 const fallbackLinkClassName = 'embed-tweet-link';
 
 export class EmbedTweet extends HTMLElement {
@@ -36,7 +36,7 @@ export class EmbedTweet extends HTMLElement {
             heightStore[this.tweetId]
           )};"`
         : '';
-    this.innerHTML = `<div class="${containerClassName} tweet-container" ${attribute}>
+    this.innerHTML = `<div class="${containerClassName}" ${attribute}>
       <a href="${this.url}" class="${fallbackLinkClassName}">${this.url}</a>
     </div>`;
   }

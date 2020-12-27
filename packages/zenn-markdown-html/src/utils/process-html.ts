@@ -56,12 +56,12 @@ const linkToEmbed: cheerioProcesser = function ($) {
     const url = $(this).attr('href');
     if (!url) return;
 
-    // 前後のbrタグはスペースを広げすぎてしまうため削除
+    // 前後のbrタグはスペースを広げすぎてしまうため非表示に
     if (isPrevBr) {
-      $(this).prev('br')?.remove();
+      $(this).prev('br').attr({ style: 'display: none' });
     }
     if (isNextBr) {
-      $(this).next('br')?.remove();
+      $(this).next('br').attr({ style: 'display: none' });
     }
 
     let replacedHtml = '';
