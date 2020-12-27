@@ -40,9 +40,9 @@ export class EmbedGist extends HTMLElement {
 
   getCacheKey() {
     return encodeURIComponent(
-      this.getAttribute('page-url') ||
-        '' + this.getAttribute('encoded-filename') ||
-        ''
+      `${this.getAttribute('page-url')}-${this.getAttribute(
+        'encoded-filename'
+      )}`
     );
   }
 
