@@ -1,7 +1,7 @@
 {
   "name": "zenn-cli",
   "license": "MIT",
-  "version": "0.1.64",
+  "version": "0.1.65",
   "description": "Preview Zenn content locally.",
   "bin": {
     "zenn": "bin/zenn.js"
@@ -46,7 +46,7 @@
     "socket.io-client": "^2.3.0",
     "update-notifier": "^5.0.1",
     "zenn-content-css": "^0.1.64",
-    "zenn-embed-elements": "^0.1.64",
+    "zenn-embed-elements": "^0.1.65",
     "zenn-markdown-html": "^0.1.64"
   },
   "devDependencies": {
