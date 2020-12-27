@@ -37,7 +37,7 @@ export class EmbedTweet extends HTMLElement {
           )};"`
         : '';
     this.innerHTML = `<div class="${containerClassName}" ${attribute}>
-      <a href="${this.url}" class="${fallbackLinkClassName}">${this.url}</a>
+      <a href="${this.url}" class="${fallbackLinkClassName}" rel="nofollow">${this.url}</a>
     </div>`;
   }
 

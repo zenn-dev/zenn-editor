@@ -1,4 +1,5 @@
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { generateTweetHtml } from './helper';
 import {
   isTweetUrl,
   isStackblitzUrl,
@@ -69,6 +70,6 @@ export const customBlockOptions = {
   },
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
-    return `<div class="embed-tweet"><embed-tweet src="${str}"></embed-tweet></div>`;
+    return generateTweetHtml(str);
   },
 };

@@ -10,7 +10,8 @@ published: false
 aa
 
 @[tweet](https://twitter.com/jack/status/20)
-@[tweet](https://twitter.com/realDonaldTrump/status/1324353932022480896)
+
+https://twitter.com/realDonaldTrump/status/1324353932022480896
 
 ## Gists
 

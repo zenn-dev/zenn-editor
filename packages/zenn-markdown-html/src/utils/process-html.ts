@@ -1,6 +1,7 @@
 import cheerio from 'cheerio';
 import { katexClassName } from './constants';
-import { isGistUrl } from './url-matcher';
+import { isGistUrl, isTweetUrl } from './url-matcher';
+import { generateTweetHtml } from './helper';
 
 type cheerioProcesser = (cheerioRoot: cheerio.Root) => void;
 
@@ -59,7 +60,9 @@ const linkToEmbed: cheerioProcesser = function ($) {
     }
 
     let replacedHtml = '';
-    if (isGistUrl(url)) {
+    if (isTweetUrl(url)) {
+      replacedHtml = generateTweetHtml(url);
+    } else if (isGistUrl(url)) {
       replacedHtml = generateGistHtml(url);
     } else {
       replacedHtml = generateCardHtml(url);
