@@ -4,7 +4,7 @@ em {
   font-style: italic;
 }
 strong {
-  font-weight: 600;
+  font-weight: 700;
 }
 a {
   color: #0f83fd;
@@ -41,7 +41,7 @@ ul {
     padding-left: 1.6em;
 
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       top: 0.7em;
       left: 0.35em;
@@ -86,7 +86,7 @@ ol {
       content: counter(number);
       counter-increment: number;
       background: rgba(2, 13, 60, 0.6);
-      font-weight: 600;
+      font-weight: 700;
     }
   }
 }
@@ -203,7 +203,7 @@ td {
   border: solid 1px $c-gray-border;
 }
 th {
-  font-weight: 600;
+  font-weight: 700;
   background: $c-primary-bg;
 }
 code {
@@ -212,8 +212,8 @@ code {
   font-size: 0.85em;
   border-radius: 4px;
   vertical-align: 0.08em;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 pre {
   margin: 1.3rem 0;
@@ -226,7 +226,7 @@ pre {
   /* flex + codeの隣に疑似要素を配置することで横スクロール時の右端の余白を作る */
   display: flex;
   &:after {
-    content: "";
+    content: '';
     width: 8px;
     flex-shrink: 0;
   }
