@@ -18,7 +18,9 @@ export class EmbedTweet extends HTMLElement {
     const url = this.getAttribute('src');
     if (!url) return;
     this.url = url;
-    const match = url.match(/https?:\/\/twitter.com\/(.*?)\/status\/(.*?)\/?$/);
+    const match = url.match(
+      /https?:\/\/twitter.com\/(.*?)\/status\/(\d+)[/?]?/
+    );
     if (match && match[2]) {
       this.tweetId = match[2];
     }
