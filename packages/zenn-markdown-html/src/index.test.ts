@@ -148,12 +148,21 @@ describe('Linkify', () => {
     );
   });
 
-  test('should convert a tweet-link with tweet-element', () => {
+  test('should convert a tweet-link to tweet-element', () => {
     const html = markdownToHtml(
       `https://twitter.com/realDonaldTrump/status/1324353932022480896`
     );
     expect(html).toEqual(
       '<p><div class="embed-tweet"><embed-tweet src="https://twitter.com/realDonaldTrump/status/1324353932022480896"></embed-tweet></div></p>\n'
+    );
+  });
+
+  test('should convert a tweet-link with plain query to tweet-element', () => {
+    const html = markdownToHtml(
+      `https://twitter.com/realDonaldTrump/status/1324353932022480896?foo=bar`
+    );
+    expect(html).toEqual(
+      '<p><div class="embed-tweet"><embed-tweet src="https://twitter.com/realDonaldTrump/status/1324353932022480896?foo=bar"></embed-tweet></div></p>\n'
     );
   });
 });
