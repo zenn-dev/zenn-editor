@@ -13,7 +13,7 @@ describe('Convert markdown to html', () => {
       '@[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)'
     );
     expect(html).toContain(
-      '<div class="embed-codesandbox"><iframe src="https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&amp;hidenavigation=1&amp;theme=dark" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>'
+      '<div class="embed-codesandbox"><iframe src="https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>'
     );
   });
   test('should not generate codesandbox html with invalid url', () => {
@@ -21,7 +21,7 @@ describe('Convert markdown to html', () => {
       '@[codesandbox](https://codesandbox.io/embed/guess-movie-er")'
     );
     expect(html).toContain(
-      '&#x300C;https://codesandbox.io/embed/&#x300D;&#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x6B63;&#x3057;&#x3044;URL&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;'
+      '「https://codesandbox.io/embed/」から始まる正しいURLを入力してください'
     );
   });
   test('should convert a gist-link with gist-element', () => {
