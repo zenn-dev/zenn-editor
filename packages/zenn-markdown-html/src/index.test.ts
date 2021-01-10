@@ -29,7 +29,7 @@ describe('Convert markdown to html', () => {
       `@[gist](https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23)`
     );
     expect(html).toEqual(
-      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename></embed-gist></div>\n'
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename="" /></div>\n'
     );
   });
   test('should convert a gist-link with gist-element with file', () => {
@@ -37,7 +37,7 @@ describe('Convert markdown to html', () => {
       `@[gist](https://gist.github.com/foo/bar?file=test.json)`
     );
     expect(html).toEqual(
-      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json"></embed-gist></div>\n'
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json" /></div>\n'
     );
   });
   test('should convert a gist-link with gist-element with encoded file', () => {
@@ -45,7 +45,7 @@ describe('Convert markdown to html', () => {
       `@[gist](https://gist.github.com/foo/bar?file=あ漢字$)`
     );
     expect(html).toEqual(
-      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="%E3%81%82%E6%BC%A2%E5%AD%97%24"></embed-gist></div>\n'
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="%E3%81%82%E6%BC%A2%E5%AD%97%24" /></div>\n'
     );
   });
 
