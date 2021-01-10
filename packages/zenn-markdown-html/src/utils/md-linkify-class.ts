@@ -46,7 +46,11 @@ function convertLinkToCard(
     return;
   }
   const [, url] = href;
-  if (!isPrevEmpty || parentToken?.type !== 'paragraph_open') {
+  if (
+    !isPrevEmpty ||
+    parentToken?.type !== 'paragraph_open' ||
+    linkOpenToken.markup !== 'linkify'
+  ) {
     return;
   }
 

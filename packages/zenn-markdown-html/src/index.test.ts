@@ -104,7 +104,7 @@ describe('Linkify', () => {
     );
   });
 
-  test('should not convert intetional links to card', () => {
+  test('should not convert intentional links to card', () => {
     const html = markdownToHtml('[https://example.com](https://example.com)');
     expect(html).toEqual(
       '<p><a href="https://example.com" rel="nofollow">https://example.com</a></p>\n'
