@@ -61,12 +61,14 @@ function convertLinkToCard(
 
   // 前後のbrタグはスペースを広げすぎてしまうため非表示に
   if (isNextBr) {
-    // next brタグを削除
-    nextChildToken.attrJoin('style', 'display: none');
+    // next brタグを非表示
+    nextChildToken.type = 'html_inline';
+    nextChildToken.content = '<br style="display: none">\n';
   }
   if (isPrevBr) {
-    // prev brタグを削除
-    prevChildToken.attrJoin('style', 'display: none');
+    // prev brタグを非表示
+    prevChildToken.type = 'html_inline';
+    prevChildToken.content = '<br style="display: none">\n';
   }
 
   const newToken = new TokenConstructor('html_inline', '', 0);
@@ -79,7 +81,7 @@ function convertLinkToCard(
   children.splice(linkIndex, 3, newToken);
 }
 
-export function mdLinkifyClass(md: MarkdownIt) {
+export function mdLinkifyToCard(md: MarkdownIt) {
   md.core.ruler.after('replacements', 'link-card', function (state) {
     const tokens = state.tokens;
     for (let i = 0; i < tokens.length; i++) {
