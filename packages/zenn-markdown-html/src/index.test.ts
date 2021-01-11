@@ -157,7 +157,7 @@ describe('Linkify', () => {
     );
   });
 
-  test('should convert a tweet-link with tweet-element', () => {
+  test('should convert a tweet-link to tweet-element', () => {
     const html = markdownToHtml(
       `https://twitter.com/realDonaldTrump/status/1324353932022480896`
     );
@@ -214,6 +214,15 @@ describe('Linkify', () => {
     );
     expect(html).toEqual(
       '<p><div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample1.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div><br style="display: none">\n<a href="https://example2.com" class="linkified" rel="nofollow">https://example2.com</a> text<br>\ntext <a href="https://example3.com" class="linkified" rel="nofollow">https://example3.com</a><br style="display: none">\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample4.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div><br style="display: none">\ntext</p>\n'
+    });
+  });
+
+  test('should convert a tweet-link with plain query to tweet-element', () => {
+    const html = markdownToHtml(
+      `https://twitter.com/realDonaldTrump/status/1324353932022480896?foo=bar`
+    );
+    expect(html).toEqual(
+      '<p><div class="embed-tweet"><embed-tweet src="https://twitter.com/realDonaldTrump/status/1324353932022480896?foo=bar"></embed-tweet></div></p>\n'
     );
   });
 });
