@@ -13,7 +13,7 @@ describe('Convert markdown to html', () => {
       '@[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)'
     );
     expect(html).toContain(
-      '<div class="embed-codesandbox"><iframe src="https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>'
+      '<div class="embed-codesandbox"><iframe src="https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&amp;hidenavigation=1&amp;theme=dark" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>'
     );
   });
   test('should not generate codesandbox html with invalid url', () => {
@@ -21,7 +21,7 @@ describe('Convert markdown to html', () => {
       '@[codesandbox](https://codesandbox.io/embed/guess-movie-er")'
     );
     expect(html).toContain(
-      '「https://codesandbox.io/embed/」から始まる正しいURLを入力してください'
+      '&#x300C;https://codesandbox.io/embed/&#x300D;&#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x6B63;&#x3057;&#x3044;URL&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;'
     );
   });
   test('should convert a gist-link with gist-element', () => {
@@ -29,7 +29,7 @@ describe('Convert markdown to html', () => {
       `@[gist](https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23)`
     );
     expect(html).toEqual(
-      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename="" /></div>\n'
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/gdb/b6365e79be6052e7531e7ba6ea8caf23" encoded-filename></embed-gist></div>\n'
     );
   });
   test('should convert a gist-link with gist-element with file', () => {
@@ -37,7 +37,7 @@ describe('Convert markdown to html', () => {
       `@[gist](https://gist.github.com/foo/bar?file=test.json)`
     );
     expect(html).toEqual(
-      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json" /></div>\n'
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json"></embed-gist></div>\n'
     );
   });
   test('should convert a gist-link with gist-element with encoded file', () => {
@@ -45,7 +45,7 @@ describe('Convert markdown to html', () => {
       `@[gist](https://gist.github.com/foo/bar?file=あ漢字$)`
     );
     expect(html).toEqual(
-      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="%E3%81%82%E6%BC%A2%E5%AD%97%24" /></div>\n'
+      '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="%E3%81%82%E6%BC%A2%E5%AD%97%24"></embed-gist></div>\n'
     );
   });
 
@@ -104,7 +104,7 @@ describe('Linkify', () => {
     );
   });
 
-  test('should not convert intentional links to card', () => {
+  test('should not convert intetional links to card', () => {
     const html = markdownToHtml('[https://example.com](https://example.com)');
     expect(html).toEqual(
       '<p><a href="https://example.com" rel="nofollow">https://example.com</a></p>\n'
