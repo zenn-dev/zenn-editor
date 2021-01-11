@@ -31,7 +31,6 @@ function hasBlankBeforeAndAfterToken(
 ) {
   const startOfLine = linkIndex === 0;
   const endOfLine = linkIndex + 2 === tokenLength - 1;
-  console.log(prevBr, afterBr, startOfLine, endOfLine);
   if (tokenLength === 3) {
     return true;
   }
