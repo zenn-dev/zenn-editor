@@ -4,6 +4,8 @@ import { generateTweetHtml } from './helper';
 import Token from 'markdown-it/lib/token';
 import StateCore from 'markdown-it/lib/rules_core/state_core';
 
+const LINK_MARKUP = 'link_card';
+
 function generateCardHtml(url: string) {
   return `<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(
     url
@@ -16,7 +18,7 @@ function findLinkOpenTokenIndexes(tokens: Token[] | null) {
   }
   const indexes: number[] = [];
   tokens.forEach((token, index) => {
-    if (token.type === 'link_open') {
+    if (token.type === 'link_open' || token.markup === LINK_MARKUP) {
       indexes.push(index);
     }
   });
@@ -110,6 +112,7 @@ function convertLinkToCard(
 
     const newToken = new TokenConstructor('html_inline', '', 0);
     newToken.type = 'html_inline';
+    newToken.markup = LINK_MARKUP;
     if (isTweetUrl(url)) {
       newToken.content = generateTweetHtml(url);
     } else {
