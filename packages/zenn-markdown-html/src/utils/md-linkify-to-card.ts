@@ -71,6 +71,9 @@ function convertLinkToCard(
     linkIndexes = findLinkOpenTokenIndexes(children);
     const linkIndex = linkIndexes[i];
     const linkOpenToken = children[linkIndex];
+    if (!linkOpenToken) {
+      continue;
+    }
     const href = linkOpenToken.attrs?.find((attr) => attr[0] === 'href');
     const prevChildToken = children[linkIndex - 1];
     const nextChildToken = children[linkIndex + 3];
