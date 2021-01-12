@@ -18,6 +18,7 @@ function findLinkOpenTokenIndexes(tokens: Token[] | null) {
   }
   const indexes: number[] = [];
   tokens.forEach((token, index) => {
+    // 元々のlink_openのtokenか変換済みのtokenの場合indexに追加
     if (token.type === 'link_open' || token.markup === LINK_MARKUP) {
       indexes.push(index);
     }
