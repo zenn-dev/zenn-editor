@@ -217,7 +217,7 @@ describe('Linkify', () => {
     );
   });
 
-  test('should convert links even when some links exist in the line, unless softbreaks exist before and after the each links', () => {
+  test('should convert links even when some links exist in the line, when each links are separated by linebreaks', () => {
     const html = markdownToHtml('https://example1.com\nhttps://example2.com\n');
     expect(html).toEqual(
       '<p><div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample1.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div><br style="display: none">\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample2.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n'
