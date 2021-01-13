@@ -125,6 +125,15 @@ describe('Linkify', () => {
     );
   });
 
+  test('should not convert links inside block with 2 paragraphs', () => {
+    const html = markdownToHtml(
+      ':::message alert\nhello\n\nhttps://example.com\n:::'
+    );
+    expect(html).toContain(
+      '<div class="msg alert"><p>hello</p>\n<p><a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></p>\n</div>'
+    );
+  });
+
   test('should not convert links inside list', () => {
     const html = markdownToHtml('- https://example.com\n- second');
     expect(html).toEqual(
@@ -154,6 +163,64 @@ describe('Linkify', () => {
     );
     expect(html).toEqual(
       '<p><div class="embed-tweet"><embed-tweet src="https://twitter.com/realDonaldTrump/status/1324353932022480896"></embed-tweet></div></p>\n'
+    );
+  });
+
+  test('should convert links when sorrounded by softbreaks', () => {
+    const html = markdownToHtml('\n\nhttps://example.com\n\n');
+    expect(html).toEqual(
+      '<p><div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n'
+    );
+  });
+
+  test('should convert links when previous element is a softbreak and the links are end of the paragraph', () => {
+    const html = markdownToHtml('text\nhttps://example.com\n\n');
+    expect(html).toEqual(
+      '<p>text<br style="display: none">\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n'
+    );
+  });
+
+  test('should convert links when previous and next elements are softbreaks', () => {
+    const html = markdownToHtml('text\nhttps://example.com\ntext');
+    expect(html).toEqual(
+      '<p>text<br style="display: none">\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div><br style="display: none">\ntext</p>\n'
+    );
+  });
+
+  test('should convert links when the links are the start of the line and the next elements are softbreaks', () => {
+    const html = markdownToHtml('\n\nhttps://example.com\ntext');
+    expect(html).toEqual(
+      '<p><div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div><br style="display: none">\ntext</p>\n'
+    );
+  });
+
+  test('should not convert links even when the links are the start of the line unless the next elements are texts', () => {
+    const html = markdownToHtml('\n\nhttps://example.com text');
+    expect(html).toEqual(
+      '<p><a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a> text</p>\n'
+    );
+  });
+
+  test('should not convert links even when the links are the end of the line, unless previous elements are texts', () => {
+    const html = markdownToHtml('text https://example.com\n\n');
+    expect(html).toEqual(
+      '<p>text <a href="https://example.com" class="linkified" rel="nofollow">https://example.com</a></p>\n'
+    );
+  });
+
+  test('should convert links even when some links exist in the line, unless softbreaks exist before and after the each links', () => {
+    const html = markdownToHtml(
+      'https://example1.com\nhttps://example2.com text\ntext https://example3.com\nhttps://example4.com\ntext'
+    );
+    expect(html).toEqual(
+      '<p><div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample1.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div><br style="display: none">\n<a href="https://example2.com" class="linkified" rel="nofollow">https://example2.com</a> text<br>\ntext <a href="https://example3.com" class="linkified" rel="nofollow">https://example3.com</a><br style="display: none">\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample4.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div><br style="display: none">\ntext</p>\n'
+    );
+  });
+
+  test('should convert links even when some links exist in the line, when each links are separated by linebreaks', () => {
+    const html = markdownToHtml('https://example1.com\nhttps://example2.com\n');
+    expect(html).toEqual(
+      '<p><div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample1.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div><br style="display: none">\n<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample2.com" frameborder="0" scrolling="no" loading="lazy"></iframe></div></p>\n'
     );
   });
 
