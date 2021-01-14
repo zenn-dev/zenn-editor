@@ -8119,10 +8119,6 @@ markdown-it-container@^2.0.0:
   resolved "https://registry.yarnpkg.com/markdown-it-container/-/markdown-it-container-2.0.0.tgz#0019b43fd02eefece2f1960a2895fba81a404695"
   integrity sha1-ABm0P9Au7+zi8ZYKKJX7qBpARpU=
 
-"markdown-it-custom-block@git+https://github.com/catnose99/markdown-it-custom-block.git":
-  version "0.1.1"
-  resolved "git+https://github.com/catnose99/markdown-it-custom-block.git#7969ce2cca2fd30bd543104e45e6b67386d0743c"
-
 markdown-it-footnote@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/markdown-it-footnote/-/markdown-it-footnote-3.0.2.tgz#1575ee7a093648d4e096aa33386b058d92ac8bc1"
