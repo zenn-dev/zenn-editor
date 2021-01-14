@@ -29,7 +29,6 @@
     "markdown-it": "^11.0.0",
     "markdown-it-anchor": "^5.3.0",
     "markdown-it-container": "^2.0.0",
-    "markdown-it-custom-block": "git+https://github.com/catnose99/markdown-it-custom-block.git",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^3.0.0",

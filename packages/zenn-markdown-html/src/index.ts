@@ -12,7 +12,7 @@ import { mdAutolinkToCard } from './utils/md-linkify-to-card';
 import { mdPrism } from './utils/md-prism';
 import { mdKatex } from './utils/md-katex';
 import { mdBr } from './utils/md-br';
-import { customBlockOptions } from './utils/md-custom-block';
+import { mdCustomBlock } from './utils/md-custom-block';
 import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
 
@@ -20,7 +20,6 @@ const mdContainer = require('markdown-it-container');
 const mdFootnote = require('markdown-it-footnote');
 const mdTaskLists = require('markdown-it-task-lists');
 const mdInlineComments = require('markdown-it-inline-comments');
-const mdCustomBlock = require('markdown-it-custom-block');
 const mdLinkAttributes = require('markdown-it-link-attributes');
 
 const md = markdownIt({
@@ -34,13 +33,13 @@ md.use(mdBr)
   .use(mdPrism)
   .use(mdRendererFence)
   .use(markdownItImSize)
+  .use(mdCustomBlock)
   .use(markdownItAnchor, { level: [1, 2, 3] })
   .use(mdContainer, 'details', containerDetailsOptions)
   .use(mdContainer, 'message', containerMessageOptions)
   .use(mdFootnote)
   .use(mdTaskLists, { enabled: true })
   .use(mdInlineComments)
-  .use(mdCustomBlock, customBlockOptions)
   .use(mdLinkAttributes, {
     pattern: /^(?!https:\/\/zenn\.dev\/)/,
     attrs: {

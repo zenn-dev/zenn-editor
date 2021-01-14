@@ -7,11 +7,11 @@ topics:
 emoji: 👩‍💻
 published: false
 ---
-aa
+
 
 @[tweet](https://twitter.com/jack/status/20)
 
-https://twitter.com/realDonaldTrump/status/1324353932022480896
+https://twitter.com/jack/status/20
 
 ## Gists
 
