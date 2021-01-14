@@ -2,9 +2,6 @@ import MarkdownIt from 'markdown-it';
 import { isTweetUrl } from './url-matcher';
 import { generateTweetHtml } from './helper';
 import Token from 'markdown-it/lib/token';
-import StateCore from 'markdown-it/lib/rules_core/state_core';
-
-const LINK_MARKUP = 'link_card';
 
 function generateCardHtml(url: string) {
   return `<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(
@@ -12,148 +9,100 @@ function generateCardHtml(url: string) {
   )}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
 }
 
-function findLinkOpenTokenIndexes(tokens: Token[] | null) {
-  if (!tokens) {
-    return [];
-  }
-  const indexes: number[] = [];
-  tokens.forEach((token, index) => {
-    // 元々のlink_openのtokenか変換済みのtokenの場合indexに追加
-    if (token.type === 'link_open' || token.markup === LINK_MARKUP) {
-      indexes.push(index);
-    }
-  });
-  return indexes;
-}
+function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
+  const newTokens: Token[] = [];
 
-function hasBlankBeforeAndAfterToken(
-  prevBr: boolean,
-  afterBr: boolean,
-  linkIndex: number,
-  tokenLength: number
-) {
-  const startOfLine = linkIndex === 0;
-  const endOfLine = linkIndex + 2 === tokenLength - 1;
-  if (tokenLength === 3) {
-    return true;
-  }
-  if (prevBr && afterBr) {
-    return true;
-  }
-  if (startOfLine && afterBr) {
-    return true;
-  }
-  if (prevBr && endOfLine) {
-    return true;
-  }
-  return false;
-}
-
-function convertLinkToCard(
-  tokens: Token[],
-  idx: number,
-  TokenConstructor: StateCore['Token']
-) {
-  const token = tokens[idx];
-  const parentToken = tokens[idx - 1];
-  const { children } = token;
-  if (!children) {
-    return;
-  }
-  if (parentToken?.type !== 'paragraph_open' || parentToken?.level !== 0) {
-    return;
-  }
-  let linkIndexes = findLinkOpenTokenIndexes(children);
-  if (linkIndexes.length == 0) {
-    return;
-  }
-  for (let i = 0; i < linkIndexes.length; i++) {
-    // spliceにより順番が変わるのでlinkIndexesを再び取得
-    linkIndexes = findLinkOpenTokenIndexes(children);
-    const linkIndex = linkIndexes[i];
-    const linkOpenToken = children[linkIndex];
-    if (!linkOpenToken) {
-      continue;
-    }
-    const href = linkOpenToken.attrs?.find((attr) => attr[0] === 'href');
-    const prevChildToken = children[linkIndex - 1];
-    const nextChildToken = children[linkIndex + 3];
-    const isPrevBr =
-      prevChildToken?.type === 'softbreak' ||
-      prevChildToken?.content === '<br style="display: none">\n';
-    const isNextBr =
-      nextChildToken?.type === 'softbreak' ||
-      nextChildToken?.content === '<br style="display: none">\n';
-    if (!href) {
-      continue;
-    }
-    const [, url] = href;
-    if (linkOpenToken.markup !== 'linkify') {
-      continue;
-    }
-    // 直前直後に空白がない場合はreturn
-    if (
-      !hasBlankBeforeAndAfterToken(
-        isPrevBr,
-        isNextBr,
-        linkIndex,
-        children.length
-      )
-    ) {
-      continue;
-    }
-    // 前後のbrタグはスペースを広げすぎてしまうため非表示に
-    if (isNextBr) {
-      // next brタグを非表示
-      nextChildToken.type = 'html_inline';
-      nextChildToken.content = '<br style="display: none">\n';
-    }
-    if (isPrevBr) {
-      // prev brタグを非表示
-      prevChildToken.type = 'html_inline';
-      prevChildToken.content = '<br style="display: none">\n';
+  inlineChildTokens.forEach((token, i) => {
+    // 埋め込み対象となるlink_open かつ linkify以外はそのまま出力結果に含める
+    if (!(token.type === 'link_open' && token.markup === 'linkify')) {
+      newTokens.push(token); // 変換は行わずに出力結果に含める
+      return;
     }
 
-    const newToken = new TokenConstructor('html_inline', '', 0);
-    newToken.type = 'html_inline';
-    newToken.markup = LINK_MARKUP;
+    const linkOpenToken = token;
+
+    // tokenがlinkifyの場合は必要に応じて、カードを生成
+    const url = linkOpenToken.attrGet('href');
+    if (!url) {
+      newTokens.push(token); // 変換は行わずに出力結果に含める
+      return;
+    }
+
+    const isStartOfLine = i === 0;
+    const isEndOfLine = i + 2 === inlineChildTokens.length - 1; // i + 2 = link_closeのこと => link_closeが最後のtokenか
+
+    const prevToken = isStartOfLine ? null : inlineChildTokens[i - 1]; // e.g. [✋, link_open, text, link_close]
+    const nextToken = isEndOfLine ? null : inlineChildTokens[i + 3]; // e.g. [text, link_open, text, link_close, ✋]
+
+    const isPrevBr = prevToken?.tag === 'br';
+    const isNextBr = nextToken?.tag === 'br';
+
+    // 以下の2つをどちらも満たした場合にリンク化
+    // 1. パラグラフ先頭 もしくは リンクの前が br
+    // 2. パラグラフの末尾 もしくは リンクの後が br
+
+    const shouldConvertToCard =
+      (isStartOfLine || isPrevBr) && (isEndOfLine || isNextBr);
+
+    if (!shouldConvertToCard) {
+      newTokens.push(token); // 変換は行わずに出力結果に含める
+      return;
+    }
+
+    // 埋め込み用のHTMLを生成
+    const embedToken = new Token('html_inline', '', 0);
     if (isTweetUrl(url)) {
-      newToken.content = generateTweetHtml(url);
+      embedToken.content = generateTweetHtml(url);
     } else {
-      newToken.content = generateCardHtml(url);
+      embedToken.content = generateCardHtml(url);
     }
-    children.splice(linkIndex, 3, newToken);
-  }
+    // a要素自体はカードにより不要になるため非表示に
+    linkOpenToken.attrJoin('style', 'display: none');
+
+    // カードとリンクのトークンを出力結果のtokenに追加
+    newTokens.push(embedToken, linkOpenToken);
+
+    // 前後のbrタグはスペースを広げすぎてしまうため非表示にしておく
+    if (nextToken && isNextBr) {
+      nextToken.type = 'html_inline';
+      nextToken.content = '<br style="display: none">\n';
+    }
+    if (prevToken && isPrevBr) {
+      prevToken.type = 'html_inline';
+      prevToken.content = '<br style="display: none">\n';
+    }
+  });
+  return newTokens;
 }
 
-export function mdLinkifyToCard(md: MarkdownIt) {
-  md.core.ruler.after('replacements', 'link-card', function (state) {
-    const tokens = state.tokens;
-    for (let i = 0; i < tokens.length; i++) {
-      const token = tokens[i];
-      if (token.type === 'inline') {
-        const children = token?.children;
-        if (children?.some((child) => child.type === 'link_open')) {
-          convertLinkToCard(tokens, i, state.Token);
-        }
-      }
-    }
+export function mdAutolinkToCard(md: MarkdownIt) {
+  md.core.ruler.after('replacements', 'link-to-card', function ({ tokens }) {
+    // 本文内のすべてのtokenをチェック
+    tokens.forEach((token, i) => {
+      // autolinkはinline内のchildrenにのみ存在
+      if (token.type !== 'inline') return;
+
+      // childrenが存在しない場合は変換しない
+      const children = token.children;
+      if (!children) return;
+
+      // childrenにautolinkが存在する場合のみ変換
+      const hasAnyAutolink = children?.some(
+        (child) => child.markup === 'linkify'
+      );
+      if (!hasAnyAutolink) return;
+
+      // 親がコンテンツ直下のp要素の場合のみ変換
+      const parentToken = tokens[i - 1];
+      const isParentRootParagraph =
+        parentToken &&
+        parentToken.type === 'paragraph_open' &&
+        parentToken.level === 0;
+      if (!isParentRootParagraph) return;
+
+      token.children = convertAutolinkToEmbed(children);
+    });
+
     return true;
   });
-  // default renederer
-  const defaultRender =
-    md.renderer.rules.link_open ||
-    function (tokens, idx, options, env, self) {
-      return self.renderToken(tokens, idx, options);
-    };
-  // 自動リンクにクラスを付与
-  md.renderer.rules.link_open = function (...args) {
-    const [tokens, idx] = args;
-    const token = tokens[idx];
-    const isLinkified = token.markup === 'linkify';
-    if (isLinkified) {
-      token.attrJoin('class', 'linkified');
-    }
-    return defaultRender(...args);
-  };
 }
