@@ -29,10 +29,12 @@
     "markdown-it": "^11.0.0",
     "markdown-it-anchor": "^5.3.0",
     "markdown-it-container": "^2.0.0",
+    "markdown-it-custom-block": "^0.1.2",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-task-lists": "^2.1.1",
+    "markdown-it-texmath": "^0.8.0",
     "prismjs": "^1.23.0"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
