@@ -37,7 +37,7 @@ bind -M $mode \cq foo
      console.log(`foo: ${foo}`);
 ```
 
-```diff javascript
+```js
 @@ -4,6 +4,5 @@
 -    let foo = bar.baz([1, 2, 3]);
 -    foo = foo + 1;
