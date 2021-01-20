@@ -7,7 +7,9 @@ export function isGistUrl(url: string): boolean {
 }
 
 export function isTweetUrl(url: string): boolean {
-  return /^https:\/\/twitter\.com\/[a-zA-Z0-9_\-/?=]+$/.test(url);
+  return /^https:\/\/twitter\.com\/[a-zA-Z0-9_-]+\/status\/[a-zA-Z0-9?=]+$/.test(
+    url
+  );
 }
 
 export function isStackblitzUrl(url: string): boolean {
