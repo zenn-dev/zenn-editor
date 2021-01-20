@@ -66,3 +66,7 @@ export default markdownToHtml;
 export const enablePreview = () => {
   mdLineNumber(md);
 };
+
+export const getMarkdownItInstance = () => {
+  return md;
+};
