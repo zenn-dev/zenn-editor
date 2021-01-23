@@ -1,7 +1,10 @@
 import Prism, { Grammar } from 'prismjs';
 import loadLanguages from 'prismjs/components/';
+import enableDiffHighlight from '@steelydylan/prism-diff-highlight';
 import MarkdownIt from 'markdown-it';
-import 'prismjs/plugins/diff-highlight/prism-diff-highlight.js';
+
+// diffプラグインを有効化
+enableDiffHighlight();
 
 interface Options {
   plugins: string[];
@@ -77,9 +80,6 @@ function selectLanguage(lang: string): [string, Grammar | undefined, boolean] {
   const [isDiff, langNormalized] = checkIncludingDiff(loweredLang);
   const langAlias = fallbackLanguages[langNormalized];
   const langToUse = langAlias || langNormalized;
-  if (isDiff) {
-    loadPrismLang('diff');
-  }
   const prismLang = loadPrismLang(langToUse);
   return [langToUse, prismLang, isDiff];
 }
@@ -105,14 +105,18 @@ function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
     ? isDiff
       ? Prism.highlight(text, Prism.languages.diff, 'diff-' + langToUse)
       : Prism.highlight(text, prismLang, langToUse)
-    : (markdownit.utils.escapeHtml(text) as string);
+    : isDiff
+    ? Prism.highlight(text, Prism.languages.diff, 'diff')
+    : markdownit.utils.escapeHtml(text);
+
   const classAttribute = langToUse
     ? isDiff
-      ? ` class="diff-highlight ${markdownit.options.langPrefix
-      }diff-${markdownit.utils.escapeHtml(langToUse)}"`
+      ? ` class="diff-highlight ${
+          markdownit.options.langPrefix
+        }diff-${markdownit.utils.escapeHtml(langToUse)}"`
       : ` class="${markdownit.options.langPrefix}${markdownit.utils.escapeHtml(
-        langToUse
-      )}"`
+          langToUse
+        )}"`
     : '';
   return `<pre${classAttribute}><code${classAttribute}>${code}</code></pre>`;
 }
@@ -129,7 +133,6 @@ function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
 export function mdPrism(markdownit: MarkdownIt, useroptions: Options): void {
   const options = Object.assign({}, DEFAULTS, useroptions);
   options.init(Prism);
-
   // register ourselves as highlighter
   markdownit.options.highlight = (...args) => highlight(markdownit, ...args);
 }

@@ -1,4 +1,4 @@
-pre[class*='language-'] {
+pre[class*="language-"] {
   position: relative;
 }
 .token.namespace {
@@ -32,10 +32,12 @@ pre[class*='language-'] {
 .token.attr-value,
 .token.keyword,
 .token.important,
-.token.deleted {
+.token.deleted,
+.token.deleted .token {
   color: #ff8e8e;
 }
-.token.inserted {
+.token.inserted,
+.token.inserted .token {
   color: #b4ff9b;
 }
 .token.regex,
