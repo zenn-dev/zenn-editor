@@ -25,6 +25,13 @@ export default defineComponent({
 </script>
 ```
 
+```Dockerfile:Dockerfile
+FROM ubuntu
+ENV name value # comment
+ENV name=value
+CMD ["echo", "$name"]
+```
+
 ```bash:foo.fish
 bind -M $mode \cq foo
 ```

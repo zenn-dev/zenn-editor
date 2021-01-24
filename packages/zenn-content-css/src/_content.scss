@@ -304,18 +304,25 @@ summary {
   cursor: pointer;
   outline: 0;
   padding: 0.7em 0.7em 0.7em 0.9em;
-  background: $c-primary-bg-lighter;
-  border-radius: 5px;
+  border: solid 1px rgba(92, 147, 187, 0.19);
+  color: var(--c-contrast);
+  font-size: 0.9rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px -2px rgba(0, 0, 0, 0.15);
+
   &::-webkit-details-marker {
-    color: $c-gray;
+    color: $c-gray-darker;
   }
 }
 details[open] summary {
   border-radius: 5px 5px 0 0;
+  box-shadow: none;
+  background: $c-primary-bg-lighter;
+  border-bottom: none;
 }
 .details-content {
   padding: 0.5em 0.9em;
-  border: solid 2px $c-primary-bg-lighter;
+  border: solid 1px rgba(92, 147, 187, 0.2);
   border-radius: 0 0 5px 5px;
 
   & > * {
