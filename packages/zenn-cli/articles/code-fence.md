@@ -37,7 +37,15 @@ bind -M $mode \cq foo
      console.log(`foo: ${foo}`);
 ```
 
-```diff-js
+```js diff:aaa
+@@ -4,6 +4,5 @@
+-    let foo = bar.baz([1, 2, 3]);
+-    foo = foo + 1;
++    const foo = bar.baz([1, 2, 3]) + 1;
+     console.log(`foo: ${foo}`);
+```
+
+```diff js:aaa
 @@ -4,6 +4,5 @@
 -    let foo = bar.baz([1, 2, 3]);
 -    foo = foo + 1;
@@ -72,7 +80,13 @@ var foo = function (bar) {
 <div>a</div>
 ```
 
-```diff-html
+```diff html:html差分
+     <div>a</div>
+-    <div>b</div>
++    <div>c</div>
+```
+
+```html diff : html差分
      <div>a</div>
 -    <div>b</div>
 +    <div>c</div>
