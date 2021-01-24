@@ -31,7 +31,9 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
       });
       socket.on('reload', () => {
         // better performance than location.reload
-        router.replace(router.pathname, router.asPath);
+        router.replace(router.pathname, router.asPath, {
+          scroll: false,
+        });
       });
     };
     document.body.append(script);
