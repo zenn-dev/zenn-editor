@@ -2,7 +2,7 @@ import arg from 'arg';
 import { cliCommand } from '..';
 import { build } from './build';
 import chokidar from 'chokidar';
-import socketIo from 'socket.io';
+import { Server } from 'socket.io';
 import { invalidOption, previewHelpText } from '../constants';
 import colors from 'colors/safe';
 import open from 'open';
@@ -53,7 +53,7 @@ export const exec: cliCommand = async (argv) => {
 
   if (shouldWatch) {
     const watcher = chokidar.watch(`${process.cwd()}/{articles,books}/**/*`);
-    const io = socketIo(server);
+    const io = new Server(server);
     watcher.on('change', () => {
       io.emit('reload');
     });

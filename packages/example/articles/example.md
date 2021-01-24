@@ -12,10 +12,11 @@ published: false
 ![](https://octodex.github.com/images/stormtroopocat.jpg =200x)
 *captions*
 
-fuzzy links are not linkified test.com
-
-
-
+dfasdfa
+dfa
+fd
+a
+fafdafdafda
 ```bash
 console.log({
   a: "a",
@@ -27,7 +28,7 @@ console.log({
 ```
 
 
-
+aafaffff
 
 
 ``` js:fooBar.js
@@ -38,6 +39,14 @@ var foo = function (bar) {
 console.log(foo(5));
 // 👇can scroll horizontally
 console.log(aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa);
+```
+
+```js diff :fooBar.js
+@@ -4,6 +4,5 @@
+-    let foo = bar.baz([1, 2, 3]);
+-    foo = foo + 1;
++    const foo = bar.baz([1, 2, 3]) + 1;
+     console.log(`foo: ${foo}`);
 ```
 
 ``` js:example
