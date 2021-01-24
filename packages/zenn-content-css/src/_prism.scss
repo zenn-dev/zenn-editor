@@ -31,13 +31,38 @@ pre[class*='language-'] {
 .token.atrule,
 .token.attr-value,
 .token.keyword,
-.token.important,
-.token.deleted {
+.token.important {
   color: #ff8e8e;
 }
-.token.inserted {
-  color: #b4ff9b;
+.token.deleted-sign {
+  background: rgba(218, 54, 50, 0.2);
+  display: block;
+  .prefix {
+    color: #ff8e8e;
+  }
 }
+
+.token.inserted-sign {
+  background: rgba(0, 146, 27, 0.2);
+  display: block;
+  .prefix {
+    color: #b4ff9b;
+  }
+}
+
+// .token.deleted,
+// .token.deleted .token {
+//   color: #ff8e8e;
+// }
+// .token.inserted,
+// .token.inserted .token {
+//   color: #b4ff9b;
+// }
+
+.token.coord {
+  color: #aad4ff;
+}
+
 .token.regex,
 .token.statement {
   color: #ffc164;
