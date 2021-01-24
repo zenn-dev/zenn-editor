@@ -2410,10 +2410,10 @@
   resolved "https://registry.yarnpkg.com/@steelydylan/markdown-it-imsize/-/markdown-it-imsize-1.0.2.tgz#bffec33320601691162e4e903e27eb63d5488b6d"
   integrity sha512-3tfhRLlv8w3GSNzjEx3y1JIyHpCuBhqXN6tILRTR4IhZcrJb6WJJo12jZ/lKiT9VITg9kHHHg6yVsDwO5nnZqw==
 
-"@steelydylan/prism-diff-highlight@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@steelydylan/prism-diff-highlight/-/prism-diff-highlight-1.0.3.tgz#a5a381c63329d433c65296fcc19ed08953a3abce"
-  integrity sha512-lEsOI5c2VjStozJqIn0dpijx92ahleXjwmJQ4jP75v/v795kBAik8NrTueKtBvddG27Ka/jukkyltzqzdtNdUg==
+"@steelydylan/prism-diff-highlight@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@steelydylan/prism-diff-highlight/-/prism-diff-highlight-1.0.4.tgz#aa9328c472af3e7c63e1830ba9375b128e5f9f58"
+  integrity sha512-1M16pY3PvWVScLrYj9nENZm1yQ+V/w2YoB6NMZkv+/O/nAHoRg6qS1BX8FNnCKSbIk52QIwj+NUi/sUK2EMuew==
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"

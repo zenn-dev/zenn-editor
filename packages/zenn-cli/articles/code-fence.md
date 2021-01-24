@@ -72,6 +72,12 @@ var foo = function (bar) {
 <div>a</div>
 ```
 
+```diff-html
+     <div>a</div>
+-    <div>b</div>
++    <div>c</div>
+```
+
 
 ```"><img/onerror="alert(location)"src=.>
 aaa
