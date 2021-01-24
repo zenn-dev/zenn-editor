@@ -1,6 +1,10 @@
 import Prism, { Grammar } from 'prismjs';
 import loadLanguages from 'prismjs/components/';
+import enableDiffHighlight from '@steelydylan/prism-diff-highlight';
 import MarkdownIt from 'markdown-it';
+
+// diffプラグインを有効化
+enableDiffHighlight();
 
 interface Options {
   plugins: string[];
@@ -23,6 +27,8 @@ const DEFAULTS: Options = {
  *
  * @param lang
  *        Code of the language to load.
+ * @param isDiff
+ *        whether to use diff with language or not
  * @return The Prism language object for the provided {@code lang} code. {@code undefined} if the language is not known to Prism.
  */
 function loadPrismLang(lang: string): Grammar | undefined {
@@ -33,6 +39,32 @@ function loadPrismLang(lang: string): Grammar | undefined {
     langObject = Prism.languages[lang];
   }
   return langObject;
+}
+
+/**
+ * Check given lang should be treated as `diff` and parse name of language.
+ *
+ * @param lang
+ *        String given by `markdown-it`. this must be lower case.
+ * @return  whether `lang` includes `diff` or not, and parsed name if recognized as `diff`.
+ *          If not, return `lang` directly.
+ *
+ */
+function checkIncludingDiff(lang: string) {
+  // TODO: Determine the method to find `diff`(`match`, `indexOf` e.t.c.).
+  const langs = lang.split('-');
+  const hasDiff = langs.some((lang) => lang === 'diff');
+  if (hasDiff) {
+    const newLang = langs.find((lang) => lang !== 'diff') ?? '';
+    return {
+      isDiff: true,
+      lang: newLang,
+    };
+  }
+  return {
+    isDiff: false,
+    lang,
+  };
 }
 
 const fallbackLanguages: {
@@ -47,18 +79,21 @@ const fallbackLanguages: {
 /**
  * Select the language to use for highlighting, based on the provided options and the specified language.
  *
- * @param options
- *        The options that were used to initialise the plugin.
  * @param lang
  *        Code of the language to highlight the text in.
  * @return  The name of the language to use and the Prism language object for that language.
  */
-function selectLanguage(lang: string): [string, Grammar | undefined] {
-  const langNormalized = lang?.toLowerCase() || '';
+function selectLanguage(lang: string) {
+  const loweredLang = lang?.toLowerCase() || '';
+  const { isDiff, lang: langNormalized } = checkIncludingDiff(loweredLang);
   const langAlias = fallbackLanguages[langNormalized];
   const langToUse = langAlias || langNormalized;
   const prismLang = loadPrismLang(langToUse);
-  return [langToUse, prismLang];
+  return {
+    langToUse,
+    grammer: prismLang,
+    isDiff,
+  };
 }
 
 /**
@@ -66,8 +101,6 @@ function selectLanguage(lang: string): [string, Grammar | undefined] {
  *
  * @param markdownit
  *        The markdown-it instance
- * @param options
- *        The options that have been used to initialise the plugin.
  * @param text
  *        The text to highlight.
  * @param lang
@@ -76,14 +109,26 @@ function selectLanguage(lang: string): [string, Grammar | undefined] {
  *  (markdown-it’s langPrefix + lang). If Prism knows {@code lang}, {@code text} will be highlighted by it.
  */
 function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
-  const [langToUse, prismLang] = selectLanguage(lang);
-  const code = prismLang
-    ? Prism.highlight(text, prismLang, langToUse)
+  const { langToUse, isDiff, grammer } = selectLanguage(lang);
+  // 1. Use `diff` highlight with `language` if set.
+  // 2. Use `language` (or `diff`, which is included) only.
+  // 3. Use plain Markdown.
+  const code = grammer
+    ? isDiff
+      ? Prism.highlight(text, Prism.languages.diff, 'diff-' + langToUse)
+      : Prism.highlight(text, grammer, langToUse)
+    : isDiff
+    ? Prism.highlight(text, Prism.languages.diff, 'diff')
     : markdownit.utils.escapeHtml(text);
+
   const classAttribute = langToUse
-    ? ` class="${markdownit.options.langPrefix}${markdownit.utils.escapeHtml(
-        langToUse
-      )}"`
+    ? isDiff
+      ? ` class="diff-highlight ${
+          markdownit.options.langPrefix
+        }diff-${markdownit.utils.escapeHtml(langToUse)}"`
+      : ` class="${markdownit.options.langPrefix}${markdownit.utils.escapeHtml(
+          langToUse
+        )}"`
     : '';
   return `<pre${classAttribute}><code${classAttribute}>${code}</code></pre>`;
 }
@@ -99,9 +144,7 @@ function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
  */
 export function mdPrism(markdownit: MarkdownIt, useroptions: Options): void {
   const options = Object.assign({}, DEFAULTS, useroptions);
-
   options.init(Prism);
-
   // register ourselves as highlighter
   markdownit.options.highlight = (...args) => highlight(markdownit, ...args);
 }
