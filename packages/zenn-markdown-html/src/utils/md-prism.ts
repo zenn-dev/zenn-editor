@@ -111,7 +111,8 @@ function selectLanguage(lang: string) {
 
 const PREFIXES = ['-', '<', '+', '>', ' ', '!'];
 
-function transformTextForDiff(text: string) {
+// workaround for highlighting code without spaces
+function addSpaceForHighlight(text: string) {
   return text
     .split('\n')
     .filter((line) => !!line)
@@ -132,7 +133,7 @@ function transformTextForDiff(text: string) {
 
 function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
   const { langToUse, isDiff, grammer } = selectLanguage(lang);
-  const transformed = isDiff ? transformTextForDiff(text) : text;
+  const transformed = isDiff ? addSpaceForHighlight(text) : text;
   // 1. Use `diff` highlight with `language` if set.
   // 2. Use `language` (or `diff`, which is included) only.
   // 3. Use plain Markdown.
