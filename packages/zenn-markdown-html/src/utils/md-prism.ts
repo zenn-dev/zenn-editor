@@ -114,6 +114,7 @@ const PREFIXES = ['-', '<', '+', '>', ' ', '!'];
 function transformTextForDiff(text: string) {
   return text
     .split('\n')
+    .filter((line) => !!line)
     .map((line) => {
       const hasPrefix = PREFIXES.some((key) => {
         if (line.startsWith(key)) {
