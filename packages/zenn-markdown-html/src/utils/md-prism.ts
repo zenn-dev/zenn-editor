@@ -108,27 +108,48 @@ function selectLanguage(lang: string) {
  * @return {@code text} wrapped in {@code &lt;pre&gt;} and {@code &lt;code&gt;}, both equipped with the appropriate class
  *  (markdown-it’s langPrefix + lang). If Prism knows {@code lang}, {@code text} will be highlighted by it.
  */
+
+const PREFIXES = ['-', '<', '+', '>', ' ', '!'];
+
+function transformTextForDiff(text: string) {
+  return text
+    .split('\n')
+    .map((line) => {
+      const hasPrefix = PREFIXES.some((key) => {
+        if (line.startsWith(key)) {
+          return true;
+        }
+        return false;
+      });
+      if (hasPrefix) {
+        return line;
+      }
+      return ` ${line}`;
+    })
+    .join('\n');
+}
+
 function highlight(markdownit: MarkdownIt, text: string, lang: string): string {
   const { langToUse, isDiff, grammer } = selectLanguage(lang);
+  const transformed = isDiff ? transformTextForDiff(text) : text;
   // 1. Use `diff` highlight with `language` if set.
   // 2. Use `language` (or `diff`, which is included) only.
   // 3. Use plain Markdown.
   const code = grammer
     ? isDiff
-      ? Prism.highlight(text, Prism.languages.diff, 'diff-' + langToUse)
-      : Prism.highlight(text, grammer, langToUse)
+      ? Prism.highlight(transformed, Prism.languages.diff, 'diff-' + langToUse)
+      : Prism.highlight(transformed, grammer, langToUse)
     : isDiff
-    ? Prism.highlight(text, Prism.languages.diff, 'diff')
-    : markdownit.utils.escapeHtml(text);
+      ? Prism.highlight(transformed, Prism.languages.diff, 'diff')
+      : markdownit.utils.escapeHtml(transformed);
 
   const classAttribute = langToUse
     ? isDiff
-      ? ` class="diff-highlight ${
-          markdownit.options.langPrefix
-        }diff-${markdownit.utils.escapeHtml(langToUse)}"`
+      ? ` class="diff-highlight ${markdownit.options.langPrefix
+      }diff-${markdownit.utils.escapeHtml(langToUse)}"`
       : ` class="${markdownit.options.langPrefix}${markdownit.utils.escapeHtml(
-          langToUse
-        )}"`
+        langToUse
+      )}"`
     : '';
   return `<pre${classAttribute}><code${classAttribute}>${code}</code></pre>`;
 }
