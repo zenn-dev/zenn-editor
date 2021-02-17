@@ -3,3 +3,4 @@ node_modules_bak
 .DS_Store
 yarn-error.log
 lerna-debug.log
+.node-version
