@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
-import { generateTweetHtml } from './helper';
+import { generateTweetHtml, generateCardHtml, isValidHttpUrl } from './helper';
 import {
   isGistUrl,
   isTweetUrl,
@@ -71,6 +71,11 @@ const blockOptions = {
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
     return generateTweetHtml(str);
+  },
+  card(str: string) {
+    // generateCardHtml内でURLはエンコードされるためここでのバリデーションは軽めでOK
+    if (!isValidHttpUrl(str)) return 'URLが不正です';
+    return generateCardHtml(str);
   },
   gist(str: string) {
     if (!isGistUrl(str)) return 'GitHub GistのページURLを指定してください';

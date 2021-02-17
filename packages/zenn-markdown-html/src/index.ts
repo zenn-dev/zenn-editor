@@ -8,7 +8,7 @@ import {
   containerMessageOptions,
 } from './utils/md-container';
 import { mdRendererFence } from './utils/md-renderer-fence';
-import { mdAutolinkToCard } from './utils/md-linkify-to-card';
+import { mdLinkifyToCard } from './utils/md-linkify-to-card';
 import { mdPrism } from './utils/md-prism';
 import { mdKatex } from './utils/md-katex';
 import { mdBr } from './utils/md-br';
@@ -47,7 +47,7 @@ md.use(mdBr)
     },
   })
   .use(mdKatex)
-  .use(mdAutolinkToCard);
+  .use(mdLinkifyToCard);
 
 // custom footnote => TODO: ファイルを分ける
 md.renderer.rules.footnote_block_open = () =>

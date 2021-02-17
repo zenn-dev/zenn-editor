@@ -1,13 +1,7 @@
 import MarkdownIt from 'markdown-it';
 import { isTweetUrl } from './url-matcher';
-import { generateTweetHtml } from './helper';
+import { generateTweetHtml, generateCardHtml } from './helper';
 import Token from 'markdown-it/lib/token';
-
-function generateCardHtml(url: string) {
-  return `<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(
-    url
-  )}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
-}
 
 function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
   const newTokens: Token[] = [];
@@ -75,7 +69,7 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
   return newTokens;
 }
 
-export function mdAutolinkToCard(md: MarkdownIt) {
+export function mdLinkifyToCard(md: MarkdownIt) {
   md.core.ruler.after('replacements', 'link-to-card', function ({ tokens }) {
     // 本文内のすべてのtokenをチェック
     tokens.forEach((token, i) => {
