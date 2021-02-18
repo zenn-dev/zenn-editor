@@ -1,6 +1,6 @@
 import markdownToHtml from '../src/index';
 
-describe('should preserve br tag', () => {
+describe('Handle br tag properly', () => {
   test('should preserve br tag inside paragraph', () => {
     const html = markdownToHtml('foo<br>bar');
     expect(html).toMatch(/<p>foo<br>bar<\/p>/);

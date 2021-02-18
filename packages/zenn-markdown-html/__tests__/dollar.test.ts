@@ -1,6 +1,6 @@
 import markdownToHtml from '../src/index';
 
-describe('convert $ mark properly', () => {
+describe('Handle $ mark properly', () => {
   test('should keep $ around link href', () => {
     const html = markdownToHtml('$a,b,c$foo[hoge](https://hoge.fuga)bar');
     expect(html).toMatch(/<eq class="zenn-katex">.*<\/eq>foo/);

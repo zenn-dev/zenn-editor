@@ -1,6 +1,6 @@
 import markdownToHtml from '../src/index';
 
-describe('Linkify', () => {
+describe('Linkify properly', () => {
   test('should likify url with nofollow if host is not zenn.dev', () => {
     const html = markdownToHtml('URL is https://example.com');
     expect(html).toContain(
