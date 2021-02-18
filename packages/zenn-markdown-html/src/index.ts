@@ -34,7 +34,13 @@ md.use(mdBr)
   .use(mdRendererFence)
   .use(markdownItImSize)
   .use(mdCustomBlock)
-  .use(markdownItAnchor, { level: [1, 2, 3] })
+  .use(markdownItAnchor, {
+    level: [1, 2, 3, 4],
+    permalink: true,
+    permalinkBefore: true,
+    permalinkSymbol: '',
+    permalinkClass: 'header-anchor-link',
+  })
   .use(mdContainer, 'details', containerDetailsOptions)
   .use(mdContainer, 'message', containerMessageOptions)
   .use(mdFootnote)

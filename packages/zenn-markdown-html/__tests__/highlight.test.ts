@@ -1,6 +1,14 @@
 import markdownToHtml from '../src/index';
 
-describe('code highlight', () => {
+describe('Code highlight propley', () => {
+  test('should generate valid code format html', () => {
+    const html = markdownToHtml(
+      `\`\`\`js:foo.js\nconsole.log("hello")\n\`\`\``
+    );
+    expect(html).toContain('<code class="language-js">');
+    expect(html).toContain('<span class="code-block-filename">foo.js</span>');
+  });
+
   test('should highlight js syntax', () => {
     const jsString = ['```js', "console.log('hoge')", '```'].join('\n');
     const html = markdownToHtml(jsString);
