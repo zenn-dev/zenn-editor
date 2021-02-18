@@ -1,7 +1,7 @@
 {
   "name": "zenn-cli",
   "license": "MIT",
-  "version": "0.1.72",
+  "version": "0.1.73",
   "description": "Preview Zenn content locally.",
   "bin": {
     "zenn": "bin/zenn.js"
@@ -46,7 +46,7 @@
     "update-notifier": "^5.1.0",
     "zenn-content-css": "^0.1.71",
     "zenn-embed-elements": "^0.1.69",
-    "zenn-markdown-html": "^0.1.71"
+    "zenn-markdown-html": "^0.1.73"
   },
   "devDependencies": {
     "@testing-library/react": "^11.2.1",
