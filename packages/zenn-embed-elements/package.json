@@ -1,6 +1,6 @@
 {
   "name": "zenn-embed-elements",
-  "version": "0.1.69",
+  "version": "0.1.74",
   "description": "Web components for embedded contents.",
   "main": "lib/index.js",
   "files": [
