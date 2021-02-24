@@ -1,21 +1,34 @@
 type LoadScriptProps = {
   src: string;
-  id?: string;
+  id: string;
 };
 
+const scriptLoadedStatusList: {
+  [id: string]: boolean;
+} = {};
+
 export function loadScript({ src, id }: LoadScriptProps) {
-  const identicalScript = id ? document.getElementById(id) : null;
   return new Promise<void>((resolve, reject) => {
-    if (identicalScript) {
-      resolve();
+    const existingScript = document.getElementById(id);
+    if (existingScript) {
+      // 既にscriptが読み込まれている場合は有効になるまで待機する
+      const timer = setInterval(() => {
+        if (scriptLoadedStatusList[id]) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 100);
+    } else {
+      // まだ読み込まれていない場合は新しく読み込む
+      const script = document.createElement('script');
+      script.setAttribute('src', src);
+      script.setAttribute('id', id);
+      document.head.appendChild(script);
+      script.onload = () => {
+        scriptLoadedStatusList[id] = true;
+        resolve();
+      };
+      script.onerror = (e) => reject(e);
     }
-    const script = document.createElement('script');
-    script.setAttribute('src', src);
-    document.head.appendChild(script);
-    script.onload = () => {
-      if (id) script.setAttribute('id', id); // 読み込みが完了してからIDを付与する（でないと読み込みが完了していないのにidenticalScriptの条件分岐で終了してしまう）
-      resolve();
-    };
-    script.onerror = (e) => reject(e);
   });
 }
