@@ -13,7 +13,7 @@ export function loadScript({ src, id }: LoadScriptProps) {
     script.setAttribute('src', src);
     document.head.appendChild(script);
     script.onload = () => {
-      if (id) script.setAttribute('id', id);
+      if (id) script.setAttribute('id', id); // 読み込みが完了してからIDを付与する（でないと読み込みが完了していないのにidenticalScriptの条件分岐で終了してしまう）
       resolve();
     };
     script.onerror = (e) => reject(e);

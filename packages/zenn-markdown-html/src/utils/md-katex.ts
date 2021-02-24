@@ -91,7 +91,7 @@ export function mdKatex(md: MarkdownIt) {
       return res;
     }); // ! important
     md.renderer.rules[rule.name] = (tokens, idx) =>
-      rule.tmpl.replace(/\$1/, tokens[idx].content);
+      rule.tmpl.replace(/\$1/, md.utils.escapeHtml(tokens[idx].content));
   }
 
   for (const rule of blockRules) {
@@ -156,7 +156,7 @@ export function mdKatex(md: MarkdownIt) {
 
     md.renderer.rules[rule.name] = (tokens, idx) =>
       rule.tmpl
-        .replace(/\$2/, tokens[idx].info) // equation number .. ?
-        .replace(/\$1/, tokens[idx].content);
+        .replace(/\$2/, md.utils.escapeHtml(tokens[idx].info)) // equation number .. ?
+        .replace(/\$1/, md.utils.escapeHtml(tokens[idx].content));
   }
 }

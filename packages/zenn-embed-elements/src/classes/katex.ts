@@ -20,7 +20,7 @@ export class EmbedKatex extends HTMLElement {
   }
 
   async render() {
-    if (!(window as any).katex) {
+    if (typeof katex === 'undefined') {
       await loadScript({
         src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.js',
         id: 'katex-js',
@@ -34,6 +34,7 @@ export class EmbedKatex extends HTMLElement {
     });
 
     const displayMode = !!this.getAttribute('display-mode');
+
     katex?.render(this.innerText ?? '', this._container, {
       macros: { '\\RR': '\\mathbb{R}' },
       throwOnError: false,
