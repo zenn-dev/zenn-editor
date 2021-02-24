@@ -1,6 +1,5 @@
 import markdownIt from 'markdown-it';
 import { mdLineNumber } from './utils/md-line-number';
-import { processHtml } from './utils/process-html';
 
 // plugis
 import {
@@ -62,11 +61,10 @@ md.renderer.rules.footnote_block_open = () =>
   '<ol class="footnotes-list">\n';
 
 const markdownToHtml = (text: string): string => {
-  if (!(text && text.length)) return text;
-  const rawHtml = md.render(text);
-  if (!rawHtml) return '';
-  return processHtml(rawHtml);
+  if (!(text && text.length)) return '';
+  return md.render(text);
 };
+
 export default markdownToHtml;
 
 export const enablePreview = () => {

@@ -7,6 +7,7 @@ emoji: 👩‍💻
 published: false
 ---
 
+&\&&
 
 $a,b,c$は[hoge](https://hoge.fuga)を参照。
 $a,b,c$は[hoge](http://hoge.fuga)を参照。
@@ -24,7 +25,7 @@ $a\ne0$
 
 $\varphi$
 
-$1+1=2$	
+$<script>alert("a")</script>1+1=2$	
 
 $1+1<3$	
 
