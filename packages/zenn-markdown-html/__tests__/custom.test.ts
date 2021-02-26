@@ -1,4 +1,5 @@
 import markdownToHtml from '../src/index';
+import { escapeHtml } from 'markdown-it/lib/common/utils';
 
 describe('Handle custom markdown format properly', () => {
   test('should generate codesandbox html', () => {
@@ -52,5 +53,37 @@ describe('Handle custom markdown format properly', () => {
   test('should generate valid message box html', () => {
     const html = markdownToHtml(':::message alert\nhello\n:::');
     expect(html).toContain('<div class="msg alert"><p>hello</p>\n</div>');
+  });
+
+  test('should generate youtube html', () => {
+    const html = markdownToHtml('@[youtube](AXaoi6dz59A)');
+    expect(html.trim()).toStrictEqual(
+      `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/AXaoi6dz59A?loop=1&playlist=AXaoi6dz59A" allowfullscreen loading="lazy"></iframe></div>`.trim()
+    );
+  });
+
+  test.each`
+    url                                                                                                  | videoId
+    ${'http://www.youtube.com/watch?v=lK-zaWCp-co&feature=g-all-u&context=G27a8a4aFAAAAAAAAAAA'}         | ${'lK-zaWCp-co'}
+    ${'http://youtu.be/AXaoi6dz59A'}                                                                     | ${'AXaoi6dz59A'}
+    ${'https://youtube.com/watch?gl=NL&hl=nl&feature=g-vrec&context=G2584313RVAAAAAAAABA&v=35LqQPKylEA'} | ${'35LqQPKylEA'}
+  `('$url should generate youtube html', ({ url, videoId }) => {
+    const html = markdownToHtml(url);
+    const escapeUrl = escapeHtml(url);
+    expect(html.trim()).toStrictEqual(
+      `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" rel="nofollow">${escapeUrl}</a></p>`.trim()
+    );
+  });
+
+  /**
+   * YouTube のIDは抽出できる対象だが、その前に AutoLink 対象ではないために変換処理が走らない
+   */
+  test.each`
+    url                                                                                          | videoId
+    ${'youtube.com/watch?gl=NL&hl=nl&feature=g-vrec&context=G2584313RVAAAAAAAABA&v=35LqQPKylEA'} | ${'35LqQPKylEA'}
+  `('$url should not generate youtube html', ({ url, videoId }) => {
+    const html = markdownToHtml(url);
+    const escapeUrl = escapeHtml(url);
+    expect(html.trim()).toStrictEqual(`<p>${escapeUrl}</p>`.trim());
   });
 });

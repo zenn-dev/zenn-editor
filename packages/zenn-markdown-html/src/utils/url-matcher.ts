@@ -27,3 +27,17 @@ export function isCodepenUrl(url: string): boolean {
 export function isJsfiddleUrl(url: string): boolean {
   return /^(http|https):\/\/jsfiddle\.net\/[a-zA-Z0-9_,/-]+$/.test(url);
 }
+
+export function extractYoutubeVideoId(url: string): string {
+  const regexp = /^(http(s?):\/\/)?(www\.)?youtu(be)?\.([a-z])+\/(watch(.*?)([?&])v=)?(.*?)(&(.)*)?$/;
+  const match = url.match(regexp);
+  if (match && match[9].length == 11) {
+    return match[9];
+  } else {
+    return '';
+  }
+}
+
+export function isYoutubeUrl(url: string): boolean {
+  return !!extractYoutubeVideoId(url);
+}
