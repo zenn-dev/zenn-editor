@@ -79,4 +79,23 @@ Example:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
+export const listArticleHelpText = `
+Command:
+  zenn list:article  記事の一覧を表示
+
+Usage:
+  npx zenn list:article [options]
+
+Options:
+  --format    FORMAT   表示方法. 現在はsimpleのみサポート.
+
+  --help, -h       このヘルプを表示
+
+Example:
+  npx zenn list:article --format simple
+
+  👇  詳細
+  https://zenn.dev/zenn/articles/zenn-cli-guide
+`;
+
 export const invalidOption = `😿 不正なオプションが含まれています`;
