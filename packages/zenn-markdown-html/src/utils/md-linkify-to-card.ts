@@ -1,6 +1,10 @@
 import MarkdownIt from 'markdown-it';
-import { isTweetUrl } from './url-matcher';
-import { generateTweetHtml, generateCardHtml } from './helper';
+import { extractYoutubeVideoId, isTweetUrl, isYoutubeUrl } from './url-matcher';
+import {
+  generateCardHtml,
+  generateTweetHtml,
+  generateYoutubeHtml,
+} from './helper';
 import Token from 'markdown-it/lib/token';
 
 function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
@@ -47,6 +51,9 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
     const embedToken = new Token('html_inline', '', 0);
     if (isTweetUrl(url)) {
       embedToken.content = generateTweetHtml(url);
+    } else if (isYoutubeUrl(url)) {
+      const videoId = extractYoutubeVideoId(url);
+      embedToken.content = generateYoutubeHtml(videoId);
     } else {
       embedToken.content = generateCardHtml(url);
     }
