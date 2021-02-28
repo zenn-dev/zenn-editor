@@ -2,10 +2,10 @@ import path from 'path';
 import fs from 'fs';
 import matter from 'gray-matter';
 import arg from 'arg';
-import { Article } from '@types';
+import { Book } from '@types';
 import { cliCommand } from '.';
 import colors from 'colors/safe';
-import { invalidOption, listArticleHelpText } from './constants';
+import { invalidOption, listBookHelpText } from './constants';
 
 function parseArgs(argv: string[] | undefined) {
   try {
@@ -25,14 +25,14 @@ function parseArgs(argv: string[] | undefined) {
     } else {
       console.log(colors.red('エラーが発生しました'));
     }
-    console.log(listArticleHelpText);
+    console.log(listBookHelpText);
     return null;
   }
 }
 
-const articleFormatters: { [key: string]: (article: Article) => string } = {
-  tsv: (article: Article) => article.slug + '\t' + article.title,
-  json: (article: Article) => JSON.stringify(article),
+const bookFormatters: { [key: string]: (book: Book) => string } = {
+  tsv: (book: Book) => book.slug + '\t' + book.title,
+  json: (book: Book) => JSON.stringify(book),
 };
 
 export const exec: cliCommand = (argv) => {
@@ -40,20 +40,20 @@ export const exec: cliCommand = (argv) => {
   if (!args) return;
 
   if (args['--help']) {
-    console.log(listArticleHelpText);
+    console.log(listBookHelpText);
     return;
   }
 
   const format = args['--format'] || 'tsv';
-  if (!(format in articleFormatters)) {
+  if (!(format in bookFormatters)) {
     console.error(
       `エラー：formatの値（${format}）が不正です。"tsv" または "json" を指定してください`
     );
     process.exit(1);
   }
-  const formatter = articleFormatters[format];
+  const formatter = bookFormatters[format];
 
-  const dir = path.join(process.cwd(), 'articles');
+  const dir = path.join(process.cwd(), 'books');
   fs.readdirSync(dir, {
     encoding: 'utf-8',
     withFileTypes: true,
@@ -61,15 +61,15 @@ export const exec: cliCommand = (argv) => {
     .filter((dirent) => dirent.isFile() && /\.md$/.test(dirent.name))
     .map(({ name }) => {
       const slug = name.replace(/\.md$/, '');
-      let article: Article = {
+      let book: Book = {
         slug,
       };
       try {
         const fileRaw = fs.readFileSync(path.join(dir, name), 'utf8');
         const { data } = matter(fileRaw);
-        article = { ...article, ...data };
+        book = { ...book, ...data };
       } catch {}
-      return article;
+      return book;
     })
     .map(formatter)
     .forEach(console.log);
