@@ -1,9 +1,7 @@
-import path from 'path';
-import fs from 'fs-extra';
 import arg from 'arg';
 import { cliCommand } from '.';
-import matter from 'gray-matter';
 import colors from 'colors/safe';
+import { getAllArticles } from '../utils/api/articles';
 import { invalidOption, listArticleHelpText } from './constants';
 
 function parseArgs(argv: string[] | undefined) {
@@ -38,7 +36,7 @@ export const exec: cliCommand = (argv) => {
     return;
   }
 
-  const format = args['--format'] || 'simple'
+  const format = args['--format'] || 'simple';
 
   // if (!validateSlug(slug)) {
   //   const errorMessage = getSlugErrorMessage(slug);
@@ -46,27 +44,31 @@ export const exec: cliCommand = (argv) => {
   //   process.exit(1);
   // }
 
-  const dir = path.join(process.cwd(), 'articles');
-  fs.readdirSync(dir, {
-    encoding: "utf-8",
-    withFileTypes: true,
-  })
-    .filter(dirent => dirent.isFile() && /\.md$/.test(dirent.name))
-    .map(({ name }) => {
-      const slug = name.replace(/\.md$/, '');
-      let entry = {
-        slug,
-        name,
-        title: '',
-      };
-      try {
-        const fileRaw = fs.readFileSync(path.join(dir, name), 'utf8');
-        const { data } = matter(fileRaw);
-        entry['title'] = data['title'] || '';
-      } catch { }
-      return entry;
-    })
-    .forEach((entry) => {
-      console.log(entry.slug + '\t' + entry.title);
-    });
+  // const dir = path.join(process.cwd(), 'articles');
+  // fs.readdirSync(dir, {
+  //   encoding: "utf-8",
+  //   withFileTypes: true,
+  // })
+  //   .filter(dirent => dirent.isFile() && /\.md$/.test(dirent.name))
+  //   .map(({ name }) => {
+  //     const slug = name.replace(/\.md$/, '');
+  //     let entry = {
+  //       slug,
+  //       name,
+  //       title: '',
+  //     };
+  //     try {
+  //       const fileRaw = fs.readFileSync(path.join(dir, name), 'utf8');
+  //       const { data } = matter(fileRaw);
+  //       entry['title'] = data['title'] || '';
+  //     } catch { }
+  //     return entry;
+  //   })
+  //   .forEach((entry) => {
+  //     console.log(entry.slug + '\t' + entry.title);
+  //   });
+  //
+  getAllArticles(['slug', 'title']).forEach((entry) => {
+    console.log(entry.slug + '\t' + entry.title);
+  });
 };
