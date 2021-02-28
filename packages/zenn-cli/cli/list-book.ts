@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import matter from 'gray-matter';
 import arg from 'arg';
-import { Book } from '@types';
+import { Book } from '../types';
 import { cliCommand } from '.';
 import colors from 'colors/safe';
 import { invalidOption, listBookHelpText } from './constants';
@@ -31,7 +31,7 @@ function parseArgs(argv: string[] | undefined) {
 }
 
 const bookFormatters: { [key: string]: (book: Book) => string } = {
-  tsv: (book: Book) => book.slug + '\t' + book.title,
+  tsv: (book: Book) => book.slug + (!!book.title ? '\t' + book.title : ''),
   json: (book: Book) => JSON.stringify(book),
 };
 
@@ -71,6 +71,7 @@ export const exec: cliCommand = (argv) => {
       } catch {}
       return book;
     })
-    .map(formatter)
-    .forEach(console.log);
+    .forEach(book => {
+      console.log(formatter(book));
+    });
 };

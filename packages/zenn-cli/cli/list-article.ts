@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import matter from 'gray-matter';
 import arg from 'arg';
-import { Article } from '@types';
+import { Article } from '../types';
 import { cliCommand } from '.';
 import colors from 'colors/safe';
 import { invalidOption, listArticleHelpText } from './constants';
@@ -31,7 +31,7 @@ function parseArgs(argv: string[] | undefined) {
 }
 
 const articleFormatters: { [key: string]: (article: Article) => string } = {
-  tsv: (article: Article) => article.slug + '\t' + article.title,
+  tsv: (article: Article) => article.slug + (!!article.title ? '\t' + article.title : ''),
   json: (article: Article) => JSON.stringify(article),
 };
 
@@ -71,6 +71,7 @@ export const exec: cliCommand = (argv) => {
       } catch {}
       return article;
     })
-    .map(formatter)
-    .forEach(console.log);
+    .forEach(article => {
+      console.log(formatter(article));
+    });
 };
