@@ -4,8 +4,8 @@ Command:
   zenn preview        コンテンツをブラウザでプレビュー
   zenn new:article    新しい記事を追加
   zenn new:book       新しい本を追加
-  zenn list:article   記事の一覧を表示
-  zenn list:book      本の一覧を表示
+  zenn list:articles  記事の一覧を表示
+  zenn list:books     本の一覧を表示
   zenn --version, -v  zenn-cliのバージョンを表示
   zenn --help, -h     ヘルプ
 
@@ -83,10 +83,10 @@ Example:
 
 export const listArticleHelpText = `
 Command:
-  zenn list:article  記事の一覧を表示
+  zenn list:articles  記事の一覧を表示
 
 Usage:
-  npx zenn list:article [options]
+  npx zenn list:articles [options]
 
 Options:
   --format    FORMAT   表示方法. "tsv" または "json" をサポート.
@@ -94,7 +94,7 @@ Options:
   --help, -h       このヘルプを表示
 
 Example:
-  npx zenn list:article --format tsv
+  npx zenn list:articles --format tsv
 
   👇  詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
@@ -102,10 +102,10 @@ Example:
 
 export const listBookHelpText = `
 Command:
-  zenn list:book  本の一覧を表示
+  zenn list:books  本の一覧を表示
 
 Usage:
-  npx zenn list:book [options]
+  npx zenn list:books [options]
 
 Options:
   --format    FORMAT   表示方法. "tsv" または "json" をサポート.
@@ -113,7 +113,7 @@ Options:
   --help, -h       このヘルプを表示
 
 Example:
-  npx zenn list:book --format tsv
+  npx zenn list:books --format tsv
 
   👇  詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide
