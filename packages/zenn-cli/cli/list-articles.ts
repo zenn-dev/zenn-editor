@@ -5,7 +5,7 @@ import arg from 'arg';
 import { Article } from '../types';
 import { cliCommand } from '.';
 import colors from 'colors/safe';
-import { invalidOption, listArticleHelpText } from './constants';
+import { invalidOption, listArticlesHelpText } from './constants';
 
 function parseArgs(argv: string[] | undefined) {
   try {
@@ -25,7 +25,7 @@ function parseArgs(argv: string[] | undefined) {
     } else {
       console.log(colors.red('エラーが発生しました'));
     }
-    console.log(listArticleHelpText);
+    console.log(listArticlesHelpText);
     return null;
   }
 }
@@ -40,7 +40,7 @@ export const exec: cliCommand = (argv) => {
   if (!args) return;
 
   if (args['--help']) {
-    console.log(listArticleHelpText);
+    console.log(listArticlesHelpText);
     return;
   }
 

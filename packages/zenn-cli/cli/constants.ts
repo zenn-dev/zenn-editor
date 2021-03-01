@@ -81,7 +81,7 @@ Example:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
-export const listArticleHelpText = `
+export const listArticlesHelpText = `
 Command:
   zenn list:articles  記事の一覧を表示
 
@@ -100,7 +100,7 @@ Example:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
-export const listBookHelpText = `
+export const listBooksHelpText = `
 Command:
   zenn list:books  本の一覧を表示
 
