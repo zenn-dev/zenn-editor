@@ -1,9 +1,9 @@
-https://twitter.com/jack/status/20
-https://twitter.com/jack/status/20
-https://twitter.com/jack/status/20
-
-
-https://twitter.com/jack/status/20
-
-
-https://twitter.com/jack/status/20
+---
+title: "example empty"
+type: "idea" # or "idea"
+topics: 
+  - React
+  - Rust
+emoji: 👩‍💻
+published: false
+---
