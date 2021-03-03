@@ -49,9 +49,12 @@ export class EmbedTweet extends HTMLElement {
     }
 
     const container = this.querySelector(`.${containerClassName}`);
+    const disableConversation = this.url.includes('?conversation=none');
+
     (window as any).twttr.widgets
       .createTweet(this.tweetId, container, {
         align: 'center',
+        ...(disableConversation ? { conversation: 'none' } : {}),
       })
       .then(() => {
         /**
