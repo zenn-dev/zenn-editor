@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
-import matter from 'gray-matter';
+//@ts-ignore
+import yaml from 'js-yaml';
 import arg from 'arg';
 import { Book } from '../types';
 import { cliCommand } from '.';
@@ -58,18 +59,31 @@ export const exec: cliCommand = (argv) => {
     encoding: 'utf-8',
     withFileTypes: true,
   })
-    .filter((dirent) => dirent.isFile() && /\.md$/.test(dirent.name))
+    .filter((dirent) => dirent.isDirectory())
     .map(({ name }) => {
-      const slug = name.replace(/\.md$/, '');
       let book: Book = {
-        slug,
+        slug: name,
       };
+      const fullDirPath = path.join(dir, name)
+      let fileRaw: string | undefined;
       try {
-        const fileRaw = fs.readFileSync(path.join(dir, name), 'utf8');
-        const { data } = matter(fileRaw);
-        book = { ...book, ...data };
-      } catch {}
-      return book;
+        // try to get config.yaml
+        fileRaw = fs.readFileSync(`${fullDirPath}/config.yaml`, 'utf8');
+      } catch (_) {
+        // try to get config.yml
+        try {
+          fileRaw = fs.readFileSync(`${fullDirPath}/config.yml`, 'utf8');
+        } catch (_) {}
+      }
+      // couldn't get yaml files
+      if (!fileRaw) {
+        return book;
+      }
+      try {
+        return { ...book, ...yaml.safeLoad(fileRaw) };
+      } catch (_) {
+        return book;
+      }
     })
     .forEach(book => {
       console.log(formatter(book));
