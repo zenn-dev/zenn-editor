@@ -4,6 +4,7 @@ import Head from 'next/head';
 
 import 'zenn-content-css';
 import '@styles/index.scss';
+import initTwitterScriptInner from 'zenn-embed-elements/lib/init-twitter-script-inner';
 
 declare global {
   interface Window {
@@ -46,6 +47,11 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: initTwitterScriptInner,
+          }}
         />
       </Head>
       <Component {...pageProps} />

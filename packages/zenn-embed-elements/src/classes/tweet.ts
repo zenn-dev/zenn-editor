@@ -1,5 +1,3 @@
-import { loadScript } from '../utils/load-script';
-
 /**
  * iframeの高さを取ってキャッシュすることで、ホットリロードでのガタツキを防ぐ
  */
@@ -50,16 +48,9 @@ export class EmbedTweet extends HTMLElement {
       return;
     }
 
-    if (!(window as any).twttr?.ready) {
-      await loadScript({
-        src: 'https://platform.twitter.com/widgets.js',
-        id: 'twitter-widgets',
-      });
-    }
-
     const container = this.querySelector(`.${containerClassName}`);
-    (window as any).twttr?.widgets
-      ?.createTweet(this.tweetId, container, {
+    (window as any).twttr.widgets
+      .createTweet(this.tweetId, container, {
         align: 'center',
       })
       .then(() => {
