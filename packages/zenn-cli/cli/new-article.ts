@@ -9,6 +9,8 @@ import {
 } from '../utils/shared/slug-helper';
 import colors from 'colors/safe';
 import { invalidOption, newArticleHelpText } from './constants';
+import { spawn } from 'child_process';
+import { parseArgsStringToArgv } from 'string-argv';
 
 const pickRandomEmoji = () => {
   // prettier-ignore
@@ -27,6 +29,7 @@ function parseArgs(argv: string[] | undefined) {
         '--emoji': String,
         '--published': String,
         '--machine-readable': Boolean,
+        '--edit': Boolean,
         '--help': Boolean,
         // Alias
         '-h': '--help',
@@ -59,6 +62,7 @@ export const exec: cliCommand = (argv) => {
   const type = args['--type'] === 'idea' ? 'idea' : 'tech';
   const published = args['--published'] === 'true' ? 'true' : 'false'; // デフォルトはfalse
   const machineReadable = args['--machine-readable'] === true;
+  const edit = args['--edit'] === true;
 
   if (!validateSlug(slug)) {
     const errorMessage = getSlugErrorMessage(slug);
@@ -90,6 +94,12 @@ export const exec: cliCommand = (argv) => {
       console.log(fileName);
     } else {
       console.log(`📄 ${colors.green(fileName)} created.`);
+    }
+    if (edit) {
+      const editor = process.env['EDITOR'] || 'vi'
+      const [cmd, ...args] = parseArgsStringToArgv(editor).concat([fileName]);
+      const subp = spawn(cmd!, args, {detached: true, stdio: 'ignore'});
+      subp.unref();
     }
   } catch (e) {
     console.log(colors.red('エラーが発生しました') + e);
