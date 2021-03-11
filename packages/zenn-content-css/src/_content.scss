@@ -21,7 +21,7 @@ ol {
   margin: 1.4rem 0;
   line-height: 1.7;
   & > li {
-    margin: 0.6rem 0;
+    margin: 0.5rem 0;
   }
   ul,
   ol {
@@ -33,22 +33,12 @@ ol {
 }
 
 ul {
-  padding-left: 0;
+  padding-left: 1.5em;
   & > li {
-    list-style: none;
-    list-style-position: inside;
-    position: relative;
-    padding-left: 1.6em;
-
-    &:before {
-      content: '';
-      position: absolute;
-      top: 0.7em;
-      left: 0.35em;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(24, 30, 50, 0.7);
+    list-style: disc;
+    &::marker {
+      font-size: 1.3em;
+      color: rgba(24, 30, 50, 0.7);
     }
   }
 }
