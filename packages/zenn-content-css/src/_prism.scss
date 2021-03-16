@@ -34,30 +34,36 @@ pre[class*='language-'] {
 .token.important {
   color: #ff8e8e;
 }
-.token.deleted-sign {
+
+.token.deleted {
+  color: #ff8e8e;
+}
+.token.inserted {
+  color: #b4ff9b;
+}
+.token.deleted:not(.prefix) {
   background: rgba(218, 54, 50, 0.2);
+  color: inherit;
   display: block;
-  .prefix {
-    color: #ff8e8e;
-  }
 }
 
-.token.inserted-sign {
+.token.inserted:not(.prefix) {
   background: rgba(0, 146, 27, 0.2);
+  color: inherit;
   display: block;
-  .prefix {
-    color: #b4ff9b;
-  }
 }
 
-// .token.deleted,
-// .token.deleted .token {
-//   color: #ff8e8e;
-// }
-// .token.inserted,
-// .token.inserted .token {
-//   color: #b4ff9b;
-// }
+// ==== 🚩 Temporary Workaround ====
+// Prismjs v1.23.0 時点では jsx/tsx と diff をあわせて使うと余計な改行が出来てしまう問題が発生する
+// ref: https://github.com/zenn-dev/zenn-editor/issues/130
+// これを防ぐためにネストされたunchangedトークンを非表示にする
+.token.prefix.unchanged {
+  display: none;
+}
+.token.unchanged > .token.prefix.unchanged {
+  display: inline;
+}
+// ==== 🚩 Temporary Workaround END ====
 
 .token.coord {
   color: #aad4ff;
