@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-//@ts-ignore
 import yaml from 'js-yaml';
 import arg from 'arg';
 import { Book } from '../types';
@@ -32,7 +31,7 @@ function parseArgs(argv: string[] | undefined) {
 }
 
 const bookFormatters: { [key: string]: (book: Book) => string } = {
-  tsv: (book: Book) => book.slug + (!!book.title ? '\t' + book.title : ''),
+  tsv: (book: Book) => book.slug + (book.title ? '\t' + book.title : ''),
   json: (book: Book) => JSON.stringify(book),
 };
 
@@ -61,10 +60,10 @@ export const exec: cliCommand = (argv) => {
   })
     .filter((dirent) => dirent.isDirectory())
     .map(({ name }) => {
-      let book: Book = {
+      const book: Book = {
         slug: name,
       };
-      const fullDirPath = path.join(dir, name)
+      const fullDirPath = path.join(dir, name);
       let fileRaw: string | undefined;
       try {
         // try to get config.yaml
@@ -85,7 +84,7 @@ export const exec: cliCommand = (argv) => {
         return book;
       }
     })
-    .forEach(book => {
+    .forEach((book) => {
       console.log(formatter(book));
     });
 };
