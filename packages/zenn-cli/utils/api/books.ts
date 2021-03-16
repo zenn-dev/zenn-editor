@@ -13,7 +13,7 @@ export function getBookDirNames(): string[] {
     allDirs = fs.readdirSync(booksDirectory);
   } catch (e) {
     throwWithConsoleError(
-      'プロジェクトルートにbooksディレクトリを作成してください'
+      'プロジェクトルートにbooksディレクトリがありません。`npx zenn init`を実行してください'
     );
   }
   // return dirs only

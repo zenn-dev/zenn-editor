@@ -54,7 +54,7 @@ export const exec: cliCommand = (argv) => {
   const books = getAllBooks(['title']);
   const output = books?.length
     ? books.map((book) => formatter(book)).join('\n')
-    : 'まだ本は作成されていません';
+    : 'No books yet';
 
   console.log(output);
 };

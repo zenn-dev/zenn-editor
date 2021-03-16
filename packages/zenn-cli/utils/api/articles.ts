@@ -16,7 +16,7 @@ function getArticleMdNames(): string[] {
     allFiles = fs.readdirSync(articlesDirectory);
   } catch (e) {
     throwWithConsoleError(
-      'プロジェクトルートにarticlesディレクトリを作成してください'
+      'プロジェクトルートにarticlesディレクトリがありません。`npx zenn init`を実行してください'
     );
   }
   const mdRegex = /\.md$/;

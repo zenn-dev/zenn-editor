@@ -56,7 +56,7 @@ export const exec: cliCommand = (argv) => {
 
   const output = articles?.length
     ? articles.map((article) => formatter(article)).join('\n')
-    : 'まだ記事は作成されていません';
+    : 'No articles yet';
 
   console.log(output);
 };
