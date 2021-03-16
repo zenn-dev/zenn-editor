@@ -1,13 +1,31 @@
 ---
-title: "Code Fence"
-type: "tech" # or "idea"
-topics: 
+title: 'Code Fence'
+type: 'tech' # or "idea"
+topics:
   - React
   - Rust
 emoji: 👩‍💻
 published: false
 ---
 
+```diff jsx:src/App.js
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div className="App">
+-      👆 should not be empty here
++      <h1>Counter App 🧮</h1>
++      <button>
++        +
++      </button>
++      <h3>{count} times clicked!🖱</h3>
+    </div>
+  );
+}
+
+export default App;
+```
 
 ```vue:index.vue
 <template>
@@ -68,7 +86,7 @@ bind -M $mode \cq foo
      console.log(`foo: ${foo}`);
 ```
 
-``` js:fooBar.js
+```js:fooBar.js
 var foo = function (bar) {
   return bar++;
 };
@@ -78,18 +96,17 @@ console.log(foo(5));
 console.log(aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa);
 ```
 
-``` js:example
+```js:example
 var foo = function (bar) {
   return bar++;
 };
 ```
 
-``` html:<should escape>
+```html:<should escape>
 var foo = function (bar) {
   return bar++;
 };
 ```
-
 
 ```html
 <div>a</div>
@@ -102,11 +119,12 @@ var foo = function (bar) {
 ```
 
 ```html diff : html差分
-     <div>a</div>
--    <div>b</div>
-+    <div>c</div>
+<div>a</div>
+-
+<div>b</div>
++
+<div>c</div>
 ```
-
 
 ```"><img/onerror="alert(location)"src=.>
 aaa
