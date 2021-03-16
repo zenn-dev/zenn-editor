@@ -6,6 +6,7 @@ import { Book } from '../types';
 import { cliCommand } from '.';
 import colors from 'colors/safe';
 import { invalidOption, listBooksHelpText } from './constants';
+import { getAllBooks } from '../utils/api/books';
 
 function parseArgs(argv: string[] | undefined) {
   try {
@@ -53,38 +54,13 @@ export const exec: cliCommand = (argv) => {
   }
   const formatter = bookFormatters[format];
 
-  const dir = path.join(process.cwd(), 'books');
-  fs.readdirSync(dir, {
-    encoding: 'utf-8',
-    withFileTypes: true,
-  })
-    .filter((dirent) => dirent.isDirectory())
-    .map(({ name }) => {
-      const book: Book = {
-        slug: name,
-      };
-      const fullDirPath = path.join(dir, name);
-      let fileRaw: string | undefined;
-      try {
-        // try to get config.yaml
-        fileRaw = fs.readFileSync(`${fullDirPath}/config.yaml`, 'utf8');
-      } catch (_) {
-        // try to get config.yml
-        try {
-          fileRaw = fs.readFileSync(`${fullDirPath}/config.yml`, 'utf8');
-        } catch (_) {}
-      }
-      // couldn't get yaml files
-      if (!fileRaw) {
-        return book;
-      }
-      try {
-        return { ...book, ...yaml.load(fileRaw) };
-      } catch (_) {
-        return book;
-      }
-    })
-    .forEach((book) => {
+  const books = getAllBooks();
+
+  if (books?.length) {
+    books.forEach((book) => {
       console.log(formatter(book));
     });
+  } else {
+    console.log('まだ本は作成されていません');
+  }
 };

@@ -1,8 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 import matter from 'gray-matter';
-import { Article } from '@types';
-import { throwWithConsoleError } from '@utils/errors';
+import { Article } from '../../types';
+import { throwWithConsoleError } from '../errors';
 
 const articlesDirectory = path.join(process.cwd(), 'articles');
 

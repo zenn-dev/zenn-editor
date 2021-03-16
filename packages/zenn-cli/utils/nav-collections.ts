@@ -1,8 +1,9 @@
 import escapeHtml from 'escape-html';
 
-import { getAllArticles } from '@utils/shared/api/articles';
-import { getAllBooks, getBookBySlug } from '@utils/shared/api/books';
-import { getChapters } from '@utils/shared/api/chapters';
+import { getAllArticles } from './api/articles';
+import { getAllBooks, getBookBySlug } from './api/books';
+import { getChapters } from './api/chapters';
+import { throwWithConsoleError } from './errors';
 import {
   Article,
   Book,
@@ -10,8 +11,7 @@ import {
   NavCollection,
   NavCollections,
   NavItem,
-} from '@types';
-import { throwWithConsoleError } from '@utils/errors';
+} from '../types';
 
 const draftLabel = `<span class="draft">下書き</span>`;
 

@@ -6,7 +6,7 @@ import {
   generateSlug,
   validateSlug,
   getSlugErrorMessage,
-} from '../utils/shared/slug-helper';
+} from '../utils/slug-helper';
 import colors from 'colors/safe';
 import { invalidOption, newArticleHelpText } from './constants';
 

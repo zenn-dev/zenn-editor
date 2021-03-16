@@ -10,8 +10,8 @@ import { ChapterList } from '@components/ChapterList';
 import { BookBodyPlaceholder } from '@components/BookBodyPlaceholder';
 
 import { getAllContentsNavCollections } from '@utils/nav-collections';
-import { getBookBySlug } from '@utils/shared/api/books';
-import { getChapters } from '@utils/shared/api/chapters';
+import { getBookBySlug } from '@utils/api/books';
+import { getChapters } from '@utils/api/chapters';
 
 import { Book, Chapter, NavCollections } from '@types';
 
