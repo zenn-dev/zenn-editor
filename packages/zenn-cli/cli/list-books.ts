@@ -1,6 +1,3 @@
-import path from 'path';
-import fs from 'fs';
-import yaml from 'js-yaml';
 import arg from 'arg';
 import { Book } from '../types';
 import { cliCommand } from '.';
@@ -54,13 +51,10 @@ export const exec: cliCommand = (argv) => {
   }
   const formatter = bookFormatters[format];
 
-  const books = getAllBooks();
+  const books = getAllBooks(['title']);
+  const output = books?.length
+    ? books.map((book) => formatter(book)).join('\n')
+    : 'まだ本は作成されていません';
 
-  if (books?.length) {
-    books.forEach((book) => {
-      console.log(formatter(book));
-    });
-  } else {
-    console.log('まだ本は作成されていません');
-  }
+  console.log(output);
 };

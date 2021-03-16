@@ -20,13 +20,13 @@ function getArticleMdNames(): string[] {
     );
   }
   const mdRegex = /\.md$/;
-  return allFiles?.filter((f) => f.match(mdRegex));
+  return allFiles ? allFiles.filter((f) => f.match(mdRegex)) : [];
 }
 
 export function getArticleBySlug(
   slug: string,
   fields?: null | (keyof Article)[]
-): Article {
+): null | Article {
   const fullPath = path.join(
     articlesDirectory,
     `${slug.replace(/[/\\]/g, '')}.md` // Prevent directory traversal
@@ -42,7 +42,7 @@ export function getArticleBySlug(
 
   // return only specified fields
   if (fields) {
-    const item: Article = {
+    const item: any = {
       slug,
     };
     fields.forEach((field) => {
@@ -53,19 +53,21 @@ export function getArticleBySlug(
         item[field as string] = data[field];
       }
     });
-    return item;
+    return item as Article;
   } else {
     // or return all
     return {
       slug,
       content,
       ...data,
-    };
+    } as Article;
   }
 }
 
-export function getAllArticles(fields: (keyof Article)[] = []) {
+export function getAllArticles(fields: (keyof Article)[] = []): Article[] {
   const slugs = getAllArticleSlugs();
-  const articles = slugs.map((slug) => getArticleBySlug(slug, fields));
+  const articles = slugs
+    .map((slug) => getArticleBySlug(slug, fields))
+    .filter((data): data is Article => data !== null);
   return articles;
 }

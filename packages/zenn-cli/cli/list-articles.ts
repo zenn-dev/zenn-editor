@@ -1,11 +1,9 @@
-import path from 'path';
-import fs from 'fs';
-import matter from 'gray-matter';
 import arg from 'arg';
 import { Article } from '../types';
 import { cliCommand } from '.';
 import colors from 'colors/safe';
 import { invalidOption, listArticlesHelpText } from './constants';
+import { getAllArticles } from '../utils/api/articles';
 
 function parseArgs(argv: string[] | undefined) {
   try {
@@ -54,25 +52,11 @@ export const exec: cliCommand = (argv) => {
   }
   const formatter = articleFormatters[format];
 
-  const dir = path.join(process.cwd(), 'articles');
-  fs.readdirSync(dir, {
-    encoding: 'utf-8',
-    withFileTypes: true,
-  })
-    .filter((dirent) => dirent.isFile() && /\.md$/.test(dirent.name))
-    .map(({ name }) => {
-      const slug = name.replace(/\.md$/, '');
-      let article: Article = {
-        slug,
-      };
-      try {
-        const fileRaw = fs.readFileSync(path.join(dir, name), 'utf8');
-        const { data } = matter(fileRaw);
-        article = { ...article, ...data };
-      } catch {}
-      return article;
-    })
-    .forEach((article) => {
-      console.log(formatter(article));
-    });
+  const articles = getAllArticles(['title']);
+
+  const output = articles?.length
+    ? articles.map((article) => formatter(article)).join('\n')
+    : 'まだ記事は作成されていません';
+
+  console.log(output);
 };
