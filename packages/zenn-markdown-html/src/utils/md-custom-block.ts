@@ -1,6 +1,11 @@
 import MarkdownIt from 'markdown-it';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
-import { generateTweetHtml, generateCardHtml, isValidHttpUrl } from './helper';
+import {
+  generateTweetHtml,
+  generateCardHtml,
+  isValidHttpUrl,
+  generateYoutubeHtml,
+} from './helper';
 import {
   isGistUrl,
   isTweetUrl,
@@ -17,8 +22,7 @@ const blockOptions = {
     if (!videoId?.match(/^[a-zA-Z0-9_-]+$/)) {
       return 'YouTubeのvideoIDが不正です';
     }
-    const escapedVideoId = escapeHtml(videoId);
-    return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapedVideoId}?loop=1&playlist=${escapedVideoId}" allowfullscreen loading="lazy"></iframe></div>`;
+    return generateYoutubeHtml(videoId);
   },
   slideshare(key: string) {
     if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {

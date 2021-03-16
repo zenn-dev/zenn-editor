@@ -1,8 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 import matter from 'gray-matter';
-import { Chapter, ChapterMeta } from '@types';
-import { throwWithConsoleError } from '@utils/errors';
+import { Chapter, ChapterMeta } from '../../types';
+import { throwWithConsoleError } from '../errors';
 
 function getBookDirPath(bookSlug: string): string {
   return path.join(process.cwd(), 'books', bookSlug);

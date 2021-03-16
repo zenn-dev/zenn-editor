@@ -18,7 +18,7 @@ import {
   getSlugErrorMessage,
   validateChapterSlug,
   getChapterSlugErrorMessage,
-} from '@utils/shared/slug-helper';
+} from '@utils/slug-helper';
 
 const validateItemSlug: ItemValidator = {
   isCritical: true,
