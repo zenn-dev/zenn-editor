@@ -1,8 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
 import yaml from 'js-yaml';
-import { Book } from '@types';
-import { throwWithConsoleError } from '@utils/errors';
+import { Book } from '../../types';
+import { throwWithConsoleError } from '../errors';
 
 // books
 const booksDirectory = path.join(process.cwd(), 'books');
@@ -13,13 +13,15 @@ export function getBookDirNames(): string[] {
     allDirs = fs.readdirSync(booksDirectory);
   } catch (e) {
     throwWithConsoleError(
-      'プロジェクトルートにbooksディレクトリを作成してください'
+      'プロジェクトルートにbooksディレクトリがありません。`npx zenn init`を実行してください'
     );
   }
   // return dirs only
-  return allDirs?.filter((f) =>
-    fs.statSync(path.join(booksDirectory, f)).isDirectory()
-  );
+  return allDirs
+    ? allDirs.filter((f) =>
+        fs.statSync(path.join(booksDirectory, f)).isDirectory()
+      )
+    : [];
 }
 
 export function getAllBookSlugs(): string[] {
@@ -32,7 +34,7 @@ export function getAllBooks(fields: (keyof Book)[] = []): Book[] {
   return books;
 }
 
-function getConfigYamlData(fullDirPath: string): Book {
+function getConfigYamlData(fullDirPath: string) {
   let fileRaw;
   try {
     // try to get config.yaml
@@ -48,7 +50,11 @@ function getConfigYamlData(fullDirPath: string): Book {
     return null;
   }
   try {
-    return yaml.safeLoad(fileRaw);
+    const yamlData = yaml.load(fileRaw);
+    if (typeof yamlData === 'string' || typeof yamlData === 'number')
+      throw 'invalid yaml';
+
+    return yamlData;
   } catch (e) {
     // couldn't load yaml files
     throwWithConsoleError(
@@ -68,19 +74,19 @@ function getImageFileSize(fullPath: string): number {
 
 function getCoverDataUrl(fullDirPath: string): string | null {
   const fileNameOptions = ['cover.jpg', 'cover.jpeg', 'cover.png'];
-  let bufferImage;
-  let mediaType;
-  let fileSize;
+  let bufferImage: undefined | Buffer = undefined;
+  let fileSize: undefined | number = undefined;
+  let mediaType = 'image/jpeg';
   for (const fileName of fileNameOptions) {
     const fullPath = `${fullDirPath}/${fileName}`;
     try {
       bufferImage = fs.readFileSync(fullPath);
-      mediaType = fileName === 'cover.png' ? 'image/png' : 'image/jpeg';
       fileSize = getImageFileSize(fullPath);
+      if (fileName.endsWith('.png')) mediaType = 'image/png';
       break;
     } catch (e) {}
   }
-  if (!bufferImage) return null;
+  if (!bufferImage || !fileSize) return null;
 
   if (fileSize > 1000 * 1000) {
     throwWithConsoleError('カバー画像のサイズは1MB以下にしてください');
@@ -91,20 +97,18 @@ function getCoverDataUrl(fullDirPath: string): string | null {
 export function getBookBySlug(
   slug: string,
   fields?: null | (keyof Book)[]
-): Book {
+): null | Book {
   const fullDirPath = path.join(booksDirectory, slug.replace(/[/\\]/g, '')); // Prevent directory traversal
-  const data = getConfigYamlData(fullDirPath);
+  const data: any = getConfigYamlData(fullDirPath);
   if (!data) return null;
 
-  let result: Book = {
+  let result: any = {
     slug,
   };
   // include only specified fields
   if (fields) {
     fields.forEach((field) => {
-      if (data[field] !== undefined) {
-        result[field as string] = data[field];
-      }
+      result[field] = data[field];
       if (field === 'coverDataUrl') {
         result[field] = getCoverDataUrl(fullDirPath);
       }
@@ -115,5 +119,5 @@ export function getBookBySlug(
     result.coverDataUrl = getCoverDataUrl(fullDirPath);
   }
 
-  return result;
+  return result as Book;
 }
