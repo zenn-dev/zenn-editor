@@ -32,7 +32,7 @@ export function getAllBooks(fields: (keyof Book)[] = []): Book[] {
   return books;
 }
 
-function getConfigYamlData(fullDirPath: string): Book {
+function getConfigYamlData(fullDirPath: string) {
   let fileRaw;
   try {
     // try to get config.yaml
@@ -48,7 +48,7 @@ function getConfigYamlData(fullDirPath: string): Book {
     return null;
   }
   try {
-    return yaml.safeLoad(fileRaw);
+    return yaml.load(fileRaw);
   } catch (e) {
     // couldn't load yaml files
     throwWithConsoleError(

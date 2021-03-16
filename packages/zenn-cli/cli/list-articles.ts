@@ -31,7 +31,8 @@ function parseArgs(argv: string[] | undefined) {
 }
 
 const articleFormatters: { [key: string]: (article: Article) => string } = {
-  tsv: (article: Article) => article.slug + (!!article.title ? '\t' + article.title : ''),
+  tsv: (article: Article) =>
+    article.slug + (article.title ? '\t' + article.title : ''),
   json: (article: Article) => JSON.stringify(article),
 };
 
@@ -71,7 +72,7 @@ export const exec: cliCommand = (argv) => {
       } catch {}
       return article;
     })
-    .forEach(article => {
+    .forEach((article) => {
       console.log(formatter(article));
     });
 };

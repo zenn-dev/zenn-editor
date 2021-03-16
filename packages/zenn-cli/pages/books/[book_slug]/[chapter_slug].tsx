@@ -8,7 +8,7 @@ import { ContentBody } from '@components/ContentBody';
 import { ChapterHeader } from '@components/ChapterHeader';
 import { MainContainer } from '@components/MainContainer';
 import { getBookNavCollections } from '@utils/nav-collections';
-import { getChapter } from '@utils/api/chapters';
+import { getChapter } from '@utils/shared/api/chapters';
 
 import { Chapter, NavCollections } from '@types';
 

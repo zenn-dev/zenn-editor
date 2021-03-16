@@ -10,7 +10,7 @@ import { ContentBody } from '@components/ContentBody';
 import { ArticleHeader } from '@components/ArticleHeader';
 import { MainContainer } from '@components/MainContainer';
 import { getAllContentsNavCollections } from '@utils/nav-collections';
-import { getArticleBySlug } from '@utils/api/articles';
+import { getArticleBySlug } from '@utils/shared/api/articles';
 import { Article, NavCollections } from '@types';
 
 type Props = {

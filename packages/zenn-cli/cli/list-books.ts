@@ -79,7 +79,7 @@ export const exec: cliCommand = (argv) => {
         return book;
       }
       try {
-        return { ...book, ...yaml.safeLoad(fileRaw) };
+        return { ...book, ...yaml.load(fileRaw) };
       } catch (_) {
         return book;
       }
