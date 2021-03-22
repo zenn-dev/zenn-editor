@@ -20,7 +20,7 @@ export const validateChapterSlug = (slug: string): boolean => {
   // n.slug.mdも許容
   return !!(
     slug.match(/^[0-9a-z\-_]{1,50}$/) ||
-    slug.match(/^[0-9]{1,2}.[0-9a-z\-_]{1,50}$/)
+    slug.match(/^[0-9]+.[0-9a-z\-_]{1,50}$/)
   );
 };
 
