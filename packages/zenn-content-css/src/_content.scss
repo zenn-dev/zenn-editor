@@ -19,7 +19,6 @@ p + p {
 ul,
 ol {
   margin: 1.4rem 0;
-  padding-left: 1.5em;
   line-height: 1.7;
   & > li {
     margin: 0.4rem 0;
@@ -34,6 +33,7 @@ ol {
 }
 
 ul {
+  padding-left: 1.8em;
   & > li {
     list-style: disc;
     &::marker {
@@ -43,12 +43,14 @@ ul {
   }
 }
 ol {
+  padding-left: 1.7em;
   & > li {
-    padding-left: 0.1em;
     list-style: decimal;
+    padding-left: 0.2em;
     &::marker {
       color: rgb(83, 88, 114);
       font-weight: 600;
+      letter-spacing: -0.05em;
     }
   }
 }
