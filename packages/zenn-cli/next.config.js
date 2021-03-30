@@ -1,15 +1,16 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  webpack(config, { isServer }) {
-    if (!isServer) {
-      config.node = {
-        fs: "empty",
-      };
-    }
-    return config;
+  future: {
+    webpack5: true,
+  },
+  // resolve error "Module not found: Can't resolve 'fs'"
+  resolve: {
+    fallback: {
+      fs: false,
+    },
   },
   sassOptions: {
-    includePaths: [path.join(__dirname, "styles")],
+    includePaths: [path.join(__dirname, 'styles')],
   },
 };
