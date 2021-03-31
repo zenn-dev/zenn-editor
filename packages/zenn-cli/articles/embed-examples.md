@@ -1,22 +1,21 @@
 ---
-title: "Embedのテスト"
-type: "tech" # or "idea"
+title: 'Embedのテスト'
+type: 'tech' # or "idea"
 topics: [12]
 emoji: 🐲
 published: false
 ---
 
-
 ## Gists
 
 https://gist.github.com/hofmannsven/9164408
 https://gist.github.com/lmars/8be1952a8d03f8a31b17
-https://gist.github.com/mattpodwysocki/218388
+
+@[gist](https://gist.github.com/mattpodwysocki/218388)
 
 ### specific file
 
 https://gist.github.com/hofmannsven/9164408?file=my.cnf
-
 
 @[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)
 @[stackblitz](https://stackblitz.com/edit/angular-examples)
@@ -27,7 +26,6 @@ https://gist.github.com/hofmannsven/9164408?file=my.cnf
 @[codepen](https://codepen.io/noeldelgado/pen/BaogqYy?default-tab=result)
 @[tweet](https://twitter.com/jack/status/20)
 @[tweet](https://twitter.com/steelydylan/status/1253567029010825216)
-
 
 👇must raise error
 @[codesandbox](https://codesandbox.io/embed/a"a)

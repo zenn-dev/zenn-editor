@@ -1,7 +1,5 @@
 import Head from 'next/head';
 import { NextPage, GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 import markdownToHtml from 'zenn-markdown-html';
 import { ContentBody } from '@components/ContentBody';

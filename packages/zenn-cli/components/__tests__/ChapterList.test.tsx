@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRenderer } from 'react-test-renderer/shallow';
-import { Book, Chapter } from '@types';
+import { Chapter } from '@types';
 import { ChapterList } from '@components/ChapterList';
 
 const renderer = createRenderer();

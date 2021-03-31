@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import escapeHtml from 'escape-html';

@@ -46,7 +46,7 @@ describe('Handle custom markdown format properly', () => {
   test('should generate card html', () => {
     const html = markdownToHtml(`@[card](https://example.com/__test__)`);
     expect(html).toEqual(
-      `<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=https%3A%2F%2Fexample.com%2F__test__" frameborder="0" scrolling="no" loading="lazy"></iframe></div>\n`
+      `<div class="embed-zenn-link"><iframe src="https://card.zenn.dev/?url=https%3A%2F%2Fexample.com%2F__test__" frameborder="0" scrolling="no" loading="lazy"></iframe></div>\n`
     );
   });
 
