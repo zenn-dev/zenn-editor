@@ -5,7 +5,7 @@ export function generateTweetHtml(url: string) {
 }
 
 export function generateCardHtml(url: string) {
-  return `<div class="embed-zenn-link"><iframe src="https://asia-northeast1-zenn-dev-production.cloudfunctions.net/iframeLinkCard?url=${encodeURIComponent(
+  return `<div class="embed-zenn-link"><iframe src="https://card.zenn.dev/?url=${encodeURIComponent(
     url
   )}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
 }
