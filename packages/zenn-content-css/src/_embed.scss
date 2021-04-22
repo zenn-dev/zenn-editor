@@ -41,7 +41,8 @@
 }
 
 // prevent katex overflow
-eqn {
+eqn,
+.zenn-katex {
   display: block;
   overflow-x: auto;
 }
