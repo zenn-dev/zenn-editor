@@ -90,6 +90,7 @@ Usage:
 
 Options:
   --format    FORMAT   表示方法. "tsv" または "json" をサポート.
+  --fields    FIELD    --format="json"において表示するフィールド名. "slug", "content", "title", "emoji", "type", "topics", "tags", "published" のいずれかをサポート. 複数指定可.
 
   --help, -h       このヘルプを表示
 
