@@ -4,7 +4,7 @@ import {
   generateTweetHtml,
   generateCardHtml,
   isValidHttpUrl,
-  generateYoutubeHtml,
+  generateYoutubeHtmlFromVideoId,
 } from './helper';
 import {
   isGistUrl,
@@ -22,7 +22,7 @@ const blockOptions = {
     if (!videoId?.match(/^[a-zA-Z0-9_-]+$/)) {
       return 'YouTubeのvideoIDが不正です';
     }
-    return generateYoutubeHtml(videoId);
+    return generateYoutubeHtmlFromVideoId(videoId);
   },
   slideshare(key: string) {
     if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {

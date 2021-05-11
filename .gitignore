@@ -4,3 +4,4 @@ node_modules_bak
 yarn-error.log
 lerna-debug.log
 .node-version
+.idea

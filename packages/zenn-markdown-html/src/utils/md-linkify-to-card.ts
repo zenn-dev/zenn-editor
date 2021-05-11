@@ -1,9 +1,9 @@
 import MarkdownIt from 'markdown-it';
-import { extractYoutubeVideoId, isTweetUrl, isYoutubeUrl } from './url-matcher';
+import { isTweetUrl, isYoutubeUrl } from './url-matcher';
 import {
   generateCardHtml,
   generateTweetHtml,
-  generateYoutubeHtml,
+  generateYoutubeHtmlFromUrl,
 } from './helper';
 import Token from 'markdown-it/lib/token';
 
@@ -52,8 +52,7 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
     if (isTweetUrl(url)) {
       embedToken.content = generateTweetHtml(url);
     } else if (isYoutubeUrl(url)) {
-      const videoId = extractYoutubeVideoId(url);
-      embedToken.content = generateYoutubeHtml(videoId);
+      embedToken.content = generateYoutubeHtmlFromUrl(url);
     } else {
       embedToken.content = generateCardHtml(url);
     }
