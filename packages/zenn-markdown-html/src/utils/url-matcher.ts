@@ -28,16 +28,24 @@ export function isJsfiddleUrl(url: string): boolean {
   return /^(http|https):\/\/jsfiddle\.net\/[a-zA-Z0-9_,/-]+$/.test(url);
 }
 
-export function extractYoutubeVideoId(url: string): string {
-  const regexp = /^(http(s?):\/\/)?(www\.)?youtu(be)?\.([a-z])+\/(watch(.*?)([?&])v=)?(.*?)(&(.)*)?$/;
-  const match = url.match(regexp);
+const youtubeRegexp = /^(http(s?):\/\/)?(www\.)?youtu(be)?\.([a-z])+\/(watch(.*?)([?&])v=)?(.*?)(&(.)*)?$/;
+
+export function extractYoutubeVideoParameters(
+  youtubeUrl: string
+): { videoId: string; start?: string } | undefined {
+  const match = youtubeUrl.match(youtubeRegexp);
   if (match && match[9].length == 11) {
-    return match[9];
+    const urlParams = new URLSearchParams(youtubeUrl);
+    const start = urlParams.get('t');
+    return {
+      videoId: match[9],
+      start: start?.replace('s', ''), // https://www.youtube.com/watch?v=ABCSDGG&t=19101s => 19101
+    };
   } else {
-    return '';
+    return undefined;
   }
 }
 
 export function isYoutubeUrl(url: string): boolean {
-  return !!extractYoutubeVideoId(url);
+  return youtubeRegexp.test(url);
 }

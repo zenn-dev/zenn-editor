@@ -65,15 +65,40 @@ describe('Handle custom markdown format properly', () => {
   test.each`
     url                                                                                                  | videoId
     ${'http://www.youtube.com/watch?v=lK-zaWCp-co&feature=g-all-u&context=G27a8a4aFAAAAAAAAAAA'}         | ${'lK-zaWCp-co'}
+    ${'https://www.youtube.com/watch?v=fnr9XWvjJHw'}                                                     | ${'fnr9XWvjJHw'}
+    ${'https://www.youtube.com/watch?v=fnr9XWvjJHw&start=19101s'}                                        | ${'fnr9XWvjJHw'}
+    ${'https://www.youtube.com/watch?v=fnr9XWvjJHw&t=19101second'}                                       | ${'fnr9XWvjJHw'}
     ${'http://youtu.be/AXaoi6dz59A'}                                                                     | ${'AXaoi6dz59A'}
+    ${'http://youtu.be/AXaoi6dz59A&t=abc'}                                                               | ${'AXaoi6dz59A'}
     ${'https://youtube.com/watch?gl=NL&hl=nl&feature=g-vrec&context=G2584313RVAAAAAAAABA&v=35LqQPKylEA'} | ${'35LqQPKylEA'}
-  `('$url should generate youtube html', ({ url, videoId }) => {
-    const html = markdownToHtml(url);
-    const escapeUrl = escapeHtml(url);
-    expect(html.trim()).toStrictEqual(
-      `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" rel="nofollow">${escapeUrl}</a></p>`.trim()
-    );
-  });
+  `(
+    '$url should generate youtube html without start time',
+    ({ url, videoId }) => {
+      const html = markdownToHtml(url);
+      const escapeUrl = escapeHtml(url);
+      expect(html.trim()).toStrictEqual(
+        `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" rel="nofollow">${escapeUrl}</a></p>`.trim()
+      );
+    }
+  );
+
+  test.each`
+    url                                                                                                           | videoId          | start
+    ${'http://www.youtube.com/watch?v=lK-zaWCp-co&feature=g-all-u&context=G27a8a4aFAAAAAAAAAAA&t=120'}            | ${'lK-zaWCp-co'} | ${'120'}
+    ${'https://www.youtube.com/watch?v=fnr9XWvjJHw&t=19101s'}                                                     | ${'fnr9XWvjJHw'} | ${'19101'}
+    ${'http://youtu.be/AXaoi6dz59A&t=79854'}                                                                      | ${'AXaoi6dz59A'} | ${'79854'}
+    ${'http://youtu.be/AXaoi6dz59A&t=172801'}                                                                     | ${'AXaoi6dz59A'} | ${'172800'}
+    ${'https://youtube.com/watch?gl=NL&hl=nl&feature=g-vrec&context=G2584313RVAAAAAAAABA&v=35LqQPKylEA&t=79854s'} | ${'35LqQPKylEA'} | ${'79854'}
+  `(
+    '$url should generate youtube html with start time',
+    ({ url, videoId, start }) => {
+      const html = markdownToHtml(url);
+      const escapeUrl = escapeHtml(url);
+      expect(html.trim()).toStrictEqual(
+        `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}&start=${start}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" rel="nofollow">${escapeUrl}</a></p>`.trim()
+      );
+    }
+  );
 
   /**
    * YouTube のIDは抽出できる対象だが、その前に AutoLink 対象ではないために変換処理が走らない
