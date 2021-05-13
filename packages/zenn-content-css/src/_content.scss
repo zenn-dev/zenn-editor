@@ -261,7 +261,8 @@ img + br {
 }
 // ![](path_to_image)
 // *caption*
-img ~ em {
+img ~ em,
+a ~ em {
   display: block;
   margin: -1rem auto 0;
   line-height: 1.3;
