@@ -24,7 +24,7 @@ export const ChapterHeader: React.FC<Props> = ({ chapter }) => {
           <span className="content-header__row-title">slug</span>
           <span className="content-header__row-result">
             {/* slug of 1.test.md is "test" */}
-            {chapter.slug.replace(/[0-9]{1,2}./, '')}
+            {chapter.slug.replace(/[0-9]{1,2}\./, '')}
           </span>
         </div>
 
