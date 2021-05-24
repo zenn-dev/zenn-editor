@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zenn-dev/zenn-editor.git"
+    "url": "https://github.com/zenn-dev/zenn-editor.git",
+    "directory": "packages/zenn-markdown-html"
   },
   "files": [
     "lib"

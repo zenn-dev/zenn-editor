@@ -3,6 +3,11 @@
   "license": "MIT",
   "version": "0.1.80",
   "description": "Preview Zenn content locally.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenn-dev/zenn-editor.git",
+    "directory": "packages/zenn-cli"
+  },
   "bin": {
     "zenn": "bin/zenn.js"
   },
