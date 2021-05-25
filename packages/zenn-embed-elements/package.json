@@ -2,6 +2,11 @@
   "name": "zenn-embed-elements",
   "version": "0.1.77",
   "description": "Web components for embedded contents.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenn-dev/zenn-editor.git",
+    "directory": "packages/zenn-embed-elements"
+  },
   "main": "lib/index.js",
   "files": [
     "lib"

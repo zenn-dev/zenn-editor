@@ -3,6 +3,11 @@
   "version": "0.1.80",
   "license": "MIT",
   "description": "Zenn flavor content style.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenn-dev/zenn-editor.git",
+    "directory": "packages/zenn-content-css"
+  },
   "main": "lib/index.css",
   "files": [
     "lib/index.css"
