@@ -46,6 +46,10 @@ pre[class*='language-'] {
   color: inherit;
   display: block;
 }
+// ref: https://github.com/zenn-dev/zenn-editor/issues/148
+.token.prefix {
+  user-select: none;
+}
 
 .token.inserted:not(.prefix) {
   background: rgba(0, 146, 27, 0.2);
