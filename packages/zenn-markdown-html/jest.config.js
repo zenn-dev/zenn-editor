@@ -2,7 +2,7 @@ module.exports = {
   globals: {
     'ts-jest': {
       // avoid "jsx" treated as "preserved"
-      tsConfig: 'tsconfig.json',
+      tsconfig: 'tsconfig.json',
     },
   },
   moduleFileExtensions: ['js', 'json', 'ts'],

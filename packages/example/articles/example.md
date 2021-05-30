@@ -136,3 +136,12 @@ $\sum_{i=1}^n$
 fafa
 
 a
+
+```mermaid
+%%{init: { 'logLevel': 'debug', 'theme': 'forest' } }%%
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
