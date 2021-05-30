@@ -138,7 +138,7 @@ fafa
 a
 
 ```mermaid
-%%{init: { 'logLevel': 'debug', 'theme': 'forest' } }%%
+%%{init: { 'theme': 'forest' } }%%
 graph TD;
     A-->B;
     A-->C;
