@@ -35,19 +35,17 @@ useEffect(() => {
 
 Note that `zenn-embed-elements` is not working with SSR.
 
-## Authors
+## Contributors
 
 - CatNose ([@catnose99](https://twitter.com/catnose99))
 - Hori Godai ([@steelydylan](https://github.com/steelydylan))
-
-## Contributors
-
 - noriaki watanabe ([@nnabeyang](https://github.com/nnabeyang))
 - ooooooo_q ([@ooooooo-q](https://github.com/ooooooo-q))
 - RyotaK ([@Ry0taK](https://github.com/Ry0taK))
 - j5c8k6m8 ([@j5c8k6m8](https://github.com/j5c8k6m8))
 - kkiyama117 ([@kkiyama117](https://github.com/kkiyama117))
 - kazuhe ([@kazuhe](https://github.com/kazuhe))
+- Yusuke Wada ([@cm-wada-yusuke](https://github.com/cm-wada-yusuke))
 
 ---
 
