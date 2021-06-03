@@ -33,6 +33,7 @@ const Page: NextPage<Props> = (props) => {
     () => chapters.filter((chapter) => chapter.position === null),
     [chapters]
   );
+  const isConfigPositionMode = !!book.chapters;
 
   return (
     <>
@@ -54,7 +55,15 @@ const Page: NextPage<Props> = (props) => {
                   {!!positionUnspecifiedChapters?.length && (
                     <>
                       <h4>
-                        以下のチャプターはconfig.yamlに指定されていないため公開されません
+                        {isConfigPositionMode ? (
+                          <h4>
+                            以下のチャプターはconfig.yamlに指定されていないため公開されません
+                          </h4>
+                        ) : (
+                          <h4>
+                            以下のチャプターはファイル名が正しくないため公開されません
+                          </h4>
+                        )}
                       </h4>
                       <ChapterList
                         chapters={positionUnspecifiedChapters}

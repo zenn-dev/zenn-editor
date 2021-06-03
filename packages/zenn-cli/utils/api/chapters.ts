@@ -46,10 +46,12 @@ export function getChapterMetas(
   if (configYamlChapterSlugList?.length) {
     return chapterFilenames
       .map((chapterFilename) => {
+        // fileのbasenameをslugとして扱う
         const basename = chapterFilename.replace(/\.md$/, '');
         const slugIndex = configYamlChapterSlugList.indexOf(basename);
+        const position = slugIndex < 0 ? null : slugIndex + 1;
         return {
-          position: slugIndex < 0 ? null : slugIndex + 1,
+          position,
           ...getChapterMeta(bookSlug, basename, chapterFilename),
         };
       })
@@ -58,13 +60,10 @@ export function getChapterMetas(
 
   // config.yamlにchaptersが設定されていない場合
   return chapterFilenames
-    .filter((filename) => filename.match(/^[0-9]+\..*\.md$/))
     .map((chapterFilename) => {
-      const slug = chapterFilename
-        .replace(/^[0-9]+\./, '')
-        .replace(/\.md$/, '');
+      const [position, slug] = detectPositionAndSlug(chapterFilename);
       return {
-        position: Number(chapterFilename.match(/^[0-9]+/)),
+        position,
         ...getChapterMeta(bookSlug, slug, chapterFilename),
       };
     })
@@ -98,8 +97,7 @@ export function getChapter(
     // config.yamlのchaptersに指定されている場合は末尾の `.md` を取り除いたものをslugとする
     slug = chapterFilename.replace(/\.md$/, '');
   } else {
-    // そうでない場合は、 `n.slug.md` から `n.` と `.md` を取り除いたものをslugとする
-    slug = chapterFilename.replace(/^[0-9]+\./, '').replace(/\.md$/, '');
+    slug = detectPositionAndSlug(chapterFilename)[1];
   }
   if (!chapterData) return null;
 
@@ -124,4 +122,16 @@ function getChapterMeta(
     slug: chapterSlug,
     ...chapterData.data,
   } as ChapterMeta;
+}
+
+// filenameからpositionとslugを取得する
+// `n.slug.md`の形式でないとき、positionはnull、slugはfilenameから`未指定`とする。
+function detectPositionAndSlug(filename): [number | null, string] {
+  // `n.slug.md`の形式かどうか。この時点でslugがvalidかどうかは考慮しない。
+  const hasChapterNumber = !!filename.match(/^[0-9]+\..+\.md$/);
+  const position = hasChapterNumber ? Number(filename.match(/^[0-9]+/)) : null;
+  const slug = hasChapterNumber
+    ? filename.replace(/^[0-9]+\./, '').replace(/\.md$/, '')
+    : '未指定';
+  return [position, slug];
 }
