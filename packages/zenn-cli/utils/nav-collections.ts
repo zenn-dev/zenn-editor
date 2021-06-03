@@ -81,7 +81,7 @@ export const getBookNavCollections = (slug: string): NavCollections => {
       name: `📄 ${chapter.position || '非公開'}）${escapeHtml(
         chapter.title || chapter.filename
       )}`,
-      href: `/books/[book_slug]/[chapter_slug]`,
+      href: `/books/[book_slug]/[chapter_filename]`,
       as: `/books/${slug}/${chapter.filename}`,
     };
   });

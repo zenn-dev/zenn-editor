@@ -17,7 +17,7 @@ export const ChapterList: React.FC<Props> = ({
           return (
             <li key={`ch${chapter.slug}`} className="chapter-list-item">
               <Link
-                href="/books/[book_slug]/[chapter_slug]"
+                href="/books/[book_slug]/[chapter_filename]"
                 as={`/books/${bookSlug}/${chapter.filename}`}
                 passHref
               >

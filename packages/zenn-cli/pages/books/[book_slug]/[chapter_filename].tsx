@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   params,
 }) => {
   const bookSlug = params.book_slug as string;
-  const chapterFilename = params.chapter_slug as string;
+  const chapterFilename = params.chapter_filename as string;
 
   const bookNavCollections = getBookNavCollections(bookSlug);
 
