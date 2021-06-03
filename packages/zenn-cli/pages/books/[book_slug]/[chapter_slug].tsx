@@ -19,7 +19,7 @@ const Page: NextPage<Props> = ({ chapter, bookNavCollections }) => {
   return (
     <>
       <Head>
-        <title>{chapter.title || `${chapter.slug}.md`}のプレビュー</title>
+        <title>{chapter.title || chapter.filename}のプレビュー</title>
       </Head>
       <MainContainer navCollections={bookNavCollections}>
         <article>
@@ -36,11 +36,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   params,
 }) => {
   const bookSlug = params.book_slug as string;
-  const chapterSlug = params.chapter_slug as string;
+  const chapterFilename = params.chapter_slug as string;
 
   const bookNavCollections = getBookNavCollections(bookSlug);
 
-  const chapter = getChapter(bookSlug, chapterSlug);
+  const chapter = getChapter(bookSlug, chapterFilename);
 
   if (!chapter) {
     if (res) {
@@ -52,14 +52,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
   }
 
-  const content = markdownToHtml(chapter.content);
+  chapter.content = markdownToHtml(chapter.content);
 
   return {
     props: {
-      chapter: {
-        ...chapter,
-        content,
-      },
+      chapter,
       bookNavCollections,
     },
   };

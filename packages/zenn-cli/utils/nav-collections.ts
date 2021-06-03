@@ -2,7 +2,7 @@ import escapeHtml from 'escape-html';
 
 import { getAllArticles } from './api/articles';
 import { getAllBooks, getBookBySlug } from './api/books';
-import { getChapters } from './api/chapters';
+import { getChapterMetas } from './api/chapters';
 import { throwWithConsoleError } from './errors';
 import {
   Article,
@@ -72,18 +72,17 @@ export const getAllContentsNavCollections = (): NavCollections => [
 ];
 
 export const getBookNavCollections = (slug: string): NavCollections => {
-  // slug = Book slug
   const book = getBookBySlug(slug, ['chapters']);
   if (!book) throwWithConsoleError(`books/${slug}の情報を取得できませんでした`);
 
-  const chapters = getChapters(slug, book.chapters);
+  const chapters = getChapterMetas(slug, book.chapters);
   const items: NavItem[] = chapters?.map((chapter: Chapter) => {
     return {
       name: `📄 ${chapter.position || '非公開'}）${escapeHtml(
-        chapter.title || `${chapter.slug}.md`
+        chapter.title || chapter.filename
       )}`,
       href: `/books/[book_slug]/[chapter_slug]`,
-      as: `/books/${slug}/${chapter.slug}`,
+      as: `/books/${slug}/${chapter.filename}`,
     };
   });
 
