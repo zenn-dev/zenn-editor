@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import matter from 'gray-matter';
 import { Chapter, ChapterMeta } from '../../types';
+import { getBookBySlug } from './books';
 import { throwWithConsoleError } from '../errors';
 
 function getBookDirPath(bookSlug: string): string {
@@ -49,19 +50,22 @@ export function getChapterMetas(
         const slugIndex = configYamlChapterSlugList.indexOf(basename);
         return {
           position: slugIndex < 0 ? null : slugIndex + 1,
-          ...getChapterMeta(bookSlug, chapterFilename),
+          ...getChapterMeta(bookSlug, basename, chapterFilename),
         };
       })
       .sort((a, b) => Number(a.position) - Number(b.position));
   }
 
-  // n.slug.md
+  // config.yamlにchaptersが設定されていない場合
   return chapterFilenames
     .filter((filename) => filename.match(/^[0-9]+\..*\.md$/))
     .map((chapterFilename) => {
+      const slug = chapterFilename
+        .replace(/^[0-9]+\./, '')
+        .replace(/\.md$/, '');
       return {
         position: Number(chapterFilename.match(/^[0-9]+/)),
-        ...getChapterMeta(bookSlug, chapterFilename),
+        ...getChapterMeta(bookSlug, slug, chapterFilename),
       };
     })
     .sort((a, b) => Number(a.position) - Number(b.position));
@@ -87,19 +91,29 @@ export function getChapter(
   bookSlug: string,
   chapterFilename: string
 ): null | Chapter {
+  const book = getBookBySlug(bookSlug);
   const chapterData = readChapterFile(bookSlug, chapterFilename);
+  let slug = '';
+  if (book.chapters) {
+    // config.yamlのchaptersに指定されている場合は末尾の `.md` を取り除いたものをslugとする
+    slug = chapterFilename.replace(/\.md$/, '');
+  } else {
+    // そうでない場合は、 `n.slug.md` から `n.` と `.md` を取り除いたものをslugとする
+    slug = chapterFilename.replace(/^[0-9]+\./, '').replace(/\.md$/, '');
+  }
   if (!chapterData) return null;
 
   return {
     filename: chapterFilename,
-    slug: chapterFilename.replace(/^[0-9]+\./, '').replace(/\.md$/, ''),
+    slug,
     content: chapterData.content,
     ...chapterData.data,
   } as Chapter;
 }
 
-export function getChapterMeta(
+function getChapterMeta(
   bookSlug: string,
+  chapterSlug: string,
   chapterFilename: string
 ): null | ChapterMeta {
   const chapterData = readChapterFile(bookSlug, chapterFilename);
@@ -107,7 +121,7 @@ export function getChapterMeta(
 
   return {
     filename: chapterFilename,
-    slug: chapterFilename.replace(/^[0-9]+\./, '').replace(/\.md$/, ''),
+    slug: chapterSlug,
     ...chapterData.data,
   } as ChapterMeta;
 }
