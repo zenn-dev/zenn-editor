@@ -49,7 +49,7 @@ if (args['--version']) {
 }
 
 if (!commands[command]) {
-  console.log(colors.red('😿該当するCLIコマンドが存在しません'));
+  console.log(colors.red('😿 該当するCLIコマンドが存在しません'));
   console.log(commandListText);
   process.exit(1);
 }

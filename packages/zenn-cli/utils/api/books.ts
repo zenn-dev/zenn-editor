@@ -58,7 +58,7 @@ function getConfigYamlData(fullDirPath: string) {
   } catch (e) {
     // couldn't load yaml files
     throwWithConsoleError(
-      `config.yamlの表記に誤りがあります😿\n ${fullDirPath}/config.yaml`
+      `😿 config.yamlの表記に誤りがあります\n ${fullDirPath}/config.yaml`
     );
   }
 }
