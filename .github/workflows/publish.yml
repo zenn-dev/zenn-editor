@@ -43,17 +43,24 @@ jobs:
         run: lerna version patch --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: get-npm-version
-        id: package-version # DO NOT CHANGE THIS NAME (referred from the following steps.)
-        uses: martinbeentjes/npm-get-version-action@master
+      - name: Get released version
+        run: node -p -e '`RELEASED_PACKAGE_VERSION=${require("./lerna.json").version}`' >> $GITHUB_ENV
+      # TODO: delete from here to ---
       - name: Echo new package version
-        run: echo v${{ steps.package-version.outputs.current-version }}
+        run: echo v${{ env.RELEASED_PACKAGE_VERSION }}
+      - name: Echo github.ref
+        run: echo ${{ github.ref }}
+      - name: Echo github.base_ref
+        run: echo ${{ github.base_ref }}
+      - name: Echo github.head_ref
+        run: echo ${{ github.head_ref }}
+      # ---
       - name: Create draft
         uses: release-drafter/release-drafter@v5
         with:
-          version: ${{ steps.package-version.outputs.current-version }}
-          name: ${{ steps.package-version.outputs.current-version }}
-          tag: ${{ steps.package-version.outputs.current-version }}
+          version: ${{ env.RELEASED_PACKAGE_VERSION }}
+          name: ${{ env.RELEASED_PACKAGE_VERSION }}
+          tag: ${{ env.RELEASED_PACKAGE_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish canary
