@@ -32,29 +32,19 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Bump version to canary
-        if: ${{ github.base_ref == 'refs/heads/canary' }}
+        if: ${{ github.base_ref == 'canary' }}
         run: lerna version prerelease --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # zenn-editor packages does not follow semantic versioning.
       # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to latest
-        if: ${{ github.base_ref == 'refs/heads/main' }}
+        if: ${{ github.base_ref == 'main' }}
         run: lerna version patch --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get released version
         run: node -p -e '`RELEASED_PACKAGE_VERSION=${require("./lerna.json").version}`' >> $GITHUB_ENV
-      # TODO: delete from here to ---
-      - name: Echo new package version
-        run: echo v${{ env.RELEASED_PACKAGE_VERSION }}
-      - name: Echo github.ref
-        run: echo ${{ github.ref }}
-      - name: Echo github.base_ref
-        run: echo ${{ github.base_ref }}
-      - name: Echo github.head_ref
-        run: echo ${{ github.head_ref }}
-      # ---
       - name: Create draft
         uses: release-drafter/release-drafter@v5
         with:
@@ -64,13 +54,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish canary
-        if: ${{ github.base_ref == 'refs/heads/canary' }}
+        if: ${{ github.base_ref == 'canary' }}
         run: 'lerna publish from-package --yes --pre-dist-tag canary'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish latest
-        if: ${{ github.base_ref == 'refs/heads/main' }}
+        if: ${{ github.base_ref == 'main' }}
         run: 'lerna publish from-package --yes'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
