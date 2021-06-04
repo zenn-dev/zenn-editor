@@ -12,19 +12,15 @@ export const validateSlug = (slug: string): boolean => {
 export const getSlugErrorMessage = (slug: string) =>
   `slugの値（${escapeHtml(
     slug
-  )}）が不正です。小文字の半角英数字（a-z0-9）とハイフン（-）の12〜50字の組み合わせにしてください`;
+  )}）が不正です。小文字の半角英数字（a-z0-9）、ハイフン（-）、アンダースコア（_）の12〜50字の組み合わせにしてください`;
 
 export const validateChapterSlug = (slug: string): boolean => {
   if (!slug) return false;
 
-  // n.slug.mdも許容
-  return !!(
-    slug.match(/^[0-9a-z\-_]{1,50}$/) ||
-    slug.match(/^[0-9]+.[0-9a-z\-_]{1,50}$/)
-  );
+  return !!slug.match(/^[0-9a-z\-_]{1,50}$/);
 };
 
 export const getChapterSlugErrorMessage = (slug: string) =>
   `チャプターのslugの値（${escapeHtml(
     slug
-  )}）が不正です。小文字の半角英数字（a-z0-9）とハイフン（-）の1〜50字の組み合わせにしてください`;
+  )}）が不正です。小文字の半角英数字（a-z0-9）、ハイフン（-）、アンダースコア（_）の1〜50字の組み合わせにしてください`;

@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { Chapter } from '@types';
+import { ChapterMeta } from '@types';
 
-type Props = { bookSlug: string; chapters: Chapter[]; unordered?: boolean };
+type Props = { bookSlug: string; chapters: ChapterMeta[]; unordered?: boolean };
 
 export const ChapterList: React.FC<Props> = ({
   chapters,
@@ -17,8 +17,8 @@ export const ChapterList: React.FC<Props> = ({
           return (
             <li key={`ch${chapter.slug}`} className="chapter-list-item">
               <Link
-                href="/books/[book_slug]/[chapter_slug]"
-                as={`/books/${bookSlug}/${chapter.slug}`}
+                href="/books/[book_slug]/[chapter_filename]"
+                as={`/books/${bookSlug}/${chapter.filename}`}
                 passHref
               >
                 <a className="chapter-list-link">
@@ -26,7 +26,7 @@ export const ChapterList: React.FC<Props> = ({
                     {chapter.title || `タイトルなし`}
                   </span>
                   <span className="chapter-list-filename">
-                    （{chapter.slug}.md）
+                    （{chapter.filename}）
                   </span>
                 </a>
               </Link>

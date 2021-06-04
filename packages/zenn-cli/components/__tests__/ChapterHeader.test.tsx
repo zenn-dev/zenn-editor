@@ -9,6 +9,7 @@ const dummyChapter: Chapter = {
   free: false,
   position: undefined,
   slug: 'test-chapter-dummy',
+  filename: 'test-chapter-dummy.md',
   title: 'dummy chapter',
 };
 

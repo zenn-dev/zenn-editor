@@ -21,6 +21,7 @@ export type Book = {
 };
 
 export type ChapterMeta = {
+  filename: string;
   slug: string;
   title: string;
   free: boolean;
