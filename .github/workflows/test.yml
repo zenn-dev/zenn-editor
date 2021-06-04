@@ -8,18 +8,25 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  test:
+  setup:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Install modules
         run: yarn
       - name: Build
         run: yarn build
+  test-markdown-html:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Run tests for zenn-markdown-html
         run: yarn test
         working-directory: packages/zenn-markdown-html
+  test-cli:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Run tests for zenn-cli
         run: yarn test --updateSnapshot
         working-directory: packages/zenn-cli
