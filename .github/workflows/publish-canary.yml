@@ -17,8 +17,12 @@ jobs:
         with:
           node-version: '14'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install
+      - name: Install packages
         run: yarn --frozen-lockfile
+      - name: Configure git credentials
+        uses: OleksiyRudenko/gha-git-credentials@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Set new version
         run: lerna version prerelease --yes
         env:
