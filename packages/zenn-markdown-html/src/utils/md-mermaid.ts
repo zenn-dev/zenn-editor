@@ -10,7 +10,7 @@ export function mdMermaid(md: MarkdownIt) {
     const langInfo = tokens[idx];
     if (langInfo.info === 'mermaid') {
       const code = langInfo.content.trim();
-      return `<embed-mermaid><div class="mermaid">${code}</div></embed-mermaid>`;
+      return `<embed-mermaid><pre class="zenn-mermaid">${code}</pre></embed-mermaid>`;
     }
     return defaultRender(tokens, idx, options, env, slf);
   };

@@ -7,25 +7,78 @@ topics:
 emoji: 👩‍💻
 published: false
 ---
+```mermaid
+graph LR
+A:::someclass  B
+classDef someclass fill:#f96;
+
+```
+```mermaid
+graph LR
+id1[(Database)]:::someclass-->B
+classDef someclass fill:#f96;
+
+```
 
 
-https://twitter.com/jack/status/20
-https://twitter.com/jack/status/20
-https://twitter.com/jack/status/20
+```mermaid
+%%{init: { 'theme': 'forest' } }%%
+graph LR;
+    A-->B & C-->D & E-->F & Z-->X;
+    F-->G
+    G-->H
+    H-->I
+    I-->J
+    J-->K
+    K-->L
+    L-->M
+    M-->N
+    N-->O
+    O-->P
+```
 
-https://twitter.com/jack/status/20
-https://twitter.com/jack/status/20
+```mermaid
+%%{init: { 'theme': 'forest' } }%%
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
-https://twitter.com/jack/status/20
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
-![](https://octodex.github.com/images/stormtroopocat.jpg =200x)
-*captions*
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
-dfasdfa
-dfa
-fd
-a
-fafdafdafda
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+
 ```bash
 console.log({
   a: "a",
@@ -108,7 +161,7 @@ aaa
 
 $a$	
 
-$a\ne0$
+$a\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0$
 
 $\varphi$
 
@@ -136,12 +189,3 @@ $\sum_{i=1}^n$
 fafa
 
 a
-
-```mermaid
-%%{init: { 'theme': 'forest' } }%%
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
