@@ -1,0 +1,13 @@
+title: 設定ファイルでチャプターの並び順を指定する本
+summary: ここに好きな文章を書きます。本の内容などです
+published: true
+topics:
+  - react
+  - テスト
+price: 200
+chapters:
+  - about
+  - test
+  - conclusion
+  - '1234'
+  - 1.one

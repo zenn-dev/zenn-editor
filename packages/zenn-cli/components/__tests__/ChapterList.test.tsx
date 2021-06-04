@@ -1,14 +1,14 @@
 import React from 'react';
 import { createRenderer } from 'react-test-renderer/shallow';
-import { Chapter } from '@types';
+import { ChapterMeta } from '@types';
 import { ChapterList } from '@components/ChapterList';
 
 const renderer = createRenderer();
-const dummyChapter: Chapter = {
-  content: 'test chapter',
+const dummyChapter: ChapterMeta = {
   free: false,
   position: undefined,
   slug: 'test-chapter-dummy',
+  filename: 'test-chapter-dummy.md',
   title: 'dummy chapter',
 };
 const dummyBookSlug = 'dummy_book_slug_name';

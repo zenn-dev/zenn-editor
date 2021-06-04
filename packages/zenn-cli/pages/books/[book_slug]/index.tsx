@@ -7,18 +7,17 @@ import { BookHeader } from '@components/BookHeader';
 import { MainContainer } from '@components/MainContainer';
 import { ContentBody } from '@components/ContentBody';
 import { ChapterList } from '@components/ChapterList';
-import { BookBodyPlaceholder } from '@components/BookBodyPlaceholder';
 
 import { getAllContentsNavCollections } from '@utils/nav-collections';
 import { getBookBySlug } from '@utils/api/books';
-import { getChapters } from '@utils/api/chapters';
+import { getChapterMetas } from '@utils/api/chapters';
 
-import { Book, Chapter, NavCollections } from '@types';
+import { Book, ChapterMeta, NavCollections } from '@types';
 
 type Props = {
   book: Book;
-  chapters: Chapter[];
-  chapterSlugListOnConfig: string[];
+  chapters: ChapterMeta[];
+  chapterFilenameListOnConfig: string[];
   allContentsNavCollection: NavCollections;
 };
 
@@ -49,19 +48,6 @@ const Page: NextPage<Props> = (props) => {
               {isAnyChapter ? (
                 <>
                   <h1>チャプターを編集する</h1>
-                  {!isConfigPositionMode && (
-                    <div className="msg">
-                      <code>config.yaml</code>に<code>chapters</code>
-                      が指定されていません。 <code>config.yaml</code>
-                      にチャプターの並び順を指定するか、各チャプターのファイル名を
-                      <code>チャプター番号.スラッグ.md</code>
-                      としてください（
-                      <a href="https://zenn.dev/zenn/articles/deprecated-book-deployment">
-                        詳細
-                      </a>
-                      ）
-                    </div>
-                  )}
                   <ChapterList
                     chapters={positionSpecifiedChapters}
                     bookSlug={book.slug}
@@ -69,7 +55,15 @@ const Page: NextPage<Props> = (props) => {
                   {!!positionUnspecifiedChapters?.length && (
                     <>
                       <h4>
-                        以下のチャプターはconfig.yamlに指定されていないため公開されません
+                        {isConfigPositionMode ? (
+                          <h4>
+                            以下のチャプターはconfig.yamlに指定されていないため公開されません
+                          </h4>
+                        ) : (
+                          <h4>
+                            以下のチャプターはファイル名が正しくないため公開されません
+                          </h4>
+                        )}
                       </h4>
                       <ChapterList
                         chapters={positionUnspecifiedChapters}
@@ -80,7 +74,21 @@ const Page: NextPage<Props> = (props) => {
                   )}
                 </>
               ) : (
-                <BookBodyPlaceholder />
+                <div>
+                  <div className="msg">
+                    チャプターが見つかりません。
+                    <code>config.yaml</code>で<code>chapters</code>
+                    を指定するか、 各チャプターのファイル名を
+                    <code>チャプター番号.スラッグ.md</code>としてください。
+                  </div>
+                  <a
+                    href="https://zenn.dev/zenn/articles/zenn-cli-guide#cliで本（book）を管理する"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    本の作成について詳しく知る→
+                  </a>
+                </div>
               )}
             </ContentBody>
           </div>
@@ -112,7 +120,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
   }
 
-  const chapters = getChapters(slug, book.chapters);
+  const chapterMetas = getChapterMetas(slug, book.chapters);
 
   const allContentsNavCollection = getAllContentsNavCollections();
 
@@ -120,9 +128,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     props: {
       book: {
         ...book,
-        slug,
+        slug, // FIXME: book.slugを使えばいい?
       },
-      chapters,
+      chapters: chapterMetas,
       allContentsNavCollection,
     },
   };
