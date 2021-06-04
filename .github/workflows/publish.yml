@@ -29,13 +29,11 @@ jobs:
       - name: Build
         run: yarn build
       # Enable lerna to commit on GitHub.
-      - name: Configure git user
-        run: |
-          git remote set-url origin https://${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          git config --global user.email ${{ secrets.CI_COMMIT_USER_EMAIL }}
-          git config --global user.name ${{ secrets.CI_COMMIT_USER_NAME }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Note that this does not work with protected branch.
+      - name: Configure git credentials
+        uses: OleksiyRudenko/gha-git-credentials@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       # zenn-editor packages does not follow semantic versioning.
       # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to canary
@@ -48,14 +46,15 @@ jobs:
         run: lerna version patch --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get released version
+      - name: Set released version to env
         run: node -p -e '`RELEASED_PACKAGE_VERSION=${require("./lerna.json").version}`' >> $GITHUB_ENV
-      - name: Create draft
+      - name: Create release
         uses: release-drafter/release-drafter@v5
         with:
           version: ${{ env.RELEASED_PACKAGE_VERSION }}
           name: ${{ env.RELEASED_PACKAGE_VERSION }}
           tag: ${{ env.RELEASED_PACKAGE_VERSION }}
+          publish: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish canary
