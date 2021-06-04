@@ -43,9 +43,11 @@ jobs:
         run: lerna version patch --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: get-npm-version # DO NOT CHANGE THIS NAME (referred from the following steps.)
-        id: package-version
+      - name: get-npm-version
+        id: package-version # DO NOT CHANGE THIS NAME (referred from the following steps.)
         uses: martinbeentjes/npm-get-version-action@master
+      - name: Echo new package version
+        run: echo v${{ steps.package-version.outputs.current-version }}
       - name: Create draft
         uses: release-drafter/release-drafter@v5
         with:
