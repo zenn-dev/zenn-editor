@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Setup node
         uses: actions/setup-node@v2
         with:
@@ -27,17 +29,17 @@ jobs:
       - name: Build
         run: yarn build
       # Enable lerna to commit on GitHub.
-      - name: Configure git credentials
-        uses: OleksiyRudenko/gha-git-credentials@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git user
+        run: |
+          git config --global user.email ${{ secrets.CI_COMMIT_USER_EMAIL }}
+          git config --global user.name ${{ secrets.CI_COMMIT_USER_NAME }}
+      # zenn-editor packages does not follow semantic versioning.
+      # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to canary
         if: ${{ github.base_ref == 'canary' }}
         run: lerna version prerelease --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # zenn-editor packages does not follow semantic versioning.
-      # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to latest
         if: ${{ github.base_ref == 'main' }}
         run: lerna version patch --yes
