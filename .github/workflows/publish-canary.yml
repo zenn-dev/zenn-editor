@@ -19,12 +19,23 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Install
         run: yarn --frozen-lockfile
-      # - name: Set new version
-      #   run: lerna version prerelease --yes
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set new version
+        run: lerna version prerelease --yes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set npm version variable for following steps
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+      - name: create draft
+        uses: release-drafter/release-drafter@v5
+        with:
+          version: ${{ steps.package-version.outputs.current-version }}
+          name: ${{ steps.package-version.outputs.current-version }}
+          tag: ${{ steps.package-version.outputs.current-version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: publish canary version
-        run: "lerna publish --canary --yes --pre-dist-tag canary --message 'release: canary %s'"
+        run: 'lerna publish from-package --yes --pre-dist-tag canary'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
