@@ -1,14 +1,18 @@
 name: Publish canary version
 
+# Do not hook `push` action.
+# (Pushing by `lerna version` would cause infinite loop)
 on:
-  push:
+  pull_request:
     branches:
       - main
       - canary
+    types: [closed]
 
 jobs:
   publish:
     name: Publish canary
+    if: github.event.pull_request.merged == true # Run only when PR is merged.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,10 +26,9 @@ jobs:
         run: yarn --frozen-lockfile
       - name: Build
         run: yarn build
-      - name: Configure git credentials
-        uses: OleksiyRudenko/gha-git-credentials@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      # Enable lerna to commit on GitHub.
+      - name: Setup git user
+        uses: fregante/setup-git-user@v1
       - name: Bump version to canary
         if: ${{ github.ref == 'refs/heads/canary' }}
         run: lerna version prerelease --yes
