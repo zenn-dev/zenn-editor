@@ -11,7 +11,7 @@ const Error: NextPage<Props> = ({ statusCode }) => {
       </Head>
       <div className="error">
         <div className="error-container">
-          <h1 className="error-title">😿エラーが発生しました</h1>
+          <h1 className="error-title">😿 エラーが発生しました</h1>
           <p className="error-message">
             コンソールのエラーメッセージをご確認ください
           </p>
