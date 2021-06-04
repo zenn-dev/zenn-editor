@@ -3,6 +3,7 @@ name: Publish canary version
 on:
   push:
     branches:
+      - main
       - canary
 
 jobs:
@@ -17,20 +18,30 @@ jobs:
         with:
           node-version: '14'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install packages
+      - name: Install
         run: yarn --frozen-lockfile
+      - name: Build
+        run: yarn build
       - name: Configure git credentials
         uses: OleksiyRudenko/gha-git-credentials@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set new version
+      - name: Bump version to canary
+        if: ${{ github.ref == 'refs/heads/canary' }}
         run: lerna version prerelease --yes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # zenn-editor packages does not follow semantic versioning.
+      # This is because anyone should use latest version which is synced with zenn.dev
+      - name: Bump version to latest
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: lerna version patch --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set npm version variable for following steps
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
-      - name: create draft
+      - name: Create draft
         uses: release-drafter/release-drafter@v5
         with:
           version: ${{ steps.package-version.outputs.current-version }}
@@ -38,8 +49,15 @@ jobs:
           tag: ${{ steps.package-version.outputs.current-version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: publish canary version
+      - name: Publish canary
+        if: ${{ github.ref == 'refs/heads/canary' }}
         run: 'lerna publish from-package --yes --pre-dist-tag canary'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish latest
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: 'lerna publish from-package --yes'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
