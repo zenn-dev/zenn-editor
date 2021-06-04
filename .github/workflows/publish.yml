@@ -36,7 +36,7 @@ jobs:
       # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to canary
         if: ${{ github.base_ref == 'canary' }}
-        run: lerna version prerelease --yes
+        run: lerna version prepatch --preid next --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Bump version to latest
