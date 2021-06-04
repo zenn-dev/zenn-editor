@@ -43,7 +43,7 @@ jobs:
         run: lerna version patch --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set npm version variable for following steps
+      - name: get-npm-version # DO NOT CHANGE THIS NAME (referred from the following steps.)
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
       - name: Create draft
