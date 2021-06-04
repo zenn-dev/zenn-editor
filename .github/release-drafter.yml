@@ -1,0 +1,26 @@
+# release-drafter configuration
+# ref: https://github.com/release-drafter/release-drafter#configuration
+name-template: 'v$RESOLVED_VERSION 🌈'
+tag-template: 'v$RESOLVED_VERSION'
+exclude-labels:
+  - 'release'
+  - 'auto'
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'feature'
+  - title: '✨ Enhancements'
+    labels:
+      - 'enhancement'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'fix'
+      - 'bugfix'
+  - title: '🧰 Maintenance'
+    label: 'chore'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+template: |
+  ## Changes
+
+  $CHANGES
