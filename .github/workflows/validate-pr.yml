@@ -1,0 +1,37 @@
+name: Validate PR
+
+on:
+  pull_request:
+    branches:
+      - main
+      - canary
+    types:
+      - opened
+      - synchronize
+      - labeled
+      - unlabeled
+
+jobs:
+  validate-pr:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check label
+        if: |
+          !contains(github.event.pull_request.labels.*.name, 'fix') && 
+          !contains(github.event.pull_request.labels.*.name, 'bugfix') && 
+          !contains(github.event.pull_request.labels.*.name, 'enhancement') && 
+          !contains(github.event.pull_request.labels.*.name, 'chore') && 
+          !contains(github.event.pull_request.labels.*.name, 'feature') && 
+          !contains(github.event.pull_request.labels.*.name, 'release')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: ${{ github.event.pull_request.comments_url }}
+        run: |
+          echo "Please add one of the following labels: fix, bugfix, enhancement, feature, chore, release" >> comments
+          sed -i -z 's/\n/\\n/g' comments
+          curl -X POST \
+              -H "Authorization: token ${GITHUB_TOKEN}" \
+              -d "{\"body\": \"$(cat comments)\"}" \
+              ${URL}
+          exit 1

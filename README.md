@@ -47,8 +47,6 @@ Note that `zenn-embed-elements` is not working with SSR.
 - kazuhe ([@kazuhe](https://github.com/kazuhe))
 - Yusuke Wada ([@cm-wada-yusuke](https://github.com/cm-wada-yusuke))
 
----
-
 ## Licence
 
 MIT

@@ -1,0 +1,69 @@
+name: Publish canary version
+
+# Do not hook `push` action.
+# (Pushing by `lerna version` would cause infinite loop)
+on:
+  pull_request:
+    branches:
+      - main
+      - canary
+    types: [closed]
+
+jobs:
+  publish:
+    name: Publish canary
+    if: github.event.pull_request.merged == true # Run only when PR is merged.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Build
+        run: yarn build
+      # Enable lerna to commit on GitHub.
+      # Note that this does not work with protected branch.
+      - name: Configure git credentials
+        uses: OleksiyRudenko/gha-git-credentials@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # zenn-editor packages does not follow semantic versioning.
+      # This is because anyone should use latest version which is synced with zenn.dev
+      - name: Bump version to canary
+        if: ${{ github.base_ref == 'canary' }}
+        run: lerna version prerelease --yes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Bump version to latest
+        if: ${{ github.base_ref == 'main' }}
+        run: lerna version patch --yes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set released version to env
+        run: node -p -e '`RELEASED_PACKAGE_VERSION=${require("./lerna.json").version}`' >> $GITHUB_ENV
+      - name: Create release
+        uses: release-drafter/release-drafter@v5
+        with:
+          version: ${{ env.RELEASED_PACKAGE_VERSION }}
+          name: ${{ env.RELEASED_PACKAGE_VERSION }}
+          tag: ${{ env.RELEASED_PACKAGE_VERSION }}
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish canary
+        if: ${{ github.base_ref == 'canary' }}
+        run: 'lerna publish from-package --yes --pre-dist-tag canary'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish latest
+        if: ${{ github.base_ref == 'main' }}
+        run: 'lerna publish from-package --yes'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

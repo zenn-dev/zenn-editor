@@ -3,11 +3,12 @@ name: Test zenn-editor
 on:
   pull_request:
     branches:
-      - master
+      - main
+      - canary
     types: [opened, synchronize]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
