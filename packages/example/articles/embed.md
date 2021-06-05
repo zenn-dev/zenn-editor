@@ -102,7 +102,6 @@ sequenceDiagram
           +bool is_wild
           +run()
       }
-      callback Duck callback "Tooltip"
 ```
 
 
