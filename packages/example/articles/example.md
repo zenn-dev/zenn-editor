@@ -1,7 +1,7 @@
 ---
 title: "example"
 type: "idea" # or "idea"
-topics:
+topics: 
   - React
   - Rust
 emoji: 👩‍💻
@@ -106,33 +106,33 @@ aaa
 
 [test on markdown-it-textmath](https://goessner.github.io/markdown-it-texmath/index.html)
 
-$a$
+$a$	
 
 $a\ne0$
 
 $\varphi$
 
-$1+1=2$
+$1+1=2$	
 
-$1+1<3$
+$1+1<3$	
 
-$a \backslash$
+$a \backslash$	
 
-You get 3$ if you solve $1+2$
+You get 3$ if you solve $1+2$	
 
-If you solve $1+2$ you get $3
+If you solve $1+2$ you get $3	
 
-$\frac{1}{2}$
+$\frac{1}{2}$	
 
-$\begin{pmatrix}x\\y\end{pmatrix}$
+$\begin{pmatrix}x\\y\end{pmatrix}$	
 
-${\tilde\bold e}_\alpha$
+${\tilde\bold e}_\alpha$	
 
-$a^{b}$
+$a^{b}$	
 
-$a^*b$ with $a^*$
+$a^*b$ with $a^*$	
 
-$\sum_{i=1}^n$
+$\sum_{i=1}^n$	
 fafa
 
 a
