@@ -24,8 +24,17 @@ async function initMermaid(): Promise<void> {
       src: 'https://cdn.jsdelivr.net/npm/mermaid@8.10/dist/mermaid.min.js',
       id: 'mermaid-js',
     });
-    const theme = 'neutral';
+    const theme = 'default';
 
+    // mermaid 本体がロード時に走らないように設定
+    // mermaid 本体は使わないのでほかは設定しない
+    mermaid!.initialize({
+      mermaid: {
+        startOnLoad: false,
+      },
+    });
+
+    // mermaidAPI の設定
     mermaid!.mermaidAPI.initialize({
       startOnLoad: false, // レンダリングはこちらでやるので false
       securityLevel: 'strict', // tags in text are encoded, click functionality is disabled
@@ -41,8 +50,6 @@ async function initMermaid(): Promise<void> {
         useMaxWidth: true,
       },
     });
-
-    console.log(mermaid!.mermaidAPI.getConfig());
   }
 }
 
@@ -58,12 +65,17 @@ type PotentialRisk = {
 };
 
 function getPotentialPerformanceRisk(source: string): PotentialRisk {
+  const cool = (() => {
+    try {
+      mermaid!.mermaidAPI.parse(source);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  })();
   return {
     syntaxError: {
-      yes: mermaid!.mermaidAPI
-        .parse(source)
-        .then((_: any) => false)
-        .catch((_: any) => true),
+      yes: !cool,
       message: `<li>シンタックスエラーです</li>`,
     },
     charLimitOver: {
@@ -77,17 +89,23 @@ function getPotentialPerformanceRisk(source: string): PotentialRisk {
   };
 }
 
-function fixElementContent(content: string) {
-  // Mermaid doesn't like `<br />` tags, so collapse all like tags into `<br>`, which is parsed correctly.
-  return content.replace(/<br\s*\/>/g, '<br>');
-}
-
 export class EmbedMermaid extends HTMLElement {
-  private _container: HTMLDivElement;
+  // mermaid のソース記述が格納されているpreタグ
+  private readonly _sourceContainer: HTMLPreElement;
+
+  // 描画後の svg を格納するdivタグ ここで作る
+  private readonly _svgContainer: HTMLDivElement;
 
   constructor() {
     super();
-    this._container = this.childNodes[0] as HTMLDivElement;
+
+    // コード記述が格納されている pre タグを取得
+    this._sourceContainer = this.childNodes[0] as HTMLPreElement;
+
+    // 描画後のSVGを格納する div タグを作成
+    const container = document.createElement('div');
+    this.appendChild(container);
+    this._svgContainer = container;
   }
 
   async connectedCallback() {
@@ -96,14 +114,14 @@ export class EmbedMermaid extends HTMLElement {
 
   async render() {
     await initMermaid();
-    const source = fixElementContent(this._container.innerText || '');
+    const source = this._sourceContainer.innerText || '';
 
     // Mermaid モジュールの読み込みに失敗したり、レンダリング対象のコンテンツが空の場合は何もせずに終了
     if (!source) {
       return;
     }
 
-    // パフォーマンスリスクが検出された場合、注意書きをレンダリングして終了
+    // 文法エラーやパフォーマンスリスクが検出された場合、注意書きをレンダリングして終了
     const risk = getPotentialPerformanceRisk(source);
     if (
       Object.values(risk)
@@ -112,8 +130,9 @@ export class EmbedMermaid extends HTMLElement {
     ) {
       this.innerHTML = `
        <p>
-        <span>mermaidのレンダリングでパフォーマンス上のリスクが検出されました。</span>
+        <span>mermaidをレンダリングできません。</span>
         <ul>
+        ${risk.syntaxError.yes ? risk.syntaxError.message : ''}
         ${risk.charLimitOver.yes ? risk.charLimitOver.message : ''}
         ${risk.chainingOfLinksOver.yes ? risk.chainingOfLinksOver.message : ''}
         </ul>
@@ -123,14 +142,19 @@ export class EmbedMermaid extends HTMLElement {
     }
 
     // すべて通過した場合はレンダリングする
+    // セキュリティリスクを考慮して bindFunctions は実行しない方針にする
+    // 今回は `securityLevel='strict'` にしているのでどのみち実行されない
+    // securityLevel='loose'にし、かつ `Interaction` を有効にする場合は
+    // https://github.com/mermaidjs/mermaid-gitbook/blob/master/content/usage.md#binding-events
+    // ここを参考に追加する
     const insert = (svgCode: string, bindFunctions: any) => {
-      this.innerHTML = svgCode;
-      bindFunctions(this._container);
+      this._svgContainer.innerHTML = svgCode;
     };
     mermaid?.mermaidAPI.render(
-      `${containerId}-${Date.now().valueOf()}`,
+      `${containerId}-${Date.now().valueOf()}-render`,
       source,
-      insert
+      insert,
+      this._sourceContainer
     );
   }
 }

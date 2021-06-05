@@ -1,84 +1,31 @@
 ---
 title: "example"
 type: "idea" # or "idea"
-topics: 
+topics:
   - React
   - Rust
 emoji: 👩‍💻
 published: false
 ---
-```mermaid
-graph LR
-A:::someclass  B
-classDef someclass fill:#f96;
-
-```
-```mermaid
-graph LR
-id1[(Database)]:::someclass-->B
-classDef someclass fill:#f96;
-
-```
 
 
-```mermaid
-%%{init: { 'theme': 'forest' } }%%
-graph LR;
-    A-->B & C-->D & E-->F & Z-->X;
-    F-->G
-    G-->H
-    H-->I
-    I-->J
-    J-->K
-    K-->L
-    L-->M
-    M-->N
-    N-->O
-    O-->P
-```
+https://twitter.com/jack/status/20
+https://twitter.com/jack/status/20
+https://twitter.com/jack/status/20
 
-```mermaid
-%%{init: { 'theme': 'forest' } }%%
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
+https://twitter.com/jack/status/20
+https://twitter.com/jack/status/20
 
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
+https://twitter.com/jack/status/20
 
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
+![](https://octodex.github.com/images/stormtroopocat.jpg =200x)
+*captions*
 
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
-
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
-
-
+dfasdfa
+dfa
+fd
+a
+fafdafdafda
 ```bash
 console.log({
   a: "a",
@@ -159,33 +106,33 @@ aaa
 
 [test on markdown-it-textmath](https://goessner.github.io/markdown-it-texmath/index.html)
 
-$a$	
+$a$
 
-$a\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0\ne0$
+$a\ne0$
 
 $\varphi$
 
-$1+1=2$	
+$1+1=2$
 
-$1+1<3$	
+$1+1<3$
 
-$a \backslash$	
+$a \backslash$
 
-You get 3$ if you solve $1+2$	
+You get 3$ if you solve $1+2$
 
-If you solve $1+2$ you get $3	
+If you solve $1+2$ you get $3
 
-$\frac{1}{2}$	
+$\frac{1}{2}$
 
-$\begin{pmatrix}x\\y\end{pmatrix}$	
+$\begin{pmatrix}x\\y\end{pmatrix}$
 
-${\tilde\bold e}_\alpha$	
+${\tilde\bold e}_\alpha$
 
-$a^{b}$	
+$a^{b}$
 
-$a^*b$ with $a^*$	
+$a^*b$ with $a^*$
 
-$\sum_{i=1}^n$	
+$\sum_{i=1}^n$
 fafa
 
 a
