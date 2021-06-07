@@ -1,7 +1,7 @@
 {
   "name": "zenn-cli",
   "license": "MIT",
-  "version": "0.1.84-canary.0",
+  "version": "0.1.85-canary.0",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -49,9 +49,9 @@
     "socket.io": "^3.1.0",
     "socket.io-client": "^3.1.0",
     "update-notifier": "^5.1.0",
-    "zenn-content-css": "^0.1.84-canary.0",
-    "zenn-embed-elements": "^0.1.84-canary.0",
-    "zenn-markdown-html": "^0.1.84-canary.0"
+    "zenn-content-css": "^0.1.85-canary.0",
+    "zenn-embed-elements": "^0.1.85-canary.0",
+    "zenn-markdown-html": "^0.1.85-canary.0"
   },
   "devDependencies": {
     "@testing-library/react": "^11.2.1",
