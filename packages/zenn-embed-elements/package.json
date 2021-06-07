@@ -1,6 +1,6 @@
 {
   "name": "zenn-embed-elements",
-  "version": "0.1.82",
+  "version": "0.1.83-next.0",
   "description": "Web components for embedded contents.",
   "repository": {
     "type": "git",
