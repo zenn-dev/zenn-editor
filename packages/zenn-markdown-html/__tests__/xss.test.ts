@@ -44,4 +44,12 @@ describe('No XSS Vulnerability', () => {
       '<pre class="language-&quot;&gt;&lt;img/onerror=&quot;alert(location)&quot;src=.&gt;"><code class="language-&quot;&gt;&lt;img/onerror=&quot;alert(location)&quot;src=.&gt;">'
     );
   });
+  test('should escape img tag around mermaid syntax', () => {
+    const html = markdownToHtml(
+      `\`\`\`mermaid\ngraph TD\nA["<img src="invalid" onerror=alert('XSS')/>"] --> B\`\`\``
+    );
+    expect(html).toContain(
+      '<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">graph TD\nA[&quot;&lt;img src=&quot;invalid&quot; onerror=alert(\'XSS\')/&gt;&quot;] --&gt; B```</pre></embed-mermaid></div>'
+    );
+  });
 });
