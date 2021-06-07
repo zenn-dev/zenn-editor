@@ -3,7 +3,6 @@ name: Publish canary version
 on:
   push:
     branches:
-      - main
       - canary
     paths-ignore:
       - '**/package.json'
@@ -39,13 +38,7 @@ jobs:
       # zenn-editor packages does not follow semantic versioning.
       # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to canary
-        if: ${{ github.base_ref == 'canary' }}
         run: lerna version prepatch --preid canary --yes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Bump version to latest
-        if: ${{ github.base_ref == 'main' }}
-        run: lerna version patch --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set released version to env
@@ -60,21 +53,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish canary
-        if: ${{ github.base_ref == 'canary' }}
         run: 'lerna publish from-package --yes --pre-dist-tag canary'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish latest
-        if: ${{ github.base_ref == 'main' }}
-        run: 'lerna publish from-package --yes'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Notifiy releases to zenn
-        if: ${{ github.base_ref == 'main' }}
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          repository: zenn-dev/zenn
-          token: ${{ secrets.PERSONAL_TOKEN }}
-          event-type: update-zenn-editor-packages # specify this on zenn workflows
