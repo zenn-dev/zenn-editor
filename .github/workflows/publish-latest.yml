@@ -38,7 +38,7 @@ jobs:
       # zenn-editor packages does not follow semantic versioning.
       # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to latest
-        run: lerna version patch --yes
+        run: lerna version patch --yes --no-private
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set released version to env
