@@ -70,6 +70,10 @@ function getPotentialPerformanceRisk(source: string): PotentialRisk {
       mermaid!.mermaidAPI.parse(source);
       return true;
     } catch (e) {
+      console.log(
+        'mermaid.js のレンダリングでシンタックスエラーが発生しました',
+        e
+      );
       return false;
     }
   })();
