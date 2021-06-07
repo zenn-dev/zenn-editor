@@ -1,7 +1,7 @@
 ## :bookmark_tabs: Summary
 プルリクエストに含む内容の簡潔な記述
 
-Resolves #<issueId>
+Resolves #<issue-url>
 
 ### :clipboard: Tasks
 
