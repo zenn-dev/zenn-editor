@@ -9,6 +9,7 @@ on:
       - '**/package.json'
       - 'lerna.json'
       - '**.md'
+      - 'packages/example/**'
 
 jobs:
   publish:
