@@ -71,6 +71,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notifiy releases to zenn
+        if: ${{ github.base_ref == 'main' }}
         uses: peter-evans/repository-dispatch@v1
         with:
           repository: zenn-dev/zenn
