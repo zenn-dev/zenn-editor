@@ -1,18 +1,19 @@
 name: Publish canary version
 
-# Do not hook `push` action.
-# (Pushing by `lerna version` would cause infinite loop)
 on:
-  pull_request:
+  push:
     branches:
       - main
       - canary
-    types: [closed]
+    paths-ignore:
+      - '**/package.json'
+      - 'lerna.json'
+      - '**.md'
+      - 'packages/example/**'
 
 jobs:
   publish:
-    name: Publish canary
-    if: github.event.pull_request.merged == true # Run only when PR is merged.
+    name: Publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,16 +23,19 @@ jobs:
         with:
           node-version: '14'
           registry-url: 'https://registry.npmjs.org'
+      # Enable lerna to commit on GitHub.
+      # Note that this does not work with protected branch.
+      - name: Configure git identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install
         run: yarn --frozen-lockfile
       - name: Build
         run: yarn build
-      # Enable lerna to commit on GitHub.
-      # Note that this does not work with protected branch.
-      - name: Configure git credentials
-        uses: OleksiyRudenko/gha-git-credentials@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       # zenn-editor packages does not follow semantic versioning.
       # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to canary
@@ -67,3 +71,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Notifiy releases to zenn
+        if: ${{ github.base_ref == 'main' }}
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          repository: zenn-dev/zenn
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          event-type: update-zenn-editor-packages # specify this on zenn workflows
