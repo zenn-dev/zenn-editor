@@ -88,7 +88,7 @@ function getPotentialPerformanceRisk(source: string): PotentialRisk {
     },
     chainingOfLinksOver: {
       yes: (source.match(/&/g) || []).length > MAX_CHAINING_OF_LINKS_LIMIT,
-      message: `<li>ブロックあたりの&によるチェイン上限は${MAX_CHAINING_OF_LINKS_LIMIT}です</li>`,
+      message: `<li>ブロックあたりの<code>&</code>によるチェイン上限は${MAX_CHAINING_OF_LINKS_LIMIT}です</li>`,
     },
   };
 }
