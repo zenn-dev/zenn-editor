@@ -27,7 +27,7 @@ export class EmbedKatex extends HTMLElement {
       });
     }
 
-    // CSSを読み込む（まだ読み込まれていない場合のみ読み込まれる）
+    // CSSを読み込む（まだ読み込まれていない場合のみ）
     loadStylesheet({
       href: 'https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css',
       id: `katex-css`,
