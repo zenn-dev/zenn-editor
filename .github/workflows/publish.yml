@@ -70,3 +70,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Notifiy releases to zenn
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          repository: zenn_dev/zenn
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          event-type: update-zenn-editor-packages # specify this on zenn workflows
