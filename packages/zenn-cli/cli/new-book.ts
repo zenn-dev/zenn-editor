@@ -32,6 +32,7 @@ function parseArgs(argv: string[] | undefined) {
       {
         // Types
         '--slug': String,
+        '--slug-prefix': String,
         '--title': String,
         '--published': String,
         '--summary': String,
@@ -62,7 +63,7 @@ export const exec: cliCommand = (argv) => {
     return;
   }
 
-  const slug = args['--slug'] || generateSlug();
+  const slug = args['--slug'] ? (args['--slug-prefix'] || '') + args['--slug'] : generateSlug();
   const title = args['--title'] || '';
   const summary = args['--summary'] || '';
   const published = args['--published'] === 'true' ? 'true' : 'false'; // デフォルトはfalse
