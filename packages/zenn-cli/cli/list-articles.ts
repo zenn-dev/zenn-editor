@@ -11,6 +11,7 @@ function parseArgs(argv: string[] | undefined) {
       {
         // Types
         '--format': String,
+        '--fields': [String],
         '--help': Boolean,
         // Alias
         '-h': '--help',
@@ -34,6 +35,17 @@ const articleFormatters: { [key: string]: (article: Article) => string } = {
   json: (article: Article) => JSON.stringify(article),
 };
 
+const articleFields: (keyof Article)[] = [
+  'slug',
+  'content',
+  'title',
+  'emoji',
+  'type',
+  'topics',
+  'tags',
+  'published',
+];
+
 export const exec: cliCommand = (argv) => {
   const args = parseArgs(argv);
   if (!args) return;
@@ -52,7 +64,19 @@ export const exec: cliCommand = (argv) => {
   }
   const formatter = articleFormatters[format];
 
-  const articles = getAllArticles(['title']);
+  let fields: (keyof Article)[] = ['title'];
+  if (args['--fields']) {
+    let illegalFields = args['--fields'].filter(f => !articleFields.includes(f as keyof Article));
+    if (illegalFields.length > 0) {
+      console.error(
+        `エラー：fieldの値（${illegalFields.join(',')}）が不正です。 "${articleFields.join('", "')}" のいずれかを指定してください`
+      );
+      process.exit(1);
+    }
+    fields = args['--fields'].map(f => f as keyof Article);
+  }
+
+  const articles = getAllArticles(fields);
 
   const output = articles?.length
     ? articles.map((article) => formatter(article)).join('\n')
