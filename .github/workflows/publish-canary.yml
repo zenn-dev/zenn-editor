@@ -1,0 +1,60 @@
+name: Publish canary version
+
+on:
+  push:
+    branches:
+      - canary
+    paths-ignore:
+      - '**/package.json'
+      - 'lerna.json'
+      - '**.md'
+      - 'packages/example/**'
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
+      # Enable lerna to commit on GitHub.
+      # Note that this does not work with protected branch.
+      - name: Configure git identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Build
+        run: yarn build
+      # zenn-editor packages does not follow semantic versioning.
+      # This is because anyone should use latest version which is synced with zenn.dev
+      - name: Bump version to canary
+        run: lerna version prerelease --yes --no-private
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set released version to env
+        run: node -p -e '`RELEASED_PACKAGE_VERSION=${require("./lerna.json").version}`' >> $GITHUB_ENV
+      - name: Create release
+        uses: release-drafter/release-drafter@v5
+        with:
+          version: ${{ env.RELEASED_PACKAGE_VERSION }}
+          name: ${{ env.RELEASED_PACKAGE_VERSION }}
+          tag: ${{ env.RELEASED_PACKAGE_VERSION }}
+          publish: true
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish canary
+        run: 'lerna publish from-package --yes --pre-dist-tag canary'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

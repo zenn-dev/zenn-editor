@@ -22,12 +22,12 @@ export class EmbedKatex extends HTMLElement {
   async render() {
     if (typeof katex === 'undefined') {
       await loadScript({
-        src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.js',
+        src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js',
         id: 'katex-js',
       });
     }
 
-    // CSSを読み込む（まだ読み込まれていない場合のみ読み込まれる）
+    // CSSを読み込む（まだ読み込まれていない場合のみ）
     loadStylesheet({
       href: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css',
       id: `katex-css`,
