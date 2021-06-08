@@ -46,3 +46,10 @@ eqn,
   display: block;
   overflow-x: auto;
 }
+
+// make mermaid.js raw text white
+pre.zenn-mermaid {
+  background: transparent;
+  color: $c-gray;
+  font-size: 0.9rem;
+}
