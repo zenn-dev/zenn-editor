@@ -50,6 +50,7 @@ jobs:
           name: ${{ env.RELEASED_PACKAGE_VERSION }}
           tag: ${{ env.RELEASED_PACKAGE_VERSION }}
           publish: true
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish canary
