@@ -12,15 +12,12 @@ export function mdRendererFence(md: MarkdownIt) {
   // override fence
   md.renderer.rules.fence = function (...args) {
     const [tokens, idx] = args;
-    const { fileName: filename, langName, content } = extractFenceInfo(
-      tokens,
-      idx
-    );
+    const { fileName: filename, langName } = extractFenceInfo(tokens, idx);
 
     // override info (e.g "js:fooBar.js" -> "js")
     tokens[idx].info = langName;
     const originalHTML = defaultRender(...args);
-    if (content.length === 0) return originalHTML;
+    if (tokens[idx].content.length === 0) return originalHTML;
 
     const filenameHTML = filename
       ? `<div class="code-block-filename-container"><span class="code-block-filename">${md.utils.escapeHtml(
