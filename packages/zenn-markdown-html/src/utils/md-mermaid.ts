@@ -1,4 +1,5 @@
 import MarkdownIt from 'markdown-it';
+import { extractFenceInfo } from './helper';
 
 export function mdMermaid(md: MarkdownIt) {
   const defaultRender =
@@ -7,9 +8,9 @@ export function mdMermaid(md: MarkdownIt) {
       return self.renderToken(tokens, idx, options);
     };
   md.renderer.rules.fence = (tokens, idx, options, env, slf) => {
-    const langInfo = tokens[idx];
-    if (langInfo.info === 'mermaid') {
-      const code = langInfo.content.trim();
+    const { langName, content } = extractFenceInfo(tokens, idx);
+    if (langName === 'mermaid') {
+      const code = content.trim();
       return `<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">${md.utils.escapeHtml(
         code
       )}</pre></embed-mermaid></div>`;
