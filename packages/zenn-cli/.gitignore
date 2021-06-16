@@ -1,2 +1,8 @@
-.next
-dist
+.DS_Store
+/node_modules
+yarn-error.log
+/dist
+/temp
+/articles/
+/books/
+.temp

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6", // important for web components
-    "module": "commonjs",
+    "module": "umd",
     "declaration": true,
     "outDir": "./lib",
     "rootDir": "./src",
@@ -11,10 +11,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["**/*.d.ts", "node_modules"],
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "../zenn-embed-elements/custom-elements.ts"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }
