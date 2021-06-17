@@ -1,6 +1,6 @@
 {
   "name": "zenn-content-css",
-  "version": "0.1.86-canary.1",
+  "version": "0.1.86",
   "license": "MIT",
   "description": "Zenn flavor content style.",
   "repository": {
@@ -13,13 +13,12 @@
     "lib/index.css"
   ],
   "scripts": {
-    "build": "node-sass ./src/index.scss ./lib/index.css --output-style compressed",
-    "dev": "node-sass-chokidar ./src -o ./lib --watch",
+    "build": "sass ./src/index.scss ./lib/index.css --style compressed --no-source-map",
+    "dev": "sass ./src/index.scss ./lib/index.css --watch --no-source-map",
     "test": "echo 'no test yet'"
   },
   "devDependencies": {
-    "node-sass": "^4.14.1",
-    "node-sass-chokidar": "^1.4.0"
+    "sass": "^1.35.1"
   },
   "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
   "publishConfig": {
