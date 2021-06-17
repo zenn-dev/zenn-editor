@@ -69,3 +69,10 @@ jobs:
           repository: zenn-dev/api-markdown-html
           token: ${{ secrets.PERSONAL_TOKEN }}
           event-type: update-zenn-editor-packages # specify this on zenn workflows
+      # Reflect changes on main branch to canary branch.
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: canary
+      - name: Pull from main to canary
+        run: git pull origin main
