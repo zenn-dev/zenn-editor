@@ -1,6 +1,6 @@
 {
   "name": "zenn-embed-elements",
-  "version": "0.1.85-canary.3",
+  "version": "0.1.86-canary.0",
   "description": "Web components for embedded contents.",
   "repository": {
     "type": "git",
