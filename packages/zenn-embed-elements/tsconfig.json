@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6", // important for web components
-    "module": "umd",
+    "module": "commonjs",
     "declaration": true,
     "outDir": "./lib",
     "rootDir": "./src",
