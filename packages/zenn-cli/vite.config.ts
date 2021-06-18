@@ -31,8 +31,10 @@ export default defineConfig({
   },
   // required to resolve monorepo packages from vite
   // ref: https://github.com/vitejs/vite/issues/1491
-  alias: {
-    'zenn-embed-elements': 'zenn-embed-elements/src/index.ts',
+  resolve: {
+    alias: {
+      'zenn-embed-elements': 'zenn-embed-elements/src/index.ts',
+    },
   },
 });
 
