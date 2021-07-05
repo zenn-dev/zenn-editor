@@ -1,5 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+
+// hooks
+import { useFetch } from '../hooks/useFetch';
+import { useLocalFileChangedEffect } from '../hooks/useLocalFileChangedEffect';
+import { usePersistedState } from '../hooks/usePersistedState';
+
+// components
+import { ListItemInner } from './sidebar/ListItemInner';
+import { Directory } from './sidebar/Directory';
+import { Settings } from './sidebar/Settings';
+
+// others
 import {
   LinkArticle,
   LinkBook,
@@ -7,12 +19,12 @@ import {
   LinkHome,
   ToplevelLink,
 } from './Routes';
-import { useFetch } from '../hooks/useFetch';
-import { useLocalFileChangedEffect } from '../hooks/useLocalFileChangedEffect';
-import { usePersistedState } from '../hooks/usePersistedState';
-import { ArticleMeta, BookMeta, ChapterMeta } from '../../common/types';
-import { ListItemInner } from './sidebar/ListItemInner';
-import { Directory } from './sidebar/Directory';
+import {
+  ArticleMeta,
+  BookMeta,
+  ChapterMeta,
+  ItemSortType,
+} from '../../common/types';
 
 const ArticleLinkItem: React.VFC<{ article: ArticleMeta }> = ({ article }) => {
   return (
@@ -100,9 +112,9 @@ const ListItemBook: React.VFC<{ book: BookMeta }> = ({ book }) => {
   );
 };
 
-const ListArticles: React.VFC = () => {
+const ListArticles: React.VFC<{ sort: ItemSortType }> = ({ sort }) => {
   const { data, mutate } = useFetch<{ articles: ArticleMeta[] }>(
-    '/api/articles',
+    `/api/articles?sort=${sort}`,
     {
       revalidateOnFocus: false,
       errorRetryCount: 3,
@@ -162,6 +174,10 @@ export const Sidebar: React.VFC = () => {
     cacheKey: 'fold-sidebar',
     defaultValue: false,
   });
+  const [sort, setSort] = usePersistedState<ItemSortType>({
+    cacheKey: 'item-sort-type',
+    defaultValue: 'modified',
+  });
 
   return (
     <StyledSidebar aria-expanded={!isFolded} className="sidebar">
@@ -188,9 +204,19 @@ export const Sidebar: React.VFC = () => {
               className="site-logo"
             />
           </LinkHome>
+          {/* <Settings
+            openButtonIcon={<button>開く</button>}
+            position="right"
+            options={[
+              { value: 'modified', label: '更新順' },
+              { value: 'system', label: 'システム' },
+            ]}
+            value={sort}
+            setValue={(val) => setSort(val)}
+          /> */}
         </header>
         <div className="sidebar__items">
-          <ListArticles />
+          <ListArticles sort={sort} />
           <ListBooks />
 
           <ul className="sidebar__static-links">
