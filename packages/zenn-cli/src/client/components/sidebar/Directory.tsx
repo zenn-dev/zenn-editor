@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { usePersistedState } from '../../hooks/usePersistedState';
 import { ListItemInner } from './ListItemInner';
+import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
 
 export const Directory: React.VFC<{
   title: string;
@@ -29,17 +30,14 @@ export const Directory: React.VFC<{
         aria-label="フォルダーを開く"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <img
-          src="/icons/sidebar-item-arrow.svg"
-          alt=""
-          width={12}
-          height={12}
+        <ArrowForwardIosOutlinedIcon
           className={`directory__icon-arrow ${isOpen ? 'rotated' : ''}`}
         />
+
         <ListItemInner
           title={props.title}
           label={props.label}
-          iconImgSrc={`/icons/${
+          iconImgSrc={`/static-images/${
             isOpen ? 'folder-open.svg' : 'folder-close.svg'
           }`}
         />
@@ -70,10 +68,12 @@ const StyledDirectory = styled.div`
   }
   .directory__icon-arrow {
     position: absolute;
-    top: 7px;
+    width: 12px;
+    height: 12px;
+    top: 8px;
     left: -2px;
+    color: var(--c-gray);
     &.rotated {
-      top: 10px;
       transform: rotate(90deg);
     }
   }

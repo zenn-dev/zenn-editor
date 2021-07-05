@@ -30,6 +30,8 @@
     "fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
     "@types/ws": "^7.4.4",
     "arg": "^5.0.0",
     "chokidar": "^3.5.1",

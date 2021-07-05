@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// icons
+import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
+import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
+
 // hooks
 import { useFetch } from '../hooks/useFetch';
 import { useLocalFileChangedEffect } from '../hooks/useLocalFileChangedEffect';
@@ -186,12 +190,11 @@ export const Sidebar: React.VFC = () => {
         onClick={() => setIsFolded(!isFolded)}
         aria-label={isFolded ? 'メニューを開く' : '折りたたむ'}
       >
-        <img
-          src={`/icons/${isFolded ? 'sidebar-open.svg' : 'sidebar-fold.svg'}`}
-          alt=""
-          width={16}
-          height={16}
-        />
+        {isFolded ? (
+          <ArrowForwardOutlinedIcon className="sidebar__fold-icon" />
+        ) : (
+          <ArrowBackOutlinedIcon className="sidebar__fold-icon" />
+        )}
       </button>
       <div className="sidebar__inner" aria-hidden={isFolded}>
         <header className="sidebar__header">
@@ -291,6 +294,16 @@ const StyledSidebar = styled.div`
     height: 26px;
     background: var(--c-gray-bg);
     border-radius: 5px;
+    &:hover {
+      .sidebar__fold-icon {
+        color: var(--c-body);
+      }
+    }
+  }
+  .sidebar__fold-icon {
+    width: 18px;
+    width: 18px;
+    color: var(--c-gray);
   }
 
   .sidebar__inner {

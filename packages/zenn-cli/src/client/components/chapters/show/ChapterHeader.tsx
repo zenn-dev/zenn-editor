@@ -6,6 +6,7 @@ import { ContentContainer } from '../../ContentContainer';
 import { PropertyRow } from '../../PropertyRow';
 import { ValidationErrors } from '../../ValidationErrors';
 import { LinkBook } from '../../Routes';
+import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 
 type Props = { chapter: Chapter; book: Book };
 
@@ -16,13 +17,7 @@ export const ChapterHeader: React.VFC<Props> = ({ chapter, book }) => {
     <StyledChapterHeader>
       <div className="chapter-header__book">
         <LinkBook slug={book.slug} className="chapter-header__book-link">
-          <img
-            src={'/icons/back.svg'}
-            className="book-header__book-back"
-            alt="チャプター一覧へ戻る"
-            width="12"
-            height="12"
-          />
+          <ArrowBackIosOutlinedIcon className="book-header__book-back" />
           <span className="chapter-header__book-title">{book.title}</span>
         </LinkBook>
       </div>
@@ -65,6 +60,14 @@ const StyledChapterHeader = styled.header`
   .chapter-header__book-link {
     display: flex;
     align-items: center;
+    color: var(--c-gray);
+    &:hover {
+      color: var(--c-body);
+    }
+  }
+  .book-header__book-back {
+    width: 14px;
+    height: 14px;
   }
 
   .chapter-header__book-title {
@@ -72,10 +75,6 @@ const StyledChapterHeader = styled.header`
     flex: 1;
     font-size: 13.5px;
     font-weight: 700;
-    color: var(--c-gray);
-    &:hover {
-      color: var(--c-body);
-    }
   }
   .chapter-header__main {
     padding: 2.2rem 0 2.8rem;

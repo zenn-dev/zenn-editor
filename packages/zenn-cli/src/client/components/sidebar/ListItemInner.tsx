@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
 
 interface Props {
   title: string;
@@ -30,13 +31,7 @@ export const ListItemInner: React.VFC<Props> = (props) => {
       <div className="list-item-inner__title" title={props.title}>
         {props.title}
         {props.showNewTabIcon === true && (
-          <img
-            src="/icons/open.svg"
-            width={12}
-            height={12}
-            alt="外部リンクを開く"
-            className="list-item-inner__icon-open"
-          />
+          <CallMadeOutlinedIcon className="list-item-inner__icon-open" />
         )}
       </div>
     </StyledListItemInner>
@@ -72,6 +67,9 @@ const StyledListItemInner = styled.div`
   }
   .list-item-inner__icon-open {
     margin: 0 2px;
-    vertical-align: -0.15em;
+    width: 15px;
+    height: 15px;
+    vertical-align: -2px;
+    opacity: 0.7;
   }
 `;
