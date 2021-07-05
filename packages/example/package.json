@@ -1,8 +1,0 @@
-{
-  "private": true,
-  "name": "example",
-  "version": "0.1.85-canary.0",
-  "dependencies": {
-    "zenn-cli": "^0.1.85-canary.0"
-  }
-}
