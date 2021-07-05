@@ -18,7 +18,7 @@ export const BookHeader: React.VFC<Props> = ({ book }) => {
         <div className="book-header__hero">
           <div className="book-header__cover">
             <img
-              src={book.coverDataUrl || '/images/book-cover.png'}
+              src={book.coverDataUrl || '/static-images/book-cover.png'}
               className="book-header__cover-img"
               alt="カバー画像のプレビュー"
               width="160"
