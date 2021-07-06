@@ -4,6 +4,7 @@ import styled from 'styled-components';
 // icons
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
+import SortRoundedIcon from '@material-ui/icons/SortRounded';
 
 // hooks
 import { useFetch } from '../hooks/useFetch';
@@ -149,10 +150,13 @@ const ListArticles: React.VFC<{ sort: ItemSortType }> = ({ sort }) => {
   );
 };
 
-const ListBooks: React.VFC = () => {
-  const { data, mutate } = useFetch<{ books: BookMeta[] }>('/api/books', {
-    revalidateOnFocus: false,
-  });
+const ListBooks: React.VFC<{ sort: ItemSortType }> = ({ sort }) => {
+  const { data, mutate } = useFetch<{ books: BookMeta[] }>(
+    `/api/books?sort=${sort}`,
+    {
+      revalidateOnFocus: false,
+    }
+  );
   const books = data?.books;
 
   // refetch when local file changes
@@ -204,23 +208,25 @@ export const Sidebar: React.VFC = () => {
               alt="Zenn Editor"
               width={150}
               height={20}
-              className="site-logo"
+              className="sidebar__header-logo"
             />
           </LinkHome>
-          {/* <Settings
-            openButtonIcon={<button>開く</button>}
+          <Settings
+            openButtonIcon={<SortRoundedIcon className="sidebar__sort-open" />}
+            openButtonAriaLabel="ソート設定を開く"
             position="right"
             options={[
-              { value: 'modified', label: '更新順' },
-              { value: 'system', label: 'システム' },
+              { value: 'modified', label: 'ファイル更新順に並べる' },
+              { value: 'system', label: 'システムの表示順に従う' },
             ]}
             value={sort}
             setValue={(val) => setSort(val)}
-          /> */}
+            width={200}
+          />
         </header>
         <div className="sidebar__items">
           <ListArticles sort={sort} />
-          <ListBooks />
+          <ListBooks sort={sort} />
 
           <ul className="sidebar__static-links">
             <li>
@@ -285,7 +291,7 @@ const StyledSidebar = styled.div`
   }
   .sidebar__btn-fold {
     position: absolute;
-    top: 10px;
+    top: 12px;
     right: 10px;
     display: inline-flex;
     align-items: center;
@@ -312,9 +318,18 @@ const StyledSidebar = styled.div`
     }
   }
   .sidebar__header {
-    img {
-      display: block;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 34px;
+  }
+  .sidebar__header-logo {
+    flex-shrink: 0;
+    display: block;
+  }
+  .sidebar__sort-open {
+    width: 22px;
+    height: 22px;
   }
   .sidebar__items {
     margin: 10px 0;

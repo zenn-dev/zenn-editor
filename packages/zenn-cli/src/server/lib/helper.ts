@@ -62,6 +62,23 @@ export function listDirnames(searchDirFullpath: string) {
   }
 }
 
+export function listDirnamesOrderByModified(searchDirFullpath: string) {
+  const allDirnames = listDirnames(searchDirFullpath);
+  if (!allDirnames) return allDirnames;
+
+  return allDirnames
+    .map((dirname) => {
+      return {
+        name: dirname,
+        time: fs
+          .statSync(path.join(searchDirFullpath, dirname))
+          .mtime.getTime(),
+      };
+    })
+    .sort((a, b) => b.time - a.time)
+    .map(({ name }) => name);
+}
+
 export function listFilenames(searchDirFullpath: string) {
   try {
     const allFiles = fs.readdirSync(searchDirFullpath);
@@ -74,7 +91,6 @@ export function listFilenames(searchDirFullpath: string) {
 export function listFilenamesOrderByModified(searchDirFullpath: string) {
   const allFiles = listFilenames(searchDirFullpath);
   if (!allFiles) return allFiles;
-  // sort by data modified
   return allFiles
     .map((filename) => {
       return {
