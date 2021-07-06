@@ -72,7 +72,7 @@ export function listDirnamesOrderByModified(searchDirFullpath: string) {
         name: dirname,
         time: fs
           .statSync(path.join(searchDirFullpath, dirname))
-          .mtime.getTime(),
+          .ctime.getTime(),
       };
     })
     .sort((a, b) => b.time - a.time)
@@ -97,7 +97,7 @@ export function listFilenamesOrderByModified(searchDirFullpath: string) {
         name: filename,
         time: fs
           .statSync(path.join(searchDirFullpath, filename))
-          .mtime.getTime(),
+          .ctime.getTime(),
       };
     })
     .sort((a, b) => b.time - a.time)
