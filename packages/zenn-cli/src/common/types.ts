@@ -1,3 +1,5 @@
+import { itemSortTypes } from './helper';
+
 export type Article = {
   slug: string;
   title?: string;
@@ -42,3 +44,5 @@ export type Chapter = {
 };
 
 export type ChapterMeta = Omit<Chapter, 'bodyHtml'>;
+
+export type ItemSortType = typeof itemSortTypes[number];

@@ -6,6 +6,7 @@ import markdownToHtml from 'zenn-markdown-html';
 import * as Log from './log';
 import {
   listDirnames,
+  listDirnamesOrderByModified,
   getImageSize,
   getImageRaw,
   bufferToDataURL,
@@ -13,7 +14,13 @@ import {
   listFilenames,
   getWorkingPath,
 } from './helper';
-import { Book, BookMeta, Chapter, ChapterMeta } from '../../common/types';
+import {
+  Book,
+  BookMeta,
+  Chapter,
+  ChapterMeta,
+  ItemSortType,
+} from '../../common/types';
 
 export function getLocalBook(slug: string): null | Book {
   const bookMeta = getLocalBookMeta(slug);
@@ -69,8 +76,8 @@ export function getLocalBookMeta(slug: string) {
   return bookMeta;
 }
 
-export function getLocalBookMetaList(): BookMeta[] {
-  const slugs = getBookSlugs();
+export function getLocalBookMetaList(sort?: ItemSortType): BookMeta[] {
+  const slugs = getBookSlugs(sort);
   const books = slugs
     .map((slug) => getLocalBookMeta(slug))
     .filter((book): book is BookMeta => book !== null);
@@ -115,10 +122,11 @@ export function getLocalChapterMetaList(book: BookMeta): ChapterMeta[] {
   return chapters;
 }
 
-function getBookSlugs(): string[] {
+function getBookSlugs(sort?: ItemSortType): string[] {
   const dirFullpath = getWorkingPath('books');
-  const allDirs = listDirnames(dirFullpath);
-  return allDirs || [];
+  const listOrderedDirs =
+    sort === 'system' ? listDirnames : listDirnamesOrderByModified;
+  return listOrderedDirs(dirFullpath) || [];
 }
 
 function readBookFile(slug: string) {

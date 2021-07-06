@@ -8,6 +8,8 @@ import {
   getLocalChapterMetaList,
 } from '../../lib/books';
 
+import { getValidSortTypes } from '../../../common/helper';
+
 const bookNotFoundMessage =
   '本の設定ファイルの取得時にエラーが発生しました。ターミナルの出力をご確認ください';
 
@@ -24,7 +26,8 @@ export function getBook(req: Express.Request, res: Express.Response) {
 }
 
 export function getBooks(req: Express.Request, res: Express.Response) {
-  const books = getLocalBookMetaList();
+  const sort = getValidSortTypes(req.query.sort);
+  const books = getLocalBookMetaList(sort);
   res.json({ books });
 }
 

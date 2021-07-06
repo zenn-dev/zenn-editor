@@ -1,6 +1,7 @@
 import Express from 'express';
 
 import { getLocalArticle, getLocalArticleMetaList } from '../../lib/articles';
+import { getValidSortTypes } from '../../../common/helper';
 
 export function getArticle(req: Express.Request, res: Express.Response) {
   const article = getLocalArticle(req.params.slug);
@@ -14,6 +15,7 @@ export function getArticle(req: Express.Request, res: Express.Response) {
 }
 
 export function getArticles(req: Express.Request, res: Express.Response) {
-  const articles = getLocalArticleMetaList();
+  const sort = getValidSortTypes(req.query.sort);
+  const articles = getLocalArticleMetaList(sort);
   res.json({ articles });
 }
