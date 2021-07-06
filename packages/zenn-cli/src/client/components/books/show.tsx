@@ -9,6 +9,7 @@ import { useFetch } from '../../hooks/useFetch';
 import { useTitle } from '../../hooks/useTitle';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { Book, ChapterMeta } from '../../../common/types';
+import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
 
 type BookShowProps = {
   slug: string;
@@ -104,7 +105,7 @@ export const BookShow: React.VFC<BookShowProps> = ({ slug }) => {
                   )}
                   {!!withoutPositionChapters?.length && (
                     <div className="book-show__excluded-chapters">
-                      <p className="book-chapters__note">
+                      <p className="book-show__chapters-note">
                         以下のチャプターはzenn.devへのデプロイ対象に含まれません。本に含めるチャプターの
                         <a
                           href="https://zenn.dev/zenn/articles/what-is-slug"
@@ -123,12 +124,7 @@ export const BookShow: React.VFC<BookShowProps> = ({ slug }) => {
                           rel="noopener noreferrer"
                         >
                           詳しい説明を開く
-                          <img
-                            src="/icons/open.svg"
-                            width={12}
-                            height={12}
-                            alt="別タブで開く"
-                          />
+                          <CallMadeOutlinedIcon className="book-show__open-icon" />
                         </a>
                       </p>
 
@@ -169,7 +165,7 @@ const StyledBookShow = styled.div`
     color: var(--c-gray);
     font-size: 0.95rem;
   }
-  .book-chapters__note {
+  .book-show__chapters-note {
     line-height: 1.8;
     code {
       line-height: 1.2;
@@ -181,9 +177,18 @@ const StyledBookShow = styled.div`
       border-radius: 5px;
     }
     a {
+      display: inline-flex;
+      align-items: center;
       text-decoration: underline;
       text-underline-offset: 4px;
       text-decoration-color: var(--c-gray-border);
+      &:hover {
+        color: var(--c-body);
+      }
     }
+  }
+  .book-show__open-icon {
+    width: 15px;
+    height: 15px;
   }
 `;

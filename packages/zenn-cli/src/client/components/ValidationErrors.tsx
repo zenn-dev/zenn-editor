@@ -2,6 +2,9 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { ValidationError } from '../types';
 
+import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
+import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
+
 const warningColor = '#ff9715';
 
 const ValidationErrorRow: React.VFC<ValidationError> = ({
@@ -16,14 +19,7 @@ const ValidationErrorRow: React.VFC<ValidationError> = ({
         isCritical ? 'validation-error-row--critical' : ''
       }`}
     >
-      <span className="validation-error-row__icon">
-        <img
-          src="/icons/error-exclamation.svg"
-          width={12}
-          height={12}
-          alt="エラー"
-        />
-      </span>
+      <ErrorRoundedIcon className="validation-error-row__icon" />
       <div className="validation-error-row__message">
         {message}
         {typeof detailUrl === 'string' && (
@@ -34,12 +30,7 @@ const ValidationErrorRow: React.VFC<ValidationError> = ({
             rel="nofollow noreferrer"
           >
             {detailUrlText || '詳細を見る'}
-            <img
-              src="/icons/open.svg"
-              width={12}
-              height={12}
-              alt="別タブで開く"
-            />
+            <CallMadeOutlinedIcon className="validation-error-row__link-icon" />
           </a>
         )}
       </div>
@@ -52,16 +43,11 @@ const StyledValidationErrorRow = styled.div`
   align-items: flex-start;
   margin-top: 0.5rem;
   .validation-error-row__icon {
-    margin-top: 2px;
-    content: '!';
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    background: ${warningColor};
-    color: #fff;
-    border-radius: 50%;
+    width: 1.1em;
+    height: 1.1em;
+    color: ${warningColor};
+    flex-shrink: 0;
+    transform: translateY(-0.1em);
   }
   .validation-error-row__message {
     flex: 1;
@@ -75,13 +61,22 @@ const StyledValidationErrorRow = styled.div`
     text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-color: var(--c-gray-border);
+    display: inline-flex;
+    align-items: center;
+    &:hover {
+      color: var(--c-body);
+    }
+  }
+  .validation-error-row__link-icon {
+    width: 15px;
+    height: 15px;
   }
   &.validation-error-row--critical {
     .validation-error-row__message {
       /* color: var(--c-error); */
     }
     .validation-error-row__icon {
-      background: var(--c-error);
+      color: var(--c-error);
     }
   }
 `;

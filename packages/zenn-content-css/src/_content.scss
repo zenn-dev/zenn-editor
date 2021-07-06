@@ -107,12 +107,8 @@ h4 {
 h5 {
   font-size: 1em;
 }
-h5,
 h6 {
-  color: $c-gray;
-}
-h6 {
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 
 @include mq(sm) {

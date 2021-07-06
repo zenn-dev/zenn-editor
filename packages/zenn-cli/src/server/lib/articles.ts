@@ -2,11 +2,12 @@ import matter from 'gray-matter';
 import * as Log from './log';
 
 import {
+  listFilenames,
   listFilenamesOrderByModified,
   getFileRaw,
   getWorkingPath,
 } from './helper';
-import { Article, ArticleMeta } from '../../common/types';
+import { Article, ArticleMeta, ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
 
 export function getLocalArticle(slug: string): null | Article {
@@ -20,8 +21,8 @@ export function getLocalArticle(slug: string): null | Article {
   };
 }
 
-export function getLocalArticleMetaList(): ArticleMeta[] {
-  const slugs = getArticleSlugs();
+export function getLocalArticleMetaList(sort?: ItemSortType): ArticleMeta[] {
+  const slugs = getArticleSlugs(sort);
   const articles = slugs
     ? slugs
         .map((slug) => getArticleMetaData(slug))
@@ -30,13 +31,16 @@ export function getLocalArticleMetaList(): ArticleMeta[] {
   return articles;
 }
 
-function getArticleSlugs(): string[] {
-  return getArticleFilenames().map((n) => n.replace(/\.md$/, ''));
+function getArticleSlugs(sort?: ItemSortType): string[] {
+  return getArticleFilenames(sort).map((n) => n.replace(/\.md$/, ''));
 }
 
-function getArticleFilenames(): string[] {
+function getArticleFilenames(sort?: ItemSortType): string[] {
   const dirpath = getWorkingPath('articles');
-  const allFiles = listFilenamesOrderByModified(dirpath);
+  const listOrderedItems =
+    sort === 'system' ? listFilenames : listFilenamesOrderByModified;
+  const allFiles = listOrderedItems(dirpath);
+
   if (allFiles === null) {
     Log.error(
       'プロジェクトルートの articles ディレクトリを取得できませんでした。`npx zenn init`を実行して作成してください'
