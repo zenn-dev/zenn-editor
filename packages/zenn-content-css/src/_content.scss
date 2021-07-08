@@ -137,7 +137,7 @@ hr {
   margin: 2.5rem 0;
 }
 blockquote {
-  font-size: 0.95rem;
+  font-size: 0.97em;
   margin: 1.4rem 0;
   border-left: solid 3px #b3bfc7;
   padding: 2px 0 2px 0.7em; /* 上下にpaddingをわずかでも設定しておくと、固定ヘッダー対策で見出しにネガティブマージンが指定されたときにも崩れない。ref: https://github.com/zenn-dev/zenn-roadmap/issues/191 */
@@ -213,7 +213,7 @@ pre {
     padding: 1.1rem; // このようにしないとpreのスクロールバーがコードに重なってしまう
     @include mq(sm) {
       padding: 1rem 0.8rem;
-      font-size: 13px;
+      font-size: 0.85em;
     }
   }
 }
@@ -262,8 +262,8 @@ img ~ em {
   margin: -1rem auto 0;
   line-height: 1.3;
   text-align: center;
-  color: $c-gray;
-  font-size: 0.95rem;
+  color: $c-gray-darker;
+  font-size: 0.92em;
 }
 details {
   font-size: 0.95em;
@@ -276,7 +276,7 @@ summary {
   padding: 0.7em 0.7em 0.7em 0.9em;
   border: solid 1px rgba(92, 147, 187, 0.19);
   color: var(--c-contrast);
-  font-size: 0.9rem;
+  font-size: 0.9em;
   border-radius: 6px;
   box-shadow: 0 2px 4px -2px rgba(0, 0, 0, 0.15);
 

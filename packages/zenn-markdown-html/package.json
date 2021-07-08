@@ -1,6 +1,6 @@
 {
   "name": "zenn-markdown-html",
-  "version": "0.1.90",
+  "version": "0.1.91-alpha.1",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
   "repository": {
@@ -37,7 +37,7 @@
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "prismjs": "^1.23.0"
+    "prismjs": "^1.24.1"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
