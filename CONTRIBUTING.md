@@ -43,4 +43,12 @@ lerna を使ったモノレポ管理をしています
 
 ### Develop
 
+#### zenn-cli
+
 WIP
+
+- `src/client`: zenn previewのクライアント
+  - ビルドされたファイルをpublishするため、依存はdevDependenciesに指定する
+- `src/server`: zenn previewのサーバー（API）
+
+

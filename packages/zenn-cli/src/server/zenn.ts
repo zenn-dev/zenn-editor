@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// This file is called from npm bin script
+// This file is called from npm bin script. Refer package.json
 
 import arg from 'arg';
 import { exec } from './commands';
