@@ -7,8 +7,18 @@ describe('Detect mermaid property', () => {
       '<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">graph TD\nA --&gt; B</pre></embed-mermaid></div>'
     );
   });
+  test('should extract valid langName', () => {
+    const html = markdownToHtml(
+      `\`\`\`mermaid:src/mermaid.js:no use\ngraph TD\nA --> B\n\`\`\``
+    );
+    expect(html).toContain(
+      '<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">graph TD\nA --&gt; B</pre></embed-mermaid></div>'
+    );
+  });
   test('should keep directive', () => {
-    const html = markdownToHtml(`\`\`\`mermaid\n%%{init: { 'theme': 'forest' } }%%\ngraph TD\nA --> B\n\`\`\``);
+    const html = markdownToHtml(
+      `\`\`\`mermaid\n%%{init: { 'theme': 'forest' } }%%\ngraph TD\nA --> B\n\`\`\``
+    );
     expect(html).toContain(
       '<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">%%{init: { \'theme\': \'forest\' } }%%\ngraph TD\nA --&gt; B</pre></embed-mermaid></div>'
     );
