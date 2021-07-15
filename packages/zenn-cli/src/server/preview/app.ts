@@ -6,6 +6,7 @@ import { getBook, getBooks, getChapter, getChapters } from './api/books';
 import { getCliGuide } from './api/cli-guide';
 import { getLocalInfo } from './api/local-info';
 import { getCliVersion } from './api/cli-version';
+import { getWorkingPath } from '../lib/helper';
 
 export function createApp() {
   const app = express();
@@ -21,7 +22,7 @@ export function createApp() {
 
   app.get('/images/*', (req, res) => {
     // `zenn preview`を起動したディレクトリ直下にあるimagesディレクトリを参照する
-    res.sendFile(path.join(__dirname + `../../../..${req.path}`));
+    res.sendFile(getWorkingPath(req.path));
   });
 
   // serve static files built by vite
