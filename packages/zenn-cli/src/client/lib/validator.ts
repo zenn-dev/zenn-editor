@@ -1,6 +1,6 @@
 import initEmojiRegex from 'emoji-regex/text';
 
-import { ValidationError } from '../types';
+import { ValidationError } from '../../common/types';
 import { Article, Book, Chapter } from '../../common/types';
 import {
   validateSlug,

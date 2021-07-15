@@ -10,7 +10,10 @@ import { ValidationErrors } from '../../ValidationErrors';
 type Props = { article: Article };
 
 export const ArticleHeader: React.VFC<Props> = ({ article }) => {
-  const validationErrors = useMemo(() => getArticleErrors(article), [article]);
+  const validationErrors = useMemo(
+    () => getArticleErrors(article).concat(article.errors || []),
+    [article]
+  );
 
   return (
     <StyledArticleHeader>

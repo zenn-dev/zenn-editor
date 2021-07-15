@@ -21,6 +21,7 @@ import {
   ChapterMeta,
   ItemSortType,
 } from '../../common/types';
+import { validateHtml } from './validator';
 
 export function getLocalBook(slug: string): null | Book {
   const bookMeta = getLocalBookMeta(slug);
@@ -93,8 +94,10 @@ export function getLocalChapter(
 
   const { meta, bodyMarkdown } = data;
   const bodyHtml = markdownToHtml(bodyMarkdown);
+  const errors = validateHtml(bodyHtml);
   return {
     ...meta,
+    errors,
     bodyHtml,
   };
 }

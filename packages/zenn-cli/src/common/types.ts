@@ -1,5 +1,12 @@
 import { itemSortTypes } from './helper';
 
+export type ValidationError = {
+  message: string;
+  isCritical: boolean;
+  detailUrl?: string;
+  detailUrlText?: string;
+};
+
 export type Article = {
   slug: string;
   title?: string;
@@ -9,6 +16,7 @@ export type Article = {
   topics?: string[];
   tags?: string[];
   published?: boolean;
+  errors?: ValidationError[];
 };
 
 export type ArticleMeta = Omit<Article, 'bodyHtml'>;
@@ -41,6 +49,7 @@ export type Chapter = {
   free?: boolean;
   bodyHtml?: string;
   position: null | number;
+  errors?: ValidationError[];
 };
 
 export type ChapterMeta = Omit<Chapter, 'bodyHtml'>;

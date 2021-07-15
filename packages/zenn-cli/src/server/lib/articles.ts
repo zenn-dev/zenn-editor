@@ -9,14 +9,17 @@ import {
 } from './helper';
 import { Article, ArticleMeta, ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
+import { validateHtml } from './validator';
 
 export function getLocalArticle(slug: string): null | Article {
   const data = readArticleFile(slug);
   if (!data) return null;
   const { meta, bodyMarkdown } = data;
   const bodyHtml = markdownToHtml(bodyMarkdown);
+  const errors = validateHtml(bodyHtml);
   return {
     ...meta,
+    errors,
     bodyHtml,
   };
 }
