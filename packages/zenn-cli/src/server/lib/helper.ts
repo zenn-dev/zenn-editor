@@ -3,6 +3,8 @@ import fs from 'fs-extra';
 import path from 'path';
 import * as Log from './log';
 import fetch from 'node-fetch';
+import cheerio from 'cheerio';
+import url from 'url';
 
 export function generateSlug(): string {
   return crypto.randomBytes(7).toString('hex');
@@ -119,4 +121,39 @@ export function generateFileIfNotExist(fullpath: string, content: string) {
     content,
     { flag: 'wx' } // Don't overwrite
   );
+}
+
+export function completeHtml(html: string): string {
+  const $ = cheerio.load(html);
+  $('img').map((i, el) => {
+    const src = el.attribs['src'];
+    // srcがURLの場合はチェックしない
+    if (isUrl(src)) return;
+
+    // 先頭が `/images/` であること
+    if (!path.isAbsolute(src)) {
+      $(el).before(
+        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。ローカルの画像を読み込むには相対パスではなく<code>/images/example.png</code>のように<code>/images/</code>から始まるパスを指定してください。</p>`
+      );
+      $(el).remove();
+    }
+
+    // 拡張子が png,jpg,jpeg,gif であること
+    if (!src.match(/(.png|.jpg|.jpeg|.gif)$/)) {
+      $(el).before(
+        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。対応している画像の拡張子は <code>png, jpg, jpeg, gif</code> です。</p>`
+      );
+      $(el).remove();
+    }
+  });
+
+  return $.html();
+}
+
+function isUrl(text: string): Boolean {
+  try {
+    return new url.URL(text) && true;
+  } catch {
+    return false;
+  }
 }

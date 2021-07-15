@@ -27,6 +27,6 @@ published: false
 
 ## URL を指定
 
-`![](https://static.zenn.dev/zenn-editor.png)`
+`![](http://placehold.jp/54/e3f2ff/000000/720x480.png?text=zenn-editor.png)`
 
-![](https://static.zenn.dev/zenn-editor.png)
+![](http://placehold.jp/54/e3f2ff/000000/720x480.png?text=zenn-editor.png)

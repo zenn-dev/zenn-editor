@@ -11,10 +11,7 @@ import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 type Props = { chapter: Chapter; book: Book };
 
 export const ChapterHeader: React.VFC<Props> = ({ chapter, book }) => {
-  const validationErrors = useMemo(
-    () => getChapterErrors(chapter).concat(chapter.errors || []),
-    [chapter]
-  );
+  const validationErrors = useMemo(() => getChapterErrors(chapter), [chapter]);
 
   return (
     <StyledChapterHeader>

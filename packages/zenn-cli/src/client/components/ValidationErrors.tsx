@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { ValidationError } from '../../common/types';
+import { ValidationError } from '../types';
 
 import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';

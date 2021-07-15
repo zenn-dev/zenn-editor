@@ -61,7 +61,7 @@ describe('/api/articles/:slug', () => {
         type: 'tech',
         topics: [],
         published: true,
-        bodyHtml: `<p>Hello!</p>\n`,
+        bodyHtml: expect.stringContaining('<p>Hello!</p>'),
       })
     );
   });
@@ -215,7 +215,7 @@ describe('/api/books/:book_slug/chapters/:chapter_filename', () => {
         title: 'title2',
         free: true,
         position: 0,
-        bodyHtml: `<p>Hello!</p>\n`,
+        bodyHtml: expect.stringContaining('<p>Hello!</p>'),
       })
     );
   });
