@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "arg": "^5.0.0",
+    "cheerio": "^1.0.0-rc.10",
     "chokidar": "^3.5.1",
     "colors": "^1.4.0",
     "connect-history-api-fallback": "^1.6.0",

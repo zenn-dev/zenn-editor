@@ -13,6 +13,7 @@ import {
   getFileRaw,
   listFilenames,
   getWorkingPath,
+  completeHtml,
 } from './helper';
 import {
   Book,
@@ -92,7 +93,8 @@ export function getLocalChapter(
   if (!data) return null;
 
   const { meta, bodyMarkdown } = data;
-  const bodyHtml = markdownToHtml(bodyMarkdown);
+  const rawHtml = markdownToHtml(bodyMarkdown);
+  const bodyHtml = completeHtml(rawHtml);
   return {
     ...meta,
     bodyHtml,
