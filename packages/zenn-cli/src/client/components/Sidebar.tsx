@@ -246,6 +246,14 @@ export const Sidebar: React.VFC = () => {
               </ToplevelLink>
             </li>
             <li>
+              <ToplevelLink
+                to="guide"
+                hash="cli-%E3%81%A7%E7%94%BB%E5%83%8F%E3%82%92%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B"
+              >
+                <ListItemInner title="画像管理ガイド（ベータ版）" emoji="📷" />
+              </ToplevelLink>
+            </li>
+            <li>
               <a
                 href="https://zenn.dev/zenn/articles/markdown-guide"
                 target="_blank"
