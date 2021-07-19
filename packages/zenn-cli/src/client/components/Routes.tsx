@@ -26,12 +26,17 @@ const bookChapterRoutes = bookRoutes.anyRoute
     ),
   });
 
-const tovlevelRoutes = Rocon.SingleHash('hash', { optional: true })
+const guideRoutes = Rocon.SingleHash('hash', { optional: true })
   .attach(Rocon.Path())
+  .any('slug', {
+    action: ({ slug, hash }) => <Guide slug={slug} hash={hash} />,
+  });
+
+const tovlevelRoutes = Rocon.Path()
   .exact({
     action: () => <Home />,
   })
-  .route('guide', (r) => r.action(({ hash }) => <Guide hash={hash} />))
+  .route('guide', (r) => r.attach(guideRoutes))
   .route('articles', (r) => r.attach(articleRoutes))
   .route('books', (r) => r.attach(bookChapterRoutes));
 
@@ -40,38 +45,9 @@ export const Routes = () => {
 };
 
 type RouteNames = keyof typeof tovlevelRoutes._;
+type LinkCommonProps = { className?: string; children: React.ReactNode };
 
-export type ToplevelLinkProps = {
-  to: RouteNames;
-  className?: string;
-  hash?: string;
-  children: React.ReactNode;
-};
-
-export const ToplevelLink: React.VFC<ToplevelLinkProps> = (props) => {
-  // TODO: This is not type safe.
-  const location = useLocation();
-  const isActive = useMemo(() => {
-    if (location.pathname !== `/${props.to}`) return false;
-    if (props.hash) return location.hash === `#${props.hash}`;
-    return true;
-  }, [location]);
-
-  return (
-    <RoconLink
-      route={tovlevelRoutes._[props.to]}
-      match={{ hash: props.hash }}
-      className={isActive ? `active ${props.className}` : props.className}
-    >
-      {props.children}
-    </RoconLink>
-  );
-};
-
-export const LinkHome: React.VFC<{
-  className?: string;
-  children: React.ReactNode;
-}> = (props) => {
+export const LinkHome: React.VFC<LinkCommonProps> = (props) => {
   const location = useLocation();
   const isActive = useMemo(() => {
     return location.key === tovlevelRoutes.exactRoute.key;
@@ -87,11 +63,11 @@ export const LinkHome: React.VFC<{
   );
 };
 
-export const LinkArticle: React.VFC<{
-  slug: string;
-  className?: string;
-  children: React.ReactNode;
-}> = (props) => {
+export const LinkArticle: React.VFC<
+  {
+    slug: string;
+  } & LinkCommonProps
+> = (props) => {
   const location = useLocation();
   const isActive = useMemo(() => {
     return location.pathname === `/articles/${props.slug}`;
@@ -108,11 +84,11 @@ export const LinkArticle: React.VFC<{
   );
 };
 
-export const LinkBook: React.VFC<{
-  slug: string;
-  className?: string;
-  children: React.ReactNode;
-}> = (props) => {
+export const LinkBook: React.VFC<
+  {
+    slug: string;
+  } & LinkCommonProps
+> = (props) => {
   const location = useLocation();
 
   // TODO: This is not type safe.
@@ -131,12 +107,12 @@ export const LinkBook: React.VFC<{
   );
 };
 
-export const LinkChapter: React.VFC<{
-  bookSlug: string;
-  chapterFilename: string;
-  className?: string;
-  children: React.ReactNode;
-}> = (props) => {
+export const LinkChapter: React.VFC<
+  {
+    bookSlug: string;
+    chapterFilename: string;
+  } & LinkCommonProps
+> = (props) => {
   const location = useLocation();
   // Encoding is required. Including dot in url breaks url fallback.
   // ref: https://github.com/vitejs/vite/issues/2190
@@ -156,6 +132,32 @@ export const LinkChapter: React.VFC<{
         slug: props.bookSlug,
         chapter_filename: encodedChapterFilename,
       }}
+      className={isActive ? `active ${props.className}` : props.className}
+    >
+      {props.children}
+    </RoconLink>
+  );
+};
+
+export const LinkGuide: React.VFC<
+  {
+    slug: string;
+    hash?: string;
+  } & LinkCommonProps
+> = (props) => {
+  const location = useLocation();
+
+  // TODO: This is not type safe.
+  const isActive = useMemo(() => {
+    if (location.pathname !== `/guide/${props.slug}`) return false;
+    if (props.hash) return location.hash === `#${props.hash}`;
+    return true;
+  }, [location]);
+
+  return (
+    <RoconLink
+      route={guideRoutes.anyRoute}
+      match={{ slug: props.slug, hash: props.hash }}
       className={isActive ? `active ${props.className}` : props.className}
     >
       {props.children}

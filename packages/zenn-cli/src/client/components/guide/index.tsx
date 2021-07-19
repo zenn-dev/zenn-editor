@@ -8,17 +8,22 @@ import { useTitle } from '../../hooks/useTitle';
 
 type GuideProps = {
   hash?: string;
+  slug: string;
 };
 
-export const Guide: React.VFC<GuideProps> = ({ hash }) => {
-  const { data, error } = useFetch<{ html: string }>('/api/cli-guide', {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    errorRetryCount: 2,
-  });
+export const Guide: React.VFC<GuideProps> = ({ hash, slug }) => {
+  const { data, error } = useFetch<{ html: string; title?: string }>(
+    `/api/cli-guide/${slug}`,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      errorRetryCount: 2,
+    }
+  );
   const html = data?.html;
+  const title = data?.title;
 
-  useTitle('CLIリファレンス');
+  useTitle(title || 'CLIリファレンス');
 
   useEffect(() => {
     if (!hash || !html) return;
@@ -39,7 +44,7 @@ export const Guide: React.VFC<GuideProps> = ({ hash }) => {
     <>
       <ContentContainer>
         <StyledGuide className="guide">
-          <h1 className="guide__title">Zenn CLI Reference</h1>
+          <h1 className="guide__title">{title || 'Zenn CLI Reference'}</h1>
           <div className="guide__content">
             <BodyContent rawHtml={html} />
           </div>
@@ -53,7 +58,7 @@ const StyledGuide = styled.div`
   padding: 3rem 0;
   font-size: 0.94rem;
   .guide__title {
-    font-size: 2.4rem;
+    font-size: 2rem;
   }
   .guide__content {
     padding: 1.5rem 0;

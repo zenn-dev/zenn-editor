@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
-import { ToplevelLink } from '../Routes';
+import { LinkGuide } from '../Routes';
 import { useFetch } from '../../hooks/useFetch';
 import { useTitle } from '../../hooks/useTitle';
 
@@ -148,9 +148,9 @@ export const Home: React.VFC = () => {
               <div className="home__learn-more-title">
                 詳しい使い方はCLIリファレンスをご覧ください
               </div>
-              <ToplevelLink to="guide" className="home__link-cli-guide">
+              <LinkGuide slug="zenn-cli-guide" className="home__link-cli-guide">
                 CLIリファレンスを開く
-              </ToplevelLink>
+              </LinkGuide>
             </div>
           </div>
         </StyledHome>

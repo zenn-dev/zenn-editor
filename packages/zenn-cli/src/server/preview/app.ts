@@ -16,7 +16,7 @@ export function createApp() {
   app.get(`/api/books/:slug`, getBook);
   app.get(`/api/books/:book_slug/chapters`, getChapters);
   app.get(`/api/books/:book_slug/chapters/:chapter_filename`, getChapter);
-  app.get(`/api/cli-guide`, getCliGuide);
+  app.get(`/api/cli-guide/:slug`, getCliGuide);
   app.get(`/api/cli-version`, getCliVersion);
   app.get(`/api/local-info`, getLocalInfo);
 

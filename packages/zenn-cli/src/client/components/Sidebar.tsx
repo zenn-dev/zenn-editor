@@ -22,7 +22,7 @@ import {
   LinkBook,
   LinkChapter,
   LinkHome,
-  ToplevelLink,
+  LinkGuide,
 } from './Routes';
 import {
   ArticleMeta,
@@ -230,28 +230,25 @@ export const Sidebar: React.VFC = () => {
 
           <ul className="sidebar__static-links">
             <li>
-              <ToplevelLink
-                to="guide"
+              <LinkGuide
+                slug="zenn-cli-guide"
                 hash="cli-%E3%81%A7%E8%A8%98%E4%BA%8B%EF%BC%88article%EF%BC%89%E3%82%92%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B"
               >
                 <ListItemInner title="記事の作成ガイド" emoji="📝" />
-              </ToplevelLink>
+              </LinkGuide>
             </li>
             <li>
-              <ToplevelLink
-                to="guide"
+              <LinkGuide
+                slug="zenn-cli-guide"
                 hash="cli-%E3%81%A7%E6%9C%AC%EF%BC%88book%EF%BC%89%E3%82%92%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B"
               >
                 <ListItemInner title="本の作成ガイド" emoji="📚" />
-              </ToplevelLink>
+              </LinkGuide>
             </li>
             <li>
-              <ToplevelLink
-                to="guide"
-                hash="cli-%E3%81%A7%E7%94%BB%E5%83%8F%E3%82%92%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B"
-              >
+              <LinkGuide slug="deploy-github-images">
                 <ListItemInner title="画像管理ガイド" emoji="🏞" label="Beta" />
-              </ToplevelLink>
+              </LinkGuide>
             </li>
             <li>
               <a
