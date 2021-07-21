@@ -21,7 +21,7 @@ export default defineConfig({
   server: {
     port: 3333,
     proxy: {
-      '/api': {
+      '^/(api|images)/.*': {
         target: 'http://localhost:8000',
       },
     },

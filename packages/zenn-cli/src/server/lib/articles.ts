@@ -6,6 +6,7 @@ import {
   listFilenamesOrderByModified,
   getFileRaw,
   getWorkingPath,
+  completeHtml,
 } from './helper';
 import { Article, ArticleMeta, ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
@@ -14,7 +15,8 @@ export function getLocalArticle(slug: string): null | Article {
   const data = readArticleFile(slug);
   if (!data) return null;
   const { meta, bodyMarkdown } = data;
-  const bodyHtml = markdownToHtml(bodyMarkdown);
+  const rawHtml = markdownToHtml(bodyMarkdown);
+  const bodyHtml = completeHtml(rawHtml);
   return {
     ...meta,
     bodyHtml,

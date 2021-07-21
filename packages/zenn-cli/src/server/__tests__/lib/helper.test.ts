@@ -148,3 +148,27 @@ describe('generateFileIfNotExist', () => {
     expect(result).toEqual('Hello!');
   });
 });
+
+describe('completeHtml', () => {
+  test('If src is a URL, validation succeeds.', () => {
+    const html = helper.completeHtml(
+      '<img src="https://example.com/images/example.png">'
+    );
+    expect(html).not.toContain('表示できません');
+  });
+
+  test('If src is a valid path, validation succeeds.', () => {
+    const html = helper.completeHtml('<img src="/images/example.png">');
+    expect(html).not.toContain('表示できません');
+  });
+
+  test('If src is a invalid path, validation fails.', () => {
+    const html = helper.completeHtml('<img src="../images/example.png">');
+    expect(html).toContain('表示できません');
+  });
+
+  test('If src is a path with invalid extension, validation fails.', () => {
+    const html = helper.completeHtml('<img src="/images/example.svg">');
+    expect(html).toContain('表示できません');
+  });
+});
