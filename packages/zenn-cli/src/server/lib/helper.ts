@@ -23,7 +23,7 @@ export async function getPublishedCliVersion() {
 
 export function getWorkingPath(pathFromWorkingDir: string): string {
   // Prevent directory traversal
-  if (/^(\.\.(\/|\\|$))+/.test(path.normalize(pathFromWorkingDir))) {
+  if (/\.\./.test(pathFromWorkingDir)) {
     Log.error(
       '取得するファイル/ディレクトリの名前に不正な文字列が含まれているため処理を終了します'
     );
