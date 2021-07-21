@@ -34,6 +34,18 @@ describe('Handle custom markdown format properly', () => {
       '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json" /></div>\n'
     );
   });
+  test('should not convert to gist-links with invalid links', () => {
+    // ref: https://dev.to/antogarand/pwned-together-hacking-devto-hkd
+    const invalidUrls = [
+      'http://gist.github.com/TestUsername/abcdefghijklmnopqrstuvwxyzabcdef',
+      'https://gist.github.com/TestUsername/abcdefghijklmnopqrstuvwxyzabcdef/raw/abcdefghijklmnopqrstuvwxyzabcdefghijkl/xss.js',
+      'https://gist.github.com/abcdefghijklmnopqrstuvwxyzabcdefabcdefgh/abcdefghijklmnopqrstuvwxyzabcdef',
+    ];
+    invalidUrls.forEach((url) => {
+      const html = markdownToHtml(`@[gist](${url})`);
+      expect(html).toEqual('GitHub GistのページURLを指定してください\n');
+    });
+  });
   test('should convert a gist-link with gist-element with encoded file', () => {
     const html = markdownToHtml(
       `@[gist](https://gist.github.com/foo/bar?file=あ漢字$)`
