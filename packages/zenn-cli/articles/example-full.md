@@ -1,13 +1,12 @@
 ---
-title: "example full"
-type: "idea" # or "idea"
-topics: 
+title: 'example full'
+type: 'idea' # or "idea"
+topics:
   - React
   - Rust
 emoji: 👩‍💻
 published: false
 ---
-
 
 先日、こんな記事を見かけました。
 
@@ -23,55 +22,54 @@ published: false
 
 その後、こんなツイートを見かけました。
 
-
 企業のテックブログと言えば「会社がひとつブログを作って、みんなでそこに投稿する」という形が当たり前になっていますが、たしかに**個々人の投稿を集約する場所**を用意するだけでも良いのかもしれません。
 
-もう少し調べてみると[HERP社のテックブログ](https://tech-hub.herp.co.jp/)はまさにそのような形になっています。メンバーは個人ブログなど自分の好きな場所に記事を投稿し、会社のテックブログはその記事へのリンクを集約して表示するハブの役割をすると。とても良いですね。
+もう少し調べてみると[HERP 社のテックブログ](https://tech-hub.herp.co.jp/)はまさにそのような形になっています。メンバーは個人ブログなど自分の好きな場所に記事を投稿し、会社のテックブログはその記事へのリンクを集約して表示するハブの役割をすると。とても良いですね。
 
+# チームメンバーのテックブログを RSS で集約するサイトを作った
 
-# チームメンバーのテックブログをRSSで集約するサイトを作った
-RSSを辿って社内メンバーの個人ブログを集約するというのは、技術的にそこまで難しくありません。最近Zennの開発ばかりやっているので、息抜きがてらスターター的なものを作ってみました。
+RSS を辿って社内メンバーの個人ブログを集約するというのは、技術的にそこまで難しくありません。最近 Zenn の開発ばかりやっているので、息抜きがてらスターター的なものを作ってみました。
 
 ![](https://storage.googleapis.com/zenn-user-upload/em417t9y70zleo9003crmu3rkqyn)
-*デモサイトはこんな感じ*
+_デモサイトはこんな感じ_
 
 **[デモサイト →](https://team-blog-hub.vercel.app/)**
-**[GitHubリポジトリ →](https://github.com/catnose99/team-blog-hub)**
-
+**[GitHub リポジトリ →](https://github.com/catnose99/team-blog-hub)**
 
 デモサイトを見ていただければ分かると思いますが、個々人が投稿した記事へのリンクを集めた入り口のような場所になっています。
 
-各メンバーは、Zenn、Qiita、Medium、note、はてなブログなど、自分の好きな場所に、自分の記事として投稿できます。RSSを取得できさえすれば、どこに投稿してもOKというわけです。
-
+各メンバーは、Zenn、Qiita、Medium、note、はてなブログなど、自分の好きな場所に、自分の記事として投稿できます。RSS を取得できさえすれば、どこに投稿しても OK というわけです。
 
 # 技術的な構成
-サイトの構築にはNext.js（TypeScript）を使いました。以下のような流れで静的なサイトがビルドされるようになっています。
 
-1. 各メンバーのRSSのURLから投稿データのフェッチする
-2. 1をまとめて投稿データ一覧のjsonファイルを作成する
-3. Next.jsで静的サイトとしてビルドする
+サイトの構築には Next.js（TypeScript）を使いました。以下のような流れで静的なサイトがビルドされるようになっています。
 
+1. 各メンバーの RSS の URL から投稿データのフェッチする
+2. 1 をまとめて投稿データ一覧の json ファイルを作成する
+3. Next.js で静的サイトとしてビルドする
 
-## メンバーのRSSの登録
+## メンバーの RSS の登録
 
-[ソースコード](https://github.com/catnose99/team-blog-hub)を見ていただくと早いと思いますが、`members.ts`というファイルの中で各メンバーのプロフィールとRSSのURL一覧を登録する形になっています。
+[ソースコード](https://github.com/catnose99/team-blog-hub)を見ていただくと早いと思いますが、`members.ts`というファイルの中で各メンバーのプロフィールと RSS の URL 一覧を登録する形になっています。
 
 ```json
-[{
-  name: "メンバーの名前",
-  role: "役職名",
-  sources: [
-    "https://zenn.dev/catnose99/feed",
-    "https://medium.com/feed/@catnose99",
-  ]
-}]
+[
+  {
+    "name": "メンバーの名前",
+    "role": "役職名",
+    "sources": [
+      "https://zenn.dev/catnose99/feed",
+      "https://medium.com/feed/@catnose99"
+    ]
+  }
+]
 ```
 
-👆`sources`の部分にRSSのURLを指定します。複数のURLを指定することもできます。
+👆`sources`の部分に RSS の URL を指定します。複数の URL を指定することもできます。
 
 ### 正規表現で一部の記事を除外できるように
 
-一部の記事は会社のテックブログから除きたい（or含めたい）こともあると思うので、下記のように正規表現を指定することでフィルターをかけられるようにしました。
+一部の記事は会社のテックブログから除きたい（or 含めたい）こともあると思うので、下記のように正規表現を指定することでフィルターをかけられるようにしました。
 
 ```json
 [{
@@ -85,37 +83,36 @@ RSSを辿って社内メンバーの個人ブログを集約するというの�
 }]
 ```
 
-`yarn build:posts`が実行されたときに、指定内容をもとにRSSから投稿のメタデータ一覧をフェッチして`posts.json`という記事の情報をまとめたファイルが生成されます。RSSのパースは[rss-parser](https://www.npmjs.com/package/rss-parser)というパッケージを使うと簡単です。
+`yarn build:posts`が実行されたときに、指定内容をもとに RSS から投稿のメタデータ一覧をフェッチして`posts.json`という記事の情報をまとめたファイルが生成されます。RSS のパースは[rss-parser](https://www.npmjs.com/package/rss-parser)というパッケージを使うと簡単です。
 
+## Next.js で静的サイトをビルドする
 
+Next.js を使えば、静的なサイトも簡単に作れます。今回は上述の通り`posts.json`という投稿データ一覧がディレクトリ内に存在するため、ここから必要なデータを`import`して表示するだけです。
 
-## Next.jsで静的サイトをビルドする
-
-Next.jsを使えば、静的なサイトも簡単に作れます。今回は上述の通り`posts.json`という投稿データ一覧がディレクトリ内に存在するため、ここから必要なデータを`import`して表示するだけです。
-
-Next.jsでアプリを作るときに頻繁に使いがちな`getInitialProps`や`getStaticProps`などもほとんど必要ありません。
+Next.js でアプリを作るときに頻繁に使いがちな`getInitialProps`や`getStaticProps`などもほとんど必要ありません。
 
 ## デプロイ
-デモサイトは[Vercel](https://vercel.com)にデプロイしました。`npm run build`（`yarn build`）さえホスティング前に実行できれば、デプロイ先はどこでもOKです。
 
-チームで運営する場合には、CI/CD環境を整えると管理しやすそうです。新しく社員が入ってきたときに「個人ブログのRSSのURLを追加してプルリク投げておいて」とお願いできるとお互い楽ですね。
+デモサイトは[Vercel](https://vercel.com)にデプロイしました。`npm run build`（`yarn build`）さえホスティング前に実行できれば、デプロイ先はどこでも OK です。
 
-そういう意味でリポジトリとの連携がしやすいVercelや[Netlify](https://www.netlify.com/)などがおすすめです。
+チームで運営する場合には、CI/CD 環境を整えると管理しやすそうです。新しく社員が入ってきたときに「個人ブログの RSS の URL を追加してプルリク投げておいて」とお願いできるとお互い楽ですね。
+
+そういう意味でリポジトリとの連携がしやすい Vercel や[Netlify](https://www.netlify.com/)などがおすすめです。
 
 ## 定期的に自動ビルドする
-実際の運用では、投稿一覧を更新するために、定期的に（1日に1回など）自動でビルドを行う必要があります。
 
-- Vercelの場合、GitHub Actionsの「cron」を使えば、定期的な自動デプロイを楽に設定できます。詳しくは[GitHubのDiscussion](https://github.com/vercel/next.js/discussions/12486)が参考になると思います。
+実際の運用では、投稿一覧を更新するために、定期的に（1 日に 1 回など）自動でビルドを行う必要があります。
 
-- Netlifyの場合は[Auto trigger deploys on Netlify](https://flaviocopes.com/netlify-auto-deploy/)のような方法で自動デプロイできます。
+- Vercel の場合、GitHub Actions の「cron」を使えば、定期的な自動デプロイを楽に設定できます。詳しくは[GitHub の Discussion](https://github.com/vercel/next.js/discussions/12486)が参考になると思います。
 
+- Netlify の場合は[Auto trigger deploys on Netlify](https://flaviocopes.com/netlify-auto-deploy/)のような方法で自動デプロイできます。
 
 # ライセンス
-今回作ったものはオープンソースです。Forkしてご自由にお使いください。
 
-チームでなくとも個人で使っていただくのも良いかもしれません。たとえば、noteとMediumとZennに投稿している方は、同じ仕組みを使って一箇所に投稿一覧をまとめることができます。
+今回作ったものはオープンソースです。Fork してご自由にお使いください。
 
-※ 真っ先に変えたいのは配色だと思います。使用する色の数を抑えつつ、カラーコードはCSS変数で管理しているため、比較的変更しやすいと思います。
+チームでなくとも個人で使っていただくのも良いかもしれません。たとえば、note と Medium と Zenn に投稿している方は、同じ仕組みを使って一箇所に投稿一覧をまとめることができます。
+
+※ 真っ先に変えたいのは配色だと思います。使用する色の数を抑えつつ、カラーコードは CSS 変数で管理しているため、比較的変更しやすいと思います。
 
 [github.com/catnose99/team-blog-hub →](https://github.com/catnose99/team-blog-hub)
-
