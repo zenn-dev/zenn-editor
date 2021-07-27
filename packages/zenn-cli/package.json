@@ -26,6 +26,7 @@
     "test:client": "jest --config=jest.config.client.js",
     "test:server": "jest --config=jest.config.server.js",
     "lint": "run-s lint:prettier lint:eslint",
+    "lint:strict": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
     "lint:prettier": "prettier .",
     "lint:eslint": "eslint 'src/**/*.{ts,tsx}'",
     "lint:fix": "run-s lint:fix:*",
