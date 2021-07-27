@@ -28,6 +28,9 @@ async function initMermaid(): Promise<void> {
 
     // mermaid 本体がロード時に走らないように設定
     // mermaid 本体は使わないのでほかは設定しない
+
+    // TODO:
+    // eslint-disable-next-line
     mermaid!.initialize({
       mermaid: {
         startOnLoad: false,
@@ -35,6 +38,7 @@ async function initMermaid(): Promise<void> {
     });
 
     // mermaidAPI の設定
+    // eslint-disable-next-line
     mermaid!.mermaidAPI.initialize({
       startOnLoad: false, // レンダリングはこちらでやるので false
       securityLevel: 'strict', // tags in text are encoded, click functionality is disabled
@@ -67,6 +71,7 @@ type PotentialRisk = {
 function getPotentialPerformanceRisk(source: string): PotentialRisk {
   const cool = (() => {
     try {
+      // eslint-disable-next-line
       mermaid!.mermaidAPI.parse(source);
       return true;
     } catch (e) {
@@ -151,7 +156,7 @@ export class EmbedMermaid extends HTMLElement {
     // securityLevel='loose'にし、かつ `Interaction` を有効にする場合は
     // https://github.com/mermaidjs/mermaid-gitbook/blob/master/content/usage.md#binding-events
     // ここを参考に追加する
-    const insert = (svgCode: string, bindFunctions: any) => {
+    const insert = (svgCode: string) => {
       this._svgContainer.innerHTML = svgCode;
     };
     mermaid?.mermaidAPI.render(
