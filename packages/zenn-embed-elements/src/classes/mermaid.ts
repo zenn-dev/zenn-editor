@@ -29,7 +29,6 @@ async function initMermaid(): Promise<void> {
     // mermaid 本体がロード時に走らないように設定
     // mermaid 本体は使わないのでほかは設定しない
 
-    // TODO:
     // eslint-disable-next-line
     mermaid!.initialize({
       mermaid: {

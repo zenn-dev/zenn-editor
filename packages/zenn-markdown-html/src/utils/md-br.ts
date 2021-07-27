@@ -9,6 +9,7 @@ import MarkdownIt from 'markdown-it';
  * @param {number} start start position at br tag
  * @returns {string | null} br tag (<br> or <br/> or <br />)
  */
+// eslint-disable-next-line
 function matchBR(state: any, start: number): string | null {
   const match = state.src.slice(start, start + 6).match(/^<br\s?\/?>/);
   if (match) {
