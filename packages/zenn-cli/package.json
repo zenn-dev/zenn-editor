@@ -25,9 +25,12 @@
     "test": "run-s test:client test:server",
     "test:client": "jest --config=jest.config.client.js",
     "test:server": "jest --config=jest.config.server.js",
-    "fix": "run-s fix:*",
-    "fix:prettier": "prettier -w .",
-    "fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
+    "lint": "run-s lint:prettier lint:eslint",
+    "lint:prettier": "prettier .",
+    "lint:eslint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint:fix": "run-s lint:fix:*",
+    "lint:fix:prettier": "prettier -w .",
+    "lint:fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "dependencies": {
     "arg": "^5.0.0",
