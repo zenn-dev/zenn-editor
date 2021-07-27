@@ -100,9 +100,11 @@ const blockOptions = {
 
 export function mdCustomBlock(md: MarkdownIt) {
   md.renderer.rules.custom = function tokenizeBlock(tokens, idx) {
+    // eslint-disable-next-line
     const { tag, arg }: any = tokens[idx].info;
     if (!tag || !arg) return '';
     try {
+      // eslint-disable-next-line
       return (blockOptions as any)[tag](arg) + '\n';
     } catch (e) {
       return '';
@@ -158,6 +160,7 @@ export function mdCustomBlock(md: MarkdownIt) {
       if (!silent) {
         const token = state.push('custom', 'div', 0);
         token.markup = state.src.slice(startPos, pointer.pos);
+        // eslint-disable-next-line
         token.info = { arg, tag } as any;
         token.block = true;
         token.map = [startLine, pointer.line + 1];
