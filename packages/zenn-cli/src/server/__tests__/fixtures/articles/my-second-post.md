@@ -2,7 +2,7 @@
 title: 'Second'
 emoji: '💯'
 type: 'idea'
-topics: ["zenn", "cli"]
+topics: ['zenn', 'cli']
 published: false
 ---
 

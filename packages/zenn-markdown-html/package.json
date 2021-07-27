@@ -1,6 +1,7 @@
 {
   "name": "zenn-markdown-html",
   "version": "0.1.93",
+  "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
   "repository": {
@@ -24,7 +25,11 @@
     "jest": "^26.6.3",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.4.4",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0"
   },
   "dependencies": {
     "@steelydylan/markdown-it-imsize": "^1.0.2",
