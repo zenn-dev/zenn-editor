@@ -1,6 +1,7 @@
 {
   "name": "zenn-markdown-html",
   "version": "0.1.93",
+  "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
   "repository": {
