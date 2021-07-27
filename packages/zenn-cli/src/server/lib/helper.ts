@@ -150,7 +150,7 @@ export function completeHtml(html: string): string {
   return $.html();
 }
 
-function isUrl(text: string): Boolean {
+function isUrl(text: string): boolean {
   try {
     return new url.URL(text) && true;
   } catch {
