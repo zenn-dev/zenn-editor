@@ -44,7 +44,6 @@ export const Routes = () => {
   return useRoutes(tovlevelRoutes);
 };
 
-type RouteNames = keyof typeof tovlevelRoutes._;
 type LinkCommonProps = { className?: string; children: React.ReactNode };
 
 export const LinkHome: React.VFC<LinkCommonProps> = (props) => {
