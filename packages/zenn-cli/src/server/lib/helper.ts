@@ -136,6 +136,7 @@ export function completeHtml(html: string): string {
         `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。ローカルの画像を読み込むには相対パスではなく<code>/images/example.png</code>のように<code>/images/</code>から始まるパスを指定してください。</p>`
       );
       $(el).remove();
+      return;
     }
 
     // 拡張子が png,jpg,jpeg,gif であること
@@ -144,6 +145,28 @@ export function completeHtml(html: string): string {
         `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。対応している画像の拡張子は <code>png, jpg, jpeg, gif</code> です。</p>`
       );
       $(el).remove();
+      return;
+    }
+
+    const filepath = getWorkingPath(src);
+
+    if (!fs.existsSync(filepath)) {
+      $(el).before(
+        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>にファイルが存在しません。</p>`
+      );
+      $(el).remove();
+      return;
+    }
+
+    const fileSize = fs.statSync(filepath).size;
+    if (fileSize > 1024 * 1024 * 3) {
+      $(el).before(
+        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>のファイルサイズ（${
+          Math.trunc((fileSize * 100) / 1024 / 1024) / 100
+        } MB）はアップロード可能なサイズを超えています。ファイルサイズは3MB以内にしてください。</p>`
+      );
+      $(el).remove();
+      return;
     }
   });
 

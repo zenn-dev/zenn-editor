@@ -492,11 +492,11 @@ describe('getBookErrors', () => {
     test('return error with undefined coverDataUrl', () => {
       const errors = getBookErrors({
         ...validBook,
-        coverFilesize: 1000 * 1000 * 2,
+        coverFilesize: 1024 * 1024 * 2,
       });
       expect(errors.length).toEqual(1);
       expect(errors[0].message).toContain(
-        `カバー画像のサイズは1MB以内にしてください。現在のサイズ: ${1000 * 2}KB`
+        `カバー画像のサイズは1MB以内にしてください。現在のサイズ: ${1024 * 2}KB`
       );
     });
   });
