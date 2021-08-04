@@ -149,7 +149,7 @@ export function completeHtml(html: string): string {
     }
 
     const filepath = getWorkingPath(src);
-    
+
     if (!fs.existsSync(filepath)) {
       $(el).before(
         `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>にファイルが存在しません。</p>`
@@ -158,9 +158,12 @@ export function completeHtml(html: string): string {
       return;
     }
 
-    if (fs.statSync(filepath).size > 1024 * 1024 * 3) {
+    const fileSize = fs.statSync(filepath).size;
+    if (fileSize > 1024 * 1024 * 3) {
       $(el).before(
-        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>はアップロードできるサイズを超えています。ファイルサイズは3MB以内にしてください。</p>`
+        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>のファイルサイズ（${
+          Math.trunc((fileSize * 100) / 1024 / 1024) / 100
+        } MB）はアップロード可能なサイズを超えています。ファイルサイズは3MB以内にしてください。</p>`
       );
       $(el).remove();
       return;

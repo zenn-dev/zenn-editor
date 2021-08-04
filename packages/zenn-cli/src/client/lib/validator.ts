@@ -171,7 +171,7 @@ const validateBookCoverSize: ItemValidator<Book> = {
   getMessage: (item) =>
     `カバー画像のサイズは1MB以内にしてください。現在のサイズ: ${
       item.coverFilesize
-        ? `${Math.ceil(item.coverFilesize / 1024)}KB`
+        ? `${Math.trunc(item.coverFilesize / 1024)}KB`
         : '取得できませんでした'
     }`,
   isValid: ({ coverDataUrl, coverFilesize }) => {
