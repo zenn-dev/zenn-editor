@@ -34,6 +34,18 @@ describe('Handle custom markdown format properly', () => {
       '<div class="embed-gist"><embed-gist page-url="https://gist.github.com/foo/bar" encoded-filename="test.json" /></div>\n'
     );
   });
+  test('should not convert to gist-links with invalid links', () => {
+    // ref: https://dev.to/antogarand/pwned-together-hacking-devto-hkd
+    const invalidUrls = [
+      'http://gist.github.com/TestUsername/abcdefghijklmnopqrstuvwxyzabcdef',
+      'https://gist.github.com/TestUsername/abcdefghijklmnopqrstuvwxyzabcdef/raw/abcdefghijklmnopqrstuvwxyzabcdefghijkl/xss.js',
+      'https://gist.github.com/abcdefghijklmnopqrstuvwxyzabcdefabcdefgh/abcdefghijklmnopqrstuvwxyzabcdef',
+    ];
+    invalidUrls.forEach((url) => {
+      const html = markdownToHtml(`@[gist](${url})`);
+      expect(html).toEqual('GitHub GistのページURLを指定してください\n');
+    });
+  });
   test('should convert a gist-link with gist-element with encoded file', () => {
     const html = markdownToHtml(
       `@[gist](https://gist.github.com/foo/bar?file=あ漢字$)`
@@ -51,8 +63,25 @@ describe('Handle custom markdown format properly', () => {
   });
 
   test('should generate valid message box html', () => {
-    const html = markdownToHtml(':::message alert\nhello\n:::');
-    expect(html).toContain('<div class="msg alert"><p>hello</p>\n</div>');
+    const html = markdownToHtml(':::message\nhello\n:::');
+    expect(html).toContain('<div class="msg "><p>hello</p>\n</div>');
+  });
+
+  test('should generate valid alert message box html', () => {
+    const validMarkdownPatterns = [
+      ':::message alert\nhello\n:::',
+      ':::message alert  \nhello\n:::',
+      ':::message   alert  \nhello\n:::',
+    ];
+    validMarkdownPatterns.forEach((markdown) => {
+      const html = markdownToHtml(markdown);
+      expect(html).toContain('<div class="msg alert"><p>hello</p>\n</div>');
+    });
+  });
+
+  test('should not generate message box with invalid class', () => {
+    const html = markdownToHtml(':::message invalid"\nhello\n:::');
+    expect(html).not.toContain('<div class="msg');
   });
 
   test('should generate youtube html', () => {
@@ -106,7 +135,7 @@ describe('Handle custom markdown format properly', () => {
   test.each`
     url                                                                                          | videoId
     ${'youtube.com/watch?gl=NL&hl=nl&feature=g-vrec&context=G2584313RVAAAAAAAABA&v=35LqQPKylEA'} | ${'35LqQPKylEA'}
-  `('$url should not generate youtube html', ({ url, videoId }) => {
+  `('$url should not generate youtube html', ({ url }) => {
     const html = markdownToHtml(url);
     const escapeUrl = escapeHtml(url);
     expect(html.trim()).toStrictEqual(`<p>${escapeUrl}</p>`.trim());

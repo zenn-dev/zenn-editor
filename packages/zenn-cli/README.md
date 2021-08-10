@@ -1,16 +1,15 @@
 # Zenn CLI
 
-ローカルでZennの投稿コンテンツを管理/プレビューするためのCLI
+ローカルで Zenn の投稿コンテンツを管理/プレビューするための CLI
 
 # ユーザー向けドキュメント
 
-- [CLIのインストール](https://zenn.dev/zenn/articles/install-zenn-cli)
-- [CLIの使い方](https://zenn.dev/zenn/articles/zenn-cli-guide)
+- [CLI のインストール](https://zenn.dev/zenn/articles/install-zenn-cli)
+- [CLI の使い方](https://zenn.dev/zenn/articles/zenn-cli-guide)
 
 # Develop CLI
 
 ## プレビュー（`zenn preview`）
-
 
 ```bash
 $ yarn dev

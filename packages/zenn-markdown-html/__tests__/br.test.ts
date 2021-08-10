@@ -2,8 +2,11 @@ import markdownToHtml from '../src/index';
 
 describe('Handle br tag properly', () => {
   test('should preserve br tag inside paragraph', () => {
-    const html = markdownToHtml('foo<br>bar');
-    expect(html).toMatch(/<p>foo<br>bar<\/p>/);
+    const patterns = ['foo<br>bar', 'foo<br/>bar', 'foo<br />bar'];
+    patterns.forEach((pattern) => {
+      const html = markdownToHtml(pattern);
+      expect(html).toMatch(/<p>foo<br>bar<\/p>/);
+    });
   });
   test('should preserve br tag inside table', () => {
     const tableString = [

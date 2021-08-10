@@ -21,7 +21,6 @@ const mdFootnote = require('markdown-it-footnote');
 const mdTaskLists = require('markdown-it-task-lists');
 const mdInlineComments = require('markdown-it-inline-comments');
 const mdLinkAttributes = require('markdown-it-link-attributes');
-
 const md = markdownIt({
   breaks: true,
   linkify: true,
@@ -34,13 +33,6 @@ md.use(mdBr)
   .use(mdRendererFence)
   .use(markdownItImSize)
   .use(mdCustomBlock)
-  .use(markdownItAnchor, {
-    level: [1, 2, 3, 4],
-    permalink: true,
-    permalinkBefore: true,
-    permalinkSymbol: '',
-    permalinkClass: 'header-anchor-link',
-  })
   .use(mdContainer, 'details', containerDetailsOptions)
   .use(mdContainer, 'message', containerMessageOptions)
   .use(mdFootnote)
@@ -51,6 +43,15 @@ md.use(mdBr)
     attrs: {
       rel: 'nofollow',
     },
+  })
+  .use(markdownItAnchor, {
+    level: [1, 2, 3, 4],
+    permalink: markdownItAnchor.permalink.ariaHidden({
+      placement: 'before',
+      class: 'header-anchor-link',
+      symbol: '',
+    }),
+    tabIndex: false,
   })
   .use(mdKatex)
   .use(mdLinkifyToCard)

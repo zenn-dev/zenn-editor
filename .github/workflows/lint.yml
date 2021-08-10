@@ -1,0 +1,19 @@
+name: Lint zenn-editor
+
+on:
+  pull_request:
+    branches:
+      - main
+      - canary
+    types: [opened, synchronize]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Lint
+        run: yarn lint:strict

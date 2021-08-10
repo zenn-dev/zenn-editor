@@ -1,7 +1,7 @@
 ---
-title: "example tweet"
-type: "tech"
-topics: 
+title: 'example tweet'
+type: 'tech'
+topics:
   - React
   - Rust
 emoji: 👩‍💻
@@ -22,11 +22,8 @@ https://twitter.com/jack/status/20
 https://twitter.com/jack/status/20
 https://twitter.com/jack/status/20
 
-
 https://twitter.com/jack/status/20
 
-
 https://twitter.com/jack/status/20
-
 
 aa

@@ -1,7 +1,7 @@
 ---
-title: "example empty"
-type: "idea" # or "idea"
-topics: 
+title: 'example empty'
+type: 'idea' # or "idea"
+topics:
   - React
   - Rust
 emoji: 👩‍💻

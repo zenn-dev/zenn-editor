@@ -13,6 +13,12 @@ published: false
 
 ![](/images/example-images/zenn-editor.png)
 
+## 存在しないパス
+
+`![](/images/example-images/not-exist.png)`
+
+![](/images/example-images/not-exist.png)
+
 ## 誤った指定（相対パス）
 
 `![](../images/example-images/zenn-editor.png)`

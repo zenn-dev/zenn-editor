@@ -1,6 +1,7 @@
 {
   "name": "zenn-embed-elements",
-  "version": "0.1.93",
+  "version": "0.1.94-alpha.3",
+  "license": "MIT",
   "description": "Web components for embedded contents.",
   "repository": {
     "type": "git",
@@ -13,12 +14,17 @@
   ],
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
+    "lint:strict": "eslint . --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "build": "rimraf lib/* && tsc -p .",
     "test": "echo 'no test yet'"
   },
   "devDependencies": {
     "@types/node": "^14.0.5",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
     "rimraf": "^3.0.2",
     "typescript": "^3.9.3"
   },

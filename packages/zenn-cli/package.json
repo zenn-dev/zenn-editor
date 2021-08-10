@@ -1,7 +1,7 @@
 {
   "name": "zenn-cli",
   "license": "MIT",
-  "version": "0.1.93",
+  "version": "0.1.94-alpha.3",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -25,9 +25,13 @@
     "test": "run-s test:client test:server",
     "test:client": "jest --config=jest.config.client.js",
     "test:server": "jest --config=jest.config.server.js",
-    "fix": "run-s fix:*",
-    "fix:prettier": "prettier -w .",
-    "fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
+    "lint": "run-s lint:prettier lint:eslint",
+    "lint:strict": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
+    "lint:prettier": "prettier .",
+    "lint:eslint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint:fix": "run-s lint:fix:*",
+    "lint:fix:prettier": "prettier -w .",
+    "lint:fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "dependencies": {
     "arg": "^5.0.0",
@@ -44,7 +48,7 @@
     "node-fetch": "^2.6.1",
     "open": "^8.2.0",
     "ws": "^7.4.6",
-    "zenn-markdown-html": "^0.1.93"
+    "zenn-markdown-html": "^0.1.94-alpha.3"
   },
   "devDependencies": {
     "@material-ui/core": "^4.11.4",
@@ -84,8 +88,8 @@
     "typescript": "^4.2.4",
     "vite": "^2.3.7",
     "wait-on": "^5.3.0",
-    "zenn-content-css": "^0.1.93",
-    "zenn-embed-elements": "^0.1.93"
+    "zenn-content-css": "^0.1.94-alpha.3",
+    "zenn-embed-elements": "^0.1.94-alpha.3"
   },
   "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
   "publishConfig": {

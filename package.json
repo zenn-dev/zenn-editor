@@ -9,6 +9,7 @@
   "scripts": {
     "test": "lerna run test --stream",
     "lint": "lerna run lint --stream",
+    "lint:strict": "lerna run lint:strict --stream",
     "lint:fix": "lerna run lint:fix --stream",
     "build": "lerna run build --stream",
     "publish:all": "npm run test && npm run build && lerna publish",

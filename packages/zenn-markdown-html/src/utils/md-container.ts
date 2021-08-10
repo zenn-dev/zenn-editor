@@ -1,4 +1,5 @@
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+import type Token from 'markdown-it/lib/token';
 
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container
@@ -8,15 +9,16 @@ import { escapeHtml } from 'markdown-it/lib/common/utils';
 // :::
 export const containerDetailsOptions = {
   validate: function (params: string) {
-    return params.trim().match(/^details\s+(.*)$/);
+    return /^details\s+(.*)$/.test(params.trim());
   },
-  render: function (tokens: any[], idx: number) {
+  render: function (tokens: Token[], idx: number) {
     const m = tokens[idx].info.trim().match(/^details\s+(.*)$/);
+    const summary = m?.[1] || '';
     if (tokens[idx].nesting === 1) {
       // opening tag
       return (
         '<details><summary>' +
-        escapeHtml(m[1]) +
+        escapeHtml(summary) +
         '</summary><div class="details-content">'
       );
     } else {
@@ -28,18 +30,19 @@ export const containerDetailsOptions = {
 // ::: message alert
 //   text
 // :::
-const msgClassRegex = /^message\s*([0-9a-z -_]{0,15})$/;
+const msgClassRegex = /^message\s*(alert)?$/;
 
 export const containerMessageOptions = {
   validate: function (params: string) {
-    return params.trim().match(msgClassRegex);
+    return msgClassRegex.test(params.trim());
   },
-  render: function (tokens: any[], idx: number) {
+  render: function (tokens: Token[], idx: number) {
     const m = tokens[idx].info.trim().match(msgClassRegex);
+    const msgClassName = m?.[1] || '';
 
     if (tokens[idx].nesting === 1) {
       // opening tag
-      return '<div class="msg ' + escapeHtml(m[1]) + '">';
+      return '<div class="msg ' + escapeHtml(msgClassName) + '">';
     } else {
       // closing tag
       return '</div>\n';
