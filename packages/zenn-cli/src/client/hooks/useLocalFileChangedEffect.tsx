@@ -14,7 +14,8 @@ export const HotReloadRoot: React.VFC<{ children: React.ReactNode }> = (
   // websocket
   useEffect(() => {
     // e.g ws://localhost:8000
-    const websocket = new WebSocket(`ws://${window.location.host}`);
+    const protocol = isSecureContext ? "wss:" : "ws:"
+    const websocket = new WebSocket(`${protocol}//${window.location.host}`);
 
     // detect local file changes
     websocket.onmessage = () => {
