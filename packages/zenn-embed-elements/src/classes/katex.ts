@@ -3,6 +3,7 @@ import { loadStylesheet } from '../utils/load-stylesheet';
 
 declare let katex: any;
 
+const katexVersion = '0.13.13';
 const containerId = 'katex-container';
 
 export class EmbedKatex extends HTMLElement {
@@ -22,14 +23,14 @@ export class EmbedKatex extends HTMLElement {
   async render() {
     if (typeof katex === 'undefined') {
       await loadScript({
-        src: 'https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js',
+        src: `https://cdn.jsdelivr.net/npm/katex@${katexVersion}/dist/katex.min.js`,
         id: 'katex-js',
       });
     }
 
     // CSSを読み込む（まだ読み込まれていない場合のみ）
     loadStylesheet({
-      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css',
+      href: `https://cdn.jsdelivr.net/npm/katex@${katexVersion}/dist/katex.min.css`,
       id: `katex-css`,
     });
 
