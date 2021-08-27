@@ -71,9 +71,11 @@ const fallbackLanguages: {
   [key: string]: string;
 } = {
   vue: 'html',
+  react: 'jsx',
   fish: 'shell',
   sh: 'shell',
   cwl: 'yaml',
+  tf: 'hcl', // ref: https://github.com/PrismJS/prism/issues/1252
 };
 
 /**

@@ -14,7 +14,6 @@ import { mdBr } from './utils/md-br';
 import { mdCustomBlock } from './utils/md-custom-block';
 import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
-import { mdMermaid } from './utils/md-mermaid';
 
 const mdContainer = require('markdown-it-container');
 const mdFootnote = require('markdown-it-footnote');
@@ -54,8 +53,7 @@ md.use(mdBr)
     tabIndex: false,
   })
   .use(mdKatex)
-  .use(mdLinkifyToCard)
-  .use(mdMermaid);
+  .use(mdLinkifyToCard);
 
 // custom footnote => TODO: ファイルを分ける
 md.renderer.rules.footnote_block_open = () =>

@@ -39,8 +39,6 @@ $\frac{1}{2}$
 
 $\begin{pmatrix}x\\y\end{pmatrix}$
 
-${\tilde\bold e}_\alpha$
-
 $a^{b}$
 
 $a^*b$ with $a^*$
@@ -62,13 +60,9 @@ $\sqrt{3x-1}+(1+x)^2$
 Let the right triangle hypothenuse be aligned with the coordinate system _x-axis_.
 The vector loop closure equation then reads
 
-$$a{\bold e}_\alpha + b\tilde{\bold e}_\alpha + c{\bold e}_x = \bold 0$$ (1)
+$$a{\bold e}_\alpha + b\tilde{\bold e}_\alpha + c{\bold e}_x = \bold 0$$ 
 
-with
-
-$${\bold e}_\alpha = \begin{pmatrix}\cos\alpha\\ \sin\alpha\end{pmatrix} \quad and \quad {\tilde\bold e}_\alpha = \begin{pmatrix}-\sin\alpha\\ \cos\alpha\end{pmatrix}$$
-
-Resolving for the hypothenuse part $c{\bold e}_x$ in the loop closure equation (1)
+Resolving for the hypothenuse part $c{\bold e}_x$ in the loop closure equation 
 
 $$-c{\bold e}_x = a{\bold e}_\alpha + b\tilde{\bold e}_\alpha$$
 
