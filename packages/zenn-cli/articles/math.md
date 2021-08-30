@@ -7,6 +7,8 @@ emoji: 👩‍💻
 published: false
 ---
 
+
+
 &\&&
 
 $a,b,c$は[hoge](https://hoge.fuga)を参照。
@@ -24,6 +26,16 @@ $a$
 $a\ne0$
 
 $\varphi$
+
+// 👇can scroll horizontally
+
+$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$
+
+
+$$
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+$$
+
 
 $<script>alert("a")</script>1+1=2$
 
