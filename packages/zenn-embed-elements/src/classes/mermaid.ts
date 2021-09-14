@@ -21,7 +21,7 @@ const containerId = 'mermaid-container';
 async function initMermaid(): Promise<void> {
   if (typeof mermaid === 'undefined') {
     await loadScript({
-      src: 'https://cdn.jsdelivr.net/npm/mermaid@8.10/dist/mermaid.min.js',
+      src: 'https://cdn.jsdelivr.net/npm/mermaid@8.12/dist/mermaid.min.js',
       id: 'mermaid-js',
     });
     const theme = 'default';
@@ -52,6 +52,12 @@ async function initMermaid(): Promise<void> {
       sequence: {
         useMaxWidth: true,
       },
+      class: {
+        useMaxWidth: true,
+      },
+      journey: {
+        useMaxWidth: true,
+      }
     });
   }
 }
@@ -98,17 +104,32 @@ function getPotentialPerformanceRisk(source: string): PotentialRisk {
 }
 
 export class EmbedMermaid extends HTMLElement {
-  // mermaid のソース記述が格納されているpreタグ
-  private readonly _sourceContainer: HTMLPreElement;
+  // mermaid のソース記述
+  private readonly _source;
+
+  // 描画中の一時的なsvgが格納するdivタグ
+  // 描画が終わるとmermaid.jsによって削除される
+  // 指定しないと mermaid が body へ一時タグをつける動きになる
+  // 予期しない副作用を避けるため、EmbedMermaid に閉じたところにつくる
+  // なお、一時コンテナはdivであることが期待されている
+  private readonly _tmpContainer: HTMLDivElement;
 
   // 描画後の svg を格納するdivタグ ここで作る
   private readonly _svgContainer: HTMLDivElement;
 
   constructor() {
     super();
-
     // コード記述が格納されている pre タグを取得
-    this._sourceContainer = this.childNodes[0] as HTMLPreElement;
+    // できるだけコードがちらつかないようにインスタンス変数に入れて削除してしまう
+    // パフォーマンスのために削除しているが、「コードをコピペしたい」みたいな話がでてきたときは残してHiddenにする
+    const sourceContainer = this.childNodes[0] as HTMLPreElement;
+    this._source = sourceContainer.innerText || '';
+    sourceContainer.remove();
+
+    // 一時コンテナ
+    const tmpContainer = document.createElement('div');
+    this.appendChild(tmpContainer);
+    this._tmpContainer = tmpContainer;
 
     // 描画後のSVGを格納する div タグを作成
     const container = document.createElement('div');
@@ -122,15 +143,14 @@ export class EmbedMermaid extends HTMLElement {
 
   async render() {
     await initMermaid();
-    const source = this._sourceContainer.innerText || '';
 
     // Mermaid モジュールの読み込みに失敗したり、レンダリング対象のコンテンツが空の場合は何もせずに終了
-    if (!source) {
+    if (!this._source) {
       return;
     }
 
     // 文法エラーやパフォーマンスリスクが検出された場合、注意書きをレンダリングして終了
-    const risk = getPotentialPerformanceRisk(source);
+    const risk = getPotentialPerformanceRisk(this._source);
     if (
       Object.values(risk)
         .map((r) => r.yes)
@@ -157,12 +177,13 @@ export class EmbedMermaid extends HTMLElement {
     // ここを参考に追加する
     const insert = (svgCode: string) => {
       this._svgContainer.innerHTML = svgCode;
+      // this._sourceContainer.remove(); // パフォーマンスのために消す。「ソースコードをコピペしたい」みたいな要望が出てきたら残しても良い
     };
     mermaid?.mermaidAPI.render(
       `${containerId}-${Date.now().valueOf()}-render`,
-      source,
+      this._source,
       insert,
-      this._sourceContainer
+      this._tmpContainer
     );
   }
 }
