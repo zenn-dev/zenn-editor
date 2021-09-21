@@ -16,13 +16,12 @@ describe('cli exec new:book', () => {
   beforeEach(() => {
     // mock
     jest.spyOn(helper, 'generateFileIfNotExist').mockImplementation();
-    jest.spyOn(process, 'exit').mockImplementation();
     jest.spyOn(Log, 'error').mockImplementation();
     console.log = jest.fn();
   });
 
   test('should call generateFileIfNotExist for config.yaml with proper arguments', () => {
-    exec();
+    exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringMatching(anyConfigYamlPathRegex),
       expect.stringContaining(
@@ -43,7 +42,7 @@ describe('cli exec new:book', () => {
 
   test('should call generateFileIfNotExist for chapter files with proper arguments', () => {
     const expectedChapterBody = [`---`, `title: ""`, `---`].join('\n');
-    exec();
+    exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenNthCalledWith(
       2,
       expect.stringMatching(anyChapterFileRegex),
@@ -114,6 +113,5 @@ describe('cli exec new:book', () => {
         `小文字の半角英数字（a-z0-9）、ハイフン（-）、アンダースコア（_）の12〜50字の組み合わせにしてください`
       )
     );
-    expect(process.exit).toHaveBeenCalledWith(1);
   });
 });

@@ -23,12 +23,13 @@ function parseArgs(argv?: string[]) {
       console.log(err);
     }
     console.log(initHelpText);
-    process.exit(0);
+    return null;
   }
 }
 
 export const exec: CliExecFn = (argv) => {
   const args = parseArgs(argv);
+  if (args === null) return;
 
   if (args['--help']) {
     console.log(initHelpText);

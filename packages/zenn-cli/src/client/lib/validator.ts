@@ -35,10 +35,10 @@ const validateMissingTitle: ItemValidator<Article | Book | Chapter> = {
 
 const validateTitleLength: ItemValidator<Article | Book | Chapter> = {
   isCritical: true,
-  getMessage: () => 'タイトルは60字以内にしてください',
+  getMessage: () => 'タイトルは70字以内にしてください',
   isValid: ({ title }) => {
     if (!isAnyText(title)) return true; // skip as duplicate of validateMissingTitle
-    return title.length <= 60;
+    return title.length <= 70;
   },
 };
 

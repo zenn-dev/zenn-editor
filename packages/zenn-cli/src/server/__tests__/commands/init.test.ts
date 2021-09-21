@@ -7,13 +7,12 @@ describe('cli exec init', () => {
   beforeEach(() => {
     // mock
     jest.spyOn(helper, 'generateFileIfNotExist').mockImplementation();
-    jest.spyOn(process, 'exit').mockImplementation();
     console.log = jest.fn();
     console.error = jest.fn();
   });
 
   test('should call generateFileIfNotExist for directories', () => {
-    exec();
+    exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), 'articles/.keep')),
       expect.stringMatching(/^$/)
@@ -25,7 +24,7 @@ describe('cli exec init', () => {
   });
 
   test('should call generateFileIfNotExist for .gitignore', () => {
-    exec();
+    exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), '.gitignore')),
       expect.stringContaining(['node_modules', '.DS_Store'].join('\n'))
@@ -33,7 +32,7 @@ describe('cli exec init', () => {
   });
 
   test('should call generateFileIfNotExist for README', () => {
-    exec();
+    exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), 'README.md')),
       expect.stringContaining('Zenn CLI')
@@ -41,7 +40,7 @@ describe('cli exec init', () => {
   });
 
   test('should log success message', () => {
-    exec();
+    exec([]);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('🎉  Done!')
     );

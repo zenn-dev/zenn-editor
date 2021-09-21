@@ -67,10 +67,11 @@ describe('getArticleErrors', () => {
     test('return error with too long title', () => {
       const errors = getArticleErrors({
         ...validArticle,
-        title: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijk', // 61 letters
+        title:
+          'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijklmnopqrstu', // 71 letters
       });
       expect(errors.length).toEqual(1);
-      expect(errors[0].message).toContain('タイトルは60字以内にしてください');
+      expect(errors[0].message).toContain('タイトルは70字以内にしてください');
     });
   });
 
@@ -302,10 +303,11 @@ describe('getBookErrors', () => {
     test('return error with too long title', () => {
       const errors = getBookErrors({
         ...validBook,
-        title: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijk', // 61 letters
+        title:
+          'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijklmnopqrstu', // 71 letters
       });
       expect(errors.length).toEqual(1);
-      expect(errors[0].message).toContain('タイトルは60字以内にしてください');
+      expect(errors[0].message).toContain('タイトルは70字以内にしてください');
     });
   });
 
@@ -633,10 +635,11 @@ describe('getChapterErrors', () => {
     test('return error with too long title', () => {
       const errors = getChapterErrors({
         ...validChapter,
-        title: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijk', // 61 letters
+        title:
+          'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijklmnopqrstu', // 71 letters
       });
       expect(errors.length).toEqual(1);
-      expect(errors[0].message).toContain('タイトルは60字以内にしてください');
+      expect(errors[0].message).toContain('タイトルは70字以内にしてください');
     });
   });
 
