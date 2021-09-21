@@ -56,6 +56,15 @@ embed-katex[display-mode='1'] {
   width: 100%;
 }
 
+.embed-mermaid {
+  margin: 1.5rem 0;
+}
+
+// workaround: https://github.com/mermaid-js/mermaid/issues/2160
+embed-mermaid svg {
+  height: auto;
+}
+
 // make mermaid.js raw text white
 pre.zenn-mermaid {
   background: transparent;
