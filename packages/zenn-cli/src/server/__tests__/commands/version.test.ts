@@ -7,7 +7,7 @@ describe('cli exec version', () => {
   });
 
   test('should log version', () => {
-    exec();
+    exec([]);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringMatching(/^0\.[0-9.]+/)
     );

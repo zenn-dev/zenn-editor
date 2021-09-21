@@ -21,7 +21,7 @@ describe('cli exec new:book', () => {
   });
 
   test('should call generateFileIfNotExist for config.yaml with proper arguments', () => {
-    exec();
+    exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringMatching(anyConfigYamlPathRegex),
       expect.stringContaining(
@@ -42,7 +42,7 @@ describe('cli exec new:book', () => {
 
   test('should call generateFileIfNotExist for chapter files with proper arguments', () => {
     const expectedChapterBody = [`---`, `title: ""`, `---`].join('\n');
-    exec();
+    exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenNthCalledWith(
       2,
       expect.stringMatching(anyChapterFileRegex),

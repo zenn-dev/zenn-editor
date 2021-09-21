@@ -15,7 +15,7 @@ describe('cli exec preview', () => {
   });
 
   test('should listen with port 8000', async () => {
-    await exec();
+    await exec([]);
     expect(server.startServer).toHaveBeenCalledWith(
       expect.anything(),
       8000,
@@ -33,7 +33,7 @@ describe('cli exec preview', () => {
   });
 
   test('should not open browser by default', async () => {
-    await exec();
+    await exec([]);
     expect(server.startServer).toHaveBeenCalledWith(
       expect.anything(),
       expect.anything(),
@@ -51,7 +51,7 @@ describe('cli exec preview', () => {
   });
 
   test('should call startLocalChangesWatcher by default', async () => {
-    await exec();
+    await exec([]);
     expect(server.startLocalChangesWatcher).toHaveBeenCalledWith(
       undefined,
       `${process.cwd()}/{articles,books}/**/*`
