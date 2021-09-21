@@ -56,7 +56,7 @@ describe('getFileRaw', () => {
 
 describe('getImageRaw', () => {
   test('should return file binary with valid path to image', () => {
-    const result = helper.getFileRaw(`${fixtureDirPath}/test.jpg`);
+    const result = helper.getFileRaw(`${fixtureDirPath}/images/test.jpg`);
     expect(result?.length).toBeGreaterThanOrEqual(500);
   });
   test('should return null with invalid path', () => {
@@ -117,7 +117,9 @@ describe('listFilenamesOrderByModified', () => {
 });
 
 describe('getImageSize', () => {
-  const result = helper.getImageSize(`${fixtureDirPath}/test-1036bytes.jpg`);
+  const result = helper.getImageSize(
+    `${fixtureDirPath}/images/test-1036bytes.jpg`
+  );
   expect(result).toEqual(1036);
 });
 
@@ -150,6 +152,11 @@ describe('generateFileIfNotExist', () => {
 });
 
 describe('completeHtml', () => {
+  beforeEach(() => {
+    // process.cwdがfixturesディレクトリを指すようにする
+    jest.spyOn(process, 'cwd').mockReturnValue(fixtureDirPath);
+  });
+
   test('If src is a URL, validation succeeds.', () => {
     const html = helper.completeHtml(
       '<img src="https://example.com/images/example.png">'
@@ -158,8 +165,13 @@ describe('completeHtml', () => {
   });
 
   test('If src is a valid path, validation succeeds.', () => {
-    const html = helper.completeHtml('<img src="/images/example.png">');
+    const html = helper.completeHtml('<img src="/images/test.jpg">'); // fixtures/images/test.jpgを参照
     expect(html).not.toContain('表示できません');
+  });
+
+  test('If src is pointing nonexistent image, validation fails.', () => {
+    const html = helper.completeHtml('<img src="/images/notexist.jpg">'); // fixtures/images/notexist.jpgを参照
+    expect(html).toContain('ファイルが存在しません');
   });
 
   test('If src is a invalid path, validation fails.', () => {
