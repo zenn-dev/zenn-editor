@@ -70,7 +70,7 @@ describe('getArticleErrors', () => {
         title: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijk', // 61 letters
       });
       expect(errors.length).toEqual(1);
-      expect(errors[0].message).toContain('タイトルは60字以内にしてください');
+      expect(errors[0].message).toContain('タイトルは70字以内にしてください');
     });
   });
 
@@ -305,7 +305,7 @@ describe('getBookErrors', () => {
         title: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijk', // 61 letters
       });
       expect(errors.length).toEqual(1);
-      expect(errors[0].message).toContain('タイトルは60字以内にしてください');
+      expect(errors[0].message).toContain('タイトルは70字以内にしてください');
     });
   });
 
@@ -636,7 +636,7 @@ describe('getChapterErrors', () => {
         title: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijk', // 61 letters
       });
       expect(errors.length).toEqual(1);
-      expect(errors[0].message).toContain('タイトルは60字以内にしてください');
+      expect(errors[0].message).toContain('タイトルは70字以内にしてください');
     });
   });
 
