@@ -50,7 +50,7 @@ export const exec: CliExecFn = (argv) => {
     Log.error(
       `formatの値（${format}）が不正です。"tsv" または "json" を指定してください`
     );
-    return process.exit(1);
+    return;
   }
   const formatter = articleFormatters[format];
   const articleMetaList = getLocalArticleMetaList();
