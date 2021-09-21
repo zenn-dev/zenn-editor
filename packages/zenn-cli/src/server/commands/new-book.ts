@@ -33,13 +33,13 @@ function parseArgs(argv: string[] | undefined) {
       console.log(err);
     }
     console.log(newBookHelpText);
-    process.exit(0);
+    return null;
   }
 }
 
 export const exec: CliExecFn = (argv) => {
   const args = parseArgs(argv);
-  if (!args) return;
+  if (args === null) return;
 
   if (args['--help']) {
     console.log(newBookHelpText);
@@ -54,7 +54,7 @@ export const exec: CliExecFn = (argv) => {
 
   if (!validateSlug(slug)) {
     Log.error(getSlugErrorMessage(slug));
-    return process.exit(1);
+    return;
   }
 
   const configYamlBody =
@@ -79,7 +79,7 @@ export const exec: CliExecFn = (argv) => {
   } catch (err) {
     Log.error('config.yamlの作成時にエラーが発生しました');
     console.error(err);
-    return process.exit(1);
+    return;
   }
 
   const initialChapterBody = ['---', 'title: ""', '---'].join('\n') + '\n';
@@ -94,7 +94,7 @@ export const exec: CliExecFn = (argv) => {
     } catch (err) {
       Log.error(`チャプターのファイル作成時にエラーが発生しました`);
       console.error(err);
-      process.exit(1);
+      return;
     }
   });
 };

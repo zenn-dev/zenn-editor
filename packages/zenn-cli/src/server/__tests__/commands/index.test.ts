@@ -6,7 +6,6 @@ describe('cli exec index', () => {
   beforeEach(() => {
     // mock
     console.log = jest.fn();
-    jest.spyOn(process, 'exit').mockImplementation();
     jest.spyOn(Log, 'error').mockImplementation();
   });
 
@@ -18,6 +17,5 @@ describe('cli exec index', () => {
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(commandListText)
     );
-    expect(process.exit).toHaveBeenCalledWith(1);
   });
 });

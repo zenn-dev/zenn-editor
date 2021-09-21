@@ -41,10 +41,19 @@
 }
 
 // prevent katex overflow
-eqn,
-.zenn-katex {
-  display: block;
+// for inline $foo$
+embed-katex {
+  display: inline-flex; // Don't use inline-block here.
   overflow-x: auto;
+  max-width: 100%;
+}
+// for block
+// $$
+// foo
+// $$
+embed-katex[display-mode='1'] {
+  display: block;
+  width: 100%;
 }
 
 // make mermaid.js raw text white

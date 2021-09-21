@@ -7,7 +7,7 @@ describe('cli exec help', () => {
   });
 
   test('should log help message', () => {
-    exec();
+    exec([]);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(commandListText)
     );
