@@ -6,7 +6,7 @@ export const exec: CliExecFn = () => {
   const version = getCurrentCliVersion();
   if (!version) {
     Log.error('zenn-cliのバージョンを取得できませんでした');
-    process.exit(1);
+    return;
   }
   console.log(version);
 };

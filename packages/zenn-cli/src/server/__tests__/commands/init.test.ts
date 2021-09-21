@@ -7,7 +7,6 @@ describe('cli exec init', () => {
   beforeEach(() => {
     // mock
     jest.spyOn(helper, 'generateFileIfNotExist').mockImplementation();
-    jest.spyOn(process, 'exit').mockImplementation();
     console.log = jest.fn();
     console.error = jest.fn();
   });

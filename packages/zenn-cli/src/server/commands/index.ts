@@ -26,7 +26,7 @@ export function exec(execCommandName: string, execCommandArgs: string[]) {
   if (!commands[execCommandName]) {
     Log.error('該当するCLIコマンドが存在しません');
     console.log(commandListText);
-    return process.exit(1);
+    return;
   }
 
   commands[execCommandName](execCommandArgs);

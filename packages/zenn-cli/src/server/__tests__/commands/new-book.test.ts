@@ -16,7 +16,6 @@ describe('cli exec new:book', () => {
   beforeEach(() => {
     // mock
     jest.spyOn(helper, 'generateFileIfNotExist').mockImplementation();
-    jest.spyOn(process, 'exit').mockImplementation();
     jest.spyOn(Log, 'error').mockImplementation();
     console.log = jest.fn();
   });
@@ -114,6 +113,5 @@ describe('cli exec new:book', () => {
         `小文字の半角英数字（a-z0-9）、ハイフン（-）、アンダースコア（_）の12〜50字の組み合わせにしてください`
       )
     );
-    expect(process.exit).toHaveBeenCalledWith(1);
   });
 });
