@@ -6,7 +6,8 @@
 .embed-jsfiddle,
 .embed-youtube,
 .embed-codesandbox,
-.embed-stackblitz {
+.embed-stackblitz,
+.embed-mermaid {
   margin: 1.5rem 0;
 }
 .embed-slideshare,
@@ -54,6 +55,11 @@ embed-katex {
 embed-katex[display-mode='1'] {
   display: block;
   width: 100%;
+}
+
+// workaround: https://github.com/mermaid-js/mermaid/issues/2160
+embed-mermaid svg {
+  height: auto;
 }
 
 // make mermaid.js raw text white
