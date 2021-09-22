@@ -9,6 +9,9 @@
 .embed-stackblitz {
   margin: 1.5rem 0;
 }
+.embed-mermaid {
+  margin: 1.5rem 0;
+}
 .embed-slideshare,
 .embed-speakerdeck,
 .embed-codepen,
@@ -39,10 +42,6 @@
     display: block;
   }
 }
-.embed-mermaid {
-  margin: 1.5rem 0;
-}
-
 
 // prevent katex overflow
 // for inline $foo$
