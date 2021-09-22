@@ -177,7 +177,6 @@ export class EmbedMermaid extends HTMLElement {
     // ここを参考に追加する
     const insert = (svgCode: string) => {
       this._svgContainer.innerHTML = svgCode;
-      // this._sourceContainer.remove(); // パフォーマンスのために消す。「ソースコードをコピペしたい」みたいな要望が出てきたら残しても良い
     };
     mermaid?.mermaidAPI.render(
       `${containerId}-${Date.now().valueOf()}-render`,
