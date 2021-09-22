@@ -39,6 +39,10 @@
     display: block;
   }
 }
+.embed-mermaid {
+  margin: 1.5rem 0;
+}
+
 
 // prevent katex overflow
 // for inline $foo$
@@ -54,10 +58,6 @@ embed-katex {
 embed-katex[display-mode='1'] {
   display: block;
   width: 100%;
-}
-
-.embed-mermaid {
-  margin: 1.5rem 0;
 }
 
 // workaround: https://github.com/mermaid-js/mermaid/issues/2160

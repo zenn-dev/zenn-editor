@@ -105,7 +105,7 @@ function getPotentialPerformanceRisk(source: string): PotentialRisk {
 
 export class EmbedMermaid extends HTMLElement {
   // mermaid のソース記述
-  private readonly _source;
+  private readonly _source: string;
 
   // 描画中の一時的なsvgが格納するdivタグ
   // 描画が終わるとmermaid.jsによって削除される
