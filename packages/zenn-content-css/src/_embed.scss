@@ -47,6 +47,11 @@ embed-katex {
   display: inline-flex; // Don't use inline-block here.
   overflow-x: auto;
   max-width: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 // for block
 // $$
