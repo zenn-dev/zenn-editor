@@ -43,7 +43,7 @@
 
 // prevent katex overflow
 // for inline $foo$
-embed-katex {
+embed-katex:not([display-mode='1']) {
   display: inline-flex; // Don't use inline-block here.
   overflow-x: auto;
   max-width: 100%;
@@ -60,6 +60,7 @@ embed-katex {
 embed-katex[display-mode='1'] {
   display: block;
   width: 100%;
+  overflow-x: auto;
 }
 
 // workaround: https://github.com/mermaid-js/mermaid/issues/2160
