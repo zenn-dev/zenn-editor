@@ -2,6 +2,9 @@
   margin-top: 3rem;
   color: $c-gray-darker;
   font-size: 0.9em;
+  li::marker {
+    color: $c-gray-darker;
+  }
 }
 .footnotes-title {
   padding-bottom: 3px;
@@ -10,8 +13,9 @@
   font-size: 15px;
 }
 .footnotes-list {
-  margin: 0;
+  margin: 13px 0 0;
 }
+// TODO: Remote this after all the html cache deleted.
 .footnotes-twemoji {
   border: none;
   margin: 0 7px 0 0;
