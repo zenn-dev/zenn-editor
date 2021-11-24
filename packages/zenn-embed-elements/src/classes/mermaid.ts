@@ -5,7 +5,7 @@
 import { loadScript } from '../utils/load-script';
 
 // mermaid.jsのバージョン
-const MERMAID_VERSION = '8.13.4';
+const MERMAID_VERSION = '8.13';
 
 // レンダリングする図ごとの最大文字数
 const MAX_CHAR_LIMIT = 2000;
