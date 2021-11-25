@@ -58,7 +58,7 @@ md.use(mdBr)
 // custom footnote => TODO: ファイルを分ける
 md.renderer.rules.footnote_block_open = () =>
   '<section class="footnotes">\n' +
-  '<div class="footnotes-title"><img src="https://twemoji.maxcdn.com/2/svg/1f58b.svg" class="emoji footnotes-twemoji" loading="lazy" width="20" height="20">脚注</div>\n' +
+  '<div class="footnotes-title">脚注</div>\n' +
   '<ol class="footnotes-list">\n';
 
 const markdownToHtml = (text: string): string => {

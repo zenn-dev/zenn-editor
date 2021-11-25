@@ -4,6 +4,9 @@
 
 import { loadScript } from '../utils/load-script';
 
+// mermaid.jsのバージョン
+const MERMAID_VERSION = '8.13';
+
 // レンダリングする図ごとの最大文字数
 const MAX_CHAR_LIMIT = 2000;
 
@@ -21,7 +24,7 @@ const containerId = 'mermaid-container';
 async function initMermaid(): Promise<void> {
   if (typeof mermaid === 'undefined') {
     await loadScript({
-      src: 'https://cdn.jsdelivr.net/npm/mermaid@8.12/dist/mermaid.min.js',
+      src: `https://cdn.jsdelivr.net/npm/mermaid@${MERMAID_VERSION}/dist/mermaid.min.js`,
       id: 'mermaid-js',
     });
     const theme = 'default';
@@ -57,7 +60,7 @@ async function initMermaid(): Promise<void> {
       },
       journey: {
         useMaxWidth: true,
-      }
+      },
     });
   }
 }
