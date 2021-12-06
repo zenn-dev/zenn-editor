@@ -1,6 +1,5 @@
 import markdownIt from 'markdown-it';
 import crypto from 'crypto';
-import { mdLineNumber } from './utils/md-line-number';
 
 // plugis
 import {
@@ -75,7 +74,3 @@ const markdownToHtml = (text: string): string => {
 };
 
 export default markdownToHtml;
-
-export const enablePreview = () => {
-  mdLineNumber(md);
-};
