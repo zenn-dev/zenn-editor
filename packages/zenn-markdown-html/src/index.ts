@@ -1,4 +1,5 @@
 import markdownIt from 'markdown-it';
+import crypto from 'crypto';
 import { mdLineNumber } from './utils/md-line-number';
 
 // plugis
@@ -20,6 +21,7 @@ const mdFootnote = require('markdown-it-footnote');
 const mdTaskLists = require('markdown-it-task-lists');
 const mdInlineComments = require('markdown-it-inline-comments');
 const mdLinkAttributes = require('markdown-it-link-attributes');
+
 const md = markdownIt({
   breaks: true,
   linkify: true,
@@ -55,7 +57,7 @@ md.use(mdBr)
   .use(mdKatex)
   .use(mdLinkifyToCard);
 
-// custom footnote => TODO: ファイルを分ける
+// custom footnote
 md.renderer.rules.footnote_block_open = () =>
   '<section class="footnotes">\n' +
   '<div class="footnotes-title">脚注</div>\n' +
@@ -63,7 +65,13 @@ md.renderer.rules.footnote_block_open = () =>
 
 const markdownToHtml = (text: string): string => {
   if (!(text && text.length)) return '';
-  return md.render(text);
+
+  // docIdは複数のコメントが1ページに指定されたときに脚注のリンク先が重複しないように指定する
+  // 1ページの中で重複しなければ問題ないため、ごく短いランダムな文字列とする
+  // - https://github.com/zenn-dev/zenn-community/issues/356
+  // - https://github.com/markdown-it/markdown-it-footnote/pull/8
+  const docId = crypto.randomBytes(2).toString('hex');
+  return md.render(text, { docId });
 };
 
 export default markdownToHtml;
