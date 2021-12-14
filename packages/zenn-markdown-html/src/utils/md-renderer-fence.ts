@@ -1,60 +1,116 @@
 import MarkdownIt from 'markdown-it';
+import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { highlight } from './highlight';
 
-// get langName supporting diff
-// - `diff js` => `diff-js`
-// - `js diff` => `js-diff`
-// - `js` => `js`
-function normalizeLangName(str: string) {
-  return str
-    .split(' ')
-    .filter((lang) => !!lang)
-    .join('-');
+function getHtml({
+  content,
+  className,
+  fileName,
+}: {
+  content: string;
+  className: string;
+  fileName?: string;
+}) {
+  const escapedClass = escapeHtml(className);
+
+  return `<div class="code-block-container">${
+    fileName
+      ? `<div class="code-block-filename-container"><span class="code-block-filename">${escapeHtml(
+          fileName
+        )}</span></div>`
+      : ''
+  }<pre class="${escapedClass}"><code class="${escapedClass}">${content}</code></pre></div>`;
+}
+
+function getClassName({
+  langName = '',
+  hasDiff,
+}: {
+  hasDiff: boolean;
+  langName?: string;
+}): string {
+  const isSafe = /^[\w-]{0,10}$/.test(langName);
+  if (!isSafe) return '';
+
+  if (hasDiff) {
+    return `diff-highlight ${
+      langName.length ? `language-diff-${langName}` : ''
+    }`;
+  }
+  return langName ? `language-${langName}` : '';
+}
+
+const fallbackLanguages: {
+  [key: string]: string;
+} = {
+  vue: 'html',
+  react: 'jsx',
+  fish: 'shell',
+  sh: 'shell',
+  cwl: 'yaml',
+  tf: 'hcl', // ref: https://github.com/PrismJS/prism/issues/1252
+};
+
+function normalizeLangName(str?: string): string {
+  if (!str?.length) return '';
+  const langName = str.toLocaleLowerCase();
+  return fallbackLanguages[langName] ?? langName;
+}
+
+export function parseInfo(str: string): {
+  hasDiff: boolean;
+  langName: string;
+  fileName?: string;
+} {
+  if (str.trim() === '') {
+    return {
+      langName: '',
+      fileName: undefined,
+      hasDiff: false,
+    };
+  }
+
+  // e.g. foo:filename => ["foo", "filename"]
+  // e.g. foo diff:filename => ["foo diff", "filename"]
+  const [langInfo, fileName] = str.split(':');
+
+  const langNames = langInfo.split(' ');
+  const hasDiff = langNames.some((name) => name === 'diff');
+
+  const langName: undefined | string = hasDiff
+    ? langNames.find((lang) => lang !== 'diff')
+    : langNames[0];
+
+  return {
+    langName: normalizeLangName(langName),
+    fileName,
+    hasDiff,
+  };
 }
 
 export function mdRendererFence(md: MarkdownIt) {
-  // default renederer
-  const defaultRender =
-    md.renderer.rules.fence ||
-    function (tokens, idx, options, env, self) {
-      return self.renderToken(tokens, idx, options);
-    };
-
   // override fence
   md.renderer.rules.fence = function (...args) {
     const [tokens, idx] = args;
-    // e.g. info = `js:fooBar.js`
-    const langInfo = tokens[idx].info.split(/:/);
-    const langName = langInfo?.length ? normalizeLangName(langInfo[0]) : '';
+    const { info, content } = tokens[idx];
+    const { langName, fileName, hasDiff } = parseInfo(info);
 
     if (langName === 'mermaid') {
-      return `<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">${md.utils.escapeHtml(
-        tokens[idx].content.trim()
+      return `<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">${escapeHtml(
+        content.trim()
       )}</pre></embed-mermaid></div>`;
     }
 
-    // Override info (e.g "js:fooBar.js" -> "js")
-    // - This value is read by syntax highlighter.
-    // - Should not pass unsupported langName such as `mermaid`,
-    //   otherwise `Language does not exist` is shown on console.
-    tokens[idx].info = langName;
+    const className = getClassName({
+      langName,
+      hasDiff,
+    });
+    const highlightedContent = highlight(content, langName, hasDiff);
 
-    const originalHTML = defaultRender(...args);
-    if (tokens[idx].content.length === 0) return originalHTML;
-
-    // e.g `js:fooBar.js` => `fooBar.js`
-    const labelText = langName.length && langInfo[1] ? langInfo[1] : null;
-
-    return `
-      <div class="code-block-container">
-        ${
-          labelText
-            ? `<div class="code-block-filename-container"><span class="code-block-filename">${md.utils.escapeHtml(
-                labelText
-              )}</span></div>`
-            : ''
-        }
-        ${originalHTML}
-      </div>
-      `;
+    return getHtml({
+      content: highlightedContent,
+      className,
+      fileName,
+    });
   };
 }
