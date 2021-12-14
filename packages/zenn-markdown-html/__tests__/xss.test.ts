@@ -50,6 +50,20 @@ describe('No XSS Vulnerability', () => {
       '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename">&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;</span></div><pre class="language-js"><code class="language-js">any\n</code></pre></div>'
     );
   });
+  test('should escape script tag in code body', () => {
+    const html = markdownToHtml(
+      `\`\`\`\n<script>alert("XSS")</script>\n\`\`\``
+    );
+    expect(html).toContain(
+      '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+    );
+  });
+  test('should escape script tag in code highlighted body', () => {
+    const html = markdownToHtml(
+      `\`\`\`js\n<script>alert("XSS")</script>\n\`\`\``
+    );
+    expect(html).toContain(`<span class="token operator">&lt;</span>script`);
+  });
   test('should escape img tag around mermaid syntax', () => {
     const html = markdownToHtml(
       `\`\`\`mermaid\ngraph TD\nA["<img src="invalid" onerror=alert('XSS')/>"] --> B\`\`\``
