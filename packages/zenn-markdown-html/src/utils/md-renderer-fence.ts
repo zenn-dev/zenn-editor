@@ -29,7 +29,7 @@ function getClassName({
   hasDiff: boolean;
   langName?: string;
 }): string {
-  const isSafe = /^[\w-]{0,10}$/.test(langName);
+  const isSafe = /^[\w-]{0,25}$/.test(langName);
   if (!isSafe) return '';
 
   if (hasDiff) {
