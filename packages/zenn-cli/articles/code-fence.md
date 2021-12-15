@@ -9,6 +9,12 @@ published: false
 ---
 
 
+
+```"><img/onerror="alert(location)"src=.>
+any
+```
+
+
 ```tf
 terraform {
   required_providers {
@@ -58,6 +64,15 @@ resource "aws_subnet" "az" {
   # such as 10.1.16.0/20 .
   cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 4, count.index+1)
 }
+```
+
+ref: https://github.com/zenn-dev/zenn-community/issues/357
+
+<!-- should ignore foo -->
+```js foo
+const foo = function (bar) {
+  return bar++;
+};
 ```
 
 
@@ -123,7 +138,7 @@ bind -M $mode \cq foo
      console.log(`foo: ${foo}`);
 ```
 
-```js diff:aaa
+```js diff:diff with lang
 @@ -4,6 +4,5 @@
 -    let foo = bar.baz([1, 2, 3]);
 -    foo = foo + 1;
@@ -131,7 +146,7 @@ bind -M $mode \cq foo
      console.log(`foo: ${foo}`);
 ```
 
-```diff js:aaa
+```diff js:diff with lang
 @@ -4,6 +4,5 @@
 -    let foo = bar.baz([1, 2, 3]);
 -    foo = foo + 1;
@@ -180,5 +195,5 @@ var foo = function (bar) {
 ```
 
 ```"><img/onerror="alert(location)"src=.>
-aaa
+"><img/onerror="alert(location)"src=.>
 ```

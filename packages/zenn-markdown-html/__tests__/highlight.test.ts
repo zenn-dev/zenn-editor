@@ -10,19 +10,26 @@ describe('Code highlight propley', () => {
   });
 
   test('should highlight js syntax', () => {
-    const jsString = ['```js', "console.log('hoge')", '```'].join('\n');
+    const jsString = ['```js', "console.log('foo')", '```'].join('\n');
     const html = markdownToHtml(jsString);
     expect(html).toContain('language-js');
   });
+
+  test('should ignore additonal langInfo separated with whitespace', () => {
+    const jsString = ['```js some-info', "console.log('foo')", '```'].join(
+      '\n'
+    );
+    const html = markdownToHtml(jsString);
+    expect(html).toContain('language-js');
+  });
+
   test('should highlight html syntax', () => {
     const jsString = ['```html', '<html></html>', '```'].join('\n');
     const html = markdownToHtml(jsString);
     expect(html).toContain('language-html');
   });
   test('should highlight js syntax and show filename', () => {
-    const jsString = ['```js:index.js', "console.log('hoge')", '```'].join(
-      '\n'
-    );
+    const jsString = ['```js:index.js', "console.log('foo')", '```'].join('\n');
     const html = markdownToHtml(jsString);
     expect(html).toContain('<span class="code-block-filename">index.js</span>');
     expect(html).toContain('language-js');
@@ -38,8 +45,8 @@ describe('Code highlight propley', () => {
   test('should highlight js syntax', () => {
     const jsString = [
       '```js diff',
-      "-     console.log('hoge')",
-      "+     console.log('fuga')",
+      "-     console.log('foo')",
+      "+     console.log('bar')",
       '```',
     ].join('\n');
     const html = markdownToHtml(jsString);
@@ -48,8 +55,8 @@ describe('Code highlight propley', () => {
   test('should highlight html syntax', () => {
     const jsString = [
       '```html diff',
-      '-     <html class="hoge">',
-      '+     <html class="fuga">',
+      '-     <html class="foo">',
+      '+     <html class="bar">',
       '```',
     ].join('\n');
     const html = markdownToHtml(jsString);
@@ -58,8 +65,8 @@ describe('Code highlight propley', () => {
   test('should highlight js syntax with diff js order', () => {
     const jsString = [
       '```diff js',
-      "-     console.log('hoge')",
-      "+     console.log('fuga')",
+      "-     console.log('foo')",
+      "+     console.log('bar')",
       '```',
     ].join('\n');
     const html = markdownToHtml(jsString);
@@ -68,8 +75,8 @@ describe('Code highlight propley', () => {
   test('should highlight html syntax with diff html order', () => {
     const jsString = [
       '```diff html',
-      '-     <html class="hoge">',
-      '+     <html class="fuga">',
+      '-     <html class="foo">',
+      '+     <html class="bar">',
       '```',
     ].join('\n');
     const html = markdownToHtml(jsString);
@@ -78,8 +85,8 @@ describe('Code highlight propley', () => {
   test('should highlight js syntax and show filename', () => {
     const jsString = [
       '```js diff:index.js',
-      "-     console.log('hoge')",
-      "+     console.log('fuga')",
+      "-     console.log('foo')",
+      "+     console.log('bar')",
       '```',
     ].join('\n');
     const html = markdownToHtml(jsString);
@@ -89,8 +96,8 @@ describe('Code highlight propley', () => {
   test('should highlight html syntax and show filename', () => {
     const jsString = [
       '```html diff:index.html',
-      '-     <html class="hoge">',
-      '+     <html class="fuga">',
+      '-     <html class="foo">',
+      '+     <html class="bar">',
       '```',
     ].join('\n');
     const html = markdownToHtml(jsString);
@@ -102,8 +109,8 @@ describe('Code highlight propley', () => {
   test('should highlight js syntax and show filename even if space exists before :', () => {
     const jsString = [
       '```js diff :index.js',
-      "-     console.log('hoge')",
-      "+     console.log('fuga')",
+      "-     console.log('foo')",
+      "+     console.log('bar')",
       '```',
     ].join('\n');
     const html = markdownToHtml(jsString);
@@ -113,8 +120,8 @@ describe('Code highlight propley', () => {
   test('should highlight html syntax and show filename even if space exists before :', () => {
     const jsString = [
       '```html diff :index.html',
-      '-     <html class="hoge">',
-      '+     <html class="fuga">',
+      '-     <html class="foo">',
+      '+     <html class="bar">',
       '```',
     ].join('\n');
     const html = markdownToHtml(jsString);
