@@ -7,16 +7,16 @@ $c-gray-lighter: #b9c7d2;
 $c-gray-darker: #77838c;
 $c-gray-border: #cfdce6;
 $c-gray-border-lighter: rgba(92, 147, 187, 0.17);
-$c-contrast: #2c2d3a;
+$c-contrast: #1a2638;
 
 $xs: 374px;
 $sm: 576px;
 $md: 768px;
 
 $breakpoints: (
-  "xs": "screen and (max-width: #{$xs})",
-  "sm": "screen and (max-width: #{$sm})",
-  "md": "screen and (max-width: #{$md})",
+  'xs': 'screen and (max-width: #{$xs})',
+  'sm': 'screen and (max-width: #{$sm})',
+  'md': 'screen and (max-width: #{$md})',
 );
 
 @mixin mq($size) {
@@ -32,9 +32,9 @@ $breakpoints: (
   }
   line-height: 1.9;
 
-  @import "./_content.scss";
-  @import "./_embed.scss";
-  @import "./_prism.scss";
-  @import "./_message.scss";
-  @import "./_footnotes.scss";
+  @import './_content.scss';
+  @import './_embed.scss';
+  @import './_prism.scss';
+  @import './_message.scss';
+  @import './_footnotes.scss';
 }
