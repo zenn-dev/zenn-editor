@@ -8,7 +8,6 @@ import {
 } from './utils/md-container';
 import { mdRendererFence } from './utils/md-renderer-fence';
 import { mdLinkifyToCard } from './utils/md-linkify-to-card';
-import { mdPrism } from './utils/md-prism';
 import { mdKatex } from './utils/md-katex';
 import { mdBr } from './utils/md-br';
 import { mdCustomBlock } from './utils/md-custom-block';
@@ -29,7 +28,6 @@ const md = markdownIt({
 md.linkify.set({ fuzzyLink: false });
 
 md.use(mdBr)
-  .use(mdPrism)
   .use(mdRendererFence)
   .use(markdownItImSize)
   .use(mdCustomBlock)

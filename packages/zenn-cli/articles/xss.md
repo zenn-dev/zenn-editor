@@ -143,3 +143,26 @@ test2
 </code></pre>
 
 .
+
+
+```
+<script>alert("xss")</script>
+```
+
+```js
+<script>alert("xss")</script>
+```
+
+```<script>alert("xss")</script>
+hello
+```
+
+```js <script>alert("xss")</script>
+hello
+```
+
+```js:<script>alert("xss")</script>
+hello
+```
+
+<script>alert("xss")</script>
