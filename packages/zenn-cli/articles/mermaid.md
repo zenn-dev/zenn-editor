@@ -87,3 +87,16 @@ sequenceDiagram
     Alice->>Bob: Hi Bob
     Bob->>Alice: Hi Alice
 ```
+
+
+:::details ダイアグラム
+
+```mermaid
+sequenceDiagram
+    actor Alice
+    actor Bob
+    Alice->>Bob: Hi Bob
+    Bob->>Alice: Hi Alice
+```
+
+:::
