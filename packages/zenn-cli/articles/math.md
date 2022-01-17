@@ -8,7 +8,6 @@ published: false
 ---
 
 
-
 &\&&
 
 $a,b,c$は[hoge](https://hoge.fuga)を参照。
@@ -83,3 +82,12 @@ and squaring
 > finally results in the Pythagorean theorem (2)
 >
 > $$ c^2 = a^2 + b^2 $$ (2)
+
+
+
+$a\ne0$
+
+:::details 詳細
+$a\ne0$
+:::
+

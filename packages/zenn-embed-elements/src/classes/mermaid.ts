@@ -126,7 +126,8 @@ export class EmbedMermaid extends HTMLElement {
     // できるだけコードがちらつかないようにインスタンス変数に入れて削除してしまう
     // パフォーマンスのために削除しているが、「コードをコピペしたい」みたいな話がでてきたときは残してHiddenにする
     const sourceContainer = this.childNodes[0] as HTMLPreElement;
-    this._source = sourceContainer.innerText || '';
+    // detailsタグの中ではinnerTextがnullになることがあるため
+    this._source = sourceContainer.textContent || sourceContainer.innerText;
     sourceContainer.remove();
 
     // 一時コンテナ

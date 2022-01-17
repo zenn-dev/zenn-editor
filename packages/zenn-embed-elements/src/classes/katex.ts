@@ -36,7 +36,9 @@ export class EmbedKatex extends HTMLElement {
 
     const displayMode = !!this.getAttribute('display-mode');
 
-    katex?.render(this.innerText ?? '', this._container, {
+    // detailsタグの中ではinnerTextがnullになることがあるため
+    const content = this.textContent || this.innerText;
+    katex?.render(content, this._container, {
       macros: { '\\RR': '\\mathbb{R}' },
       throwOnError: false,
       displayMode,
