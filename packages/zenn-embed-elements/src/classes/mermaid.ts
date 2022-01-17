@@ -108,53 +108,67 @@ function getPotentialPerformanceRisk(source: string): PotentialRisk {
 
 export class EmbedMermaid extends HTMLElement {
   // mermaid のソース記述
-  private readonly _source: string;
+
+  // レンダリングを遅延するためにIntersectionObserverを使用する
+  private observer?: IntersectionObserver;
 
   // 描画中の一時的なsvgが格納するdivタグ
   // 描画が終わるとmermaid.jsによって削除される
   // 指定しないと mermaid が body へ一時タグをつける動きになる
   // 予期しない副作用を避けるため、EmbedMermaid に閉じたところにつくる
   // なお、一時コンテナはdivであることが期待されている
-  private readonly _tmpContainer: HTMLDivElement;
+  private _tmpContainer?: HTMLDivElement;
 
-  // 描画後の svg を格納するdivタグ ここで作る
-  private readonly _svgContainer: HTMLDivElement;
-
-  constructor() {
-    super();
-    // コード記述が格納されている pre タグを取得
-    // できるだけコードがちらつかないようにインスタンス変数に入れて削除してしまう
-    // パフォーマンスのために削除しているが、「コードをコピペしたい」みたいな話がでてきたときは残してHiddenにする
-    const sourceContainer = this.childNodes[0] as HTMLPreElement;
-    // detailsタグの中ではinnerTextがnullになることがあるため
-    this._source = sourceContainer.textContent || sourceContainer.innerText;
-    sourceContainer.remove();
-
+  async connectedCallback() {
     // 一時コンテナ
     const tmpContainer = document.createElement('div');
     this.appendChild(tmpContainer);
     this._tmpContainer = tmpContainer;
 
-    // 描画後のSVGを格納する div タグを作成
-    const container = document.createElement('div');
-    this.appendChild(container);
-    this._svgContainer = container;
+    // 以下の理由からmermaidのレンダリングを遅延する
+    // - パフォーマンスのため
+    // - Safariでdetailsタグ内のmermaid.jsがうまくレンダリングされないため
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.render();
+
+            if (!this._tmpContainer) {
+              console.error('Something wrong with _tmpContainer');
+              return;
+            }
+            this.observer?.unobserve(this._tmpContainer); // 一度レンダリングされたらobserveを解除する
+          }
+        });
+      },
+      { rootMargin: '1000px 0' } // 手前で発火
+    );
+
+    this._tmpContainer && this.observer.observe(this._tmpContainer);
   }
 
-  async connectedCallback() {
-    this.render();
+  disconnectedCallback() {
+    // observeを解除
+    if (this.observer) {
+      this._tmpContainer && this.observer.unobserve(this._tmpContainer);
+      this.observer.disconnect();
+    }
   }
 
   async render() {
     await initMermaid();
 
+    const content = this.textContent || this.innerText;
     // Mermaid モジュールの読み込みに失敗したり、レンダリング対象のコンテンツが空の場合は何もせずに終了
-    if (!this._source) {
-      return;
-    }
+    if (!content) return;
+
+    // 図だけを表示するためにコードは非表示に
+    const sourceContainer = this.childNodes[0] as HTMLPreElement;
+    sourceContainer.setAttribute('style', 'display:none');
 
     // 文法エラーやパフォーマンスリスクが検出された場合、注意書きをレンダリングして終了
-    const risk = getPotentialPerformanceRisk(this._source);
+    const risk = getPotentialPerformanceRisk(content);
     if (
       Object.values(risk)
         .map((r) => r.yes)
@@ -180,11 +194,14 @@ export class EmbedMermaid extends HTMLElement {
     // https://github.com/mermaidjs/mermaid-gitbook/blob/master/content/usage.md#binding-events
     // ここを参考に追加する
     const insert = (svgCode: string) => {
-      this._svgContainer.innerHTML = svgCode;
+      // 描画後のSVGを格納する div タグを作成
+      const container = document.createElement('div');
+      this.appendChild(container);
+      container.innerHTML = svgCode;
     };
     mermaid?.mermaidAPI.render(
       `${containerId}-${Date.now().valueOf()}-render`,
-      this._source,
+      content,
       insert,
       this._tmpContainer
     );
