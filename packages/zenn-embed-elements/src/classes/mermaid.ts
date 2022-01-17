@@ -142,7 +142,7 @@ export class EmbedMermaid extends HTMLElement {
           }
         });
       },
-      { rootMargin: '1000px 0' } // 手前で発火
+      { rootMargin: '1000px 0px' } // 手前で発火
     );
 
     this._tmpContainer && this.observer.observe(this._tmpContainer);
