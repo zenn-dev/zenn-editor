@@ -237,8 +237,12 @@ pre {
   color: rgba(255, 255, 255, 0.9);
   font-size: 12px;
   line-height: 1.3;
-  padding: 6px 12px 4px;
   border-radius: 6px 6px 0 0;
+  // コードブロックのファイル名が右端まで達したときに見た目が微妙になるのを防ぐために
+  // 下側のスペースを大きめに取りネガティブマージンで表示を調整（広めに取ったpaddingぶんだけmarginを下げる）
+  // ref: https://github.com/zenn-dev/zenn-editor/issues/236
+  padding: 6px 12px 20px;
+  margin-bottom: -16px;
 }
 .code-block-filename-container + pre {
   border-top-left-radius: 0;
