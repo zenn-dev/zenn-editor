@@ -43,7 +43,9 @@ const inlineRules: HandlingRule[] = [
   },
   {
     name: 'math_inline',
-    rex: /\$((?:\S)|(?:\S(?!.*\]\(http.*\$.*\)).*?\S))\$/gy, // fixed so that the expression [$something](https://something.com/$example) is skipped. (?:\S(?!.*\]\(http.*\$.*\)) means somthing like "](https://hoge.com/$/hoge)"
+    // TODO: 動作確認が終わったら旧バージョンは消す
+    // rex: /\$((?:\S)|(?:\S(?!.*\]\(http.*\$.*\)).*?\S))\$/gy,
+    rex: /\$((?:\S)|(?:\S(?![^$]*\]\(http.*).*?\S))\$/gy, // fixed so that the expression [$something](https://something.com/$example) is skipped. (?:\S(?!.*\]\(http.*\$.*\)) means somthing like "](https://hoge.com/$/hoge)"
     tmpl: `<embed-katex><eq class="${katexClassName}">$1</eq></embed-katex>`,
     tag: '$',
     pre: preHandler,
