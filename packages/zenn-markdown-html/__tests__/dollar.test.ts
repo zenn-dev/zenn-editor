@@ -39,3 +39,40 @@ describe('should escape html tag', () => {
     );
   });
 });
+
+describe('Handle twice $ pairs properly', () => {
+  test('should keep $ single character expression around link href', () => {
+    const html = markdownToHtml('$a$foo[foo](https://foo.bar)bar,refs:$(2)$');
+    expect(html).toEqual(
+      '<p><embed-katex><eq class="zenn-katex">a</eq></embed-katex>foo<a href="https://foo.bar" rel="nofollow">foo</a>bar,refs:<embed-katex><eq class="zenn-katex">(2)</eq></embed-katex></p>\n'
+    );
+  });
+  test('should keep $ around link href', () => {
+    const html = markdownToHtml(
+      '$a,b,c$foo[foo](https://foo.bar)bar,refs:$(2)$'
+    );
+    expect(html).toEqual(
+      '<p><embed-katex><eq class="zenn-katex">a,b,c</eq></embed-katex>foo<a href="https://foo.bar" rel="nofollow">foo</a>bar,refs:<embed-katex><eq class="zenn-katex">(2)</eq></embed-katex></p>\n'
+    );
+  });
+  test('should keep $ around link href three times', () => {
+    const html = markdownToHtml(
+      '$a,b,c$foo[foo](https://foo.bar)bar,refs:$(2)$,and:$(3)$'
+    );
+    expect(html).toEqual(
+      '<p><embed-katex><eq class="zenn-katex">a,b,c</eq></embed-katex>foo<a href="https://foo.bar" rel="nofollow">foo</a>bar,refs:<embed-katex><eq class="zenn-katex">(2)</eq></embed-katex>,and:<embed-katex><eq class="zenn-katex">(3)</eq></embed-katex></p>\n'
+    );
+  });
+  test('should keep $ around link href without parentheses', () => {
+    const html = markdownToHtml('$a,b,c$foo[foo](https://foo.bar)bar,refs:$2$');
+    expect(html).toEqual(
+      '<p><embed-katex><eq class="zenn-katex">a,b,c</eq></embed-katex>foo<a href="https://foo.bar" rel="nofollow">foo</a>bar,refs:<embed-katex><eq class="zenn-katex">2</eq></embed-katex></p>\n'
+    );
+  });
+  test('should keep $ pairs two times', () => {
+    const html = markdownToHtml('$a,b,c$foobar,refs:$(2)$');
+    expect(html).toEqual(
+      '<p><embed-katex><eq class="zenn-katex">a,b,c</eq></embed-katex>foobar,refs:<embed-katex><eq class="zenn-katex">(2)</eq></embed-katex></p>\n'
+    );
+  });
+});

@@ -91,3 +91,32 @@ $a\ne0$
 $a\ne0$
 :::
 
+## リンク文字列中は数式にならないべき
+
+[text$text](https://...$text)
+
+[text$text](https://...$text
+
+$text](https://...$
+
+
+## ふたつ以上の数式もレンダリングされるべき
+
+あああ$\omega$いいい『[uuu](https://arxiv.org)』えええ$(7)$おおお
+あああ$\frac{1}{2}$いいい[uuu](https://arxiv.org)えええ$(7)$おおお
+あああ$abc$いいい[uuu](https://arxiv.org)えええ$(7)$おおお
+あああ$\alpha$と$\omega$いいい[uuu](https://arxiv.org)えええ$(7)$おおお
+
+
+あああ$a$いいい[uuu](https://arxiv.org)えええ$(7)$おおお
+あああ$\omega$いいいえええ$(7)$おおお
+あああ$\omega$いいい[uuu](https://arxiv.org)えええおおお
+あああ$\omega$いいい[uuu](https://arxiv.org)えええ$7$おおお
+あああ$\omega$いいい[uuu](arxiv.org)えええ$(7)$おおお
+あああ$\omega$いいい[uuu](//arxiv.org)えええ$(7)$おおお
+あああ$\omega$いいい[uuu](ftp://arxiv.org)えええ$(7)$おおお
+あああ$\omega$いいい(https://arxiv.org)えええ$(7)$おおお
+あああ$\omega$いいい[uuu](https://arxiv.org)えええ$\exp xyz$おおお
+
+
+$a=b$という数式はこちらを参照[text$text](https://...$text)$(7)$

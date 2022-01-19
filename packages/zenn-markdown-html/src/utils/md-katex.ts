@@ -35,7 +35,8 @@ type HandlingRule = {
 const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline_double',
-    rex: /\${2}((?:\S)|(?:\S(?!.*\]\(http).*?\S))\${2}/gy, // fixed so that the expression [$something](https://something.com/$example) is skipped.
+    // maybe unused.
+    rex: /\${2}((?:\S)|(?:\S(?!.*\]\(http).*?\S))\${2}/gy,
     tmpl: `<section class="${katexClassName}"><embed-katex display-mode="1"><eqn>$1</eqn></embed-katex></section>`,
     tag: '$$',
     pre: preHandler,
@@ -43,7 +44,9 @@ const inlineRules: HandlingRule[] = [
   },
   {
     name: 'math_inline',
-    rex: /\$((?:\S)|(?:\S(?!.*\]\(http.*\$.*\)).*?\S))\$/gy, // fixed so that the expression [$something](https://something.com/$example) is skipped. (?:\S(?!.*\]\(http.*\$.*\)) means somthing like "](https://hoge.com/$/hoge)"
+    // fixed so that the expression [$something](https://something.com/$example) is skipped.
+    // (?:\S(?![^$]*\]\(http.*) means something like "](https://hoge.com/hoge)"
+    rex: /\$((?:\S)|(?:\S(?![^$]*\]\(http.*).*?\S))\$/gy,
     tmpl: `<embed-katex><eq class="${katexClassName}">$1</eq></embed-katex>`,
     tag: '$',
     pre: preHandler,
