@@ -5,11 +5,17 @@ import websocket from 'ws';
 import chokidar from 'chokidar';
 import open from 'open';
 
-export async function startServer(
-  app: Express,
-  port: number,
-  shouldOpen: boolean
-): Promise<HttpServer> {
+type ServerOptions = {
+  app: Express;
+  port: number;
+  shouldOpen: boolean;
+};
+
+export async function startServer({
+  app,
+  port,
+  shouldOpen,
+}: ServerOptions): Promise<HttpServer> {
   const server = createServer(app);
 
   return new Promise((resolve, reject) => {
@@ -29,7 +35,7 @@ export async function startServer(
           console.log(
             `💡 ポート${port}は既に使用されています。別のポートで起動中…`
           );
-          const server = await startServer(app, port + 1, shouldOpen);
+          const server = await startServer({ app, shouldOpen, port: port + 1 });
           resolve(server);
         } else {
           reject(err);

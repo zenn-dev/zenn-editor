@@ -22,7 +22,7 @@ function parseArgs(argv?: string[]) {
       },
       { argv }
     );
-  } catch (e) {
+  } catch (e: any) {
     if (e.code === 'ARG_UNKNOWN_OPTION') {
       Log.error(invalidOptionText);
     } else {
@@ -47,7 +47,7 @@ export const exec: CliExecFn = async (argv) => {
   const shouldOpen = args['--open'] === true;
 
   const app = createApp();
-  const server = await startServer(app, port, shouldOpen);
+  const server = await startServer({ app, port, shouldOpen });
 
   if (shouldWatch) {
     await startLocalChangesWatcher(
