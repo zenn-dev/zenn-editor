@@ -50,6 +50,16 @@ describe('cli exec preview', () => {
     });
   });
 
+  test('should listen with passed hostname', async () => {
+    await exec(['--host', '0.0.0.0']);
+    expect(server.startServer).toHaveBeenCalledWith({
+      hostname: '0.0.0.0',
+      app: expect.anything(),
+      port: expect.anything(),
+      shouldOpen: expect.anything(),
+    });
+  });
+
   test('should call startLocalChangesWatcher by default', async () => {
     await exec([]);
     expect(server.startLocalChangesWatcher).toHaveBeenCalledWith(

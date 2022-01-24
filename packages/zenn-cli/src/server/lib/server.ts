@@ -4,28 +4,30 @@ import type { Server as HttpServer } from 'http';
 import websocket from 'ws';
 import chokidar from 'chokidar';
 import open from 'open';
+import { resolveHostname } from './helper';
 
 type ServerOptions = {
   app: Express;
   port: number;
   shouldOpen: boolean;
+  hostname?: string;
 };
 
-export async function startServer({
-  app,
-  port,
-  shouldOpen,
-}: ServerOptions): Promise<HttpServer> {
+export async function startServer(options: ServerOptions): Promise<HttpServer> {
+  const { app, port, hostname, shouldOpen } = options;
   const server = createServer(app);
 
   return new Promise((resolve, reject) => {
     server
-      .listen(port)
+      .listen(port, hostname)
       .once('listening', function () {
         if (process.env.TS_NODE_DEV) {
           console.log('🚀 Server is ready.');
         } else {
-          console.log(`👀 Preview: http://localhost:${port}`);
+          const { name, host } = resolveHostname(hostname);
+
+          console.log(`👀 Preview: http://${name}:${port}`);
+          if (host) console.log(`🌏 NetWork: http://${host}:${port}`);
         }
         if (shouldOpen) open(`http://localhost:${port}`);
         resolve(server);
@@ -35,7 +37,7 @@ export async function startServer({
           console.log(
             `💡 ポート${port}は既に使用されています。別のポートで起動中…`
           );
-          const server = await startServer({ app, shouldOpen, port: port + 1 });
+          const server = await startServer({ ...options, port: port + 1 });
           resolve(server);
         } else {
           reject(err);
