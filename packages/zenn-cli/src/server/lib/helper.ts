@@ -5,6 +5,7 @@ import * as Log from './log';
 import fetch from 'node-fetch';
 import cheerio from 'cheerio';
 import url from 'url';
+import { networkInterfaces } from 'os';
 
 export function generateSlug(): string {
   return crypto.randomBytes(7).toString('hex');
@@ -180,3 +181,31 @@ function isUrl(text: string): boolean {
     return false;
   }
 }
+
+export const getLocalIPAddress = (): string | undefined => {
+  const interfaces = networkInterfaces();
+  const networks = Object.values(interfaces).flatMap((v) => v ?? []);
+
+  for (const detail of networks) {
+    if (detail.family === 'IPv4' && detail.address !== '127.0.0.1') {
+      return detail.address;
+    }
+  }
+};
+
+export const resolveHostname = (
+  hostname?: string
+): { name: string; host?: string } => {
+  let name = 'localhost';
+  let host = hostname;
+
+  if (hostname) {
+    if (hostname !== '0.0.0.0' && hostname !== '::') {
+      name = hostname;
+    } else {
+      host = getLocalIPAddress();
+    }
+  }
+
+  return { name, host };
+};
