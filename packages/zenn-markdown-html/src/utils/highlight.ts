@@ -1,7 +1,7 @@
 import Prism, { Grammar } from 'prismjs';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 import loadLanguages from 'prismjs/components/';
-import enableDiffHighlight from '@steelydylan/prism-diff-highlight';
+import { enableDiffHighlight } from '../prism-plugins/prism-diff-highlight';
 
 // diffプラグインを有効化
 enableDiffHighlight();
