@@ -15,6 +15,7 @@ function parseArgs(argv?: string[]) {
         '--no-watch': Boolean,
         '--open': Boolean,
         '--help': Boolean,
+        '--host': String,
 
         // Alias
         '-p': '--port',
@@ -22,7 +23,7 @@ function parseArgs(argv?: string[]) {
       },
       { argv }
     );
-  } catch (e) {
+  } catch (e: any) {
     if (e.code === 'ARG_UNKNOWN_OPTION') {
       Log.error(invalidOptionText);
     } else {
@@ -42,12 +43,15 @@ export const exec: CliExecFn = async (argv) => {
     return;
   }
 
-  const port = args['--port'] || 8000;
   const shouldWatch = args['--no-watch'] !== true;
-  const shouldOpen = args['--open'] === true;
+  const options = {
+    app: createApp(),
+    port: args['--port'] || 8000,
+    shouldOpen: args['--open'] === true,
+    hostname: args['--host'],
+  };
 
-  const app = createApp();
-  const server = await startServer(app, port, shouldOpen);
+  const server = await startServer(options);
 
   if (shouldWatch) {
     await startLocalChangesWatcher(
