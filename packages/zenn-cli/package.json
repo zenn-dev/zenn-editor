@@ -45,7 +45,7 @@
     "history": "^5.0.0",
     "image-size": "^1.0.0",
     "js-yaml": "^4.1.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "open": "^8.2.0",
     "ws": "^7.4.6",
     "zenn-markdown-html": "^0.1.105-alpha.3"
