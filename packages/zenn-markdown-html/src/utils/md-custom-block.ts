@@ -13,6 +13,7 @@ import {
   isCodesandboxUrl,
   isCodepenUrl,
   isJsfiddleUrl,
+  isGithubUrl,
 } from './url-matcher';
 
 // e.g. @[youtube](youtube-video-id)
@@ -93,6 +94,12 @@ const blockOptions = {
     return `<div class="embed-gist"><embed-gist page-url="${pageUrl}" encoded-filename="${
       file ? encodeURIComponent(file) : ''
     }" /></div>`;
+  },
+  github(url: string) {
+    if (!isGithubUrl(url)) {
+      return 'GitHub のソースコードファイルへのパーマリンクを指定してください';
+    }
+    return `<div class="embed-github"><embed-github page-url="${url}" /></div>`;
   },
 };
 

@@ -31,5 +31,8 @@
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "prismjs": "^1.26.0"
   }
 }
