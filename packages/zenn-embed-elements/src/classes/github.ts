@@ -37,18 +37,9 @@ const getGithubSourceCode = async (
 
   if (!info) throw new Error('BAD URL');
 
-  const cacheKey = info.path;
-  const cacheFile = localStorage.getItem(cacheKey);
-  const headers = { Accept: 'application/vnd.github.v3.raw' };
-  const query = `https://api.github.com/repos/${info.owner}/${info.repo}/contents/${info.filePath}?ref=${info.sha}`;
+  const query = `https://raw.githubusercontent.com/${info.owner}/${info.repo}/${info.sha}/${info.filePath}`;
 
-  const file =
-    cacheFile === null
-      ? await fetch(query, { headers }).then((res) => res.text())
-      : cacheFile;
-
-  // ファイルをキャッシュを保存する
-  if (file.length > 0) localStorage.setItem(cacheKey, file);
+  const file = await fetch(query).then((res) => res.text());
 
   // 最後に改行が含まれているとズレるので、削除してから split する
   const lines = file.replace(/\n$/, '').split('\n');
