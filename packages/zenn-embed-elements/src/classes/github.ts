@@ -122,7 +122,7 @@ export class EmbedGithub extends HTMLElement {
     // prettier-ignore
     root.innerHTML = `
       <style>${embedGithubStyle}</style>
-      <div class="embed-github">
+      <div class="embedded-github">
         ${this.renderHeader({ ...result })}
         <div class="error-message">
           <p>Githubの読み込みに失敗しました</p>
@@ -145,7 +145,7 @@ export class EmbedGithub extends HTMLElement {
 
     const resultHtml = `
       <style>${cssText}</style>
-      <div class="embed-github">
+      <div class="embedded-github">
         ${this.renderHeader(result)}
         <pre class="language-clike"><code>${sourceCode}${lineNumbersHTML}</code></pre>
       </div>
@@ -326,35 +326,35 @@ const lineNumberStyle = `
 `;
 
 const embedGithubStyle = `
-.embed-github {
+.embedded-github {
   margin: 1.5rem 0;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgb(160, 160, 160, 0.3);
 }
 
-.embed-github > .header {
+.embedded-github > .header {
   display: flex;
   background: rgb(246 248 250);
   padding: 8px 16px;
   border-bottom: 1px solid rgb(160, 160, 160, 0.3);
 }
 
-.embed-github > .header > .container {
+.embedded-github > .header > .container {
   margin-left: 8px;
 }
 
-.embed-github > .header a {
+.embedded-github > .header a {
   font-weight: 600;
   text-decoration: unset;
   color: rgb(9 105 218);
 }
 
-.embed-github > .header a:hover {
+.embedded-github > .header a:hover {
   text-decoration: underline;
 }
 
-.embed-github > .header .label {
+.embedded-github > .header .label {
   line-height: 1.25;
   font-size: 12px;
   color: rgb(87 96 106);
@@ -362,19 +362,19 @@ const embedGithubStyle = `
   margin: 0;
 }
 
-.embed-github pre {
+.embedded-github pre {
   padding: 0 16px;
   margin: 0px;
   max-height: 300px;
 }
 
-.embed-github .error-message {
+.embedded-github .error-message {
   text-align: center;
   color: gray;
   font-size: 0.9rem;
 }
 
-.embed-github .gh-icon {
+.embedded-github .gh-icon {
   width: 21px;
   height: 21px;
   align-self: center;
