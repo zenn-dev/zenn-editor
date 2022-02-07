@@ -1,6 +1,8 @@
 /** Github REST APIの contents のレスポンス */
 type GithubSourceCodeResult = {
   sha: string;
+  repo: string;
+  owner: string;
   content: string;
   filePath: string;
   maxLine: number;
@@ -11,45 +13,6 @@ type GithubSourceCodeResult = {
 // Github REST APIのリクエストに必要な情報をパーマリンクから取得するための正規表現
 const GITHUB_PERMALINK_PATTERN =
   /^https:\/\/github\.com\/([a-zA-Z0-9-]{0,38})\/([a-zA-Z0-9-]{0,38})\/blob\/([a-z0-9]+)\/([\w!\-_~.*%()'"/]+)(?:#L(\d+)(?:-L(\d+))?)?/;
-
-const getSourceCodeInfo = (url: string) => {
-  const result = url.match(GITHUB_PERMALINK_PATTERN);
-
-  if (!result) return;
-
-  const [, owner, repo, sha, filePath, startLine, endLine] = result;
-
-  return {
-    sha,
-    repo,
-    owner,
-    filePath,
-    endLine: +endLine > 0 ? +endLine : void 0,
-    startLine: +startLine > 0 ? +startLine : 1,
-    path: `${owner}/${repo}/${sha}/${filePath}`,
-  };
-};
-
-const getGithubSourceCode = async (
-  url: string
-): Promise<GithubSourceCodeResult> => {
-  const info = getSourceCodeInfo(url);
-
-  if (!info) throw new Error('BAD URL');
-
-  const query = `https://raw.githubusercontent.com/${info.owner}/${info.repo}/${info.sha}/${info.filePath}`;
-
-  const file = await fetch(query).then((res) => res.text());
-
-  // 最後に改行が含まれているとズレるので、削除してから split する
-  const lines = file.replace(/\n$/, '').split('\n');
-
-  return {
-    ...info,
-    maxLine: lines.length,
-    content: lines.slice(info.startLine - 1, info.endLine).join('\n'),
-  };
-};
 
 // ホットリロード等、再レンダリング時のちらつきを防ぐためにhtmlの値をキャッシュする（リロードで消える）
 const resultHtmlStore: {
@@ -72,95 +35,125 @@ export class EmbedGithub extends HTMLElement {
     return encodeURIComponent(this.getAttribute('page-url') || '');
   }
 
+  getSourceCodeInfo(url: string) {
+    const result = url.match(GITHUB_PERMALINK_PATTERN);
+
+    if (!result) return;
+
+    const [, owner, repo, sha, filePath, startLine, endLine] = result;
+
+    return {
+      sha,
+      repo,
+      owner,
+      filePath,
+      endLine: +endLine > 0 ? +endLine : void 0,
+      startLine: +startLine > 0 ? +startLine : 1,
+    };
+  }
+
+  async getGithubSourceCode(url: string): Promise<GithubSourceCodeResult> {
+    const info = this.getSourceCodeInfo(url);
+
+    if (!info) throw new Error('BAD URL');
+
+    const query = `https://raw.githubusercontent.com/${info.owner}/${info.repo}/${info.sha}/${info.filePath}`;
+
+    const file = await fetch(query).then((res) => res.text());
+
+    // 最後に改行が含まれているとズレるので、削除してから split する
+    const lines = file.replace(/\n$/, '').split('\n');
+
+    return {
+      ...info,
+      maxLine: lines.length,
+      content: lines.slice(info.startLine - 1, info.endLine).join('\n'),
+    };
+  }
+
   async connectedCallback() {
-    // キャッシュがある場合は再リクエストしない
-    if (resultHtmlStore[this.getCacheKey()]) return;
+    const root = this.shadowRoot;
+    const url = this.getAttribute('page-url');
+
+    if (!(root && url)) return; // ルートDOMが表示されてない又は、URLが設定されてない場合は表示しない
+    if (resultHtmlStore[this.getCacheKey()]) return; // キャッシュがある場合は再リクエストしない
 
     try {
-      await this.render();
-    } catch (e) {
-      this.renderError();
+      const result = await this.getGithubSourceCode(url);
+      const Prism = await import('prismjs');
+
+      const highlight = (code: string): string => {
+        return Prism.highlight(code, Prism.languages.clike, 'clike');
+      };
+
+      this.render(root, result, highlight);
+    } catch {
+      this.renderError(root);
     }
   }
 
   renderHeader(result: Partial<GithubSourceCodeResult>): string {
     const sha = result.sha?.slice(0, 7);
-    const { startLine, endLine } = result;
+    const { startLine, maxLine } = result;
+    const endLine = result.endLine || maxLine;
 
     // prettier-ignore
-    return [
-      `<header class="header">`,
-        `<div class="gh-icon">`,
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="100%" height="100%" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>`,
-        `</div>`,
-        `<div class="container">`,
-          `<p class="label">`,
-            `<a href="${this.getAttribute('page-url')}" target="_blank" rel="noreferrer noopener">`,
-              `${result.filePath}`,
-            `</a>`,
-          `</p>`,
-          startLine 
-            ? `<p class="label">Lines ${startLine}${endLine ? ` to ${endLine}` : ``}${sha ? ` in ${sha}` : ``}</p>`
-            : ``,
-      ` </div>`,
-      `</header>`,
-    ].join('')
+    return `
+      <header class="header">
+        <div class="gh-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="100%" height="100%" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+        </div>
+        <div class="container">
+          <p class="label">
+            <a href="${this.getAttribute('page-url')}" target="_blank" rel="noreferrer noopener">
+              ${result.owner}/${result.repo}/${result.filePath}
+            </a>
+          </p>
+          <p class="label">Lines ${startLine} to ${endLine} in ${sha}</p>
+        </div>
+      </header>
+    `;
   }
 
-  renderError() {
-    if (!this.shadowRoot) return;
-
+  renderError(root: ShadowRoot) {
     const url = this.getAttribute('page-url');
-    const result = getSourceCodeInfo(url || '');
+    const result = this.getSourceCodeInfo(url || '');
 
     // prettier-ignore
-    this.shadowRoot.innerHTML = [
-      `<style>${embedGithubStyle}</style>`,
-      `<div class="embed-github">`,
-        this.renderHeader({ ...result }),
-        `<div class="error-message">`,
-          `<p>Githubの読み込みに失敗しました</p>`,
-        `</div>`,
-      `</div>`,
-    ].join('');
+    root.innerHTML = `
+      <style>${embedGithubStyle}</style>
+      <div class="embed-github">
+        ${this.renderHeader({ ...result })}
+        <div class="error-message">
+          <p>Githubの読み込みに失敗しました</p>
+        </div>
+      </div>
+    `
   }
 
-  async render() {
-    const url = this.getAttribute('page-url');
-
-    if (!(this.shadowRoot && url)) throw new Error('');
-
-    const result = await getGithubSourceCode(url);
-    const Prism = await import('prismjs');
-
-    const code = result.content;
-    const lang = Prism.languages.clike;
-    const sourceCode = Prism.highlight(code, lang, 'clike');
+  render(
+    root: ShadowRoot,
+    result: GithubSourceCodeResult,
+    highlight: (code: string) => string
+  ) {
+    const sourceCode = highlight(result.content);
     const startLine = result.startLine - 1;
     const lines = (result.endLine || result.maxLine) - startLine;
 
     // prettier-ignore
-    const resultHtml = [
-      `<style>${cssText}</style>`,
-      `<div class="embed-github">`,
-        ...this.renderHeader(result),
-        `<pre class="language-clike">`,
-          `<code>${sourceCode}<span class="line-numbers-rows">${[...Array(lines)].map((_, i) => `<span>${i + 1 + startLine}</span>`).join("")}</span></code>`,
-        `</pre>`,
-      `</div>`,
-    ].join('');
+    const lineNumbersHTML = `<span class="line-numbers-rows">${[...Array(lines),].map((_, i) => `<span>${i + 1 + startLine}</span>`).join('')}</span>`
+
+    const resultHtml = `
+      <style>${cssText}</style>
+      <div class="embed-github">
+        ${this.renderHeader(result)}
+        <pre class="language-clike"><code>${sourceCode}${lineNumbersHTML}</code></pre>
+      </div>
+    `;
 
     // gistのhtmlをキャッシュする
     resultHtmlStore[this.getCacheKey()] = resultHtml;
-
-    this.shadowRoot.innerHTML = resultHtml;
-
-    const codeElement = this.shadowRoot.querySelector('code');
-
-    if (codeElement) {
-      // line-numbers プラグインを実行するためにHooksを発火する
-      Prism.hooks.run('complete', { code, element: codeElement });
-    }
+    root.innerHTML = resultHtml;
   }
 }
 
