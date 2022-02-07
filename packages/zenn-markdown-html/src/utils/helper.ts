@@ -41,3 +41,8 @@ export function isValidHttpUrl(str: string) {
     return false;
   }
 }
+
+/** Githubの埋め込み要素を返す */
+export function generateGithubHtmlFromUrl(url: string) {
+  return `<div class="embed-github"><embed-github page-url="${url}" /></div>`;
+}

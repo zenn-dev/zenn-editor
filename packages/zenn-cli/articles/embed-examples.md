@@ -8,9 +8,9 @@ published: false
 
 ## Github Source Code
 
-@[github](https://github.com/zenn-dev/zenn-editor/blob/0ee17e44bda75ee3993f86de9c319f8279bac98f/lerna.json#L5-L7)
+https://github.com/zenn-dev/zenn-editor/blob/0ee17e44bda75ee3993f86de9c319f8279bac98f/lerna.json#L5-L7
 
-@[github](https://github.com/zenn-dev/zenn-editor/blob/0ee17e44bda75ee3993f86de9c319f8279bac98f/packages/zenn-markdown-html/src/prism-plugins/prism-diff-highlight.ts)
+https://github.com/zenn-dev/zenn-editor/blob/0ee17e44bda75ee3993f86de9c319f8279bac98f/packages/zenn-markdown-html/src/prism-plugins/prism-diff-highlight.ts
 
 ## Gists
 
