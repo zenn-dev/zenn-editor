@@ -8,9 +8,29 @@ published: false
 
 ## Github Source Code
 
+**行指定なし**
+
+https://github.com/zenn-dev/zenn-editor/blob/0ee17e44bda75ee3993f86de9c319f8279bac98f/lerna.json
+
+**行指定あり**
+
 https://github.com/zenn-dev/zenn-editor/blob/0ee17e44bda75ee3993f86de9c319f8279bac98f/lerna.json#L5-L7
 
-https://github.com/zenn-dev/zenn-editor/blob/0ee17e44bda75ee3993f86de9c319f8279bac98f/packages/zenn-markdown-html/src/prism-plugins/prism-diff-highlight.ts
+**開始行の指定だけあり**
+
+https://github.com/zenn-dev/zenn-editor/blob/0ee17e44bda75ee3993f86de9c319f8279bac98f/lerna.json#L5
+
+**ブランチ名で指定( 基本は hash 文字列を想定 )**
+
+https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json
+
+**行数が多いファイル**
+
+https://github.com/zenn-dev/zenn-editor/blob/canary/packages/zenn-markdown-html/src/prism-plugins/prism-diff-highlight.ts
+
+**無効なリンク**
+
+https://github.com/zenn-dev/zenn-editor/blob/無効なブランチ名/packages/zenn-markdown-html/src/prism-plugins/prism-diff-highlight.ts
 
 ## Gists
 

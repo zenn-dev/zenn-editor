@@ -1,24 +1,35 @@
-/** Github REST APIの contents のレスポンス */
-type GithubSourceCodeResult = {
-  sha: string;
+/**
+ * Githubのパーマリンクから得られる情報の型
+ */
+type GithubLinkInfo = {
   repo: string;
   owner: string;
-  content: string;
+  branch: string;
   filePath: string;
-  maxLine: number;
   startLine: number;
   endLine?: number;
 };
 
+/**
+ * Githubソースコードの情報型
+ */
+type GithubSourceCodeResult = GithubLinkInfo & {
+  content: string;
+  maxLine: number;
+};
+
 // Github REST APIのリクエストに必要な情報をパーマリンクから取得するための正規表現
 const GITHUB_PERMALINK_PATTERN =
-  /^https:\/\/github\.com\/([a-zA-Z0-9-]{0,38})\/([a-zA-Z0-9-]{0,38})\/blob\/([a-z0-9]+)\/([\w!\-_~.*%()'"/]+)(?:#L(\d+)(?:-L(\d+))?)?/;
+  /^https:\/\/github\.com\/([a-zA-Z0-9-]{0,38})\/([a-zA-Z0-9-]{0,38})\/blob\/([^~\s:?[*^/\\]{2,})\/([\w!\-_~.*%()'"/]+)(?:#L(\d+)(?:-L(\d+))?)?/;
 
 // ホットリロード等、再レンダリング時のちらつきを防ぐためにhtmlの値をキャッシュする（リロードで消える）
 const resultHtmlStore: {
   [cacheKey: string]: string;
 } = {};
 
+/**
+ * Github のソースコードを埋め込みするための Web Compoennts
+ */
 export class EmbedGithub extends HTMLElement {
   constructor() {
     super();
@@ -35,17 +46,17 @@ export class EmbedGithub extends HTMLElement {
     return encodeURIComponent(this.getAttribute('page-url') || '');
   }
 
-  getSourceCodeInfo(url: string) {
+  getGithubLinkInfo(url: string): GithubLinkInfo | void {
     const result = url.match(GITHUB_PERMALINK_PATTERN);
 
     if (!result) return;
 
-    const [, owner, repo, sha, filePath, startLine, endLine] = result;
+    const [, owner, repo, branch, filePath, startLine, endLine] = result;
 
     return {
-      sha,
       repo,
       owner,
+      branch,
       filePath,
       endLine: +endLine > 0 ? +endLine : void 0,
       startLine: +startLine > 0 ? +startLine : 1,
@@ -53,13 +64,17 @@ export class EmbedGithub extends HTMLElement {
   }
 
   async getGithubSourceCode(url: string): Promise<GithubSourceCodeResult> {
-    const info = this.getSourceCodeInfo(url);
+    const info = this.getGithubLinkInfo(url);
 
     if (!info) throw new Error('BAD URL');
 
-    const query = `https://raw.githubusercontent.com/${info.owner}/${info.repo}/${info.sha}/${info.filePath}`;
+    const { owner, repo, branch, filePath } = info;
+    const query = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${filePath}`;
 
-    const file = await fetch(query).then((res) => res.text());
+    const file = await fetch(query).then((res) => {
+      if (res.status >= 400) throw res;
+      return res.text();
+    });
 
     // 最後に改行が含まれているとズレるので、削除してから split する
     const lines = file.replace(/\n$/, '').split('\n');
@@ -67,6 +82,7 @@ export class EmbedGithub extends HTMLElement {
     return {
       ...info,
       maxLine: lines.length,
+      // 指定された範囲の行だけを文字列に含める
       content: lines.slice(info.startLine - 1, info.endLine).join('\n'),
     };
   }
@@ -92,10 +108,18 @@ export class EmbedGithub extends HTMLElement {
     }
   }
 
-  renderHeader(result: Partial<GithubSourceCodeResult>): string {
-    const sha = result.sha?.slice(0, 7);
-    const { startLine, maxLine } = result;
-    const endLine = result.endLine || maxLine;
+  /**
+   * @param branch Hash文字列 又は 任意のブランチ名
+   * @returns 7文字のHash文字列 又は 任意のブランチ名
+   */
+  formatBranchName(branch: string): string {
+    return /[a-z0-9]{40}/.test(branch)
+      ? branch.slice(0, 7) // そのままだと長いので7文字にする
+      : decodeURI(branch); // decodeURIは日本語名のブランチに対応するため
+  }
+
+  renderHeader(result: Partial<GithubLinkInfo>): string {
+    const { repo, owner, filePath, startLine, endLine, branch } = result;
 
     // prettier-ignore
     return `
@@ -105,11 +129,11 @@ export class EmbedGithub extends HTMLElement {
         </div>
         <div class="container">
           <p class="label">
-            <a href="${this.getAttribute('page-url')}" target="_blank" rel="noreferrer noopener">
-              ${result.owner}/${result.repo}/${result.filePath}
+            <a href="${this.getAttribute("page-url")}" target="_blank" rel="noreferrer noopener">
+              ${owner}/${repo}/${filePath}
             </a>
           </p>
-          <p class="label">Lines ${startLine} to ${endLine} in ${sha}</p>
+          <p class="label">Lines ${startLine} to ${endLine || 1} in ${this.formatBranchName(branch || "")}</p>
         </div>
       </header>
     `;
@@ -117,18 +141,17 @@ export class EmbedGithub extends HTMLElement {
 
   renderError(root: ShadowRoot) {
     const url = this.getAttribute('page-url');
-    const result = this.getSourceCodeInfo(url || '');
+    const result = this.getGithubLinkInfo(url || '') || {};
 
-    // prettier-ignore
     root.innerHTML = `
       <style>${embedGithubStyle}</style>
       <div class="embedded-github">
-        ${this.renderHeader({ ...result })}
+        ${this.renderHeader(result)}
         <div class="error-message">
           <p>Githubの読み込みに失敗しました</p>
         </div>
       </div>
-    `
+    `;
   }
 
   render(
@@ -137,16 +160,18 @@ export class EmbedGithub extends HTMLElement {
     highlight: (code: string) => string
   ) {
     const sourceCode = highlight(result.content);
-    const startLine = result.startLine - 1;
-    const lines = (result.endLine || result.maxLine) - startLine;
+    const endLine = result.endLine || result.maxLine;
+    const startLine = result.startLine - 1; // startLineは１から始まるので -1 する
+    const lineCount = endLine - startLine; // 表示する行数を計算する
 
     // prettier-ignore
-    const lineNumbersHTML = `<span class="line-numbers-rows">${[...Array(lines),].map((_, i) => `<span>${i + 1 + startLine}</span>`).join('')}</span>`
+    // 行数を表示するための要素
+    const lineNumbersHTML = `<span class="line-numbers-rows">${[...Array(lineCount),].map((_, i) => `<span>${i + 1 + startLine}</span>`).join('')}</span>`
 
     const resultHtml = `
       <style>${cssText}</style>
       <div class="embedded-github">
-        ${this.renderHeader(result)}
+        ${this.renderHeader({ ...result, endLine })}
         <pre class="language-clike"><code>${sourceCode}${lineNumbersHTML}</code></pre>
       </div>
     `;
