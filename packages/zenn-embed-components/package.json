@@ -1,0 +1,34 @@
+{
+  "name": "zenn-embed-components",
+  "version": "0.1.106",
+  "license": "MIT",
+  "description": "React Component for embed elements in Zenn markdown",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zenn-dev/zenn-editor.git",
+    "directory": "packages/zenn-embed-components"
+  },
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:strict": "eslint . --ext .ts,.tsx --max-warnings 0",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "build": "rimraf lib/* && tsc -p .",
+    "test": "echo 'no test yet'"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.39",
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
