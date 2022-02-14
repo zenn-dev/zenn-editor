@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { EmbedGitHub } from './github';
+import { EmbedGitHub } from './index';
 
 export default {
   title: 'Embedded/EmbedGitHub',
