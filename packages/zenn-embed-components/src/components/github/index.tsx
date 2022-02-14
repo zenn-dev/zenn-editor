@@ -5,10 +5,12 @@ import { EmbedGithubHeader } from './github-header';
 import { EmbedGithubLoading } from './github-loading';
 import { getGithubLinkInfo } from './utils';
 
-// デフォルトではAuto Highlightが有効なので、それを無効にしておく
-window.Prism = window.Prism || {};
-window.Prism.manual = true;
-PrismJS.manual = true;
+if (typeof window === 'object') {
+  // デフォルトではAuto Highlightが有効なので、それを無効にしておく
+  window.Prism = window.Prism || {};
+  window.Prism.manual = true;
+  PrismJS.manual = true;
+}
 
 export interface EmbedGtihubProps {
   /** 指定されたGithubページへのリンク文字列 */
@@ -19,6 +21,9 @@ export interface EmbedGtihubProps {
   content?: string;
 }
 
+/**
+ * Githubの埋め込み要素を表示するためのコンポーネント
+ */
 export const EmbedGitHub = ({ url, content, error }: EmbedGtihubProps) => {
   if (error) return <EmbedGithubError url={url} error={error} />;
   if (!content) return <EmbedGithubLoading url={url} />;

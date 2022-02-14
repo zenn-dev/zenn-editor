@@ -3,7 +3,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "declaration": true,
-    "jsx": "preserve", // 使用先でjsxを変換するので、このパッケージではjsxを変換しない。
+    "jsx": "react-jsx",
     "outDir": "./lib",
     "rootDir": "./src",
     "strict": true,
