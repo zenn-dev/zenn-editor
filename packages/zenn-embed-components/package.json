@@ -16,7 +16,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:strict": "eslint . --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "build": "rimraf lib/* && tsc -p .",
+    "build": "rimraf lib/* && tsc -p ./tsconfig.build.json",
     "test": "echo 'no test yet'",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

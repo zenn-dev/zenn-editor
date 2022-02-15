@@ -13,6 +13,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules", "lib", "**/*.story.tsx", "**/*.stories.tsx"],
+  "exclude": ["node_modules", "lib"],
   "include": ["**/*.ts", "**/*.tsx"]
 }
