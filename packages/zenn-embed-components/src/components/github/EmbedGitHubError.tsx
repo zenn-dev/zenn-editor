@@ -1,6 +1,7 @@
-import { cssText } from './github-css';
-import { EmbedGithubHeader } from './github-header';
+import { EmbedGithubHeader } from './EmbedGithubHeader';
 import { getGithubLinkInfo } from './utils';
+
+import { embedGithubStyle, statusMessageStyle } from './styles';
 
 interface EmbedGithubErrorProps {
   url: string;
@@ -10,12 +11,10 @@ interface EmbedGithubErrorProps {
 export const EmbedGithubError = ({ url }: EmbedGithubErrorProps) => {
   return (
     <div className="embed-github__container">
-      <style>{cssText}</style>
+      <div css={embedGithubStyle}>
+        <EmbedGithubHeader url={url} />
 
-      <div className="embedded-github">
-        <EmbedGithubHeader url={url} linkInfo={getGithubLinkInfo(url)} />
-
-        <div className="message">
+        <div css={statusMessageStyle}>
           <p>Githubの読み込みに失敗しました</p>
         </div>
       </div>

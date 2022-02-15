@@ -1,5 +1,5 @@
-import { cssText } from './github-css';
-import { EmbedGithubHeader } from './github-header';
+import { EmbedGithubHeader } from './EmbedGithubHeader';
+import { embedGithubStyle, statusMessageStyle } from './styles';
 
 interface EmbedGithubLoadingProps {
   url: string;
@@ -7,13 +7,11 @@ interface EmbedGithubLoadingProps {
 
 export const EmbedGithubLoading = ({ url }: EmbedGithubLoadingProps) => {
   return (
-    <div className="embed-github__container">
-      <style>{cssText}</style>
-
-      <div className="embedded-github">
+    <div>
+      <div css={embedGithubStyle}>
         <EmbedGithubHeader url={url} />
 
-        <div className="message">
+        <div css={statusMessageStyle}>
           <p>ローディング中...</p>
         </div>
       </div>
