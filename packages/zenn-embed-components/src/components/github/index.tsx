@@ -1,9 +1,16 @@
 import PrismJS from 'prismjs';
-import { cssText } from './github-css';
-import { EmbedGithubError } from './github-error';
-import { EmbedGithubHeader } from './github-header';
-import { EmbedGithubLoading } from './github-loading';
+
+import { EmbedGithubError } from './EmbedGitHubError';
+import { EmbedGithubHeader } from './EmbedGithubHeader';
+import { EmbedGithubLoading } from './EmbedGithubLoading';
+
 import { getGithubLinkInfo } from './utils';
+
+import {
+  embedGithubStyle,
+  lineNumbersStyle,
+  codeBlockThemeStyle,
+} from './styles';
 
 if (typeof window === 'object') {
   // デフォルトではAuto Highlightが有効なので、それを無効にしておく
@@ -37,25 +44,23 @@ export const EmbedGitHub = ({ url, content, error }: EmbedGtihubProps) => {
   const lineCount = endLine - startLine; // 表示する行数を計算する
 
   return (
-    <div className="embed-github__container">
-      <style>{cssText}</style>
-
-      <div className="embedded-github">
+    <div>
+      <div css={embedGithubStyle}>
         <EmbedGithubHeader url={url} linkInfo={info} />
 
-        <pre className="language-clike">
-          <code>
-            {tokens.map((token) =>
+        <pre css={codeBlockThemeStyle}>
+          <code className="language-clike">
+            {tokens.map((token, i) =>
               typeof token === 'string' ? (
                 token
               ) : (
-                <span className={`token ${token.type}`}>
+                <span key={`token__${i}`} className={`token ${token.type}`}>
                   {token.content.toString()}
                 </span>
               )
             )}
 
-            <span className="line-numbers-rows">
+            <span css={lineNumbersStyle}>
               {[...Array(lineCount)].map((_, i) => (
                 <span key={`line-number__${i}`}>{i + 1 + startLine}</span>
               ))}
