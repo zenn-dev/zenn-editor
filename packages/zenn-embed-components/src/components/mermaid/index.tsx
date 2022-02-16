@@ -35,7 +35,7 @@ const DEFAULT_CONFIG = {
   },
 };
 
-export interface EmbedMermaid {
+export interface EmbedMermaidProps {
   /** mermaidの記述 */
   content?: string;
 
@@ -43,7 +43,7 @@ export interface EmbedMermaid {
   config?: any;
 }
 
-export const Mermaid = ({ content, config }: EmbedMermaid) => {
+export const Mermaid = ({ content, config }: EmbedMermaidProps) => {
   mermaid.mermaidAPI.initialize({ ...DEFAULT_CONFIG, ...config });
   useEffect(() => {
     mermaid.contentLoaded();
