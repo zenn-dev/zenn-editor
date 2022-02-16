@@ -106,7 +106,7 @@ describe('Handle custom markdown format properly', () => {
       const html = markdownToHtml(url);
       const escapeUrl = escapeHtml(url);
       expect(html.trim()).toStrictEqual(
-        `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" rel="nofollow">${escapeUrl}</a></p>`.trim()
+        `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
       );
     }
   );
@@ -124,7 +124,7 @@ describe('Handle custom markdown format properly', () => {
       const html = markdownToHtml(url);
       const escapeUrl = escapeHtml(url);
       expect(html.trim()).toStrictEqual(
-        `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}&start=${start}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" rel="nofollow">${escapeUrl}</a></p>`.trim()
+        `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}&start=${start}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
       );
     }
   );
