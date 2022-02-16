@@ -1,0 +1,26 @@
+<!-- Storybookページの<head />をカスタマイズするためのHTMLファイル -->
+<!-- 参照:https://storybook.js.org/docs/react/configure/story-rendering#adding-to-head -->
+
+<!-- Twitterカードを埋め込むためのAPIを読み込むスクリプト -->
+<!-- 参照:https://zenn.dev/catnose99/articles/329d7d61968efb -->
+<script>
+  window.twttr = (function (f, b, g) {
+    var e,
+      c = f.getElementsByTagName(b)[0],
+      a = window.twttr || {};
+    if (f.getElementById(g)) {
+      return;
+      a;
+    }
+    e = f.createElement(b);
+    e.id = g;
+    e.src = 'https://platform.twitter.com/widgets.js';
+    c.parentNode.insertBefore(e, c);
+    a._e = [];
+    a.ready = function (d) {
+      a._e.push(d);
+    };
+    return;
+    a;
+  })(document, 'script', 'twitter-wjs');
+</script>
