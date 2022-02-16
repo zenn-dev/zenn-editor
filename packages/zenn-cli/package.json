@@ -1,7 +1,7 @@
 {
   "name": "zenn-cli",
   "license": "MIT",
-  "version": "0.1.106",
+  "version": "0.1.107-alpha.0",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -48,7 +48,7 @@
     "node-fetch": "^2.6.7",
     "open": "^8.2.0",
     "ws": "^7.4.6",
-    "zenn-markdown-html": "^0.1.106"
+    "zenn-markdown-html": "^0.1.107-alpha.0"
   },
   "devDependencies": {
     "@material-ui/core": "^4.11.4",
@@ -89,8 +89,8 @@
     "typescript": "^4.2.4",
     "vite": "^2.3.7",
     "wait-on": "^6.0.0",
-    "zenn-content-css": "^0.1.106",
-    "zenn-embed-elements": "^0.1.106"
+    "zenn-content-css": "^0.1.107-alpha.0",
+    "zenn-embed-elements": "^0.1.107-alpha.0"
   },
   "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
   "publishConfig": {
