@@ -39,7 +39,7 @@ md.use(mdBr)
   .use(mdLinkAttributes, [
     // 内部リンク
     {
-      pattern: /^https?:\/\/zenn.dev/,
+      pattern: /^(?:https:\/\/zenn\.dev$)|(?:https:\/\/zenn\.dev\/.*$)/,
       attrs: {
         target: '_blank',
       },

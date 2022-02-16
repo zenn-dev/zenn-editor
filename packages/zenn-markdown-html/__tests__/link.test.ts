@@ -25,6 +25,9 @@ describe('Linkify properly', () => {
     expect(markdownToHtml('URL is http://example.com')).toContain(
       'URL is <a href="http://example.com" target="_blank" rel="nofollow noopener noreferrer">http://example.com</a>'
     );
+    expect(markdownToHtml('URL is https://zenn.dev.example.com')).toContain(
+      'URL is <a href="https://zenn.dev.example.com" target="_blank" rel="nofollow noopener noreferrer">https://zenn.dev.example.com</a>'
+    );
   });
 
   test('should linkify url without rel if hostname is zenn.dev', () => {
