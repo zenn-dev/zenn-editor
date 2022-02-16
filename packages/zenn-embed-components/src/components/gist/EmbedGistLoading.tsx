@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-interface EmbedGistLoadingProps {
+export interface EmbedGistLoadingProps {
   url?: string;
 }
 

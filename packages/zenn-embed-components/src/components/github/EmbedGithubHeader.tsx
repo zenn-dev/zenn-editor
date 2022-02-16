@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { GithubIcon } from './GithubIcon';
+import { GithubIcon } from '../../Icons/GithubIcon';
 import { formatBranchName, GithubLinkInfo } from './utils';
 
 interface EmbedGithubHeaderProps {

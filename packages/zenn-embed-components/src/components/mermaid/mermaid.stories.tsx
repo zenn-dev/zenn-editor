@@ -1,15 +1,14 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Mermaid } from './index';
+import { EmbedMermaid } from './index';
 
 export default {
   title: 'Embedded/Mermaid',
-  component: Mermaid,
-} as ComponentMeta<typeof Mermaid>;
+  component: EmbedMermaid,
+} as ComponentMeta<typeof EmbedMermaid>;
 
-const Template: ComponentStory<typeof Mermaid> = (args) => (
-  <Mermaid {...args} />
+const Template: ComponentStory<typeof EmbedMermaid> = (args) => (
+  <EmbedMermaid {...args} />
 );
 
 const classDiagram = `

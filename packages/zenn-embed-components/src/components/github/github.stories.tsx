@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { EmbedGitHub } from './index';
 
 export default {
-  title: 'Embedded/EmbedGitHub',
+  title: 'Embedded/Github',
   component: EmbedGitHub,
 } as ComponentMeta<typeof EmbedGitHub>;
 

@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
-import { GithubCodeIcon } from '../Icons/GithubCodeIcon';
-import { GithubForkIcon } from '../Icons/GithubForkIcon';
-import { GithubIcon } from '../Icons/GithubIcon';
-import { GithubStarIcon } from '../Icons/GithubStarIcon';
+import { GithubIcon } from '../../Icons/GithubIcon';
+import { GithubCodeIcon } from '../../Icons/GithubCodeIcon';
+import { GithubForkIcon } from '../../Icons/GithubForkIcon';
+import { GithubStarIcon } from '../../Icons/GithubStarIcon';
 import { GithubRepoData } from './types';
 
 export interface EmbedGithubLinkCardProps extends GithubRepoData {}
