@@ -177,9 +177,11 @@ describe('Linkify properly', () => {
   });
 
   test('should convert a tweet-link with plain query to tweet-element', () => {
-    const html = markdownToHtml(`https://twitter.com/jack/status/20?foo=bar`);
+    const html = markdownToHtml(
+      `https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef`
+    );
     expect(html).toEqual(
-      '<p><div class="embed-tweet"><embed-tweet src="https://twitter.com/jack/status/20?foo=bar"></embed-tweet></div><a href="https://twitter.com/jack/status/20?foo=bar" style="display: none" target="_blank" rel="nofollow noopener noreferrer">https://twitter.com/jack/status/20?foo=bar</a></p>\n'
+      '<p><div class="embed-tweet"><embed-tweet src="https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef"></embed-tweet></div><a href="https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef" style="display: none" target="_blank" rel="nofollow noopener noreferrer">https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef</a></p>\n'
     );
   });
 });
