@@ -47,28 +47,36 @@ export const Mermaid = ({ content, config }: EmbedMermaid) => {
   mermaid.mermaidAPI.initialize({ ...DEFAULT_CONFIG, ...config });
   useEffect(() => {
     mermaid.contentLoaded();
-  }, [config]);
+  }, []);
 
   if (!content) return <></>;
 
   // 文法エラーやパフォーマンスリスクが検出された場合、注意書きをレンダリングして終了
-  const risk = getPotentialPerformanceRisk(content);
+  const results = validate(content);
+  const errors = Object.values(results).filter((result) => result.hasError);
 
-  // if (
-  //   Object.values(risk)
-  //     .map((r) => r.hasError)
-  //     .includes(true)
-  // ) {
-  //   return (
-  //     <div
-  //       css={css`
-  //         color: red;
-  //       `}
-  //     >
-  //       mermaidをレンダリングできません
-  //     </div>
-  //   );
-  // }
+  if (errors.length > 0) {
+    return (
+      <div
+        css={css`
+          font-family: Roboto, Helvetica, Arial, sans-serif;
+          font-size: 0.875rem;
+          background-color: #ffeff2;
+          border: 1px solid pink;
+          border-radius: 6px;
+          padding: 16px 24px;
+          color: #000000a6;
+        `}
+      >
+        <p>mermaidをレンダリングできません。</p>
+        <ul>
+          {errors.map((e, i) => (
+            <li key={i}>{e.message}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
 
   return <div className="mermaid">{content}</div>;
 };
@@ -78,38 +86,20 @@ type ErrorContainer = {
   message: string;
 };
 
-type PotentialRisk = {
-  syntaxError: ErrorContainer;
+type ValidateResult = {
   charLimitOver: ErrorContainer;
   chainingOfLinksOver: ErrorContainer;
 };
 
-function getPotentialPerformanceRisk(source: string): PotentialRisk {
-  const isPretty = (() => {
-    try {
-      // eslint-disable-next-line
-      mermaid!.mermaidAPI.parse(source);
-      return true;
-    } catch (e) {
-      console.log(
-        'mermaid.js のレンダリングでシンタックスエラーが発生しました',
-        e
-      );
-      return false;
-    }
-  })();
+function validate(source: string): ValidateResult {
   return {
-    syntaxError: {
-      hasError: !isPretty,
-      message: `<li>シンタックスエラーです</li>`,
-    },
     charLimitOver: {
       hasError: source.length > MAX_CHAR_LIMIT,
-      message: `<li>ブロックあたりの文字数上限は${MAX_CHAR_LIMIT}です</li>`,
+      message: `ブロックあたりの文字数上限は${MAX_CHAR_LIMIT}です`,
     },
     chainingOfLinksOver: {
       hasError: (source.match(/&/g) || []).length > MAX_CHAINING_OF_LINKS_LIMIT,
-      message: `<li>ブロックあたりの<code>&</code>によるチェイン上限は${MAX_CHAINING_OF_LINKS_LIMIT}です</li>`,
+      message: `ブロックあたりの & によるチェイン上限は${MAX_CHAINING_OF_LINKS_LIMIT}です`,
     },
   };
 }
