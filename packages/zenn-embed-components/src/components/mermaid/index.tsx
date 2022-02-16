@@ -44,10 +44,10 @@ export interface EmbedMermaidProps {
 }
 
 export const EmbedMermaid = ({ content, config }: EmbedMermaidProps) => {
-  mermaid.mermaidAPI.initialize({ ...DEFAULT_CONFIG, ...config });
   useEffect(() => {
+    mermaid.mermaidAPI.initialize({ ...DEFAULT_CONFIG, ...config });
     mermaid.contentLoaded();
-  }, []);
+  }, [content, config]);
 
   if (!content) return <></>;
 
