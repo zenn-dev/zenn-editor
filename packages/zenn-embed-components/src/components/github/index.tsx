@@ -71,3 +71,5 @@ export const EmbedGitHub = ({ url, content, error }: EmbedGtihubProps) => {
     </div>
   );
 };
+
+export { getGithubLinkInfo };
