@@ -21,7 +21,7 @@ onError.args = {
 
 export const Default = Template.bind({});
 Default.args = {
-  url: 'https://gist.github.com/uttk/f2ef528a39f89be80f07db9c56b1aaf2',
+  url: 'https://gist.github.com/octocat/6cad326836d38bd3a7ae',
 };
 Default.loaders = [
   () => {
