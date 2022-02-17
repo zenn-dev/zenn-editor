@@ -7,7 +7,7 @@ export function isGistUrl(url: string): boolean {
 }
 
 export function isTweetUrl(url: string): boolean {
-  return /^https:\/\/twitter\.com\/[a-zA-Z0-9_-]+\/status\/[a-zA-Z0-9?=]+$/.test(
+  return /^https:\/\/twitter\.com\/[a-zA-Z0-9_-]+\/status\/[a-zA-Z0-9?=&\-_]+$/.test(
     url
   );
 }
@@ -28,7 +28,8 @@ export function isJsfiddleUrl(url: string): boolean {
   return /^(http|https):\/\/jsfiddle\.net\/[a-zA-Z0-9_,/-]+$/.test(url);
 }
 
-const youtubeRegexp = /^(http(s?):\/\/)?(www\.)?youtu(be)?\.([a-z])+\/(watch(.*?)([?&])v=)?(.*?)(&(.)*)?$/;
+const youtubeRegexp =
+  /^(http(s?):\/\/)?(www\.)?youtu(be)?\.([a-z])+\/(watch(.*?)([?&])v=)?(.*?)(&(.)*)?$/;
 
 export function extractYoutubeVideoParameters(
   youtubeUrl: string

@@ -36,12 +36,23 @@ md.use(mdBr)
   .use(mdFootnote)
   .use(mdTaskLists, { enabled: true })
   .use(mdInlineComments)
-  .use(mdLinkAttributes, {
-    pattern: /^(?!https:\/\/zenn\.dev\/)/,
-    attrs: {
-      rel: 'nofollow',
+  .use(mdLinkAttributes, [
+    // 内部リンク
+    {
+      pattern: /^(?:https:\/\/zenn\.dev$)|(?:https:\/\/zenn\.dev\/.*$)/,
+      attrs: {
+        target: '_blank',
+      },
     },
-  })
+    // 外部リンク
+    {
+      pattern: /^https?:\/\//,
+      attrs: {
+        target: '_blank',
+        rel: 'nofollow noopener noreferrer',
+      },
+    },
+  ])
   .use(markdownItAnchor, {
     level: [1, 2, 3, 4],
     permalink: markdownItAnchor.permalink.ariaHidden({
