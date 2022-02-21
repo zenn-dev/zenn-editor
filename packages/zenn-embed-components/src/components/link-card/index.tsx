@@ -68,3 +68,5 @@ const containerStyles = css`
     padding: 0.8em 1.2em;
   }
 `;
+
+export { LinkData };
