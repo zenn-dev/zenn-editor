@@ -4,7 +4,6 @@ import { css } from '@emotion/react';
  * Github埋め込みのスタイル
  */
 export const embedGithubStyle = css`
-  margin: 1.5rem 0;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgb(160, 160, 160, 0.3);
