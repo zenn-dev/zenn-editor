@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { useEffect, useRef } from 'react';
 
 const containerClassName = 'embed-tweet-container';
@@ -39,7 +40,15 @@ export const EmbedTweetCard = ({ url }: EmbedTweetCardProps) => {
   }, [tweetId]);
 
   return (
-    <div ref={containerRef} className={containerClassName}>
+    <div
+      ref={containerRef}
+      className={containerClassName}
+      css={css`
+        .twitter-tweet {
+          margin: 0 !important;
+        }
+      `}
+    >
       {url ? (
         <a href={url} className={fallbackLinkClassName} rel="nofollow">
           {url}

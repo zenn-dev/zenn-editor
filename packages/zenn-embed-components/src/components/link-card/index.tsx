@@ -52,8 +52,6 @@ export const EmbedLinkCard = ({
 
 const containerStyles = css`
   & {
-    max-width: 780px;
-    margin: 0 auto;
     border: solid 1px rgba(92, 147, 187, 0.2);
     border-radius: 8px;
     overflow: hidden;
