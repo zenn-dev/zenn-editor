@@ -4,7 +4,7 @@ import { GithubIcon } from '../../Icons/GithubIcon';
 import { formatBranchName, GithubLinkInfo } from './utils';
 
 interface EmbedGithubHeaderProps {
-  url: string;
+  url?: string;
   linkInfo?: GithubLinkInfo;
 }
 
@@ -50,7 +50,7 @@ export const EmbedGithubHeader = ({
           `}
         >
           <a
-            href={info ? url : '#'}
+            href={info && url ? url : '#'}
             target="_blank"
             rel="noreferrer noopener"
             css={css`

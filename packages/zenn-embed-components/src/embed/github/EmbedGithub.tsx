@@ -14,7 +14,7 @@ import {
 
 export interface EmbedGtihubProps {
   /** 指定されたGithubページへのリンク文字列 */
-  url: string;
+  url?: string;
   /** エラー時のオブジェクト */
   error?: Error;
   /** フェッチしたソースコード文字列 */
@@ -34,10 +34,11 @@ if (typeof window === 'object') {
 const Contents = ({ url, content, error }: EmbedGtihubProps) => {
   if (error) return <EmbedGithubError url={url} error={error} />;
   if (!content) return <EmbedGithubLoading url={url} />;
+  if (!url) return <p>Not Found.</p>;
 
   const tokens = PrismJS.tokenize(content, PrismJS.languages.clike);
 
-  const info = getGithubLinkInfo(url);
+  const info = getGithubLinkInfo(url || '');
   const maxLine = content.replace(/\n$/, '').split('\n').length;
   const endLine = info?.endLine || maxLine;
   const startLine = (info?.startLine || 1) - 1; // startLineは１から始まるので -1 する

@@ -1,5 +1,4 @@
-import { useRef } from '@storybook/addons';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useRef } from 'react';
 
 interface SendWindowSizeProps extends PropsWithChildren<{}> {
   url: string;
