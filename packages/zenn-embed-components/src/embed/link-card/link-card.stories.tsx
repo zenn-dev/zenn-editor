@@ -11,14 +11,22 @@ const Template: ComponentStory<typeof EmbedLinkCard> = (args) => (
   <EmbedLinkCard {...args} />
 );
 
-export const Loading = Template.bind({});
-Loading.args = {
-  isLoading: true,
+export const onError = Template.bind({});
+onError.args = {
+  error: new Error('example error'),
 };
 
-export const Base = Template.bind({});
-Base.args = {
-  isLoading: false,
+export const onLoading = Template.bind({});
+onLoading.args = {
+  url: 'https://example.com',
+};
+
+export const onNotFound = Template.bind({});
+onNotFound.args = {};
+
+export const onDefault = Template.bind({});
+onDefault.args = {
+  url: 'https://zenn.dev',
   linkData: {
     url: 'https://example.com',
     title: 'Example Sites',
@@ -27,9 +35,9 @@ Base.args = {
   },
 };
 
-export const BaseWithZenn = Template.bind({});
-BaseWithZenn.args = {
-  isLoading: false,
+export const onWithThumbnail = Template.bind({});
+onWithThumbnail.args = {
+  url: 'https://zenn.dev',
   linkData: {
     url: 'https://zenn.dev',
     hostname: 'zenn.dev',
@@ -41,9 +49,9 @@ BaseWithZenn.args = {
   },
 };
 
-export const GithubLinkCard = Template.bind({});
-GithubLinkCard.args = {
-  isLoading: false,
+export const onGithub = Template.bind({});
+onGithub.args = {
+  url: 'https://github.com/zenn-dev/zenn-editor',
   githubRepo: {
     url: 'https://github.com/zenn-dev/zenn-editor',
     fullName: 'zenn-dev/zenn-editor',
