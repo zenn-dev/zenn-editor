@@ -1,8 +1,16 @@
 import { Fragment } from 'react';
+
 import { EmbedGistError } from './EmbedGistError';
 import { EmbedGistLoading } from './EmbedGistLoading';
 import { SendWindowSize } from '../../components/SendWindowSize';
-import { EmbedGistProps } from './types';
+
+import { GistApiResponse } from './types';
+
+export interface EmbedGistProps {
+  url?: string;
+  error?: Error;
+  data?: GistApiResponse;
+}
 
 const Contents = ({ url, data, error }: EmbedGistProps) => {
   if (error) return <EmbedGistError url={url} error={error} />;
