@@ -1,14 +1,14 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { EmbedTweetCard } from './index';
+import { EmbedTweet } from './index';
 
 export default {
   title: 'Embedded/TweetCard',
-  component: EmbedTweetCard,
-} as ComponentMeta<typeof EmbedTweetCard>;
+  component: EmbedTweet,
+} as ComponentMeta<typeof EmbedTweet>;
 
-const Template: ComponentStory<typeof EmbedTweetCard> = (args) => (
-  <EmbedTweetCard {...args} />
+const Template: ComponentStory<typeof EmbedTweet> = (args) => (
+  <EmbedTweet {...args} />
 );
 
 export const Default = Template.bind({});
