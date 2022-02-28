@@ -104,3 +104,6 @@ onPerformanceRisk.args = {
     a --> b & c --> d & e --> f & g--> h & j--> k & l --> m --> o & p --> q & s --> r & t --> u & v --> w & x --> y & z --> a
     `,
 };
+
+export const onNotFound = Template.bind({});
+onNotFound.args = {};
