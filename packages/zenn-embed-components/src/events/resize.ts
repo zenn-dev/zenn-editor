@@ -2,7 +2,7 @@
  * 埋め込み要素のリサイズイベントで親ウィンドウに送信するデータ型
  */
 export interface EmbedElementResizeEventData {
-  src: string;
+  id: number;
   width: number;
   height: number;
 }

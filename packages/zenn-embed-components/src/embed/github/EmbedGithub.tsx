@@ -11,12 +11,9 @@ import {
   lineNumbersStyle,
   codeBlockThemeStyle,
 } from './styles';
+import { EmbedComponentProps } from '../types';
 
-export interface EmbedGtihubProps {
-  /** 指定されたGithubページへのリンク文字列 */
-  url?: string;
-  /** エラー時のオブジェクト */
-  error?: Error;
+export interface EmbedGtihubProps extends EmbedComponentProps {
   /** フェッチしたソースコード文字列 */
   content?: string;
 }
@@ -31,14 +28,14 @@ if (typeof window === 'object') {
 /**
  * Githubの埋め込み要素を表示するためのコンポーネント
  */
-const View = ({ url, content, error }: EmbedGtihubProps) => {
-  if (error) return <EmbedGithubError url={url} error={error} />;
-  if (!content) return <EmbedGithubLoading url={url} />;
-  if (!url) return <p>Not Found.</p>;
+const View = ({ src, error, content, isLoading }: EmbedGtihubProps) => {
+  if (error) return <EmbedGithubError url={src} error={error} />;
+  if (!isLoading) return <EmbedGithubLoading url={src} />;
+  if (!content) return <p>Not Found.</p>;
 
   const tokens = PrismJS.tokenize(content, PrismJS.languages.clike);
 
-  const info = getGithubLinkInfo(url || '');
+  const info = getGithubLinkInfo(src || '');
   const maxLine = content.replace(/\n$/, '').split('\n').length;
   const endLine = info?.endLine || maxLine;
   const startLine = (info?.startLine || 1) - 1; // startLineは１から始まるので -1 する
@@ -46,7 +43,7 @@ const View = ({ url, content, error }: EmbedGtihubProps) => {
 
   return (
     <div css={embedGithubStyle}>
-      <EmbedGithubHeader url={url} linkInfo={info} />
+      <EmbedGithubHeader url={src} linkInfo={info} />
 
       <pre css={codeBlockThemeStyle}>
         <code className="language-clike">
@@ -73,7 +70,7 @@ const View = ({ url, content, error }: EmbedGtihubProps) => {
 
 export const EmbedGithub = (props: EmbedGtihubProps) => {
   return (
-    <SendWindowSize src={props.url} className="embed-github">
+    <SendWindowSize id={props.id} className="embed-github">
       <View {...props} />
     </SendWindowSize>
   );

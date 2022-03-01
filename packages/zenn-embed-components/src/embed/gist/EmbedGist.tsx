@@ -5,17 +5,16 @@ import { EmbedGistLoading } from './EmbedGistLoading';
 import { SendWindowSize } from '../../components/SendWindowSize';
 
 import { GistApiResponse } from './types';
+import { EmbedComponentProps } from '../types';
 
-export interface EmbedGistProps {
-  url?: string;
-  error?: Error;
+export interface EmbedGistProps extends EmbedComponentProps {
   data?: GistApiResponse;
 }
 
-const View = ({ url, data, error }: EmbedGistProps) => {
-  if (error) return <EmbedGistError url={url} error={error} />;
-  if (!data) return <EmbedGistLoading url={url} />;
-  if (!url) return <p>Not Found</p>;
+const View = ({ src, data, error, isLoading }: EmbedGistProps) => {
+  if (error) return <EmbedGistError url={src} error={error} />;
+  if (!isLoading) return <EmbedGistLoading url={src} />;
+  if (!data) return <p>Not Found</p>;
 
   return (
     <Fragment>
@@ -27,7 +26,7 @@ const View = ({ url, data, error }: EmbedGistProps) => {
 
 export const EmbedGist = (props: EmbedGistProps) => {
   return (
-    <SendWindowSize src={props.url} className="embed-gist">
+    <SendWindowSize id={props.id} className="embed-gist">
       <View {...props} />
     </SendWindowSize>
   );

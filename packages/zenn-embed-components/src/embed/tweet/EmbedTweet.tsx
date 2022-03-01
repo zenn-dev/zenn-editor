@@ -1,22 +1,21 @@
 import { css } from '@emotion/react';
 import { useEffect, useRef } from 'react';
 import { SendWindowSize } from '../../components/SendWindowSize';
+import { EmbedComponentProps } from '../types';
 import { EmbedTweetNotFound } from './EmbedTweetNotFound';
 
 type CreateTweet = (id: string, ele: HTMLElement, option: any) => Promise<any>;
 
-export interface EmbedTweetProps {
-  url?: string;
-}
+export interface EmbedTweetProps extends EmbedComponentProps {}
 
 const containerClassName = 'embed-tweet-container';
 const fallbackLinkClassName = 'embed-tweet-link';
 const twitterPattern = /https?:\/\/twitter.com\/(.*?)\/status\/(\d+)[/?]?/;
 
-const View = ({ url }: EmbedTweetProps) => {
+const View = ({ src }: EmbedTweetProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const match = url?.match(twitterPattern);
+  const match = src?.match(twitterPattern);
   const tweetId = match?.[2] || null;
 
   useEffect(() => {
@@ -27,7 +26,7 @@ const View = ({ url }: EmbedTweetProps) => {
     if (!tweetId || !containerRef.current || !createTweet) return;
 
     const container = containerRef.current;
-    const disableConversation = url?.includes('?conversation=none');
+    const disableConversation = src?.includes('?conversation=none');
 
     createTweet(tweetId, container, {
       align: 'center',
@@ -53,8 +52,8 @@ const View = ({ url }: EmbedTweetProps) => {
         }
       `}
     >
-      <a href={url} className={fallbackLinkClassName} rel="nofollow">
-        {url}
+      <a href={src} className={fallbackLinkClassName} rel="nofollow">
+        {src}
       </a>
     </div>
   );
@@ -62,7 +61,7 @@ const View = ({ url }: EmbedTweetProps) => {
 
 export const EmbedTweet = (props: EmbedTweetProps) => {
   return (
-    <SendWindowSize src={props.url} className="embed-tweet">
+    <SendWindowSize id={props.id} className="embed-tweet">
       <View {...props} />
     </SendWindowSize>
   );
