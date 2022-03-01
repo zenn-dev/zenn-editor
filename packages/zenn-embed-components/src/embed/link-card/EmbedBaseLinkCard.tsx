@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { GithubIcon } from '../../Icons/GithubIcon';
 import { LinkData } from './types';
 
 export interface EmbedBaseLinkCardProps extends LinkData {}
