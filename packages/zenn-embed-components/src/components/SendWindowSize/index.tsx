@@ -24,7 +24,7 @@ export const SendWindowSize = ({
     const observer = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
         const data: EmbedElementResizeEventData = {
-          src,
+          src: encodeURI(src),
           width: entry.contentRect.width,
           height: entry.contentRect.height,
         };

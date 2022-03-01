@@ -38,7 +38,9 @@ const getEmbeddedIframes = (
 
   const elements =
     elementStore.get(src) ||
-    Array.from(root.querySelectorAll(`iframe[src='${src}']`));
+    Array.from(root.getElementsByTagName('iframe')).filter((iframe) => {
+      return !!iframe.src && encodeURI(iframe.src).includes(src);
+    });
 
   if (elements.length > 0) {
     elementStore.set(src, elements);
