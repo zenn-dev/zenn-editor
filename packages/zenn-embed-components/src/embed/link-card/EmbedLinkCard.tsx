@@ -14,7 +14,7 @@ export interface EmbedLinkCardProps {
   githubRepo?: GithubRepoData;
 }
 
-const Contents = ({ url, error, linkData, githubRepo }: EmbedLinkCardProps) => {
+const View = ({ url, error, linkData, githubRepo }: EmbedLinkCardProps) => {
   if (error) return <EmbedLinkCardError url={url} error={error} />;
   if (!url) return <EmbedLinkCardNotFound />;
   if (!linkData && !githubRepo) return <EmbedLinkCardLoading />;
@@ -35,7 +35,7 @@ const Contents = ({ url, error, linkData, githubRepo }: EmbedLinkCardProps) => {
 export const EmbedLinkCard = (props: EmbedLinkCardProps) => {
   return (
     <SendWindowSize url={props.url || ''} className="embed-link-card">
-      <Contents {...props} />
+      <View {...props} />
     </SendWindowSize>
   );
 };

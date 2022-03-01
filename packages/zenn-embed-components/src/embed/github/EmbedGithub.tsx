@@ -31,7 +31,7 @@ if (typeof window === 'object') {
 /**
  * Githubの埋め込み要素を表示するためのコンポーネント
  */
-const Contents = ({ url, content, error }: EmbedGtihubProps) => {
+const View = ({ url, content, error }: EmbedGtihubProps) => {
   if (error) return <EmbedGithubError url={url} error={error} />;
   if (!content) return <EmbedGithubLoading url={url} />;
   if (!url) return <p>Not Found.</p>;
@@ -74,7 +74,7 @@ const Contents = ({ url, content, error }: EmbedGtihubProps) => {
 export const EmbedGithub = (props: EmbedGtihubProps) => {
   return (
     <SendWindowSize url={props.url || ''} className="embed-github">
-      <Contents {...props} />
+      <View {...props} />
     </SendWindowSize>
   );
 };

@@ -12,7 +12,7 @@ export interface EmbedGistProps {
   data?: GistApiResponse;
 }
 
-const Contents = ({ url, data, error }: EmbedGistProps) => {
+const View = ({ url, data, error }: EmbedGistProps) => {
   if (error) return <EmbedGistError url={url} error={error} />;
   if (!data) return <EmbedGistLoading url={url} />;
   if (!url) return <p>Not Found</p>;
@@ -28,7 +28,7 @@ const Contents = ({ url, data, error }: EmbedGistProps) => {
 export const EmbedGist = (props: EmbedGistProps) => {
   return (
     <SendWindowSize url={props.url || ''} className="embed-gist">
-      <Contents {...props} />
+      <View {...props} />
     </SendWindowSize>
   );
 };
