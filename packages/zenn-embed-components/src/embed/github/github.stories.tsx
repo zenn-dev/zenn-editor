@@ -1,15 +1,14 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { EmbedGitHub } from './index';
+import { EmbedGithub } from './index';
 
 export default {
   title: 'Embedded/Github',
-  component: EmbedGitHub,
-} as ComponentMeta<typeof EmbedGitHub>;
+  component: EmbedGithub,
+} as ComponentMeta<typeof EmbedGithub>;
 
-const Template: ComponentStory<typeof EmbedGitHub> = (args) => (
-  <EmbedGitHub {...args} />
+const Template: ComponentStory<typeof EmbedGithub> = (args) => (
+  <EmbedGithub {...args} />
 );
 
 export const onPreview = Template.bind({});

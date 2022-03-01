@@ -1,17 +1,19 @@
 import { css } from '@emotion/react';
 import { useEffect, useRef } from 'react';
+import { SendWindowSize } from '../../components/SendWindowSize';
+import { EmbedTweetNotFound } from './EmbedTweetNotFound';
+
+type CreateTweet = (id: string, ele: HTMLElement, option: any) => Promise<any>;
+
+export interface EmbedTweetProps {
+  url?: string;
+}
 
 const containerClassName = 'embed-tweet-container';
 const fallbackLinkClassName = 'embed-tweet-link';
 const twitterPattern = /https?:\/\/twitter.com\/(.*?)\/status\/(\d+)[/?]?/;
 
-type CreateTweet = (id: string, ele: HTMLElement, option: any) => Promise<any>;
-
-export interface EmbedTweetCardProps {
-  url?: string;
-}
-
-export const EmbedTweetCard = ({ url }: EmbedTweetCardProps) => {
+const View = ({ url }: EmbedTweetProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const match = url?.match(twitterPattern);
@@ -39,6 +41,8 @@ export const EmbedTweetCard = ({ url }: EmbedTweetCardProps) => {
       });
   }, [tweetId]);
 
+  if (!tweetId) return <EmbedTweetNotFound />;
+
   return (
     <div
       ref={containerRef}
@@ -49,13 +53,17 @@ export const EmbedTweetCard = ({ url }: EmbedTweetCardProps) => {
         }
       `}
     >
-      {url ? (
-        <a href={url} className={fallbackLinkClassName} rel="nofollow">
-          {url}
-        </a>
-      ) : (
-        <p>Not Found</p>
-      )}
+      <a href={url} className={fallbackLinkClassName} rel="nofollow">
+        {url}
+      </a>
     </div>
+  );
+};
+
+export const EmbedTweet = (props: EmbedTweetProps) => {
+  return (
+    <SendWindowSize src={props.url} className="embed-tweet">
+      <View {...props} />
+    </SendWindowSize>
   );
 };
