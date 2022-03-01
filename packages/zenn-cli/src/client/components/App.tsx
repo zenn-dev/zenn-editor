@@ -20,6 +20,20 @@ export const App: React.VFC = () => {
   // init embed elements
   useEffect(() => {
     import('zenn-embed-elements');
+
+    let removeEvent: (() => void) | null = null;
+
+    import('zenn-embed-components').then(
+      ({ listenEmbedComponentsResizeEvent }) => {
+        removeEvent = listenEmbedComponentsResizeEvent([
+          'http://localhost:3000',
+        ]);
+      }
+    );
+
+    return () => {
+      if (removeEvent) removeEvent();
+    };
   }, []);
 
   return (
