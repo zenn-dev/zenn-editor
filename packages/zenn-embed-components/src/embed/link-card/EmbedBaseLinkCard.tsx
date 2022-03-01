@@ -43,20 +43,13 @@ export const EmbedBaseLinkCard = ({
 
         {hostname && (
           <div className="meta">
-            {hostname === 'github.com' ? (
-              /* workaround: github favicon was not available */
-              <GithubIcon />
-            ) : (
-              <img
-                src={`https://www.google.com/s2/favicons?sz=32&domain_url=${
-                  urlOrigin ?? ''
-                }`}
-                width="14"
-                height="14"
-                className="favicon"
-                alt=""
-              />
-            )}
+            <img
+              src={`https://www.google.com/s2/favicons?sz=14&domain_url=${
+                urlOrigin ?? ''
+              }`}
+              className="favicon"
+              alt={`${hostname} favicon image`}
+            />
             {hostname}
           </div>
         )}

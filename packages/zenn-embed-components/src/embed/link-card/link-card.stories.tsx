@@ -63,3 +63,18 @@ onGithub.args = {
     language: 'TypeScript',
   },
 };
+
+export const onGithubOtherPage = Template.bind({});
+onGithubOtherPage.args = {
+  url: 'https://github.com/zenn-dev/zenn-editorhttps://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
+  linkData: {
+    url: 'https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
+    hostname: 'github.com',
+    urlOrigin: 'https://github.com',
+    title: 'zenn-editor/package.json at canary · zenn-dev/zenn-editor',
+    imageUrl:
+      'https://opengraph.githubassets.com/4bbcca5661650bf33de71a40caa0acd3a749a9fe6b94c8cde13a52b1aa451e7a/zenn-dev/zenn-editor',
+    description:
+      'Convert markdown to html in Zenn format. Contribute to zenn-dev/zenn-editor development by creating an account on GitHub.',
+  },
+};
