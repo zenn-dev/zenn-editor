@@ -73,7 +73,7 @@ const View = ({ url, content, error }: EmbedGtihubProps) => {
 
 export const EmbedGithub = (props: EmbedGtihubProps) => {
   return (
-    <SendWindowSize url={props.url || ''} className="embed-github">
+    <SendWindowSize src={props.url} className="embed-github">
       <View {...props} />
     </SendWindowSize>
   );

@@ -1,7 +1,8 @@
 import { PropsWithChildren, useEffect, useRef } from 'react';
+import { EmbedElementResizeEventData } from '../../events/resize';
 
 interface SendWindowSizeProps extends PropsWithChildren<{}> {
-  url: string;
+  src: string | null | undefined;
   className?: string;
 }
 
@@ -9,32 +10,34 @@ interface SendWindowSizeProps extends PropsWithChildren<{}> {
  * 他のwindowにウィンドウサイズをpostMessageする
  */
 export const SendWindowSize = ({
-  url,
+  src,
   children,
   className,
 }: SendWindowSizeProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!url) return;
+    if (!src) return;
     if (!ref.current) return;
     if (window.parent === window) return;
 
     const observer = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
-        const { width, height } = entry.contentRect;
-
-        const data = JSON.stringify({ url, width, height });
+        const data: EmbedElementResizeEventData = {
+          src,
+          width: entry.contentRect.width,
+          height: entry.contentRect.height,
+        };
 
         // 親ウィンドウにデータを送る
-        window.parent.postMessage(data, '*');
+        window.parent.postMessage(JSON.stringify(data), '*');
       });
     });
 
     observer.observe(ref.current);
 
     return () => observer.disconnect();
-  }, [url]);
+  }, [src]);
 
   return (
     <div ref={ref} className={className}>

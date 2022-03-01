@@ -34,7 +34,7 @@ const View = ({ url, error, linkData, githubRepo }: EmbedLinkCardProps) => {
 
 export const EmbedLinkCard = (props: EmbedLinkCardProps) => {
   return (
-    <SendWindowSize url={props.url || ''} className="embed-link-card">
+    <SendWindowSize src={props.url} className="embed-link-card">
       <View {...props} />
     </SendWindowSize>
   );

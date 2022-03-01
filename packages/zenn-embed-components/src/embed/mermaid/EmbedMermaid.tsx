@@ -34,7 +34,7 @@ const View = ({ content, config }: EmbedMermaidProps) => {
 
 export const EmbedMermaid = (props: EmbedMermaidProps) => {
   return (
-    <SendWindowSize url={props.content || ''} className="embed-mermaid">
+    <SendWindowSize src={props.content} className="embed-mermaid">
       <View {...props} />
     </SendWindowSize>
   );

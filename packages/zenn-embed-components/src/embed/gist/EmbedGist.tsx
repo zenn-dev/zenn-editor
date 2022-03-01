@@ -27,7 +27,7 @@ const View = ({ url, data, error }: EmbedGistProps) => {
 
 export const EmbedGist = (props: EmbedGistProps) => {
   return (
-    <SendWindowSize url={props.url || ''} className="embed-gist">
+    <SendWindowSize src={props.url} className="embed-gist">
       <View {...props} />
     </SendWindowSize>
   );

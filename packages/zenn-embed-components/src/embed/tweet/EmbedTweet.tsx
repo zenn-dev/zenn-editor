@@ -62,7 +62,7 @@ const View = ({ url }: EmbedTweetProps) => {
 
 export const EmbedTweet = (props: EmbedTweetProps) => {
   return (
-    <SendWindowSize url={props.url || ''} className="embed-tweet">
+    <SendWindowSize src={props.url} className="embed-tweet">
       <View {...props} />
     </SendWindowSize>
   );
