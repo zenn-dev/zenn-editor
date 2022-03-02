@@ -48,7 +48,7 @@ const View = ({ src }: EmbedTweetProps) => {
       className={containerClassName}
       css={css`
         .twitter-tweet {
-          margin: 0 !important;
+          margin: 0 auto !important;
         }
       `}
     >
