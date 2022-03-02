@@ -8,11 +8,6 @@ export interface EmbedElementResizeEventData {
 }
 
 /**
- * 埋め込み要素のキャッシュストア
- */
-const embedElementStore = new Map<string, HTMLIFrameElement>();
-
-/**
  * JSON文字列をパースして返す
  */
 const getJSONData = (data: string): Record<string, any> => {
@@ -21,20 +16,6 @@ const getJSONData = (data: string): Record<string, any> => {
   } catch {
     return {};
   }
-};
-
-/**
- * 渡された `id` を持つ埋め込み要素を返す
- * @param id 埋め込み要素の`id`に設定している文字列
- */
-const getEmbeddedIframe = (id: string): HTMLIFrameElement | null => {
-  const element = embedElementStore.get(id) || document.getElementById(id);
-
-  if (!(element instanceof HTMLIFrameElement)) return null;
-
-  embedElementStore.set(id, element);
-
-  return element;
 };
 
 /**
@@ -50,14 +31,12 @@ export const listenEmbedComponentsResizeEvent = (allowOrigin: string[]) => {
 
     if (!id) return;
 
-    const iframe = getEmbeddedIframe(id);
+    const iframe = document.getElementById(id);
 
-    if (iframe) {
+    if (iframe instanceof HTMLIFrameElement) {
       iframe.width = width || 0;
       iframe.height = height || 0;
     }
-
-    console.log('Recived the postMessage data', { id, width, height });
   };
 
   window.addEventListener('message', onMessage);

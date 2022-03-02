@@ -97,7 +97,7 @@ export function mdRendererFence(md: MarkdownIt) {
     const { langName, fileName, hasDiff } = parseInfo(info);
 
     if (langName === 'mermaid') {
-      return generateEmbedIframe('mermaid', { content: content.trim() });
+      return generateEmbedIframe('mermaid', content.trim());
     }
 
     const className = getClassName({

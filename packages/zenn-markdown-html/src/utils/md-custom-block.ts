@@ -73,12 +73,12 @@ const blockOptions = {
   },
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
-    return generateEmbedIframe('tweet', { url: str });
+    return generateEmbedIframe('tweet', str);
   },
   card(str: string) {
     // generateCardHtml内でURLはエンコードされるためここでのバリデーションは軽めでOK
     if (!isValidHttpUrl(str)) return 'URLが不正です';
-    return generateEmbedIframe('link-card', { url: str });
+    return generateEmbedIframe('link-card', str);
   },
   gist(str: string) {
     if (!isGistUrl(str)) return 'GitHub GistのページURLを指定してください';
@@ -88,8 +88,7 @@ const blockOptions = {
      * - https://gist.github.com/foo/bar.json?file=example.js
      * のような形式
      */
-    const [url, file] = str.split('?file=');
-    return generateEmbedIframe('gist', { url, file });
+    return generateEmbedIframe('gist', str);
   },
 };
 

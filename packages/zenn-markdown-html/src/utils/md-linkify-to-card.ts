@@ -52,11 +52,11 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
     if (isYoutubeUrl(url)) {
       embedToken.content = generateYoutubeHtmlFromUrl(url);
     } else if (isTweetUrl(url)) {
-      embedToken.content = generateEmbedIframe('tweet', { url });
+      embedToken.content = generateEmbedIframe('tweet', url);
     } else if (isGithubUrl(url)) {
-      embedToken.content = generateEmbedIframe('github', { url });
+      embedToken.content = generateEmbedIframe('github', url);
     } else {
-      embedToken.content = generateEmbedIframe('link-card', { url });
+      embedToken.content = generateEmbedIframe('link-card', url);
     }
     // a要素自体はカードにより不要になるため非表示に
     linkOpenToken.attrJoin('style', 'display: none');

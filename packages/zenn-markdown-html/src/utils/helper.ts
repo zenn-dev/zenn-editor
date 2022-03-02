@@ -52,13 +52,10 @@ type ZennEmbedTypes = 'tweet' | 'link-card' | 'mermaid' | 'github' | 'gist';
 
 let embeddedId = 0;
 
-export function generateEmbedIframe(
-  type: ZennEmbedTypes,
-  params: Record<string, string>
-): string {
+export function generateEmbedIframe(type: ZennEmbedTypes, src: string): string {
   const id = `zenn-embedded__${++embeddedId}`;
-  const query = new URLSearchParams({ ...params, id });
-  const src = `http://localhost:3000/${type}/?${query}`;
+  const query = new URLSearchParams({ id, src });
+  const iframeSrc = `http://localhost:3000/${type}/?${query}`;
 
-  return `<div class="zenn-embedded"><iframe id="${id}" src="${src}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
+  return `<div class="zenn-embedded"><iframe id="${id}" src="${iframeSrc}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
 }
