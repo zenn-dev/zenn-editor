@@ -13,7 +13,7 @@ export interface EmbedGistProps extends EmbedComponentProps {
 
 const View = ({ src, data, error, isLoading }: EmbedGistProps) => {
   if (error) return <EmbedGistError url={src} error={error} />;
-  if (!isLoading) return <EmbedGistLoading url={src} />;
+  if (isLoading) return <EmbedGistLoading url={src} />;
   if (!data) return <p>Not Found</p>;
 
   return (

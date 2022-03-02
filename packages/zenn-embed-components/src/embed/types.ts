@@ -3,7 +3,7 @@
  */
 export interface EmbedComponentProps {
   /** 親ウィンドウから渡されるID */
-  id: number;
+  id: string | null | undefined;
   /** ローディング中華のフラグ */
   isLoading: boolean;
   /** 親ウィンドウから渡されるURLやコンテンツ文字列 */

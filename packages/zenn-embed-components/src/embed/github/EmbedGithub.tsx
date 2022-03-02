@@ -30,7 +30,7 @@ if (typeof window === 'object') {
  */
 const View = ({ src, error, content, isLoading }: EmbedGtihubProps) => {
   if (error) return <EmbedGithubError url={src} error={error} />;
-  if (!isLoading) return <EmbedGithubLoading url={src} />;
+  if (isLoading) return <EmbedGithubLoading url={src} />;
   if (!content) return <p>Not Found.</p>;
 
   const tokens = PrismJS.tokenize(content, PrismJS.languages.clike);

@@ -2,7 +2,7 @@ import { PropsWithChildren, useEffect, useRef } from 'react';
 import { EmbedElementResizeEventData } from '../../events/resize';
 
 interface SendWindowSizeProps extends PropsWithChildren<{}> {
-  id: number | null | undefined;
+  id: string | null | undefined;
   className?: string;
 }
 
@@ -17,8 +17,8 @@ export const SendWindowSize = ({
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!id) return;
     if (!ref.current) return;
-    if (typeof id !== 'number') return;
     if (window.parent === window) return;
 
     const observer = new ResizeObserver((entries) => {
