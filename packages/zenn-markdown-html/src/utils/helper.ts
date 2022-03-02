@@ -50,14 +50,15 @@ export function isValidHttpUrl(str: string) {
 
 type ZennEmbedTypes = 'tweet' | 'link-card' | 'mermaid' | 'github' | 'gist';
 
-let embedId = 0;
+let embeddedId = 0;
 
 export function generateEmbedIframe(
   type: ZennEmbedTypes,
   params: Record<string, string>
 ): string {
-  const origin = `http://localhost:3000/${type}`;
-  const query = new URLSearchParams({ ...params, id: `${++embedId}` });
+  const id = `zenn-embedded__${++embeddedId}`;
+  const query = new URLSearchParams({ ...params, id });
+  const src = `http://localhost:3000/${type}/?${query}`;
 
-  return `<div class="zenn-embedded"><iframe src="${origin}/?${query}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
+  return `<div class="zenn-embedded"><iframe id="${id}" src="${src}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
 }

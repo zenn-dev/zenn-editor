@@ -10,7 +10,7 @@ export interface EmbedElementResizeEventData {
 /**
  * 埋め込み要素のキャッシュストア
  */
-const elementStore = new Map<string, HTMLIFrameElement[]>();
+const embedElementStore = new Map<string, HTMLIFrameElement>();
 
 /**
  * JSON文字列をパースして返す
@@ -24,40 +24,24 @@ const getJSONData = (data: string): Record<string, any> => {
 };
 
 /**
- * 渡された `src` を表示している埋め込み要素を返す
- * @param src 埋め込み要素に設定されている `src` 文字列
- * @param parent 埋め込み要素を表示している親要素
+ * 渡された `id` を持つ埋め込み要素を返す
+ * @param id 埋め込み要素の`id`に設定している文字列
  */
-const getEmbeddedIframes = (
-  id: string,
-  parent?: HTMLElement
-): HTMLIFrameElement[] => {
-  if (!id) return [];
+const getEmbeddedIframe = (id: string): HTMLIFrameElement | null => {
+  const element = embedElementStore.get(id) || document.getElementById(id);
 
-  const root = parent || document;
+  if (!(element instanceof HTMLIFrameElement)) return null;
 
-  const elements =
-    elementStore.get(id) ||
-    Array.from(root.getElementsByTagName('iframe')).filter((iframe) => {
-      return !!iframe.src && iframe.src.match(/id=(\w+)/)?.[1] === id;
-    });
+  embedElementStore.set(id, element);
 
-  if (elements.length > 0) {
-    elementStore.set(id, elements);
-  }
-
-  return elements;
+  return element;
 };
 
 /**
  * 埋め込み要素からのリサイズイベントを購読する
  * @param allowOrigin 許可するOrigin
- * @param parent 埋め込み要素を表示している親要素
  */
-export const listenEmbedComponentsResizeEvent = (
-  allowOrigin: string[],
-  parent?: HTMLElement
-) => {
+export const listenEmbedComponentsResizeEvent = (allowOrigin: string[]) => {
   const onMessage = (event: MessageEvent<any>) => {
     // 許可していないオリジンは受け付けないようにする
     if (!allowOrigin.includes(event.origin)) return;
@@ -66,10 +50,12 @@ export const listenEmbedComponentsResizeEvent = (
 
     if (!id) return;
 
-    getEmbeddedIframes(id, parent).forEach((iframe) => {
+    const iframe = getEmbeddedIframe(id);
+
+    if (iframe) {
       iframe.width = width || 0;
       iframe.height = height || 0;
-    });
+    }
 
     console.log('Recived the postMessage data', { id, width, height });
   };
