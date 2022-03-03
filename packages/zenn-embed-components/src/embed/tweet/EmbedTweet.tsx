@@ -1,10 +1,9 @@
 import { css } from '@emotion/react';
 import { useEffect, useRef } from 'react';
-import { SendWindowSize } from '../../components/SendWindowSize';
-import { EmbedComponentProps } from '../types';
 import { EmbedTweetNotFound } from './EmbedTweetNotFound';
+import { SendWindowSize } from '../../components/SendWindowSize';
 
-type CreateTweet = (id: string, ele: HTMLElement, option: any) => Promise<any>;
+import { EmbedComponentProps } from '../types';
 
 export interface EmbedTweetProps extends EmbedComponentProps {}
 
@@ -19,9 +18,7 @@ const View = ({ src }: EmbedTweetProps) => {
   const tweetId = match?.[2] || null;
 
   useEffect(() => {
-    const createTweet = (window as any).twttr?.widgets?.createTweet as
-      | CreateTweet
-      | undefined;
+    const createTweet = (window as any).twttr?.widgets?.createTweet;
 
     if (!tweetId || !containerRef.current || !createTweet) return;
 
@@ -35,7 +32,7 @@ const View = ({ src }: EmbedTweetProps) => {
       .then(() => {
         container.querySelector(`.${fallbackLinkClassName}`)?.remove();
       })
-      .catch((e) => {
+      .catch((e: unknown) => {
         console.error(e);
       });
   }, [tweetId]);

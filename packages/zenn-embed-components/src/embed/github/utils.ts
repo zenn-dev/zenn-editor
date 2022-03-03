@@ -37,40 +37,15 @@ export const getGithubLinkInfo = (url: string): GithubLinkInfo | undefined => {
 
   const [, owner, repo, branch, filePath, startLine, endLine] = result;
 
+  const _startLine = +startLine > 0 ? +startLine : 1;
+  const _endLine = +endLine || 0;
+
   return {
     repo,
     owner,
     branch,
     filePath,
-    endLine: +endLine > 0 ? +endLine : void 0,
-    startLine: +startLine > 0 ? +startLine : 1,
+    startLine: _startLine,
+    endLine: _endLine > _startLine ? _endLine : void 0,
   };
-};
-
-/**
- * 渡された token 配列を行単位で分割する関数
- * @param tokens PrismJS.tokenize()の戻り値
- * @param startLine 開始行
- * @param endLine 終了行
- */
-export const slicePrismJSTokens = (
-  tokens: PrismToken[],
-  startLine: number,
-  endLine: number
-): PrismToken[] => {
-  const displayTokens: PrismToken[] = [];
-
-  let lineCount = 0;
-
-  // 表示範囲を計算する
-  for (const token of tokens) {
-    if (lineCount >= endLine) break;
-    if (typeof token === 'string' && token.match(/\n/)) ++lineCount;
-
-    if (lineCount >= startLine) {
-      displayTokens.push(token);
-    }
-  }
-
-  return displayTokens;
 };

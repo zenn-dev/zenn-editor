@@ -5,8 +5,8 @@ import { EmbedGithubHeader } from './EmbedGithubHeader';
 import { EmbedGithubLoading } from './EmbedGithubLoading';
 import { SendWindowSize } from '../../components/SendWindowSize';
 
-import { getGithubLinkInfo, slicePrismJSTokens } from './utils';
-import { PrismToken, EmbedComponentProps } from '../types';
+import { getGithubLinkInfo } from './utils';
+import { EmbedComponentProps } from '../types';
 
 import {
   embedGithubStyle,
@@ -34,16 +34,16 @@ const View = ({ src, error, content, isLoading }: EmbedGtihubProps) => {
   if (isLoading) return <EmbedGithubLoading url={src} />;
   if (!content) return <p>Not Found.</p>;
 
-  const tokens = PrismJS.tokenize(content, PrismJS.languages.clike);
-
+  const lines = content.replace(/\n$/, '').split('\n');
+  const maxLine = lines.length;
   const info = getGithubLinkInfo(src || ''); // URL文字列から情報を取得する
-  const startLine = (info?.startLine || 1) - 1; // startLineは１から始まるので -1 する
-  const endLine = info?.endLine || content.replace(/\n$/, '').split('\n').length; // prettier-ignore
+  const startLine = Math.min(maxLine, info?.startLine || 1) - 1; // startLineは１から始まるので -1 する
+  const endLine = Math.min(maxLine, info?.endLine || Infinity); // 最終行が未定義の場合は最大行を指定する
 
-  // 表示するtokenを格納する配列
-  const displayTokens: PrismToken[] = info?.endLine
-    ? tokens
-    : slicePrismJSTokens(tokens, startLine, endLine);
+  const tokens = PrismJS.tokenize(
+    lines.slice(startLine, endLine).join('\n'),
+    PrismJS.languages.clike
+  );
 
   return (
     <div css={embedGithubStyle}>
@@ -54,7 +54,7 @@ const View = ({ src, error, content, isLoading }: EmbedGtihubProps) => {
 
       <pre css={codeBlockThemeStyle}>
         <code className="language-clike">
-          {displayTokens.map((token, i) =>
+          {tokens.map((token, i) =>
             typeof token === 'string' ? (
               token
             ) : (
@@ -66,10 +66,13 @@ const View = ({ src, error, content, isLoading }: EmbedGtihubProps) => {
 
           {/* 行番号を表示する */}
           <span css={lineNumbersStyle}>
-            {[...Array(endLine - startLine)].map((_, i) => (
+            {[...Array(Math.max(endLine - startLine, 1))].map((_, i) => (
               <span key={`line-number__${i}`}>{i + 1 + startLine}</span>
             ))}
           </span>
+
+          {/* 最後の行が改行コードだった場合、見栄えが悪くなるので改行を追加しておく */}
+          <br />
         </code>
       </pre>
     </div>

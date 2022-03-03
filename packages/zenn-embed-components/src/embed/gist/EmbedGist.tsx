@@ -4,8 +4,7 @@ import { EmbedGistError } from './EmbedGistError';
 import { EmbedGistLoading } from './EmbedGistLoading';
 import { SendWindowSize } from '../../components/SendWindowSize';
 
-import { GistApiResponse } from './types';
-import { EmbedComponentProps } from '../types';
+import { GistApiResponse, EmbedComponentProps } from '../types';
 
 export interface EmbedGistProps extends EmbedComponentProps {
   data?: GistApiResponse;

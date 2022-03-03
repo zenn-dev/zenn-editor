@@ -67,12 +67,12 @@ Hotel "1" -- "1" GeoPoint: May Contain
 
 export const onDefault = Template.bind({});
 onDefault.args = {
-  content: classDiagram,
+  src: classDiagram,
 };
 
 export const onGlobalConfig = Template.bind({});
 onGlobalConfig.args = {
-  content: classDiagram,
+  src: classDiagram,
   config: {
     theme: 'forest',
   },
@@ -80,7 +80,7 @@ onGlobalConfig.args = {
 
 export const onDiagramConfig = Template.bind({});
 onDiagramConfig.args = {
-  content: `
+  src: `
   %%{init:{'theme':'dark'}}%%
   graph LR
     q(QEMU) --> qemu-boot-shim --> physboot --> zircon
@@ -89,7 +89,7 @@ onDiagramConfig.args = {
 
 export const onSyntaxError = Template.bind({});
 onSyntaxError.args = {
-  content: `
+  src: `
   %%{init:{'theme':'dark'}}%%
   graph LR
     q(QEMU) --> qemu-boot-shim --> physboot -- zircon
@@ -98,11 +98,21 @@ onSyntaxError.args = {
 
 export const onPerformanceRisk = Template.bind({});
 onPerformanceRisk.args = {
-  content: `
+  src: `
   %%{init:{'theme':'dark'}}%%
   graph LR
     a --> b & c --> d & e --> f & g--> h & j--> k & l --> m --> o & p --> q & s --> r & t --> u & v --> w & x --> y & z --> a
     `,
+};
+
+export const onError = Template.bind({});
+onError.args = {
+  error: new Error(),
+};
+
+export const onLoading = Template.bind({});
+onError.args = {
+  isLoading: true,
 };
 
 export const onNotFound = Template.bind({});

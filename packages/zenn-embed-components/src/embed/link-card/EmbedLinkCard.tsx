@@ -4,9 +4,10 @@ import { EmbedGithubLinkCard } from './EmbedGithubLinkCard';
 import { EmbedLinkCardLoading } from './EmbedLinkCardLoading';
 import { EmbedLinkCardNotFound } from './EmbedLinkCardNotFound';
 import { SendWindowSize } from '../../components/SendWindowSize';
+
+import { LinkData, GithubRepoData, EmbedComponentProps } from '../types';
+
 import { containerStyles } from './styles';
-import { EmbedComponentProps } from '../types';
-import { LinkData, GithubRepoData } from './types';
 
 export interface EmbedLinkCardProps extends EmbedComponentProps {
   linkData?: LinkData;

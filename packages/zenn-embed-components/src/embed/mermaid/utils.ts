@@ -1,4 +1,4 @@
-import { ValidateResult } from './types';
+import { MermaidValidateResult } from '../types';
 
 /**
  * レンダリングする図ごとの最大文字数
@@ -45,7 +45,7 @@ export const DEFAULT_CONFIG = {
  * mermaidのソース文字列を検証する
  * @param source mermaidのソース文字列
  */
-export function validateMermaidSource(source: string): ValidateResult {
+export function validateMermaidSource(source: string): MermaidValidateResult {
   return {
     charLimitOver: {
       hasError: source.length > MAX_CHAR_LIMIT,
