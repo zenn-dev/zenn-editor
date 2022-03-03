@@ -5,13 +5,14 @@ import { EmbedGithubHeader } from './EmbedGithubHeader';
 import { EmbedGithubLoading } from './EmbedGithubLoading';
 import { SendWindowSize } from '../../components/SendWindowSize';
 
-import { getGithubLinkInfo } from './utils';
+import { getGithubLinkInfo, slicePrismJSTokens } from './utils';
+import { PrismToken, EmbedComponentProps } from '../types';
+
 import {
   embedGithubStyle,
   lineNumbersStyle,
   codeBlockThemeStyle,
 } from './styles';
-import { EmbedComponentProps } from '../types';
 
 export interface EmbedGtihubProps extends EmbedComponentProps {
   /** フェッチしたソースコード文字列 */
@@ -35,19 +36,25 @@ const View = ({ src, error, content, isLoading }: EmbedGtihubProps) => {
 
   const tokens = PrismJS.tokenize(content, PrismJS.languages.clike);
 
-  const info = getGithubLinkInfo(src || '');
-  const maxLine = content.replace(/\n$/, '').split('\n').length;
-  const endLine = info?.endLine || maxLine;
+  const info = getGithubLinkInfo(src || ''); // URL文字列から情報を取得する
   const startLine = (info?.startLine || 1) - 1; // startLineは１から始まるので -1 する
-  const lineCount = endLine - startLine; // 表示する行数を計算する
+  const endLine = info?.endLine || content.replace(/\n$/, '').split('\n').length; // prettier-ignore
+
+  // 表示するtokenを格納する配列
+  const displayTokens: PrismToken[] = info?.endLine
+    ? tokens
+    : slicePrismJSTokens(tokens, startLine, endLine);
 
   return (
     <div css={embedGithubStyle}>
-      <EmbedGithubHeader url={src} linkInfo={info} />
+      <EmbedGithubHeader
+        url={src}
+        linkInfo={info ? { ...info, endLine } : void 0}
+      />
 
       <pre css={codeBlockThemeStyle}>
         <code className="language-clike">
-          {tokens.map((token, i) =>
+          {displayTokens.map((token, i) =>
             typeof token === 'string' ? (
               token
             ) : (
@@ -57,8 +64,9 @@ const View = ({ src, error, content, isLoading }: EmbedGtihubProps) => {
             )
           )}
 
+          {/* 行番号を表示する */}
           <span css={lineNumbersStyle}>
-            {[...Array(lineCount)].map((_, i) => (
+            {[...Array(endLine - startLine)].map((_, i) => (
               <span key={`line-number__${i}`}>{i + 1 + startLine}</span>
             ))}
           </span>

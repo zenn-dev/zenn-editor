@@ -1,3 +1,5 @@
+import type PrismJS from 'prismjs';
+
 /**
  * 埋め込み要素の基本的なProps型
  */
@@ -11,3 +13,8 @@ export interface EmbedComponentProps {
   /** エラーが発生した時のエラーオブジェクト */
   error?: Error;
 }
+
+/**
+ * PrismJS の tokenize() の戻り値の型
+ */
+export type PrismToken = string | PrismJS.Token;

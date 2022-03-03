@@ -1,3 +1,5 @@
+import { PrismToken } from '../types';
+
 /**
  * @param branch Hash文字列 又は 任意のブランチ名
  * @returns 7文字のHash文字列 又は 任意のブランチ名
@@ -43,4 +45,32 @@ export const getGithubLinkInfo = (url: string): GithubLinkInfo | undefined => {
     endLine: +endLine > 0 ? +endLine : void 0,
     startLine: +startLine > 0 ? +startLine : 1,
   };
+};
+
+/**
+ * 渡された token 配列を行単位で分割する関数
+ * @param tokens PrismJS.tokenize()の戻り値
+ * @param startLine 開始行
+ * @param endLine 終了行
+ */
+export const slicePrismJSTokens = (
+  tokens: PrismToken[],
+  startLine: number,
+  endLine: number
+): PrismToken[] => {
+  const displayTokens: PrismToken[] = [];
+
+  let lineCount = 0;
+
+  // 表示範囲を計算する
+  for (const token of tokens) {
+    if (lineCount >= endLine) break;
+    if (typeof token === 'string' && token.match(/\n/)) ++lineCount;
+
+    if (lineCount >= startLine) {
+      displayTokens.push(token);
+    }
+  }
+
+  return displayTokens;
 };
