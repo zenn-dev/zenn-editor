@@ -1,4 +1,3 @@
-import mermaid from 'mermaid';
 import { useEffect } from 'react';
 import { EmbedMermaidError } from './EmbedMermaidError';
 import { EmbedMermaidLoading } from './EmbedMermaidLoading';
@@ -19,7 +18,9 @@ const View = ({ src, config, isLoading }: EmbedMermaidProps) => {
   const errorCount = errors.length;
 
   useEffect(() => {
-    if (src && errorCount === 0) {
+    const mermaid: any = window.mermaid;
+
+    if (src && errorCount === 0 && mermaid) {
       mermaid.mermaidAPI.initialize({ ...DEFAULT_CONFIG, ...config });
       mermaid.contentLoaded();
     }
