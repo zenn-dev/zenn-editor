@@ -1,57 +1,36 @@
 import { css } from '@emotion/react';
-import { useEffect, useRef } from 'react';
+import { EmbedTweetLoading } from './EmbedTweetLoading';
 import { EmbedTweetNotFound } from './EmbedTweetNotFound';
 import { SendWindowSize } from '../../components/SendWindowSize';
-
 import { EmbedComponentProps } from '../types';
 
 export interface EmbedTweetProps extends EmbedComponentProps {}
 
-const containerClassName = 'embed-tweet-container';
-const fallbackLinkClassName = 'embed-tweet-link';
-const twitterPattern = /https?:\/\/twitter.com\/(.*?)\/status\/(\d+)[/?]?/;
+const View = ({ src, isLoading }: EmbedTweetProps) => {
+  let url: URL | null = null;
 
-const View = ({ src }: EmbedTweetProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  try {
+    url = new URL(src || '');
+  } catch {
+    url = null;
+  }
 
-  const match = src?.match(twitterPattern);
-  const tweetId = match?.[2] || null;
-
-  useEffect(() => {
-    const createTweet = (window as any).twttr?.widgets?.createTweet;
-
-    if (!tweetId || !containerRef.current || !createTweet) return;
-
-    const container = containerRef.current;
-    const disableConversation = src?.includes('?conversation=none');
-
-    createTweet(tweetId, container, {
-      align: 'center',
-      ...(disableConversation ? { conversation: 'none' } : {}),
-    })
-      .then(() => {
-        container.querySelector(`.${fallbackLinkClassName}`)?.remove();
-      })
-      .catch((e: unknown) => {
-        console.error(e);
-      });
-  }, [tweetId]);
-
-  if (!tweetId) return <EmbedTweetNotFound />;
+  if (isLoading) return <EmbedTweetLoading />;
+  if (url?.origin !== 'https://twitter.com') return <EmbedTweetNotFound />;
 
   return (
     <div
-      ref={containerRef}
-      className={containerClassName}
       css={css`
         .twitter-tweet {
           margin: 0 auto !important;
         }
       `}
     >
-      <a href={src} className={fallbackLinkClassName} rel="nofollow">
-        {src}
-      </a>
+      <blockquote className="twitter-tweet">
+        <a href={url.href} rel="nofollow">
+          {src}
+        </a>
+      </blockquote>
     </div>
   );
 };
