@@ -18,7 +18,7 @@ onError.args = {
 
 export const onLoading = Template.bind({});
 onLoading.args = {
-  url: 'https://example.com',
+  isLoading: true,
 };
 
 export const onNotFound = Template.bind({});
@@ -26,7 +26,7 @@ onNotFound.args = {};
 
 export const onDefault = Template.bind({});
 onDefault.args = {
-  url: 'https://zenn.dev',
+  src: 'https://zenn.dev',
   linkData: {
     url: 'https://example.com',
     title: 'Example Sites',
@@ -37,7 +37,7 @@ onDefault.args = {
 
 export const onWithThumbnail = Template.bind({});
 onWithThumbnail.args = {
-  url: 'https://zenn.dev',
+  src: 'https://zenn.dev',
   linkData: {
     url: 'https://zenn.dev',
     hostname: 'zenn.dev',
@@ -51,7 +51,7 @@ onWithThumbnail.args = {
 
 export const onGithub = Template.bind({});
 onGithub.args = {
-  url: 'https://github.com/zenn-dev/zenn-editor',
+  src: 'https://github.com/zenn-dev/zenn-editor',
   githubRepo: {
     url: 'https://github.com/zenn-dev/zenn-editor',
     fullName: 'zenn-dev/zenn-editor',
@@ -66,7 +66,7 @@ onGithub.args = {
 
 export const onGithubOtherPage = Template.bind({});
 onGithubOtherPage.args = {
-  url: 'https://github.com/zenn-dev/zenn-editorhttps://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
+  src: 'https://github.com/zenn-dev/zenn-editorhttps://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
   linkData: {
     url: 'https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
     hostname: 'github.com',

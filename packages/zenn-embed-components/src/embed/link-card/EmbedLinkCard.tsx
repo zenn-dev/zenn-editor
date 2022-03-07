@@ -1,23 +1,29 @@
 import { EmbedBaseLinkCard } from './EmbedBaseLinkCard';
+import { EmbedLinkCardError } from './EmbedLinkCardError';
 import { EmbedGithubLinkCard } from './EmbedGithubLinkCard';
 import { EmbedLinkCardLoading } from './EmbedLinkCardLoading';
 import { EmbedLinkCardNotFound } from './EmbedLinkCardNotFound';
 import { SendWindowSize } from '../../components/SendWindowSize';
-import { LinkData, GithubRepoData } from './types';
-import { containerStyles } from './styles';
-import { EmbedLinkCardError } from './EmbedLinkCardError';
 
-export interface EmbedLinkCardProps {
-  url?: string;
-  error?: Error;
+import { LinkData, GithubRepoData, EmbedComponentProps } from '../types';
+
+import { containerStyles } from './styles';
+
+export interface EmbedLinkCardProps extends EmbedComponentProps {
   linkData?: LinkData;
   githubRepo?: GithubRepoData;
 }
 
-const View = ({ url, error, linkData, githubRepo }: EmbedLinkCardProps) => {
-  if (error) return <EmbedLinkCardError url={url} error={error} />;
-  if (!url) return <EmbedLinkCardNotFound />;
-  if (!linkData && !githubRepo) return <EmbedLinkCardLoading />;
+const View = ({
+  src,
+  error,
+  isLoading,
+  linkData,
+  githubRepo,
+}: EmbedLinkCardProps) => {
+  if (error) return <EmbedLinkCardError url={src} error={error} />;
+  if (isLoading) return <EmbedLinkCardLoading />;
+  if (!linkData && !githubRepo) return <EmbedLinkCardNotFound />;
 
   return (
     <div css={containerStyles}>
@@ -34,7 +40,7 @@ const View = ({ url, error, linkData, githubRepo }: EmbedLinkCardProps) => {
 
 export const EmbedLinkCard = (props: EmbedLinkCardProps) => {
   return (
-    <SendWindowSize src={props.url} className="embed-link-card">
+    <SendWindowSize id={props.id} className="embed-link-card">
       <View {...props} />
     </SendWindowSize>
   );

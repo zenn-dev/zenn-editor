@@ -3,7 +3,7 @@ import { GithubIcon } from '../../components/Icons/GithubIcon';
 import { GithubCodeIcon } from '../../components/Icons/GithubCodeIcon';
 import { GithubForkIcon } from '../../components/Icons/GithubForkIcon';
 import { GithubStarIcon } from '../../components/Icons/GithubStarIcon';
-import { GithubRepoData } from './types';
+import { GithubRepoData } from '../types';
 
 export interface EmbedGithubLinkCardProps extends GithubRepoData {}
 

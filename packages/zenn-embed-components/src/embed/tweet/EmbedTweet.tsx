@@ -1,33 +1,29 @@
 import { css } from '@emotion/react';
 import { useEffect, useRef } from 'react';
-import { SendWindowSize } from '../../components/SendWindowSize';
 import { EmbedTweetNotFound } from './EmbedTweetNotFound';
+import { SendWindowSize } from '../../components/SendWindowSize';
 
-type CreateTweet = (id: string, ele: HTMLElement, option: any) => Promise<any>;
+import { EmbedComponentProps } from '../types';
 
-export interface EmbedTweetProps {
-  url?: string;
-}
+export interface EmbedTweetProps extends EmbedComponentProps {}
 
 const containerClassName = 'embed-tweet-container';
 const fallbackLinkClassName = 'embed-tweet-link';
 const twitterPattern = /https?:\/\/twitter.com\/(.*?)\/status\/(\d+)[/?]?/;
 
-const View = ({ url }: EmbedTweetProps) => {
+const View = ({ src }: EmbedTweetProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const match = url?.match(twitterPattern);
+  const match = src?.match(twitterPattern);
   const tweetId = match?.[2] || null;
 
   useEffect(() => {
-    const createTweet = (window as any).twttr?.widgets?.createTweet as
-      | CreateTweet
-      | undefined;
+    const createTweet = (window as any).twttr?.widgets?.createTweet;
 
     if (!tweetId || !containerRef.current || !createTweet) return;
 
     const container = containerRef.current;
-    const disableConversation = url?.includes('?conversation=none');
+    const disableConversation = src?.includes('?conversation=none');
 
     createTweet(tweetId, container, {
       align: 'center',
@@ -36,7 +32,7 @@ const View = ({ url }: EmbedTweetProps) => {
       .then(() => {
         container.querySelector(`.${fallbackLinkClassName}`)?.remove();
       })
-      .catch((e) => {
+      .catch((e: unknown) => {
         console.error(e);
       });
   }, [tweetId]);
@@ -49,12 +45,12 @@ const View = ({ url }: EmbedTweetProps) => {
       className={containerClassName}
       css={css`
         .twitter-tweet {
-          margin: 0 !important;
+          margin: 0 auto !important;
         }
       `}
     >
-      <a href={url} className={fallbackLinkClassName} rel="nofollow">
-        {url}
+      <a href={src} className={fallbackLinkClassName} rel="nofollow">
+        {src}
       </a>
     </div>
   );
@@ -62,7 +58,7 @@ const View = ({ url }: EmbedTweetProps) => {
 
 export const EmbedTweet = (props: EmbedTweetProps) => {
   return (
-    <SendWindowSize src={props.url} className="embed-tweet">
+    <SendWindowSize id={props.id} className="embed-tweet">
       <View {...props} />
     </SendWindowSize>
   );

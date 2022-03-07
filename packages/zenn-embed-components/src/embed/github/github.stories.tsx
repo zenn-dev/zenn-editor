@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof EmbedGithub> = (args) => (
 
 export const onPreview = Template.bind({});
 onPreview.args = {
-  url: 'https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
+  src: 'https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
   content: `{
   "packages": [
     "packages/*"
@@ -26,11 +26,36 @@ onPreview.args = {
 
 export const onLoading = Template.bind({});
 onLoading.args = {
-  url: 'https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
+  isLoading: true,
 };
 
 export const onError = Template.bind({});
 onError.args = {
-  url: 'https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json',
   error: new Error(''),
+};
+
+export const onSpecifyingLines = Template.bind({});
+onSpecifyingLines.args = {
+  src: 'https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json#L3-L5',
+  content: `{
+    "packages": [
+      "packages/*"
+    ],
+    "version": "0.1.106",
+    "npmClient": "yarn",
+    "useWorkspaces": true
+  }`,
+};
+
+export const onSpecifyingStartLine = Template.bind({});
+onSpecifyingStartLine.args = {
+  src: 'https://github.com/zenn-dev/zenn-editor/blob/canary/lerna.json#L5',
+  content: `{
+    "packages": [
+      "packages/*"
+    ],
+    "version": "0.1.106",
+    "npmClient": "yarn",
+    "useWorkspaces": true
+  }`,
 };

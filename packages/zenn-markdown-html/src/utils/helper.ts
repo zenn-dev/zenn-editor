@@ -1,6 +1,12 @@
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 import { extractYoutubeVideoParameters } from './url-matcher';
 
+export function isGithubUrl(url: string): boolean {
+  return /^https:\/\/github\.com\/([a-zA-Z0-9](-?[a-zA-Z0-9]){0,38})\/([a-zA-Z0-9](-?[a-zA-Z0-9]){0,38})\/blob\/[^~\s:?[*^/\\]{2,}\/[\w!\-_~.*%()'"/]+(?:#L\d+(?:-L\d+)?)?$/.test(
+    url
+  );
+}
+
 export function generateTweetHtml(url: string) {
   return `<div class="embed-tweet"><embed-tweet src="${url}"></embed-tweet></div>`;
 }
@@ -40,4 +46,16 @@ export function isValidHttpUrl(str: string) {
   } catch (_) {
     return false;
   }
+}
+
+type ZennEmbedTypes = 'tweet' | 'link-card' | 'mermaid' | 'github' | 'gist';
+
+let embeddedId = 0;
+
+export function generateEmbedIframe(type: ZennEmbedTypes, src: string): string {
+  const id = `zenn-embedded__${++embeddedId}`;
+  const query = new URLSearchParams({ id, src });
+  const iframeSrc = `http://localhost:3000/${type}/?${query}`;
+
+  return `<div class="zenn-embedded"><iframe id="${id}" src="${iframeSrc}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
 }

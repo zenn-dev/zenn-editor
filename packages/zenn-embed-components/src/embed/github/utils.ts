@@ -1,3 +1,5 @@
+import { PrismToken } from '../types';
+
 /**
  * @param branch Hash文字列 又は 任意のブランチ名
  * @returns 7文字のHash文字列 又は 任意のブランチ名
@@ -35,12 +37,15 @@ export const getGithubLinkInfo = (url: string): GithubLinkInfo | undefined => {
 
   const [, owner, repo, branch, filePath, startLine, endLine] = result;
 
+  const _startLine = +startLine > 0 ? +startLine : 1;
+  const _endLine = +endLine || 0;
+
   return {
     repo,
     owner,
     branch,
     filePath,
-    endLine: +endLine > 0 ? +endLine : void 0,
-    startLine: +startLine > 0 ? +startLine : 1,
+    startLine: _startLine,
+    endLine: _endLine > _startLine ? _endLine : void 0,
   };
 };

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { LinkData } from './types';
+import { LinkData } from '../types';
 
 export interface EmbedBaseLinkCardProps extends LinkData {}
 

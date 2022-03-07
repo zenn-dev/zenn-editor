@@ -12,7 +12,9 @@ const Template: ComponentStory<typeof EmbedGist> = (args, { loaded }) => (
 );
 
 export const onLoading = Template.bind({});
-onLoading.args = {};
+onLoading.args = {
+  isLoading: true,
+};
 
 export const onError = Template.bind({});
 onError.args = {
@@ -21,7 +23,7 @@ onError.args = {
 
 export const Default = Template.bind({});
 Default.args = {
-  url: 'https://gist.github.com/octocat/6cad326836d38bd3a7ae',
+  src: 'https://gist.github.com/octocat/6cad326836d38bd3a7ae',
 };
 Default.loaders = [
   () => {

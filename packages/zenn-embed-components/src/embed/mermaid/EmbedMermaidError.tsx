@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
-import { ErrorContainer } from './types';
+import { MermaidErrorContainer } from '../types';
 
 interface EmbedMermaidErrorProps {
-  errors: ErrorContainer[];
+  errors: MermaidErrorContainer[];
 }
 
 export const EmbedMermaidError = ({ errors }: EmbedMermaidErrorProps) => {
