@@ -2,23 +2,22 @@
 .msg {
   position: relative;
   margin: 1.5rem 0;
-  padding: 21px 15px 21px 45px;
-  border-radius: 6px;
+  padding: 1.4em 1em 1.4em 3.2em;
+  border-radius: 10px;
   background: #fff6e4;
   color: rgba(0, 0, 0, 0.65);
   font-size: 0.94em;
   line-height: 1.6;
   &:before {
     position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-52%);
     content: '!';
     display: block;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    font-size: 13px;
+    left: 1.2em;
+    top: 1.6em;
+    width: 1.6em;
+    height: 1.6em;
+    line-height: 1.6em;
+    font-size: 0.9em;
     text-align: center;
     color: #fff;
     background: #ffb84c;
