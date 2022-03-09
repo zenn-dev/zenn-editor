@@ -1,6 +1,6 @@
 {
   "name": "zenn-embed-components",
-  "version": "0.1.107-alpha.1",
+  "version": "0.1.108-alpha.1",
   "license": "MIT",
   "description": "React Component for embed elements in Zenn markdown",
   "repository": {
