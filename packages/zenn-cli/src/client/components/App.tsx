@@ -26,7 +26,7 @@ export const App: React.VFC = () => {
     import('zenn-embed-components').then(
       ({ listenEmbedComponentsResizeEvent }) => {
         removeEvent = listenEmbedComponentsResizeEvent([
-          'http://localhost:3000',
+          'https://embed.zenn.studio',
         ]);
       }
     );

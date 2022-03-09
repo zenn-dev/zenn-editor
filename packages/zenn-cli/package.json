@@ -48,6 +48,7 @@
     "node-fetch": "^2.6.7",
     "open": "^8.2.0",
     "ws": "^7.4.6",
+    "zenn-embed-components": "^0.1.106",
     "zenn-markdown-html": "^0.1.106"
   },
   "devDependencies": {
