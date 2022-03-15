@@ -1,37 +1,45 @@
 // Message box by markdown-it-container
 aside.msg {
-  position: relative;
+  display: flex;
+  align-items: flex-start;
   margin: 1.5rem 0;
-  padding: 1.4em 1em 1.4em 3.2em;
+  padding: 1.4em 1em;
   border-radius: 10px;
   background: #fff6e4;
   color: rgba(0, 0, 0, 0.65);
   font-size: 0.94em;
   line-height: 1.6;
-  & > * {
-    margin: 0.5rem 0;
-    &:first-child,
-    &:last-child {
-      margin: 0;
-    }
+
+  &.alert {
+    background: #ffeff2;
   }
-  & > svg {
-    position: absolute;
-    display: block;
-    left: 1.2em;
-    top: 1.4em;
-    width: 1.6em;
-    height: 1.6em;
-    line-height: 1.6em;
-    font-weight: 700;
-    border-radius: 50%;
-  }
+
   a {
     color: inherit;
     text-decoration: underline;
   }
 }
 
-aside.msg.alert {
-  background: #ffeff2;
+.msg-icon {
+  position: relative;
+  top: 0.05em;
+  width: 1.4em;
+  height: 1.4em;
+  color: #ffb84c;
+}
+
+aside.msg.alert .msg-icon {
+  color: #ff7670;
+}
+
+.msg-content {
+  flex: 1;
+  margin-left: 0.6em;
+  & > * {
+    margin: 0.7rem 0;
+    &:first-child,
+    &:last-child {
+      margin: 0;
+    }
+  }
 }

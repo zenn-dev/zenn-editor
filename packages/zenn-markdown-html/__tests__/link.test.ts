@@ -75,7 +75,7 @@ describe('Linkify properly', () => {
   test('should not convert links inside block', () => {
     const html = markdownToHtml(':::message alert\nhttps://example.com\n:::');
     expect(html).toEqual(
-      '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert"><circle cx="51" cy="51" r="50" fill="#ff7670"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</aside>\n'
+      '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>\n'
     );
   });
 
@@ -84,7 +84,7 @@ describe('Linkify properly', () => {
       ':::message alert\nhello\n\nhttps://example.com\n:::'
     );
     expect(html).toContain(
-      '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert"><circle cx="51" cy="51" r="50" fill="#ff7670"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><p>hello</p>\n<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</aside>'
+      '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>'
     );
   });
 

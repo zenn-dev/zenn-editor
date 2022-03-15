@@ -64,7 +64,9 @@ describe('Handle custom markdown format properly', () => {
 
   test('should generate valid message box html', () => {
     const html = markdownToHtml(':::message\nhello\n:::');
-    expect(html).toContain('<aside class="msg "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="message"><circle cx="51" cy="51" r="50" fill="#ffb84c"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><p>hello</p>\n</aside>');
+    expect(html).toContain(
+      '<aside class="msg message"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="message" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+    );
   });
 
   test('should generate valid alert message box html', () => {
@@ -75,7 +77,9 @@ describe('Handle custom markdown format properly', () => {
     ];
     validMarkdownPatterns.forEach((markdown) => {
       const html = markdownToHtml(markdown);
-      expect(html).toContain('<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert"><circle cx="51" cy="51" r="50" fill="#ff7670"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><p>hello</p>\n</aside>');
+      expect(html).toContain(
+        '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+      );
     });
   });
 
