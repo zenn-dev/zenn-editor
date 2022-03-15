@@ -42,10 +42,13 @@ export const containerMessageOptions = {
 
     if (tokens[idx].nesting === 1) {
       // opening tag
-      return '<div class="msg ' + escapeHtml(msgClassName) + '">';
+      const color = msgClassName === 'alert' ? '#ff7670' : '#ffb84c';
+      const label = msgClassName === 'alert' ? 'alert' : 'message';
+      const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="${label}"><circle cx="51" cy="51" r="50" fill="${color}"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg>`;
+      return '<aside class="msg ' + escapeHtml(msgClassName) + '">'+ icon;
     } else {
       // closing tag
-      return '</div>\n';
+      return '</aside>\n';
     }
   },
 };
