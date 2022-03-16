@@ -55,9 +55,7 @@ ol {
   }
 }
 .contains-task-list li {
-  &:before {
-    content: none !important;
-  }
+  list-style: none !important;
 }
 .task-list-item-checkbox {
   margin-left: -1.5em;
