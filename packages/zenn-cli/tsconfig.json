@@ -9,7 +9,7 @@
     "resolveJsonModule": true,
     "jsx": "preserve",
     "baseUrl": "./src",
-    "lib": ["ESNext"]
+    "lib": ["ESNext", "dom"]
   },
   "exclude": ["**/__tests__"],
   "include": ["src"]

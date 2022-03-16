@@ -1,1 +1,0 @@
-export { EmbedGist } from './EmbedGist';

@@ -6,6 +6,7 @@ import { Routes } from './Routes';
 import { HotReloadRoot } from '../hooks/useLocalFileChangedEffect';
 import '../global.css';
 import 'zenn-content-css';
+import { useListenEmbedResize } from 'client/hooks/useListenEmbedResize';
 
 // Scroll to the top of the window on route changes.
 const ScrollAdjuster: React.VFC = () => {
@@ -20,21 +21,10 @@ export const App: React.VFC = () => {
   // init embed elements
   useEffect(() => {
     import('zenn-embed-elements');
-
-    let removeEvent: (() => void) | null = null;
-
-    import('zenn-embed-components').then(
-      ({ listenEmbedComponentsResizeEvent }) => {
-        removeEvent = listenEmbedComponentsResizeEvent([
-          'https://embed.zenn.studio',
-        ]);
-      }
-    );
-
-    return () => {
-      if (removeEvent) removeEvent();
-    };
   }, []);
+
+  // listen embed iframe resize event
+  useListenEmbedResize(['https://embed.zenn.studio']);
 
   return (
     <ErrorBoundary>

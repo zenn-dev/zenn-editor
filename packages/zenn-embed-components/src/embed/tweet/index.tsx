@@ -1,1 +1,0 @@
-export { EmbedTweet } from './EmbedTweet';
