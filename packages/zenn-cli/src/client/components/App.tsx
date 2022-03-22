@@ -4,9 +4,9 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { Layout } from './Layout';
 import { Routes } from './Routes';
 import { HotReloadRoot } from '../hooks/useLocalFileChangedEffect';
+import { useListenEmbeddedMessage } from '../hooks/useListenEmbeddedMessage';
 import '../global.css';
 import 'zenn-content-css';
-import { useListenEmbedResize } from 'client/hooks/useListenEmbedResize';
 
 // Scroll to the top of the window on route changes.
 const ScrollAdjuster: React.VFC = () => {
@@ -24,7 +24,7 @@ export const App: React.VFC = () => {
   }, []);
 
   // listen embed iframe resize event
-  useListenEmbedResize(['https://embed.zenn.studio']);
+  useListenEmbeddedMessage();
 
   return (
     <ErrorBoundary>
