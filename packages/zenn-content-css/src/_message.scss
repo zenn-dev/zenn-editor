@@ -35,6 +35,8 @@ aside.msg.alert .msg-icon {
 .msg-content {
   flex: 1;
   margin-left: 0.6em;
+  min-width: 0; // flexboxからはみ出してしまうのを防ぐ
+
   & > * {
     margin: 0.7rem 0;
     &:first-child,
