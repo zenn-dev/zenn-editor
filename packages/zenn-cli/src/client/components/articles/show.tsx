@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
@@ -15,7 +15,6 @@ type ArticleShowProps = {
 };
 
 export const ArticleShow: React.VFC<ArticleShowProps> = ({ slug }) => {
-  const bodyRef = useRef<HTMLDivElement | null>(null);
   const { data, error, isValidating, mutate } = useFetch<{ article: Article }>(
     `/api/articles/${slug}`,
     {
@@ -33,33 +32,6 @@ export const ArticleShow: React.VFC<ArticleShowProps> = ({ slug }) => {
     mutate();
   });
 
-  // 印刷時にdetailsを開くためのHooks
-  useEffect(() => {
-    const ref = bodyRef.current;
-
-    if (!ref) return;
-    if (!article?.bodyHtml?.length) return;
-
-    const details = Array.from(ref.getElementsByTagName('details'));
-
-    const changeDetailStatusFactory = (open: boolean) => () => {
-      details.forEach((detail) => {
-        detail.open = open;
-      });
-    };
-
-    const onBeforePrint = changeDetailStatusFactory(true);
-    const onAfterPrint = changeDetailStatusFactory(false);
-
-    window.addEventListener('beforeprint', onBeforePrint);
-    window.addEventListener('afterprint', onAfterPrint);
-
-    return () => {
-      window.removeEventListener('beforeprint', onBeforePrint);
-      window.removeEventListener('afterprint', onAfterPrint);
-    };
-  }, [article?.bodyHtml]);
-
   if (!article) {
     if (isValidating) return <Loading margin="5rem auto" />;
     return <ErrorMessage message={error?.message} />;
@@ -70,7 +42,7 @@ export const ArticleShow: React.VFC<ArticleShowProps> = ({ slug }) => {
       <ArticleHeader article={article} />
       <ContentContainer>
         <StyledArticleShow className="article-show">
-          <div ref={bodyRef} className="article-show__content">
+          <div className="article-show__content">
             <BodyContent rawHtml={article.bodyHtml || ''} />
           </div>
         </StyledArticleShow>

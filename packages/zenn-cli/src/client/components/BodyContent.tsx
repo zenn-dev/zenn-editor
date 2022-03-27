@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { PrintDetailsOpener } from './PrintDetailsOpener';
 
 type Props =
   | {
@@ -13,12 +14,14 @@ export const BodyContent: React.VFC<Props> = (props) => {
       return <StyledMessage>本文を入力してください</StyledMessage>;
     }
     return (
-      <div
-        className="znc"
-        dangerouslySetInnerHTML={{
-          __html: props.rawHtml,
-        }}
-      />
+      <PrintDetailsOpener bodyHtml={props.rawHtml}>
+        <div
+          className="znc"
+          dangerouslySetInnerHTML={{
+            __html: props.rawHtml,
+          }}
+        />
+      </PrintDetailsOpener>
     );
   }
   return <div className="znc">{props.children}</div>;
