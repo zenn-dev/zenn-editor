@@ -1,5 +1,4 @@
 import markdownToHtml from '../src/index';
-import { escapeHtml } from 'markdown-it/lib/common/utils';
 
 const iframPattern = /<div class="zenn-embedded">(.+)<\/div>/;
 
@@ -45,7 +44,7 @@ describe('Detect mermaid property', () => {
   test('should escape html tag', () => {
     const content = `graph TD\nA --> B\n<br><script>alert("XSS")</script>`;
     const html = generateIframeHTML(`\`\`\`mermaid\n${content}\n\`\`\``);
-    const dataContent = html.match(/data-content="(.+)"/)?.[1];
+    const dataContent = html?.match(/data-content="(.+)"/)?.[1];
 
     expect(dataContent).toContain(encodeURIComponent(content));
   });
