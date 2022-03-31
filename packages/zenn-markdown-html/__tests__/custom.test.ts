@@ -69,7 +69,9 @@ describe('Handle custom markdown format properly', () => {
   describe('MessageBox', () => {
     test('should generate valid message box html', () => {
       const html = markdownToHtml(':::message\nhello\n:::');
-      expect(html).toContain('<div class="msg "><p>hello</p>\n</div>');
+      expect(html).toContain(
+        '<aside class="msg message"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="message" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+      );
     });
 
     test('should generate valid alert message box html', () => {
@@ -80,13 +82,15 @@ describe('Handle custom markdown format properly', () => {
       ];
       validMarkdownPatterns.forEach((markdown) => {
         const html = markdownToHtml(markdown);
-        expect(html).toContain('<div class="msg alert"><p>hello</p>\n</div>');
+        expect(html).toContain(
+          '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+        );
       });
     });
 
     test('should not generate message box with invalid class', () => {
       const html = markdownToHtml(':::message invalid"\nhello\n:::');
-      expect(html).not.toContain('<div class="msg');
+      expect(html).not.toContain('<aside class="msg');
     });
   });
 
