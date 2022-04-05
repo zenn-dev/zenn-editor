@@ -4,6 +4,7 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { Layout } from './Layout';
 import { Routes } from './Routes';
 import { HotReloadRoot } from '../hooks/useLocalFileChangedEffect';
+import { useListenEmbeddedMessage } from '../hooks/useListenEmbeddedMessage';
 import '../global.css';
 import 'zenn-content-css';
 
@@ -21,6 +22,9 @@ export const App: React.VFC = () => {
   useEffect(() => {
     import('zenn-embed-elements');
   }, []);
+
+  // listen embed iframe resize event
+  useListenEmbeddedMessage();
 
   return (
     <ErrorBoundary>

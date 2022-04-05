@@ -1,8 +1,8 @@
 import MarkdownIt from 'markdown-it';
 import { isTweetUrl, isYoutubeUrl } from './url-matcher';
 import {
-  generateCardHtml,
-  generateTweetHtml,
+  isGithubUrl,
+  generateEmbedIframe,
   generateYoutubeHtmlFromUrl,
 } from './helper';
 import Token from 'markdown-it/lib/token';
@@ -49,12 +49,14 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
 
     // 埋め込み用のHTMLを生成
     const embedToken = new Token('html_inline', '', 0);
-    if (isTweetUrl(url)) {
-      embedToken.content = generateTweetHtml(url);
-    } else if (isYoutubeUrl(url)) {
+    if (isYoutubeUrl(url)) {
       embedToken.content = generateYoutubeHtmlFromUrl(url);
+    } else if (isTweetUrl(url)) {
+      embedToken.content = generateEmbedIframe('tweet', url);
+    } else if (isGithubUrl(url)) {
+      embedToken.content = generateEmbedIframe('github', url);
     } else {
-      embedToken.content = generateCardHtml(url);
+      embedToken.content = generateEmbedIframe('link-card', url);
     }
     // a要素自体はカードにより不要になるため非表示に
     linkOpenToken.attrJoin('style', 'display: none');

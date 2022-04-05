@@ -40,6 +40,13 @@
     display: block;
   }
 }
+.zenn-embedded {
+  margin: 1rem auto;
+  iframe {
+    width: 100%;
+    display: block;
+  }
+}
 
 // prevent katex overflow
 // for inline $foo$

@@ -65,11 +65,8 @@ describe('No XSS Vulnerability', () => {
     expect(html).toContain(`<span class="token operator">&lt;</span>script`);
   });
   test('should escape img tag around mermaid syntax', () => {
-    const html = markdownToHtml(
-      `\`\`\`mermaid\ngraph TD\nA["<img src="invalid" onerror=alert('XSS')/>"] --> B\`\`\``
-    );
-    expect(html).toContain(
-      '<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">graph TD\nA[&quot;&lt;img src=&quot;invalid&quot; onerror=alert(\'XSS\')/&gt;&quot;] --&gt; B```</pre></embed-mermaid></div>'
-    );
+    const content = `graph TD\nA["<img src="invalid" onerror=alert('XSS')/>"] --> B`;
+    const html = markdownToHtml(`\`\`\`mermaid\n${content}\`\`\``);
+    expect(html).toContain(encodeURIComponent(content));
   });
 });

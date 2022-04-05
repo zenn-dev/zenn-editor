@@ -136,7 +136,7 @@ function readBookFile(slug: string) {
   if (!configRaw) return null;
 
   try {
-    const yamlData = yaml.load(configRaw);
+    const yamlData = yaml.load(configRaw) as any;
     if (typeof yamlData === 'string' || typeof yamlData === 'number') {
       throw 'Invalid yaml format.';
     }
