@@ -1,7 +1,7 @@
 import markdownToHtml from '../src/index';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 
-const embeddedPattern = /<div class="zenn-embedded">(.+)<\/div>/;
+const embeddedPattern = /<div class="zenn-embedded[-\w\s]*">(.+)<\/div>/;
 
 /** 埋め込み要素の <iframe /> 文字列を返す */
 const getIframeHtml = (markdown: string): string | null => {
