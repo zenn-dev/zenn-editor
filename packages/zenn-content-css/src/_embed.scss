@@ -42,6 +42,11 @@
 }
 .zenn-embedded {
   margin: 1rem auto;
+  &.link-card {
+    iframe {
+      height: 125px;
+    }
+  }
   iframe {
     width: 100%;
     display: block;

@@ -55,5 +55,5 @@ export function generateEmbedIframe(type: ZennEmbedTypes, src: string): string {
   const iframeSrc = `https://embed.zenn.studio/${type}#${id}`;
   const content = encodeURIComponent(src);
 
-  return `<div class="zenn-embedded"><iframe id="${id}" src="${iframeSrc}" data-content="${content}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
+  return `<div class="zenn-embedded ${type}"><iframe id="${id}" src="${iframeSrc}" data-content="${content}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
 }
