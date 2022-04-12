@@ -7,16 +7,6 @@ export function isGithubUrl(url: string): boolean {
   );
 }
 
-export function generateTweetHtml(url: string) {
-  return `<div class="embed-tweet"><embed-tweet src="${url}"></embed-tweet></div>`;
-}
-
-export function generateCardHtml(url: string) {
-  return `<div class="embed-zenn-link"><iframe src="https://card.zenn.dev/?url=${encodeURIComponent(
-    url
-  )}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
-}
-
 function generateYoutubeHtml(videoId: string, start?: string) {
   const escapedVideoId = escapeHtml(videoId);
 
@@ -29,7 +19,7 @@ function generateYoutubeHtml(videoId: string, start?: string) {
 export function generateYoutubeHtmlFromUrl(url: string) {
   const params = extractYoutubeVideoParameters(url);
   if (!params) {
-    return generateCardHtml(url);
+    return generateEmbedIframe('link-card', url);
   } else {
     return generateYoutubeHtml(params.videoId, params.start);
   }
