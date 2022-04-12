@@ -1,13 +1,10 @@
-.embed-tweet,
-.embed-gist,
 .embed-speakerdeck,
 .embed-slideshare,
 .embed-codepen,
 .embed-jsfiddle,
 .embed-youtube,
 .embed-codesandbox,
-.embed-stackblitz,
-.embed-mermaid {
+.embed-stackblitz {
   margin: 1.5rem 0;
 }
 .embed-slideshare,
@@ -32,20 +29,25 @@
 .embed-slideshare iframe {
   border: 1px solid $c-contrast;
 }
-.embed-zenn-link {
-  margin: 1rem auto;
+
+.zenn-embedded {
   iframe {
-    height: 125px;
     width: 100%;
     display: block;
   }
 }
-.zenn-embedded {
+.zenn-embedded-link-card {
   margin: 1rem auto;
   iframe {
-    width: 100%;
-    display: block;
+    height: 125px;
   }
+}
+.zenn-embedded-tweet,
+.zenn-embedded-link-card,
+.zenn-embedded-mermaid,
+.zenn-embedded-github,
+.zenn-embedded-gist {
+  margin: 1.5rem auto;
 }
 
 // prevent katex overflow
@@ -70,14 +72,30 @@ embed-katex[display-mode='1'] {
   overflow-x: auto;
 }
 
-// workaround: https://github.com/mermaid-js/mermaid/issues/2160
-embed-mermaid svg {
-  height: auto;
-}
-
 // make mermaid.js raw text white
 pre.zenn-mermaid {
   background: transparent;
   color: $c-gray;
   font-size: 0.9rem;
+}
+
+// TODO: 以下embed.zenn.studioへの移行後に削除する
+.embed-zenn-link {
+  margin: 1rem auto;
+  iframe {
+    height: 125px;
+    width: 100%;
+    display: block;
+  }
+}
+// TODO: 以下embed.zenn.studioへの移行後に削除する
+.embed-mermaid,
+.embed-tweet,
+.embed-gist {
+  margin: 1.5rem 0;
+}
+// TODO: 以下embed.zenn.studioへの移行後に削除する
+// workaround: https://github.com/mermaid-js/mermaid/issues/2160
+embed-mermaid svg {
+  height: auto;
 }
