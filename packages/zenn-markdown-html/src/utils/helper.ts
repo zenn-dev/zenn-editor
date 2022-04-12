@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 import { extractYoutubeVideoParameters } from './url-matcher';
 
@@ -50,8 +51,12 @@ export function isValidHttpUrl(str: string) {
 
 type ZennEmbedTypes = 'tweet' | 'link-card' | 'mermaid' | 'github' | 'gist';
 
+function generateSha1(src: string): string {
+  return crypto.createHash('sha1').update(src).digest('hex');
+}
+
 export function generateEmbedIframe(type: ZennEmbedTypes, src: string): string {
-  const id = `zenn-embedded__${Math.random().toString(16).slice(2)}`;
+  const id = `zenn-embedded__${generateSha1(src)}`;
   const iframeSrc = `https://embed.zenn.studio/${type}#${id}`;
   const content = encodeURIComponent(src);
 
