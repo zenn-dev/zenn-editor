@@ -7,16 +7,6 @@ export function isGithubUrl(url: string): boolean {
   );
 }
 
-export function generateTweetHtml(url: string) {
-  return `<div class="embed-tweet"><embed-tweet src="${url}"></embed-tweet></div>`;
-}
-
-export function generateCardHtml(url: string) {
-  return `<div class="embed-zenn-link"><iframe src="https://card.zenn.dev/?url=${encodeURIComponent(
-    url
-  )}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
-}
-
 function generateYoutubeHtml(videoId: string, start?: string) {
   const escapedVideoId = escapeHtml(videoId);
 
@@ -29,7 +19,7 @@ function generateYoutubeHtml(videoId: string, start?: string) {
 export function generateYoutubeHtmlFromUrl(url: string) {
   const params = extractYoutubeVideoParameters(url);
   if (!params) {
-    return generateCardHtml(url);
+    return generateEmbedIframe('link-card', url);
   } else {
     return generateYoutubeHtml(params.videoId, params.start);
   }
@@ -51,9 +41,11 @@ export function isValidHttpUrl(str: string) {
 type ZennEmbedTypes = 'tweet' | 'link-card' | 'mermaid' | 'github' | 'gist';
 
 export function generateEmbedIframe(type: ZennEmbedTypes, src: string): string {
+  // ユーザーからの入力値が引数として渡されたときのために念のためencodeする
+  const encodedType = encodeURIComponent(type);
+  const encodedSrc = encodeURIComponent(src);
   const id = `zenn-embedded__${Math.random().toString(16).slice(2)}`;
-  const iframeSrc = `https://embed.zenn.studio/${type}#${id}`;
-  const content = encodeURIComponent(src);
+  const iframeSrc = `https://embed.zenn.studio/${encodedType}#${id}`;
 
-  return `<div class="zenn-embedded ${type}"><iframe id="${id}" src="${iframeSrc}" data-content="${content}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
+  return `<div class="zenn-embedded zenn-embedded-${encodedType}"><iframe id="${id}" src="${iframeSrc}" data-content="${encodedSrc}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
 }

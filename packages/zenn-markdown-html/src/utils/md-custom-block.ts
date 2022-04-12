@@ -76,7 +76,6 @@ const blockOptions = {
     return generateEmbedIframe('tweet', str);
   },
   card(str: string) {
-    // generateCardHtml内でURLはエンコードされるためここでのバリデーションは軽めでOK
     if (!isValidHttpUrl(str)) return 'URLが不正です';
     return generateEmbedIframe('link-card', str);
   },
