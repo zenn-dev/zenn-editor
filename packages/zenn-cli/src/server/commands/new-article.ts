@@ -33,7 +33,7 @@ function parseArgs(argv?: string[]) {
       },
       { argv }
     );
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ARG_UNKNOWN_OPTION') {
       Log.error(invalidOptionText);
     } else {

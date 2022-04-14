@@ -1,10 +1,9 @@
 import MarkdownIt from 'markdown-it';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 import {
-  generateTweetHtml,
-  generateCardHtml,
   isValidHttpUrl,
   generateYoutubeHtmlFromVideoId,
+  generateEmbedIframe,
 } from './helper';
 import {
   isGistUrl,
@@ -74,12 +73,11 @@ const blockOptions = {
   },
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
-    return generateTweetHtml(str);
+    return generateEmbedIframe('tweet', str);
   },
   card(str: string) {
-    // generateCardHtml内でURLはエンコードされるためここでのバリデーションは軽めでOK
     if (!isValidHttpUrl(str)) return 'URLが不正です';
-    return generateCardHtml(str);
+    return generateEmbedIframe('link-card', str);
   },
   gist(str: string) {
     if (!isGistUrl(str)) return 'GitHub GistのページURLを指定してください';
@@ -89,10 +87,7 @@ const blockOptions = {
      * - https://gist.github.com/foo/bar.json?file=example.js
      * のような形式
      */
-    const [pageUrl, file] = str.split('?file=');
-    return `<div class="embed-gist"><embed-gist page-url="${pageUrl}" encoded-filename="${
-      file ? encodeURIComponent(file) : ''
-    }" /></div>`;
+    return generateEmbedIframe('gist', str);
   },
 };
 

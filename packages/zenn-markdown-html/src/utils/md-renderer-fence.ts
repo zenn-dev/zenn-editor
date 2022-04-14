@@ -1,5 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { generateEmbedIframe } from './helper';
 import { highlight } from './highlight';
 
 function getHtml({
@@ -96,9 +97,7 @@ export function mdRendererFence(md: MarkdownIt) {
     const { langName, fileName, hasDiff } = parseInfo(info);
 
     if (langName === 'mermaid') {
-      return `<div class="embed-mermaid"><embed-mermaid><pre class="zenn-mermaid">${escapeHtml(
-        content.trim()
-      )}</pre></embed-mermaid></div>`;
+      return generateEmbedIframe('mermaid', content.trim());
     }
 
     const className = getClassName({
