@@ -70,31 +70,3 @@ embed-katex[display-mode='1'] {
   width: 100%;
   overflow-x: auto;
 }
-
-// make mermaid.js raw text white
-pre.zenn-mermaid {
-  background: transparent;
-  color: $c-gray;
-  font-size: 0.9rem;
-}
-
-// TODO: 以下embed.zenn.studioへの移行後に削除する
-.embed-zenn-link {
-  margin: 1rem auto;
-  iframe {
-    height: 125px;
-    width: 100%;
-    display: block;
-  }
-}
-// TODO: 以下embed.zenn.studioへの移行後に削除する
-.embed-mermaid,
-.embed-tweet,
-.embed-gist {
-  margin: 1.5rem 0;
-}
-// TODO: 以下embed.zenn.studioへの移行後に削除する
-// workaround: https://github.com/mermaid-js/mermaid/issues/2160
-embed-mermaid svg {
-  height: auto;
-}
