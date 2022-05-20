@@ -9,6 +9,7 @@ export type Article = {
   topics?: string[];
   tags?: string[];
   published?: boolean;
+  published_at?: string | Date;
 };
 
 export type ArticleMeta = Omit<Article, 'bodyHtml'>;

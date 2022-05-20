@@ -9,8 +9,29 @@ import { ValidationErrors } from '../../ValidationErrors';
 
 type Props = { article: Article };
 
+function completePublishedAt(published_at?: Date | string): string | undefined {
+  if (published_at === undefined) return undefined;
+  if (published_at instanceof Date) return formatPublishedAt(published_at);
+  if (isNaN(Date.parse(published_at))) return undefined;
+  return formatPublishedAt(new Date(Date.parse(published_at)));
+}
+
+function formatPublishedAt(published_at: Date): string {
+  return new Intl.DateTimeFormat('ja-jp', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(published_at);
+}
+
 export const ArticleHeader: React.VFC<Props> = ({ article }) => {
   const validationErrors = useMemo(() => getArticleErrors(article), [article]);
+  const published_at = completePublishedAt(article.published_at);
+  const scheduled_publish = !!(
+    published_at && Date.parse(published_at) > Date.now()
+  );
 
   return (
     <StyledArticleHeader>
@@ -27,11 +48,21 @@ export const ArticleHeader: React.VFC<Props> = ({ article }) => {
 
           <PropertyRow title="published">
             {typeof article.published === 'boolean' ? (
-              <>{article.published ? 'true（公開）' : 'false（下書き）'}</>
+              <>
+                {article.published
+                  ? scheduled_publish
+                    ? 'true（公開予約）'
+                    : 'true（公開）'
+                  : 'false（下書き）'}
+              </>
             ) : (
               'true もしくは false を指定してください'
             )}
           </PropertyRow>
+
+          {published_at && (
+            <PropertyRow title="published_at">{published_at}</PropertyRow>
+          )}
 
           <PropertyRow title="type">
             {article.type === 'tech' ? (
