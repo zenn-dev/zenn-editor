@@ -46,7 +46,7 @@ describe('getWorkingPath', () => {
 describe('getFileRaw', () => {
   test('should return file content with valid path to file', () => {
     const result = helper.getFileRaw(`${fixtureDirPath}/markdown-body-only.md`);
-    expect(result).toContain(`# Hello\nHola!`);
+    expect(result).toContain(`# Hello\n\nHola!`);
   });
   test('should return null with invalid path', () => {
     const result = helper.getFileRaw('invalid-path');
