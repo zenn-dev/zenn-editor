@@ -11,7 +11,7 @@ export type Article = {
   published?: boolean;
   // js-yamlの仕様上、DateとしてパースできればDate、そうでなければstringとして値が設定される
   // https://github.com/jonschlinkert/gray-matter/issues/62
-  published_at?: string | Date;
+  published_at?: string | Date | null;
 };
 
 export type ArticleMeta = Omit<Article, 'bodyHtml'>;

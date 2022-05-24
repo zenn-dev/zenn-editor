@@ -10,8 +10,10 @@ import { ValidationErrors } from '../../ValidationErrors';
 
 type Props = { article: Article };
 
-function completePublishedAt(published_at?: Date | string): string | undefined {
-  if (published_at === undefined) return undefined;
+function completePublishedAt(
+  published_at?: Date | string | null
+): string | undefined {
+  if (published_at == null) return undefined;
   if (published_at instanceof Date) return 'フォーマットを確認してください';
   if (isNaN(Date.parse(published_at))) return 'フォーマットを確認してください';
   if (!published_at.match(publishedAtRegex))

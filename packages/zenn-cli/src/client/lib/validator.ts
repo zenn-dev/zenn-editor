@@ -57,7 +57,7 @@ const validatePublishedAtParse: ItemValidator<Article> = {
   getMessage: () =>
     'published_at（公開日時）は `YYYY-MM-DD hh:mm` のフォーマットで指定してください',
   isValid: ({ published_at }) => {
-    if (published_at === undefined) return true;
+    if (published_at == undefined) return true;
     if (published_at instanceof Date) return false;
     if (!published_at.match(publishedAtRegex)) return false;
 
@@ -71,7 +71,7 @@ const validatePublishedAtSchedule: ItemValidator<Article> = {
     'published_at（公開日時）に未来の日時を指定する場合は、published（公開設定）に true を指定してください（公開日時を過ぎるとZennのサービス上で自動的に公開されます）',
   isValid: ({ published, published_at }) => {
     if (published === true) return true;
-    if (published_at === undefined) return true;
+    if (published_at == null) return true;
 
     if (published_at instanceof Date) {
       return published_at < new Date();
