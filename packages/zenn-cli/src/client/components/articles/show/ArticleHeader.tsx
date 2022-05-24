@@ -5,14 +5,18 @@ import { getArticleErrors } from '../../../lib/validator';
 import { ContentContainer } from '../../ContentContainer';
 import { TopicList } from '../../TopicList';
 import { PropertyRow } from '../../PropertyRow';
+import { publishedAtRegex } from '../../../lib/validator';
 import { ValidationErrors } from '../../ValidationErrors';
 
 type Props = { article: Article };
 
 function completePublishedAt(published_at?: Date | string): string | undefined {
   if (published_at === undefined) return undefined;
-  if (published_at instanceof Date) return formatPublishedAt(published_at);
-  if (isNaN(Date.parse(published_at))) return undefined;
+  if (published_at instanceof Date) return 'フォーマットを確認してください';
+  if (isNaN(Date.parse(published_at))) return 'フォーマットを確認してください';
+  if (!published_at.match(publishedAtRegex))
+    return 'フォーマットを確認してください';
+
   return formatPublishedAt(new Date(Date.parse(published_at)));
 }
 

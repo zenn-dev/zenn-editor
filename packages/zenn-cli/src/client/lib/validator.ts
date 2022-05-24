@@ -51,16 +51,17 @@ const validatePublishedStatus: ItemValidator<Article | Book> = {
   },
 };
 
+// JavaScriptでパースしたときとサーバー側でパースしたときのTZを確実に合わせるため、フォーマットを固定します。
 const validatePublishedAtParse: ItemValidator<Article> = {
   isCritical: true,
   getMessage: () =>
-    'published_at（公開日時）は `YYYY-MM-DD hh:mm` のフォーマットで指定してください（デフォルトのタイムゾーンはJSTです。ISO8601形式でタイムゾーンを指定することができます。）',
+    'published_at（公開日時）は `YYYY-MM-DD hh:mm` のフォーマットで指定してください',
   isValid: ({ published_at }) => {
-    return (
-      published_at === undefined ||
-      published_at instanceof Date ||
-      !isNaN(Date.parse(published_at))
-    );
+    if (published_at === undefined) return true;
+    if (published_at instanceof Date) return false;
+    if (!published_at.match(publishedAtRegex)) return false;
+
+    return !isNaN(Date.parse(published_at));
   },
 };
 
@@ -70,26 +71,6 @@ const validatePublishedAtSchedule: ItemValidator<Article> = {
     'published_at（公開日時）に未来の日時を指定する場合は、published（公開設定）に true を指定してください（公開日時を過ぎるとZennのサービス上で自動的に公開されます）',
   isValid: ({ published, published_at }) => {
     if (published === true) return true;
-    if (published_at === undefined) return true;
-
-    if (published_at instanceof Date) {
-      return published_at < new Date();
-    } else {
-      if (isNaN(Date.parse(published_at))) {
-        return true; // Date.parseに失敗する場合、このvalidationではエラーとしない
-      } else {
-        return Date.parse(published_at) < Date.now();
-      }
-    }
-  },
-};
-
-const validatePublishedTimeZone: ItemValidator<Article> = {
-  isCritical: false,
-  getMessage: () =>
-    'published_at（公開日時）にタイムゾーンが指定されていない場合、ZennではJSTとして扱います。Zennへのデプロイ後、Zennのサービス上で公開予約日時を確認してください',
-  isValid: ({ published, published_at }) => {
-    if (published === false) return true;
     if (published_at === undefined) return true;
 
     if (published_at instanceof Date) {
@@ -323,7 +304,6 @@ export const getArticleErrors = (article: Article): ValidationError[] => {
     validatePublishedStatus,
     validatePublishedAtParse,
     validatePublishedAtSchedule,
-    validatePublishedTimeZone,
     validateArticleType,
     validateEmojiFormat,
     validateMissingEmoji,
@@ -369,3 +349,6 @@ export const getChapterErrors = (chapter: Chapter): ValidationError[] => {
   ];
   return getValidationErrors(chapter, validators);
 };
+
+export const publishedAtRegex =
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}$/;
