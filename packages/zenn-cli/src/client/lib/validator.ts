@@ -55,10 +55,9 @@ const validatePublishedStatus: ItemValidator<Article | Book> = {
 const validatePublishedAtParse: ItemValidator<Article> = {
   isCritical: true,
   getMessage: () =>
-    'published_at（公開日時）は `YYYY-MM-DD hh:mm` のフォーマットで指定してください',
+    'published_at（公開日時）は `YYYY-MM-DD` または `YYYY-MM-DD hh:mm` のフォーマットで指定してください',
   isValid: ({ published_at }) => {
     if (published_at == undefined) return true;
-    if (published_at instanceof Date) return false;
     if (!published_at.match(publishedAtRegex)) return false;
 
     return !isNaN(Date.parse(published_at));
@@ -73,14 +72,10 @@ const validatePublishedAtSchedule: ItemValidator<Article> = {
     if (published === true) return true;
     if (published_at == null) return true;
 
-    if (published_at instanceof Date) {
-      return published_at < new Date();
+    if (isNaN(Date.parse(published_at))) {
+      return true; // Date.parseに失敗する場合、このvalidationではエラーとしない
     } else {
-      if (isNaN(Date.parse(published_at))) {
-        return true; // Date.parseに失敗する場合、このvalidationではエラーとしない
-      } else {
-        return Date.parse(published_at) < Date.now();
-      }
+      return Date.parse(published_at) < Date.now();
     }
   },
 };
@@ -351,4 +346,4 @@ export const getChapterErrors = (chapter: Chapter): ValidationError[] => {
 };
 
 export const publishedAtRegex =
-  /^[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}$/;
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2}(\s[0-9]{2}:[0-9]{2})?$/;

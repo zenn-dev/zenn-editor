@@ -10,16 +10,20 @@ import { ValidationErrors } from '../../ValidationErrors';
 
 type Props = { article: Article };
 
-function completePublishedAt(
-  published_at?: Date | string | null
-): string | undefined {
+function completePublishedAt(published_at?: null | string): string | undefined {
   if (published_at == null) return undefined;
-  if (published_at instanceof Date) return 'フォーマットを確認してください';
-  if (isNaN(Date.parse(published_at))) return 'フォーマットを確認してください';
   if (!published_at.match(publishedAtRegex))
     return 'フォーマットを確認してください';
+  if (isNaN(Date.parse(published_at))) return 'フォーマットを確認してください';
 
-  return formatPublishedAt(new Date(Date.parse(published_at)));
+  // 日付だけだとUTC時間になるので、00:00を追加してローカルタイムにする
+  return formatPublishedAt(
+    new Date(
+      Date.parse(
+        published_at.length === 10 ? published_at + ' 00:00' : published_at
+      )
+    )
+  );
 }
 
 function formatPublishedAt(published_at: Date): string {
@@ -35,9 +39,8 @@ function formatPublishedAt(published_at: Date): string {
 export const ArticleHeader: React.VFC<Props> = ({ article }) => {
   const validationErrors = useMemo(() => getArticleErrors(article), [article]);
   const published_at = completePublishedAt(article.published_at);
-  const scheduled_publish = !!(
-    published_at && Date.parse(published_at) > Date.now()
-  );
+  const scheduled_publish =
+    published_at && Date.parse(published_at) > Date.now();
 
   return (
     <StyledArticleHeader>
