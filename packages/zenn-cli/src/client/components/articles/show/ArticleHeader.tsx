@@ -10,37 +10,37 @@ import { ValidationErrors } from '../../ValidationErrors';
 
 type Props = { article: Article };
 
-function completePublishedAt(published_at?: null | string): string | undefined {
-  if (published_at == null) return undefined;
-  if (!published_at.match(publishedAtRegex))
+function completePublishedAt(publishedAt?: null | string): string | undefined {
+  if (publishedAt == null) return undefined;
+  if (!publishedAt.match(publishedAtRegex))
     return 'フォーマットを確認してください';
-  if (isNaN(Date.parse(published_at))) return 'フォーマットを確認してください';
+  if (isNaN(Date.parse(publishedAt))) return 'フォーマットを確認してください';
 
   // 日付だけだとUTC時間になるので、00:00を追加してローカルタイムにする
   return formatPublishedAt(
     new Date(
       Date.parse(
-        published_at.length === 10 ? published_at + ' 00:00' : published_at
+        publishedAt.length === 10 ? publishedAt + ' 00:00' : publishedAt
       )
     )
   );
 }
 
-function formatPublishedAt(published_at: Date): string {
+function formatPublishedAt(publishedAt: Date): string {
   return new Intl.DateTimeFormat('ja-jp', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-  }).format(published_at);
+  }).format(publishedAt);
 }
 
 export const ArticleHeader: React.VFC<Props> = ({ article }) => {
   const validationErrors = useMemo(() => getArticleErrors(article), [article]);
-  const published_at = completePublishedAt(article.published_at);
+  const publishedAt = completePublishedAt(article.publishedAt);
   const scheduled_publish =
-    published_at && Date.parse(published_at) > Date.now();
+    publishedAt && Date.parse(publishedAt) > Date.now();
 
   return (
     <StyledArticleHeader>
@@ -69,8 +69,8 @@ export const ArticleHeader: React.VFC<Props> = ({ article }) => {
             )}
           </PropertyRow>
 
-          {published_at && (
-            <PropertyRow title="published_at">{published_at}</PropertyRow>
+          {publishedAt && (
+            <PropertyRow title="published_at">{publishedAt}</PropertyRow>
           )}
 
           <PropertyRow title="type">
