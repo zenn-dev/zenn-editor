@@ -88,7 +88,6 @@ sequenceDiagram
     Bob->>Alice: Hi Alice
 ```
 
-
 :::details ダイアグラム
 
 ```mermaid

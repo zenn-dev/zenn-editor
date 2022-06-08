@@ -7,7 +7,6 @@ emoji: 👩‍💻
 published: false
 ---
 
-
 &\&&
 
 $a,b,c$は[hoge](https://hoge.fuga)を参照。
@@ -30,11 +29,9 @@ $\varphi$
 
 $aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$
 
-
 $$
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 $$
-
 
 $<script>alert("a")</script>1+1=2$
 
@@ -71,9 +68,9 @@ $\sqrt{3x-1}+(1+x)^2$
 Let the right triangle hypothenuse be aligned with the coordinate system _x-axis_.
 The vector loop closure equation then reads
 
-$$a{\bold e}_\alpha + b\tilde{\bold e}_\alpha + c{\bold e}_x = \bold 0$$ 
+$$a{\bold e}_\alpha + b\tilde{\bold e}_\alpha + c{\bold e}_x = \bold 0$$
 
-Resolving for the hypothenuse part $c{\bold e}_x$ in the loop closure equation 
+Resolving for the hypothenuse part $c{\bold e}_x$ in the loop closure equation
 
 $$-c{\bold e}_x = a{\bold e}_\alpha + b\tilde{\bold e}_\alpha$$
 
@@ -82,8 +79,6 @@ and squaring
 > finally results in the Pythagorean theorem (2)
 >
 > $$ c^2 = a^2 + b^2 $$ (2)
-
-
 
 $a\ne0$
 
@@ -99,14 +94,12 @@ $a\ne0$
 
 $text](https://...$
 
-
 ## ふたつ以上の数式もレンダリングされるべき
 
 あああ$\omega$いいい『[uuu](https://arxiv.org)』えええ$(7)$おおお
 あああ$\frac{1}{2}$いいい[uuu](https://arxiv.org)えええ$(7)$おおお
 あああ$abc$いいい[uuu](https://arxiv.org)えええ$(7)$おおお
 あああ$\alpha$と$\omega$いいい[uuu](https://arxiv.org)えええ$(7)$おおお
-
 
 あああ$a$いいい[uuu](https://arxiv.org)えええ$(7)$おおお
 あああ$\omega$いいいえええ$(7)$おおお
@@ -117,6 +110,5 @@ $text](https://...$
 あああ$\omega$いいい[uuu](ftp://arxiv.org)えええ$(7)$おおお
 あああ$\omega$いいい(https://arxiv.org)えええ$(7)$おおお
 あああ$\omega$いいい[uuu](https://arxiv.org)えええ$\exp xyz$おおお
-
 
 $a=b$という数式はこちらを参照[text$text](https://...$text)$(7)$

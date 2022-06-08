@@ -8,12 +8,9 @@ emoji: 👩‍💻
 published: false
 ---
 
-
-
 ```"><img/onerror="alert(location)"src=.>
 any
 ```
-
 
 ```tf
 terraform {
@@ -69,12 +66,12 @@ resource "aws_subnet" "az" {
 ref: https://github.com/zenn-dev/zenn-community/issues/357
 
 <!-- should ignore foo -->
+
 ```js foo
 const foo = function (bar) {
   return bar++;
 };
 ```
-
 
 ```diff jsx:src/App.js
 function App() {
@@ -145,7 +142,6 @@ bind -M $mode \cq foo
 +    const foo = bar.baz([1, 2, 3]) + 1;
      console.log(`foo: ${foo}`);
 ```
-
 
 ```js diff:diff with lang
 @@ -4,6 +4,5 @@

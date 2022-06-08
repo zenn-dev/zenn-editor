@@ -39,7 +39,7 @@ Should not allow some protocols in links and images
 
 [xss link](<Javascript:alert(1)>)
 
-[xss link](<&#74;avascript:alert(1)>)
+[xss link](<Javascript:alert(1)>)
 
 [xss link](<Javascript:alert(1)>)
 .
@@ -144,7 +144,6 @@ test2
 
 .
 
-
 ```
 <script>alert("xss")</script>
 ```
@@ -158,7 +157,7 @@ hello
 ```
 
 ```js <script>alert("xss")</script>
-hello
+hello;
 ```
 
 ```js:<script>alert("xss")</script>

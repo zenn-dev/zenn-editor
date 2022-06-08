@@ -1,4 +1,5 @@
 import matter from 'gray-matter';
+import yaml from 'js-yaml';
 import * as Log from './log';
 
 import {
@@ -64,7 +65,14 @@ function readArticleFile(slug: string) {
     Log.error(`${fullpath}の内容を取得できませんでした`);
     return null;
   }
-  const { data, content: bodyMarkdown } = matter(raw);
+
+  // NOTE: yamlのtimestampフィールドを自動的にDateに変換されないように、オプションを指定する
+  // https://github.com/jonschlinkert/gray-matter/issues/62#issuecomment-577628177
+  const { data, content: bodyMarkdown } = matter(raw, {
+    engines: {
+      yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+    },
+  });
   return {
     meta: {
       ...data,
