@@ -70,7 +70,7 @@ export const ArticleHeader: React.VFC<Props> = ({ article }) => {
           </PropertyRow>
 
           {publishedAt && (
-            <PropertyRow title="published_at">{publishedAt}</PropertyRow>
+            <PropertyRow title="publishedAt">{publishedAt}</PropertyRow>
           )}
 
           <PropertyRow title="type">
