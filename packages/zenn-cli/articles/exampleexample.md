@@ -6,7 +6,7 @@ topics:
   - Rust
 emoji: 👩‍💻
 published: true
-publishedAt: 2022-05-30 09:00
+published_at: 2023-05-30 09:00
 ---
 
 Test
