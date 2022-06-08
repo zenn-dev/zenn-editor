@@ -5,7 +5,8 @@ topics:
   - React
   - Rust
 emoji: 👩‍💻
-published: false
+published: true
+published_at: 2023-05-30 09:00
 ---
 
 Test

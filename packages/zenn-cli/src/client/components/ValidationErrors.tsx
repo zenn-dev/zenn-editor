@@ -122,7 +122,7 @@ export const ValidationErrors: React.VFC<{
       {warnings.length > 0 && (
         <div className="validation-error__warnings">
           <div className="validation-error__title">
-            {warnings.length}件の修正をおすすめします
+            {warnings.length}件の注意事項があります
           </div>
           {warnings.map((validationError, i) => (
             <ValidationErrorRow

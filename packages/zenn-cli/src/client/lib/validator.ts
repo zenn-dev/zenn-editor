@@ -51,6 +51,35 @@ const validatePublishedStatus: ItemValidator<Article | Book> = {
   },
 };
 
+// JavaScriptでパースしたときとサーバー側でパースしたときのTZを確実に合わせるため、フォーマットを固定します。
+const validatePublishedAtParse: ItemValidator<Article> = {
+  isCritical: true,
+  getMessage: () =>
+    'published_at（公開日時）は `YYYY-MM-DD` または `YYYY-MM-DD hh:mm` のフォーマットで指定してください',
+  isValid: ({ published_at: publishedAt }) => {
+    if (publishedAt == undefined) return true;
+    if (!publishedAt.match(publishedAtRegex)) return false;
+
+    return !isNaN(Date.parse(publishedAt));
+  },
+};
+
+const validatePublishedAtSchedule: ItemValidator<Article> = {
+  isCritical: true,
+  getMessage: () =>
+    'published_at（公開日時）に未来の日時を指定する場合は、published（公開設定）に true を指定してください（公開日時を過ぎるとZennのサービス上で自動的に公開されます）',
+  isValid: ({ published, published_at: publishedAt }) => {
+    if (published === true) return true;
+    if (publishedAt == null) return true;
+
+    if (isNaN(Date.parse(publishedAt))) {
+      return true; // Date.parseに失敗する場合、このvalidationではエラーとしない
+    } else {
+      return Date.parse(publishedAt) < Date.now();
+    }
+  },
+};
+
 const validateArticleType: ItemValidator<Article> = {
   isCritical: true,
   detailUrl: 'https://zenn.dev/tech-or-idea',
@@ -268,6 +297,8 @@ export const getArticleErrors = (article: Article): ValidationError[] => {
     validateMissingTitle,
     validateTitleLength,
     validatePublishedStatus,
+    validatePublishedAtParse,
+    validatePublishedAtSchedule,
     validateArticleType,
     validateEmojiFormat,
     validateMissingEmoji,
@@ -313,3 +344,6 @@ export const getChapterErrors = (chapter: Chapter): ValidationError[] => {
   ];
   return getValidationErrors(chapter, validators);
 };
+
+export const publishedAtRegex =
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2}(\s[0-9]{2}:[0-9]{2})?$/;
