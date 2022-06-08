@@ -1,6 +1,5 @@
 {
   "name": "zenn-cli",
-  "license": "MIT",
   "version": "0.1.111-alpha.0",
   "description": "Preview Zenn content locally.",
   "repository": {
@@ -8,19 +7,20 @@
     "url": "https://github.com/zenn-dev/zenn-editor.git",
     "directory": "packages/zenn-cli"
   },
-  "files": [
-    "dist"
-  ],
+  "license": "MIT",
   "bin": {
     "zenn": "dist/server/zenn.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "run-p dev:server dev:client",
     "dev:client": "wait-on http://localhost:8000 && vite",
     "dev:server": "ts-node-dev --project tsconfig.server.json ./src/server/zenn.ts",
     "build": "rimraf dist/* && run-p build:client build:server",
     "build:client": "tsc --project tsconfig.client.json && vite build",
-    "build:server": "tsc --project tsconfig.server.json",
+    "build:server": "webpack -c webpack.server.js",
     "zenn": "node dist/server/zenn.js",
     "test": "run-s test:client test:server",
     "test:client": "jest --config=jest.config.client.js",
@@ -32,23 +32,6 @@
     "lint:fix": "run-s lint:fix:*",
     "lint:fix:prettier": "prettier -w .",
     "lint:fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
-  },
-  "dependencies": {
-    "arg": "^5.0.0",
-    "cheerio": "^1.0.0-rc.10",
-    "chokidar": "^3.5.1",
-    "colors": "1.4.0",
-    "connect-history-api-fallback": "^1.6.0",
-    "express": "^4.17.1",
-    "fs-extra": "^10.0.0",
-    "gray-matter": "^4.0.3",
-    "history": "^5.0.0",
-    "image-size": "^1.0.0",
-    "js-yaml": "^4.1.0",
-    "node-fetch": "^2.6.7",
-    "open": "^8.2.0",
-    "ws": "^7.4.6",
-    "zenn-markdown-html": "^0.1.111-alpha.0"
   },
   "devDependencies": {
     "@material-ui/core": "^4.11.4",
@@ -71,11 +54,26 @@
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "@vitejs/plugin-react-refresh": "^1.3.3",
+    "arg": "^5.0.0",
+    "cheerio": "^1.0.0-rc.10",
+    "chokidar": "^3.5.1",
+    "colors": "1.4.0",
+    "connect-history-api-fallback": "^1.6.0",
     "emoji-regex": "^9.2.2",
+    "esbuild-loader": "^2.19.0",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
+    "express": "^4.17.1",
+    "fs-extra": "^10.0.0",
+    "gray-matter": "^4.0.3",
+    "history": "^5.0.0",
+    "image-size": "^1.0.0",
     "jest": "^27.2.1",
+    "js-yaml": "^4.1.0",
+    "node-fetch": "^2.6.7",
+    "node-loader": "^2.0.0",
     "npm-run-all": "^4.1.5",
+    "open": "^8.2.0",
     "path": "^0.12.7",
     "prettier": "^2.3.0",
     "react": "^17.0.2",
@@ -89,14 +87,18 @@
     "typescript": "^4.2.4",
     "vite": "^2.3.7",
     "wait-on": "^6.0.1",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.9.2",
+    "ws": "^7.4.6",
     "zenn-content-css": "^0.1.111-alpha.0",
-    "zenn-embed-elements": "^0.1.111-alpha.0"
-  },
-  "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
-  "publishConfig": {
-    "access": "public"
+    "zenn-embed-elements": "^0.1.111-alpha.0",
+    "zenn-markdown-html": "^0.1.111-alpha.0"
   },
   "engines": {
     "node": ">=10.13.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458"
 }

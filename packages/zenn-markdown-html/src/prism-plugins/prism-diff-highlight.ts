@@ -1,5 +1,4 @@
 import Prism, { TokenStream } from 'prismjs';
-import loadLanguages from 'prismjs/components/';
 
 /**
  * PrismJSのDiff構文を使用できるようにするためのプラグイン
@@ -7,8 +6,7 @@ import loadLanguages from 'prismjs/components/';
  * @reference https://github.com/PrismJS/prism/blob/master/plugins/diff-highlight/prism-diff-highlight.js
  */
 export function enableDiffHighlight() {
-  // this plugin needs to load `diff`
-  loadLanguages('diff');
+  require(`prismjs/components/prism-diff`);
 
   const LANGUAGE_REGEX = /^diff-([\w-]+)/i;
   const HTML_TAG =

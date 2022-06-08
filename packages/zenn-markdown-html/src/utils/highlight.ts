@@ -1,6 +1,6 @@
 import Prism, { Grammar } from 'prismjs';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
-import loadLanguages from 'prismjs/components/';
+import loadLanguages from '../utils/prismjs';
 import { enableDiffHighlight } from '../prism-plugins/prism-diff-highlight';
 
 // diffプラグインを有効化
@@ -10,7 +10,7 @@ function loadPrismGrammer(lang?: string): Grammar | undefined {
   if (!lang) return undefined;
   let langObject = Prism.languages[lang];
   if (langObject === undefined) {
-    loadLanguages([lang]);
+    loadLanguages(lang);
     langObject = Prism.languages[lang];
   }
   return langObject;
