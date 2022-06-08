@@ -38,7 +38,7 @@ function formatPublishedAt(publishedAt: Date): string {
 
 export const ArticleHeader: React.VFC<Props> = ({ article }) => {
   const validationErrors = useMemo(() => getArticleErrors(article), [article]);
-  const publishedAt = completePublishedAt(article.publishedAt);
+  const publishedAt = completePublishedAt(article.published_at);
   const scheduled_publish =
     publishedAt && Date.parse(publishedAt) > Date.now();
 
@@ -70,7 +70,7 @@ export const ArticleHeader: React.VFC<Props> = ({ article }) => {
           </PropertyRow>
 
           {publishedAt && (
-            <PropertyRow title="publishedAt">{publishedAt}</PropertyRow>
+            <PropertyRow title="published_at">{publishedAt}</PropertyRow>
           )}
 
           <PropertyRow title="type">
