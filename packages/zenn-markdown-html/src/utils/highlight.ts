@@ -10,7 +10,7 @@ function loadPrismGrammer(lang?: string): Grammar | undefined {
   if (!lang) return undefined;
   let langObject = Prism.languages[lang];
   if (langObject === undefined) {
-    loadLanguages(lang);
+    loadLanguages([lang]);
     langObject = Prism.languages[lang];
   }
   return langObject;

@@ -7,6 +7,7 @@ import loadLanguages from '../utils/prismjs-components-loader';
  * @reference https://github.com/PrismJS/prism/blob/master/plugins/diff-highlight/prism-diff-highlight.js
  */
 export function enableDiffHighlight() {
+  // this plugin needs to load `diff`
   loadLanguages('diff');
 
   const LANGUAGE_REGEX = /^diff-([\w-]+)/i;
