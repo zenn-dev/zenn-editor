@@ -22,6 +22,7 @@ module.exports = {
 
   module: {
     rules: [
+      // fsevents の `*.node` ファイルに対応するため
       {
         test: /\.node$/,
         loader: 'node-loader',
@@ -41,7 +42,7 @@ module.exports = {
 
   plugins: [
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
-    // disable creating additional chunks
+    // 出力先のファイルを`zenn.js`のみするための設定
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
   ],
 };
