@@ -6,6 +6,10 @@ import getLoader from 'prismjs/dependencies';
 
 const loadedLanguages = new Set<string>();
 
+/**
+ * PrismJSのloadLanguagesをwebpackに対応させるために自前で実装
+ * @source https://github.com/PrismJS/prism/blob/2815f699970eb8387d741e3ac886845ce5439afb/components/index.js
+ */
 export default function loadLanguages(languages: string | string[]) {
   if (languages === undefined) {
     languages = Object.keys(components.languages).filter((l) => l != 'meta');
