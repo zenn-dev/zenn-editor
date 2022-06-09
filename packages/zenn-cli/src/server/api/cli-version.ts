@@ -1,5 +1,5 @@
 import Express from 'express';
-import { getCurrentCliVersion, getPublishedCliVersion } from '../../lib/helper';
+import { getCurrentCliVersion, getPublishedCliVersion } from '../lib/helper';
 
 export async function getCliVersion(
   _req: Express.Request,

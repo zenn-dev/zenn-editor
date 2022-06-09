@@ -15,10 +15,10 @@
     "dist"
   ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development run-p dev:server dev:client",
+    "dev": "run-p dev:server dev:client",
     "dev:client": "wait-on http://localhost:8000 && vite",
     "dev:server": "ts-node-dev --project tsconfig.server.json ./src/server/zenn.ts",
-    "build": "cross-env NODE_ENV=production rimraf dist/* && run-p build:client build:server",
+    "build": "rimraf dist/* && run-p build:client build:server",
     "build:client": "tsc --project tsconfig.client.json && vite build",
     "build:server": "webpack -c webpack.server.js",
     "zenn": "node dist/server/zenn.js",
@@ -59,7 +59,6 @@
     "chokidar": "^3.5.1",
     "colors": "1.4.0",
     "connect-history-api-fallback": "^1.6.0",
-    "cross-env": "^7.0.3",
     "emoji-regex": "^9.2.2",
     "esbuild-loader": "^2.19.0",
     "eslint": "^7.26.0",
