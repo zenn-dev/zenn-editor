@@ -6,7 +6,7 @@ const webpack = require('webpack');
 module.exports = {
   target: 'node',
 
-  mode: 'development',
+  mode: 'production',
 
   entry: './src/server/zenn.ts',
 
