@@ -1,7 +1,7 @@
 import path from 'path';
 import supertest from 'supertest';
 import * as helper from '../../lib/helper';
-import { createApp } from '../../preview/app';
+import { createApp } from '../../app';
 const app = createApp();
 const fixturesRootPath = path.resolve(__dirname, '..', 'fixtures');
 

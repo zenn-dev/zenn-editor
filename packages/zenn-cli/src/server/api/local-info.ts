@@ -1,6 +1,6 @@
 import Express from 'express';
 import fs from 'fs-extra';
-import { getWorkingPath } from '../../lib/helper';
+import { getWorkingPath } from '../lib/helper';
 
 export async function getLocalInfo(
   _req: Express.Request,

@@ -6,7 +6,7 @@ import { getBook, getBooks, getChapter, getChapters } from './api/books';
 import { getCliGuide } from './api/cli-guide';
 import { getLocalInfo } from './api/local-info';
 import { getCliVersion } from './api/cli-version';
-import { getWorkingPath } from '../lib/helper';
+import { getWorkingPath } from './lib/helper';
 
 export function createApp() {
   const app = express();
@@ -29,7 +29,7 @@ export function createApp() {
   app.use(history()); // required to directly access non-root pages such as /guide, /articles/foo
 
   app.use(
-    express.static(path.join(__dirname, '../../client'), {
+    express.static(path.join(__dirname, '../client'), {
       setHeaders: (res) => {
         res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
       },

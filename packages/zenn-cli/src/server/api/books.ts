@@ -6,9 +6,9 @@ import {
   getLocalBookMetaList,
   getLocalChapter,
   getLocalChapterMetaList,
-} from '../../lib/books';
+} from '../lib/books';
 
-import { getValidSortTypes } from '../../../common/helper';
+import { getValidSortTypes } from '../../common/helper';
 
 const bookNotFoundMessage =
   '本の設定ファイルの取得時にエラーが発生しました。ターミナルの出力をご確認ください';

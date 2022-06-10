@@ -1,0 +1,12 @@
+{
+  "targets": "node 16.0",
+  "presets": ["@babel/preset-env", "@babel/preset-typescript"],
+  "plugins": [
+    [
+      "prismjs",
+      {
+        "languages": "all"
+      }
+    ]
+  ]
+}

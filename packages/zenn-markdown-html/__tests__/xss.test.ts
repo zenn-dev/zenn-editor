@@ -30,14 +30,9 @@ describe('No XSS Vulnerability', () => {
     expect(html).toContain('&quot;&lt;img/src=./ onerror=alert(location)&gt;');
   });
   test('should escape img tag around code fence', () => {
-    // make console.warn silent
-    const consoleSpy = jest.spyOn(console, 'warn');
-    consoleSpy.mockImplementation((x) => x);
-
     const html = markdownToHtml(
       `\`\`\`"><img/onerror="alert(location)"src=.>\nany\n\`\`\``
     );
-    expect(consoleSpy).toHaveBeenCalled();
     expect(html).toContain(
       '<div class="code-block-container"><pre class=""><code class="">any\n</code></pre></div>'
     );
