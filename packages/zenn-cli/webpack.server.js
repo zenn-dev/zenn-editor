@@ -41,6 +41,7 @@ module.exports = {
   },
 
   plugins: [
+    // ビルドファイルの先頭に shebang を追加する
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
     // 出力先のファイルを`zenn.js`のみするための設定
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
