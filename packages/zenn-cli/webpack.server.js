@@ -33,7 +33,7 @@ module.exports = {
         use: [
           {
             loader: 'esbuild-loader',
-            options: { loader: 'tsx', target: 'node16.0.0' },
+            options: { loader: 'tsx', target: 'node16' },
           },
         ],
       },
