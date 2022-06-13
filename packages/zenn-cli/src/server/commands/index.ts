@@ -1,10 +1,11 @@
-import { commandListText } from '../lib/messages';
 import * as Log from '../lib/log';
+import { commandListText } from '../lib/messages';
+import { notifyNeedUpdateCLI } from '../lib/helper';
 import { CliExecFn } from '../types';
 
 type Commands = { [command: string]: CliExecFn };
 
-export function exec(execCommandName: string, execCommandArgs: string[]) {
+export async function exec(execCommandName: string, execCommandArgs: string[]) {
   const commands: Commands = {
     preview: async () => {
       const { exec } = await import('./preview');
@@ -22,6 +23,9 @@ export function exec(execCommandName: string, execCommandArgs: string[]) {
     '--version': async () => (await import('./version')).exec(),
     '-v': async () => (await import('./version')).exec(),
   };
+
+  // zenn-cli のアップデートが必要な場合はCLI上に通知メッセージを表示する
+  await notifyNeedUpdateCLI().catch(console.error);
 
   if (!commands[execCommandName]) {
     Log.error('該当するCLIコマンドが存在しません');
