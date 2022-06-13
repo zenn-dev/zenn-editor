@@ -1,7 +1,7 @@
 import Express from 'express';
 
-import { getLocalArticle, getLocalArticleMetaList } from '../../lib/articles';
-import { getValidSortTypes } from '../../../common/helper';
+import { getLocalArticle, getLocalArticleMetaList } from '../lib/articles';
+import { getValidSortTypes } from '../../common/helper';
 
 export function getArticle(req: Express.Request, res: Express.Response) {
   const article = getLocalArticle(req.params.slug);

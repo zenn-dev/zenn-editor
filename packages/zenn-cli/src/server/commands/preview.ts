@@ -1,5 +1,5 @@
 import arg from 'arg';
-import { createApp } from '../preview/app';
+import { createApp } from '../app';
 import { startServer, startLocalChangesWatcher } from '../lib/server';
 import * as Log from '../lib/log';
 import { getWorkingPath } from '../lib/helper';
