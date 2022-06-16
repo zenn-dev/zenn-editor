@@ -1,18 +1,19 @@
-import crypto from 'crypto';
-import fs from 'fs-extra';
+import url from 'url';
 import path from 'path';
-import * as Log from './log';
+import fs from 'fs-extra';
+import crypto from 'crypto';
 import fetch from 'node-fetch';
 import cheerio from 'cheerio';
-import url from 'url';
 import { networkInterfaces } from 'os';
+import * as Log from './log';
+import pkg from '../../../package.json';
 
 export function generateSlug(): string {
   return crypto.randomBytes(7).toString('hex');
 }
 
 export function getCurrentCliVersion() {
-  return require('../../../package.json').version;
+  return pkg.version;
 }
 
 export async function getPublishedCliVersion() {

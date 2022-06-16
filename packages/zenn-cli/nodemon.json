@@ -1,0 +1,13 @@
+{
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules",
+    "lib/**/*",
+    "**/__tests__/**",
+    "*.test.ts"
+  ],
+  "execMap": {
+    "ts": "node -r esbuild-register"
+  },
+  "ext": "ts,js,json"
+}
