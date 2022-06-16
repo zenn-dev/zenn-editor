@@ -16,6 +16,15 @@ module.exports = {
     path: `${__dirname}/dist/server`,
   },
 
+  externals: [
+    // package.json はビルドファイルには含めず外部ファイルとして読み込む
+    // パスはビルド後のファイル構造を考慮する
+    ({ request }, callback) =>
+      /package\.json$/.test(request)
+        ? callback(null, 'commonjs ../../package.json')
+        : callback(),
+  ],
+
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
   },
