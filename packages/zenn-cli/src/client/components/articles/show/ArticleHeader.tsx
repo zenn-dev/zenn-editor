@@ -39,7 +39,7 @@ function formatPublishedAt(publishedAt: Date): string {
 export const ArticleHeader: React.VFC<Props> = ({ article }) => {
   const validationErrors = useMemo(() => getArticleErrors(article), [article]);
   const publishedAt = completePublishedAt(article.published_at);
-  const scheduled_publish = publishedAt && Date.parse(publishedAt) > Date.now();
+  const scheduledPublish = publishedAt && Date.parse(publishedAt) > Date.now();
 
   return (
     <StyledArticleHeader>
@@ -58,7 +58,7 @@ export const ArticleHeader: React.VFC<Props> = ({ article }) => {
             {typeof article.published === 'boolean' ? (
               <>
                 {article.published
-                  ? scheduled_publish
+                  ? scheduledPublish
                     ? 'true（公開予約）'
                     : 'true（公開）'
                   : 'false（下書き）'}
