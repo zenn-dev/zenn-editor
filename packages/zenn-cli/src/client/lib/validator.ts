@@ -156,6 +156,16 @@ const validateUseTags: ItemValidator<Article | Book> = {
   isValid: (item) => !(item as any).tags?.length && !(item as any).tag?.length,
 };
 
+const validatePublicationName: ItemValidator<Article> = {
+  isCritical: true,
+  getMessage: () =>
+    'Publicationの名前が不正です。小文字の半角英数字（a-z0-9）、アンダースコア（_）の2〜15字の組み合わせにしてください',
+  isValid: ({ publication_name }) => {
+    if (!publication_name) return true;
+    return /^[0-9a-z_]{2,15}$/.test(publication_name);
+  },
+};
+
 const validateBookSummary: ItemValidator<Book> = {
   isCritical: true,
   getMessage: () => 'summary（本の説明）の記載は必須です',
@@ -307,6 +317,7 @@ export const getArticleErrors = (article: Article): ValidationError[] => {
     validateInvalidTopicLetters,
     validateTooManyTopics,
     validateTopicType,
+    validatePublicationName,
   ];
   return getValidationErrors(article, validators);
 };
