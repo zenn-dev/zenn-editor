@@ -7,7 +7,6 @@ import {
   getSlugErrorMessage,
   validateChapterSlug,
   getChapterSlugErrorMessage,
-  getPublicationNameErrorMessage,
 } from '../../common/helper';
 
 function isAnyText(val: unknown): val is string {
