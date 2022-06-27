@@ -99,7 +99,7 @@
     "zenn-markdown-html": "^0.1.114-alpha.0"
   },
   "engines": {
-    "node": ">=10.13.0"
+    "node": ">=14.0.0"
   },
   "publishConfig": {
     "access": "public"
