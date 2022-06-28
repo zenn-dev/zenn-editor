@@ -14,6 +14,7 @@ describe('getArticleErrors', () => {
     type: 'tech',
     topics: ['zenn', 'cli'],
     published: false,
+    publication_name: 'team_publisher',
   };
 
   test('return no errors with valid article', () => {
@@ -230,6 +231,24 @@ describe('getArticleErrors', () => {
       });
       expect(errors.length).toEqual(1);
       expect(errors[0].message).toContain('tagsではなくtopicsを使ってください');
+    });
+  });
+  describe('validatePublicationName', () => {
+    test('return error with too short publication name', () => {
+      const errors = getArticleErrors({
+        ...validArticle,
+        publication_name: 't',
+      });
+      expect(errors.length).toEqual(1);
+      expect(errors[0].message).toContain('2〜15字の組み合わせ');
+    });
+    test('return error with publication name which includes invalid letters', () => {
+      const errors = getArticleErrors({
+        ...validArticle,
+        publication_name: 'invalid/name',
+      });
+      expect(errors.length).toEqual(1);
+      expect(errors[0].message).toContain('半角英数字');
     });
   });
 });
