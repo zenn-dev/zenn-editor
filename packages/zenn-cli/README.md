@@ -26,8 +26,8 @@ $ yarn dev
 $ yarn build
 $ yarn zenn # = npx zenn
 $ yarn zenn preview # = npx zenn preview (.mdの変更に伴うホットリロードも有効になります)
-$ yarn zenn new:article --slug foo-bar-baz # = npx zenn new:article --slug foo-bar-baz
-$ yarn zenn new:book --slug foo-bar-baz # = npx zenn new:book --slug foo-bar-baz
+$ yarn zenn new:article --slug foo-bar-baz-qux # = npx zenn new:article --slug foo-bar-baz-qux
+$ yarn zenn new:book --slug foo-bar-baz-qux # = npx zenn new:book --slug foo-bar-baz-qux
 $ yarn zenn --help # = npx zenn --help
 ```
 
