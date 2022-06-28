@@ -19,10 +19,25 @@ module.exports = {
   externals: [
     // package.json はビルドファイルには含めず外部ファイルとして読み込む
     // パスはビルド後のファイル構造を考慮する
-    ({ request }, callback) =>
-      /package\.json$/.test(request)
-        ? callback(null, 'commonjs ../../package.json')
-        : callback(),
+    ({ request }, callback) => {
+      if (/package\.json$/.test(request)) {
+        callback(null, 'commonjs ../../package.json');
+      } else {
+        callback();
+      }
+    },
+
+    // require("node:<package>") に対応していない node バージョンのために、
+    // require("<package>") に変換する
+    ({ request }, callback) => {
+      const module = request.match(/^node:(.+)/)?.[1];
+
+      if (module) {
+        callback(null, `commonjs ${module}`);
+      } else {
+        callback();
+      }
+    },
   ],
 
   resolve: {
@@ -37,12 +52,18 @@ module.exports = {
         loader: 'node-loader',
       },
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         exclude: /node_modules/,
         use: [
           {
             loader: 'esbuild-loader',
-            options: { loader: 'tsx', target: 'node16' },
+            options: {
+              loader: 'ts',
+
+              // >=14.0.0の動作を保証するため、
+              // "node14" ではなく "node14.0.0" を指定する
+              target: 'node14.0.0',
+            },
           },
         ],
       },
