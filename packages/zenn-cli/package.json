@@ -62,7 +62,7 @@
     "colors": "1.4.0",
     "configstore": "^6.0.0",
     "connect-history-api-fallback": "^1.6.0",
-    "emoji-regex": "^9.2.2",
+    "emoji-regex": "^10.1.0",
     "esbuild-loader": "^2.19.0",
     "esbuild-register": "^3.3.3",
     "eslint": "^7.26.0",
