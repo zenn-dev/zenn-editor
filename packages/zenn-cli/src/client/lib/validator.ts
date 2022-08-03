@@ -1,4 +1,4 @@
-import initEmojiRegex from 'emoji-regex/text';
+import initEmojiRegex from 'emoji-regex';
 
 import { ValidationError } from '../types';
 import { Article, Book, Chapter } from '../../common/types';
