@@ -12,6 +12,7 @@ import {
   isCodesandboxUrl,
   isCodepenUrl,
   isJsfiddleUrl,
+  isDocswellUrl,
 } from './url-matcher';
 
 // e.g. @[youtube](youtube-video-id)
@@ -70,6 +71,12 @@ const blockOptions = {
       return 'StackBlitzのembed用のURLを指定してください';
     }
     return `<div class="embed-stackblitz"><iframe src="${str}" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy" allowfullscreen></iframe></div>`;
+  },
+  docswell(str: string) {
+    if (!isDocswellUrl(str)) {
+      return 'Doscwellのembed用のURLを指定してください';
+    }
+    return `<script async class="docswell-embed" src="https://www.docswell.com/assets/libs/docswell-embed/docswell-embed.min.js" data-src="${str}" data-aspect="0.5625"></script><div class="docswell-link"></div>`
   },
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
