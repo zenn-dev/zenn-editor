@@ -57,7 +57,7 @@ const blockOptions = {
     }
     const url = new URL(str.replace('/pen/', '/embed/'));
     url.searchParams.set('embed-version', '2');
-    return `<div class="embed-codepen"><iframe src="${url}" scrolling="no" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy"></iframe></div>`;
+    return `<div class="embed-codepen"><iframe src="${url}" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy"></iframe></div>`;
   },
   codesandbox(str: string) {
     if (!isCodesandboxUrl(str)) {
