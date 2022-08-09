@@ -18,7 +18,12 @@ https://gist.github.com/lmars/8be1952a8d03f8a31b17
 https://gist.github.com/hofmannsven/9164408?file=my.cnf
 
 ## codesandbox
+
 @[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)
+
+👇Specify multiple files option
+
+@[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark&module=/src/App.js,/src/index.js)
 
 👇must raise error
 
