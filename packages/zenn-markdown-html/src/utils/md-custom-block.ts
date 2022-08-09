@@ -49,7 +49,7 @@ const blockOptions = {
     if (!url.includes('embed')) {
       url = url.endsWith('/') ? `${url}embedded/` : `${url}/embedded/`;
     }
-    return `<div class="embed-jsfiddle"><iframe src="${url}" scrolling="no" frameborder="no" allowfullscreen allowtransparency="true" loading="lazy"></iframe></div>`;
+    return `<div class="embed-jsfiddle"><iframe src="${url}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
   },
   codepen(str: string) {
     if (!isCodepenUrl(str)) {
@@ -57,7 +57,7 @@ const blockOptions = {
     }
     const url = new URL(str.replace('/pen/', '/embed/'));
     url.searchParams.set('embed-version', '2');
-    return `<div class="embed-codepen"><iframe src="${url}" scrolling="no" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy"></iframe></div>`;
+    return `<div class="embed-codepen"><iframe src="${url}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
   },
   codesandbox(str: string) {
     if (!isCodesandboxUrl(str)) {
@@ -69,7 +69,7 @@ const blockOptions = {
     if (!isStackblitzUrl(str)) {
       return 'StackBlitzのembed用のURLを指定してください';
     }
-    return `<div class="embed-stackblitz"><iframe src="${str}" scrolling="no" frameborder="no" allowtransparency="true" loading="lazy" allowfullscreen></iframe></div>`;
+    return `<div class="embed-stackblitz"><iframe src="${str}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
   },
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
