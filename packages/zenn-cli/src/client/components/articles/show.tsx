@@ -9,6 +9,7 @@ import { useFetch } from '../../hooks/useFetch';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from '../../../common/types';
+import { Toc } from '../Toc';
 
 type ArticleShowProps = {
   slug: string;
@@ -43,6 +44,9 @@ export const ArticleShow: React.VFC<ArticleShowProps> = ({ slug }) => {
       <ContentContainer>
         <StyledArticleShow className="article-show">
           <div className="article-show__content">
+            {article.toc && article.toc.length > 0 && (
+              <Toc maxDepth={2} toc={article.toc} />
+            )}
             <BodyContent rawHtml={article.bodyHtml || ''} />
           </div>
         </StyledArticleShow>

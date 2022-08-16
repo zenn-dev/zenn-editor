@@ -1,9 +1,11 @@
+import { TocNode } from '../client/components/Toc';
 import { itemSortTypes } from './helper';
 
 export type Article = {
   slug: string;
   title?: string;
   bodyHtml?: string;
+  toc?: TocNode[];
   emoji?: string;
   type?: 'tech' | 'idea';
   topics?: string[];
@@ -13,7 +15,7 @@ export type Article = {
   publication_name?: string | null;
 };
 
-export type ArticleMeta = Omit<Article, 'bodyHtml'>;
+export type ArticleMeta = Omit<Article, 'bodyHtml' | 'toc'>;
 
 export type Book = {
   slug: string;
