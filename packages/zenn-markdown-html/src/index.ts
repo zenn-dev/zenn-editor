@@ -1,5 +1,5 @@
 import markdownIt from 'markdown-it';
-import crypto from 'crypto';
+import cryptoRandomString from 'crypto-random-string';
 
 // plugis
 import {
@@ -78,7 +78,7 @@ const markdownToHtml = (text: string): string => {
   // 1ページの中で重複しなければ問題ないため、ごく短いランダムな文字列とする
   // - https://github.com/zenn-dev/zenn-community/issues/356
   // - https://github.com/markdown-it/markdown-it-footnote/pull/8
-  const docId = crypto.randomBytes(2).toString('hex');
+  const docId = cryptoRandomString({ length: 2, type: 'hex' });
   return md.render(text, { docId });
 };
 
