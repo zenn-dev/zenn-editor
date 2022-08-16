@@ -8,6 +8,7 @@ import { useFetch } from '../../hooks/useFetch';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from 'zenn-model';
+import { Toc } from '../Toc';
 
 type ArticleShowProps = {
   slug: string;
@@ -42,6 +43,11 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
       <ContentContainer>
         <StyledArticleShow className="article-show">
           <div className="article-show__content">
+            {/* @ts-expect-error TODO */}
+            {article.toc && article.toc.length > 0 && (
+              // @ts-expect-error TODO
+              <Toc maxDepth={2} toc={article.toc} />
+            )}
             <BodyContent rawHtml={article.bodyHtml || ''} />
           </div>
         </StyledArticleShow>
