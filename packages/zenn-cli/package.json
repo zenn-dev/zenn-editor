@@ -34,8 +34,8 @@
     "lint:fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "@swc/core": "^1.2.131",
     "@swc/jest": "^0.2.17",
     "@types/configstore": "^5.0.1",
