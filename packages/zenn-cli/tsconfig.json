@@ -4,7 +4,7 @@
     "allowJs": false,
     "skipLibCheck": false,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "jsx": "preserve",

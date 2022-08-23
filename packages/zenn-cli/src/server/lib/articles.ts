@@ -11,7 +11,6 @@ import {
 } from './helper';
 import { Article, ArticleMeta, ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
-import { parseToc } from 'zenn-markdown-html/utils';
 
 export function getLocalArticle(slug: string): null | Article {
   const data = readArticleFile(slug);
@@ -19,11 +18,9 @@ export function getLocalArticle(slug: string): null | Article {
   const { meta, bodyMarkdown } = data;
   const rawHtml = markdownToHtml(bodyMarkdown);
   const bodyHtml = completeHtml(rawHtml);
-  const toc = parseToc(bodyHtml);
   return {
     ...meta,
     bodyHtml,
-    toc,
   };
 }
 
