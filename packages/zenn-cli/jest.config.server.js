@@ -20,6 +20,9 @@ module.exports = {
     '^.+\\.[jt]s$': '@swc/jest',
   },
   testMatch: ['<rootDir>/src/server/__tests__/**/*.test.ts'],
+  moduleNameMapper: {
+    "^zenn-markdown-html/(.*)$": "<rootDir>/../zenn-markdown-html/lib/$1"
+  },
   resetMocks: true,
   // esmが使われているパッケージはcommonjsにトランスパイルする必要があるため
   // esmのパッケージを除いてIgnoreすることで、esmのパッケージを`transform`の対象に含める
