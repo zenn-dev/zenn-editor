@@ -34,8 +34,8 @@
     "lint:fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "@swc/core": "^1.2.131",
     "@swc/jest": "^0.2.17",
     "@types/configstore": "^5.0.1",
@@ -88,7 +88,7 @@
     "supertest": "^6.1.3",
     "swr": "^0.5.6",
     "ts-loader": "^9.1.1",
-    "typescript": "^4.2.4",
+    "typescript": "^4.7.4",
     "vite": "^2.3.7",
     "wait-on": "^6.0.1",
     "webpack": "^5.73.0",

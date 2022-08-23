@@ -12,6 +12,10 @@
   "files": [
     "lib"
   ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./utils": "./lib/utils/index.js"
+  },
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
     "lint:strict": "eslint . --ext .ts,.tsx --max-warnings 0",
@@ -39,7 +43,7 @@
     "jest": "^27.4.7",
     "node-html-parser": "^5.3.3",
     "rimraf": "^3.0.2",
-    "typescript": "^4.5.4"
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@steelydylan/markdown-it-imsize": "^1.0.2",
@@ -50,7 +54,8 @@
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "prismjs": "^1.27.0"
+    "prismjs": "^1.27.0",
+    "cheerio": "^1.0.0-rc.12"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
