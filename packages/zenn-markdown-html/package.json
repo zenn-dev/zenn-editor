@@ -1,6 +1,6 @@
 {
   "name": "zenn-markdown-html",
-  "version": "0.1.118-alpha.0",
+  "version": "0.1.118-alpha.1",
   "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@steelydylan/markdown-it-imsize": "^1.0.2",
+    "cheerio": "^1.0.0-rc.12",
     "markdown-it": "^12.3.2",
     "markdown-it-anchor": "^8.4.1",
     "markdown-it-container": "^2.0.0",
@@ -54,8 +55,7 @@
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^3.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "prismjs": "^1.27.0",
-    "cheerio": "^1.0.0-rc.12"
+    "prismjs": "^1.27.0"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
