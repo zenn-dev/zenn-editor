@@ -72,9 +72,11 @@ export const ArticleHeader: React.VFC<Props> = ({ article }) => {
             <PropertyRow title="published_at">{publishedAt}</PropertyRow>
           )}
 
-          <PropertyRow title="publication_name">
-            {article.publication_name}
-          </PropertyRow>
+          {!!article.publication_name && (
+            <PropertyRow title="publication_name">
+              {article.publication_name}
+            </PropertyRow>
+          )}
 
           <PropertyRow title="type">
             {article.type === 'tech' ? (
