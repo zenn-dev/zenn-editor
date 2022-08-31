@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { Sidebar } from './Sidebar';
 
 type Props = {
@@ -17,7 +17,7 @@ export const Layout: React.VFC<Props> = ({ children }) => {
   );
 };
 
-const StyledLayout = styled.div`
+const StyledLayout = styled('div')`
   display: flex;
   .layout__main {
     flex: 1;

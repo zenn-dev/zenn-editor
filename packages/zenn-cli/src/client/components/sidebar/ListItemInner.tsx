@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
+import { styled } from '@mui/system';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 
 interface Props {
   title: string;
@@ -38,7 +38,7 @@ export const ListItemInner: React.VFC<Props> = (props) => {
   );
 };
 
-const StyledListItemInner = styled.div`
+const StyledListItemInner = styled('div')`
   display: flex;
   align-items: center;
 

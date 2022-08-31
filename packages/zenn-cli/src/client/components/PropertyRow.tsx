@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 
 type Props = {
   title: string;
@@ -15,7 +15,7 @@ export const PropertyRow: React.VFC<Props> = (props) => {
   );
 };
 
-const StyledPropertyRow = styled.div`
+const StyledPropertyRow = styled('div')`
   display: flex;
   font-size: 0.92rem;
   color: var(--c-gray);

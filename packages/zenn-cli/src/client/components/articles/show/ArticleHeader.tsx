@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { Article } from '../../../../common/types';
 import { getArticleErrors } from '../../../lib/validator';
 import { ContentContainer } from '../../ContentContainer';
@@ -108,7 +108,7 @@ export const ArticleHeader: React.VFC<Props> = ({ article }) => {
   );
 };
 
-const StyledArticleHeader = styled.header`
+const StyledArticleHeader = styled('header')`
   padding: 3.3rem 0;
   background: var(--c-gray-bg);
   .article-header__emoji {

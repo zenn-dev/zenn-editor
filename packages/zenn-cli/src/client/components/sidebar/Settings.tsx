@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import { styled } from '@mui/system';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 type LabelValue = string;
 
@@ -64,7 +64,7 @@ export const Settings = <T extends LabelValue>(props: Props<T>) => {
   );
 };
 
-const StyledSettings = styled.div`
+const StyledSettings = styled('div')`
   display: flex;
   align-items: center;
   position: relative;

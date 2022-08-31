@@ -1,8 +1,8 @@
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import { styled } from '@mui/system';
 import React from 'react';
-import styled from 'styled-components';
 import { usePersistedState } from '../../hooks/usePersistedState';
 import { ListItemInner } from './ListItemInner';
-import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
 
 export const Directory: React.VFC<{
   title: string;
@@ -54,7 +54,7 @@ export const Directory: React.VFC<{
   );
 };
 
-const StyledDirectory = styled.div`
+const StyledDirectory = styled('div')`
   .directory__button {
     position: relative;
     padding: 5px 0 5px 15px;

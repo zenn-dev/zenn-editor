@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { ContentContainer } from '../ContentContainer';
 import { BookHeader } from './show/BookHeader';
 import { BookChapterList } from './show/BookChapterList';
@@ -9,7 +9,7 @@ import { useFetch } from '../../hooks/useFetch';
 import { useTitle } from '../../hooks/useTitle';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { Book, ChapterMeta } from '../../../common/types';
-import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 
 type BookShowProps = {
   slug: string;
@@ -147,7 +147,7 @@ export const BookShow: React.VFC<BookShowProps> = ({ slug }) => {
   );
 };
 
-const StyledBookShow = styled.div`
+const StyledBookShow = styled('div')(`
   padding: 3rem 0 6rem;
 
   .book-show__chapters-title {
@@ -191,4 +191,4 @@ const StyledBookShow = styled.div`
     width: 15px;
     height: 15px;
   }
-`;
+`);

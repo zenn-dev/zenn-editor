@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 
 type Props = { message?: string };
 
@@ -22,7 +22,7 @@ export const ErrorMessage: React.VFC<Props> = (props) => {
   );
 };
 
-const StyledErrorMessage = styled.div`
+const StyledErrorMessage = styled('div')`
   height: 100vh;
   display: flex;
   align-items: center;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { PrintDetailsOpener } from './PrintDetailsOpener';
 
 type Props =
@@ -27,7 +27,7 @@ export const BodyContent: React.VFC<Props> = (props) => {
   return <div className="znc">{props.children}</div>;
 };
 
-const StyledMessage = styled.div`
+const StyledMessage = styled('div')`
   text-align: center;
   font-size: 1.1rem;
   color: var(--c-gray);

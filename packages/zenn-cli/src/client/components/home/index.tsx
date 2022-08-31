@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import { styled, keyframes } from '@mui/system';
 import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
 import { LinkGuide } from '../Routes';
@@ -45,7 +45,7 @@ const popin = keyframes`
   }
 `;
 
-const StyledUpdateNotificationBar = styled.div`
+const StyledUpdateNotificationBar = styled('div')`
   .update-notification-bar__inner {
     display: flex;
     justify-content: center;
@@ -159,7 +159,7 @@ export const Home: React.VFC = () => {
   );
 };
 
-const StyledHome = styled.article`
+const StyledHome = styled('article')`
   .home__title {
     padding: 2.5rem 0;
     text-align: center;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import { styled, keyframes } from '@mui/system';
 
 type Props = { margin?: string };
 
@@ -22,7 +22,7 @@ const fadein = keyframes`
   }
 `;
 
-const StyledLoading = styled.div`
+const StyledLoading = styled('div')`
   display: table;
   width: 30px;
   height: 30px;

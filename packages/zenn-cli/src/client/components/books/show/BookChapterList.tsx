@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChapterMeta } from '../../../../common/types';
 import { LinkChapter } from '../../Routes';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 
 type Props = {
   bookSlug: string;
@@ -41,7 +41,7 @@ export const BookChapterList: React.VFC<Props> = ({
   );
 };
 
-const StyledBookChapterList = styled.div`
+const StyledBookChapterList = styled('div')(`
   color: var(--c-gray);
   font-weight: 700;
   ul,
@@ -70,4 +70,4 @@ const StyledBookChapterList = styled.div`
     opacity: 0.7;
     text-decoration: none;
   }
-`;
+`);

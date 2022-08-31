@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { Book, Chapter } from '../../../../common/types';
 import { getChapterErrors } from '../../../lib/validator';
 import { ContentContainer } from '../../ContentContainer';
 import { PropertyRow } from '../../PropertyRow';
 import { ValidationErrors } from '../../ValidationErrors';
 import { LinkBook } from '../../Routes';
-import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
+import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 
 type Props = { chapter: Chapter; book: Book };
 
@@ -51,7 +51,7 @@ export const ChapterHeader: React.VFC<Props> = ({ chapter, book }) => {
   );
 };
 
-const StyledChapterHeader = styled.header`
+const StyledChapterHeader = styled('header')`
   background: var(--c-gray-bg);
   .chapter-header__book {
     background: rgba(158, 186, 203, 0.3);

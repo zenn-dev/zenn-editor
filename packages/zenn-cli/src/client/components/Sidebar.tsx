@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 
 // icons
-import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
-import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
-import SortRoundedIcon from '@material-ui/icons/SortRounded';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import SortRoundedIcon from '@mui/icons-material/SortRounded';
 
 // hooks
 import { useFetch } from '../hooks/useFetch';
@@ -283,7 +283,7 @@ export const Sidebar: React.VFC = () => {
   );
 };
 
-const StyledSidebar = styled.div`
+const StyledSidebar = styled('div')`
   position: sticky;
   top: 0;
   height: 100vh;

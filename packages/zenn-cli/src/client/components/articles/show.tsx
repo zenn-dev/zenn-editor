@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
 import { ArticleHeader } from './show/ArticleHeader';
@@ -51,7 +51,7 @@ export const ArticleShow: React.VFC<ArticleShowProps> = ({ slug }) => {
   );
 };
 
-const StyledArticleShow = styled.div`
+const StyledArticleShow = styled('div')`
   .article-show__content {
     padding: 3rem 0 18rem;
   }

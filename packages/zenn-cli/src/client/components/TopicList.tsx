@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 
 type Props = {
   topics: string[];
@@ -19,7 +19,7 @@ export const TopicList: React.VFC<Props> = ({ topics }) => {
 
 const itemMarginPx = '3px';
 
-const StyledTopicList = styled.div`
+const StyledTopicList = styled('div')`
   margin-top: -${itemMarginPx};
   .topic-list__item {
     display: inline-flex;

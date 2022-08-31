@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { Book } from '../../../../common/types';
 import { getBookErrors } from '../../../lib/validator';
 import { ContentContainer } from '../../ContentContainer';
@@ -72,7 +72,7 @@ export const BookHeader: React.VFC<Props> = ({ book }) => {
   );
 };
 
-const StyledBookHeader = styled.header`
+const StyledBookHeader = styled('header')`
   padding: 3.3rem 0;
   background: var(--c-gray-bg);
   .book-header__hero {

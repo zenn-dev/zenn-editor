@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
 import { Loading } from '../Loading';
@@ -54,7 +54,7 @@ export const Guide: React.VFC<GuideProps> = ({ hash, slug }) => {
   );
 };
 
-const StyledGuide = styled.div`
+const StyledGuide = styled('div')`
   padding: 3rem 0;
   font-size: 0.94rem;
   .guide__title {

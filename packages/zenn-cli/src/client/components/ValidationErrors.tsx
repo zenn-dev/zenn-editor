@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { ValidationError } from '../types';
 
-import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
-import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
+import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
 
 const warningColor = '#ff9715';
 
@@ -38,7 +38,7 @@ const ValidationErrorRow: React.VFC<ValidationError> = ({
   );
 };
 
-const StyledValidationErrorRow = styled.div`
+const StyledValidationErrorRow = styled('div')`
   display: flex;
   align-items: flex-start;
   margin-top: 0.5rem;
@@ -136,7 +136,7 @@ export const ValidationErrors: React.VFC<{
   );
 };
 
-const StyledValidationErrors = styled.div`
+const StyledValidationErrors = styled('div')`
   padding: 1.2rem 1.4rem 1.3rem;
   background: #fff;
   border-radius: 10px;

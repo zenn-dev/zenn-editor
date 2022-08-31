@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { ContentContainer } from '../ContentContainer';
 import { ChapterHeader } from './show/ChapterHeader';
 import { ErrorMessage } from '../ErrorMessage';
@@ -92,7 +92,7 @@ export const ChapterShow: React.VFC<ChapterShowProps> = ({
   );
 };
 
-const StyledChapterShow = styled.div`
+const StyledChapterShow = styled('div')`
   .chapter-show__content {
     padding: 3rem 0 10rem;
   }
