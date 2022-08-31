@@ -15,3 +15,8 @@
 .footnotes-list {
   margin: 13px 0 0;
 }
+// フォーカスされている脚注の背景色を変える
+.footnote-item:target {
+  background: #e3eeff;
+  color: $c-contrast;
+}
