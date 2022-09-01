@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 // icons
-import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
-import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
-import SortRoundedIcon from '@material-ui/icons/SortRounded';
+import {
+  MdOutlineArrowBack,
+  MdOutlineArrowForward,
+  MdSort,
+} from 'react-icons/md';
 
 // hooks
 import { useFetch } from '../hooks/useFetch';
@@ -12,24 +14,24 @@ import { useLocalFileChangedEffect } from '../hooks/useLocalFileChangedEffect';
 import { usePersistedState } from '../hooks/usePersistedState';
 
 // components
-import { ListItemInner } from './sidebar/ListItemInner';
 import { Directory } from './sidebar/Directory';
+import { ListItemInner } from './sidebar/ListItemInner';
 import { Settings } from './sidebar/Settings';
 
 // others
-import {
-  LinkArticle,
-  LinkBook,
-  LinkChapter,
-  LinkHome,
-  LinkGuide,
-} from './Routes';
 import {
   ArticleMeta,
   BookMeta,
   ChapterMeta,
   ItemSortType,
 } from '../../common/types';
+import {
+  LinkArticle,
+  LinkBook,
+  LinkChapter,
+  LinkGuide,
+  LinkHome,
+} from './Routes';
 
 const ArticleLinkItem: React.VFC<{ article: ArticleMeta }> = ({ article }) => {
   return (
@@ -195,9 +197,9 @@ export const Sidebar: React.VFC = () => {
         aria-label={isFolded ? 'メニューを開く' : '折りたたむ'}
       >
         {isFolded ? (
-          <ArrowForwardOutlinedIcon className="sidebar__fold-icon" />
+          <MdOutlineArrowForward className="sidebar__fold-icon" />
         ) : (
-          <ArrowBackOutlinedIcon className="sidebar__fold-icon" />
+          <MdOutlineArrowBack className="sidebar__fold-icon" />
         )}
       </button>
       <div className="sidebar__inner" aria-hidden={isFolded}>
@@ -212,7 +214,7 @@ export const Sidebar: React.VFC = () => {
             />
           </LinkHome>
           <Settings
-            openButtonIcon={<SortRoundedIcon className="sidebar__sort-open" />}
+            openButtonIcon={<MdSort className="sidebar__sort-open" />}
             openButtonAriaLabel="ソート設定を開く"
             position="right"
             options={[

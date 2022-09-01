@@ -9,7 +9,7 @@ import { useFetch } from '../../hooks/useFetch';
 import { useTitle } from '../../hooks/useTitle';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { Book, ChapterMeta } from '../../../common/types';
-import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
+import { MdOutlineCallMade } from 'react-icons/md';
 
 type BookShowProps = {
   slug: string;
@@ -124,7 +124,7 @@ export const BookShow: React.VFC<BookShowProps> = ({ slug }) => {
                           rel="noopener noreferrer"
                         >
                           詳しい説明を開く
-                          <CallMadeOutlinedIcon className="book-show__open-icon" />
+                          <MdOutlineCallMade className="book-show__open-icon" />
                         </a>
                       </p>
 

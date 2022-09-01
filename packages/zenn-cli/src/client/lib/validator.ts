@@ -112,7 +112,7 @@ const validateEmojiFormat: ItemValidator<Article> = {
 };
 
 const validateMissingTopics: ItemValidator<Article | Book> = {
-  isCritical: true,
+  isCritical: false,
   getMessage: () =>
     'topics（記事に関連する言語や技術）を配列で指定してください。例）["react", "javascript"]',
   isValid: ({ topics }) => {

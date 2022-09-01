@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { usePersistedState } from '../../hooks/usePersistedState';
 import { ListItemInner } from './ListItemInner';
-import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
+import { MdOutlineArrowForwardIos } from 'react-icons/md';
 
 export const Directory: React.VFC<{
   title: string;
@@ -30,7 +30,7 @@ export const Directory: React.VFC<{
         aria-label="フォルダーを開く"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <ArrowForwardIosOutlinedIcon
+        <MdOutlineArrowForwardIos
           className={`directory__icon-arrow ${isOpen ? 'rotated' : ''}`}
         />
 

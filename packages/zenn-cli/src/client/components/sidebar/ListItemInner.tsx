@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
+import { MdOutlineCallMade } from 'react-icons/md';
 
 interface Props {
   title: string;
@@ -31,7 +31,7 @@ export const ListItemInner: React.VFC<Props> = (props) => {
       <div className="list-item-inner__title" title={props.title}>
         {props.title}
         {props.showNewTabIcon === true && (
-          <CallMadeOutlinedIcon className="list-item-inner__icon-open" />
+          <MdOutlineCallMade className="list-item-inner__icon-open" />
         )}
       </div>
     </StyledListItemInner>
