@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { ValidationError } from '../types';
 
-import { MdOutlineCallMade } from 'react-icons/md';
-import { MdError } from 'react-icons/md';
+import { MdError, MdOutlineCallMade } from 'react-icons/md';
 
 const warningColor = '#ff9715';
 
