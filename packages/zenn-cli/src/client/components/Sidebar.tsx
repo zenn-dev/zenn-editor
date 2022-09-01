@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 // icons
-import { 
-  MdSort,
-  MdOutlineArrowBack
+import {
+  MdOutlineArrowBack,
   MdOutlineArrowForward,
- } from 'react-icons/md';
+  MdSort,
+} from 'react-icons/md';
 
 // hooks
 import { useFetch } from '../hooks/useFetch';
@@ -14,24 +14,24 @@ import { useLocalFileChangedEffect } from '../hooks/useLocalFileChangedEffect';
 import { usePersistedState } from '../hooks/usePersistedState';
 
 // components
-import { ListItemInner } from './sidebar/ListItemInner';
 import { Directory } from './sidebar/Directory';
+import { ListItemInner } from './sidebar/ListItemInner';
 import { Settings } from './sidebar/Settings';
 
 // others
-import {
-  LinkArticle,
-  LinkBook,
-  LinkChapter,
-  LinkHome,
-  LinkGuide,
-} from './Routes';
 import {
   ArticleMeta,
   BookMeta,
   ChapterMeta,
   ItemSortType,
 } from '../../common/types';
+import {
+  LinkArticle,
+  LinkBook,
+  LinkChapter,
+  LinkGuide,
+  LinkHome,
+} from './Routes';
 
 const ArticleLinkItem: React.VFC<{ article: ArticleMeta }> = ({ article }) => {
   return (
