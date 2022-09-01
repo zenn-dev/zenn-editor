@@ -7,6 +7,7 @@ import {
   containerMessageOptions,
 } from './utils/md-container';
 import { mdRendererFence } from './utils/md-renderer-fence';
+import { mdLinkAttributes } from './utils/md-link-attributes';
 import { mdLinkifyToCard } from './utils/md-linkify-to-card';
 import { mdKatex } from './utils/md-katex';
 import { mdBr } from './utils/md-br';
@@ -18,7 +19,6 @@ const mdContainer = require('markdown-it-container');
 const mdFootnote = require('markdown-it-footnote');
 const mdTaskLists = require('markdown-it-task-lists');
 const mdInlineComments = require('markdown-it-inline-comments');
-const mdLinkAttributes = require('markdown-it-link-attributes');
 
 const md = markdownIt({
   breaks: true,
@@ -36,23 +36,7 @@ md.use(mdBr)
   .use(mdFootnote)
   .use(mdTaskLists, { enabled: true })
   .use(mdInlineComments)
-  .use(mdLinkAttributes, [
-    // 内部リンク
-    {
-      pattern: /^(?:https:\/\/zenn\.dev$)|(?:https:\/\/zenn\.dev\/.*$)/,
-      attrs: {
-        target: '_blank',
-      },
-    },
-    // 外部リンク
-    {
-      pattern: /^https?:\/\//,
-      attrs: {
-        target: '_blank',
-        rel: 'nofollow noopener noreferrer',
-      },
-    },
-  ])
+  .use(mdLinkAttributes)
   .use(markdownItAnchor, {
     level: [1, 2, 3, 4],
     permalink: markdownItAnchor.permalink.ariaHidden({
@@ -83,3 +67,6 @@ const markdownToHtml = (text: string): string => {
 };
 
 export default markdownToHtml;
+
+import { markdownToSimpleHtml } from './markdown-to-simple-html';
+export { markdownToSimpleHtml };
