@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { ValidationError } from '../types';
 
-import CallMadeOutlinedIcon from '@material-ui/icons/CallMadeOutlined';
-import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
+import { MdOutlineCallMade } from 'react-icons/md';
+import { MdError } from 'react-icons/md';
 
 const warningColor = '#ff9715';
 
@@ -19,7 +19,7 @@ const ValidationErrorRow: React.VFC<ValidationError> = ({
         isCritical ? 'validation-error-row--critical' : ''
       }`}
     >
-      <ErrorRoundedIcon className="validation-error-row__icon" />
+      <MdError className="validation-error-row__icon" />
       <div className="validation-error-row__message">
         {message}
         {typeof detailUrl === 'string' && (
@@ -30,7 +30,7 @@ const ValidationErrorRow: React.VFC<ValidationError> = ({
             rel="nofollow noreferrer"
           >
             {detailUrlText || '詳細を見る'}
-            <CallMadeOutlinedIcon className="validation-error-row__link-icon" />
+            <MdOutlineCallMade className="validation-error-row__link-icon" />
           </a>
         )}
       </div>
@@ -43,8 +43,8 @@ const StyledValidationErrorRow = styled.div`
   align-items: flex-start;
   margin-top: 0.5rem;
   .validation-error-row__icon {
-    width: 1.1em;
-    height: 1.1em;
+    width: 26px;
+    height: 26px;
     color: ${warningColor};
     flex-shrink: 0;
     transform: translateY(-0.1em);

@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 // icons
-import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
-import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
-import SortRoundedIcon from '@material-ui/icons/SortRounded';
+import { MdOutlineArrowBack } from 'react-icons/md';
+import { MdOutlineArrowForward } from 'react-icons/md';
+import { MdSort } from 'react-icons/md';
 
 // hooks
 import { useFetch } from '../hooks/useFetch';
@@ -195,9 +195,9 @@ export const Sidebar: React.VFC = () => {
         aria-label={isFolded ? 'メニューを開く' : '折りたたむ'}
       >
         {isFolded ? (
-          <ArrowForwardOutlinedIcon className="sidebar__fold-icon" />
+          <MdOutlineArrowForward className="sidebar__fold-icon" />
         ) : (
-          <ArrowBackOutlinedIcon className="sidebar__fold-icon" />
+          <MdOutlineArrowBack className="sidebar__fold-icon" />
         )}
       </button>
       <div className="sidebar__inner" aria-hidden={isFolded}>
@@ -212,7 +212,7 @@ export const Sidebar: React.VFC = () => {
             />
           </LinkHome>
           <Settings
-            openButtonIcon={<SortRoundedIcon className="sidebar__sort-open" />}
+            openButtonIcon={<MdSort className="sidebar__sort-open" />}
             openButtonAriaLabel="ソート設定を開く"
             position="right"
             options={[

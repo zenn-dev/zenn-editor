@@ -34,8 +34,6 @@
     "lint:fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
     "@swc/core": "^1.2.131",
     "@swc/jest": "^0.2.17",
     "@types/configstore": "^5.0.1",
@@ -82,6 +80,7 @@
     "path": "^0.12.7",
     "prettier": "^2.3.0",
     "react": "^17.0.2",
+    "react-icons": "^4.4.0",
     "react-dom": "^17.0.2",
     "rocon": "^1.2.2",
     "styled-components": "^5.3.0",
