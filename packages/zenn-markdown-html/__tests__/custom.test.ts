@@ -98,7 +98,7 @@ describe('Handle custom markdown format properly', () => {
     test('should generate youtube html', () => {
       const html = markdownToHtml('@[youtube](AXaoi6dz59A)');
       expect(html.trim()).toStrictEqual(
-        `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/AXaoi6dz59A?loop=1&playlist=AXaoi6dz59A" allowfullscreen loading="lazy"></iframe></div>`.trim()
+        `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/AXaoi6dz59A?loop=1" allowfullscreen loading="lazy"></iframe></div>`.trim()
       );
     });
 
@@ -117,7 +117,7 @@ describe('Handle custom markdown format properly', () => {
         const html = markdownToHtml(url);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
-          `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
+          `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
         );
       }
     );
@@ -135,7 +135,7 @@ describe('Handle custom markdown format properly', () => {
         const html = markdownToHtml(url);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
-          `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}&start=${start}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
+          `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&start=${start}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
         );
       }
     );

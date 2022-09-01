@@ -13,7 +13,7 @@ function generateYoutubeHtml(videoId: string, start?: string) {
   // 48時間以内
   const time = Math.min(Number(start || 0), 48 * 60 * 60);
   const startQuery = time ? `&start=${time}` : '';
-  return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapedVideoId}?loop=1&playlist=${escapedVideoId}${startQuery}" allowfullscreen loading="lazy"></iframe></div>`;
+  return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapedVideoId}?loop=1${startQuery}" allowfullscreen loading="lazy"></iframe></div>`;
 }
 
 export function generateYoutubeHtmlFromUrl(url: string) {
