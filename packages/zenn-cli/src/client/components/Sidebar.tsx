@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 // icons
-import { MdOutlineArrowBack } from 'react-icons/md';
-import { MdOutlineArrowForward } from 'react-icons/md';
-import { MdSort } from 'react-icons/md';
+import { 
+  MdSort,
+  MdOutlineArrowBack
+  MdOutlineArrowForward,
+ } from 'react-icons/md';
 
 // hooks
 import { useFetch } from '../hooks/useFetch';
