@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import { MdCheck } from 'react-icons/md';
 
 type LabelValue = string;
 
@@ -53,7 +53,7 @@ export const Settings = <T extends LabelValue>(props: Props<T>) => {
                 className={`settings__option`}
                 aria-selected={value === props.value}
               >
-                <CheckRoundedIcon className="settings__option-icon" />
+                <MdCheck className="settings__option-icon" />
                 {label}
               </button>
             ))}

@@ -6,7 +6,7 @@ import { ContentContainer } from '../../ContentContainer';
 import { PropertyRow } from '../../PropertyRow';
 import { ValidationErrors } from '../../ValidationErrors';
 import { LinkBook } from '../../Routes';
-import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
+import { MdOutlineArrowBackIos } from 'react-icons/md';
 
 type Props = { chapter: Chapter; book: Book };
 
@@ -17,7 +17,7 @@ export const ChapterHeader: React.VFC<Props> = ({ chapter, book }) => {
     <StyledChapterHeader>
       <div className="chapter-header__book">
         <LinkBook slug={book.slug} className="chapter-header__book-link">
-          <ArrowBackIosOutlinedIcon className="book-header__book-back" />
+          <MdOutlineArrowBackIos className="book-header__book-back" />
           <span className="chapter-header__book-title">{book.title}</span>
         </LinkBook>
       </div>
