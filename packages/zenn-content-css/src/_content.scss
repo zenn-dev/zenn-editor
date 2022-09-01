@@ -54,8 +54,10 @@ ol {
     }
   }
 }
-.contains-task-list li {
-  list-style: none !important;
+.contains-task-list {
+  .task-list-item {
+    list-style: none;
+  }
 }
 .task-list-item-checkbox {
   margin-left: -1.5em;
