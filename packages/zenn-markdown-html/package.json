@@ -49,7 +49,7 @@
     "markdown-it-container": "^2.0.0",
     "markdown-it-footnote": "^3.0.3",
     "markdown-it-inline-comments": "^1.0.1",
-    "markdown-it-link-attributes": "^3.0.0",
+    "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-task-lists": "^2.1.1",
     "prismjs": "^1.27.0"
   },
