@@ -152,4 +152,49 @@ describe('Handle custom markdown format properly', () => {
       expect(html.trim()).toStrictEqual(`<p>${escapeUrl}</p>`.trim());
     });
   });
+
+  describe('Figma', () => {
+    test('should generate figma html', () => {
+      const html = markdownToHtml(
+        '@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)'
+      );
+      expect(html).toContain(
+        '<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File" scrolling="no" frameborder="no" loading="lazy" allowfullscreen width="100%" height="500px"></iframe></div>'
+      );
+    });
+
+    test('should not generate figma html with invalid url', () => {
+      const html = markdownToHtml(
+        '@[figma](https://www.figma.com/Sample-File)'
+      );
+      expect(html).toContain(
+        'ファイルまたはプロトタイプのFigma URLを指定してください'
+      );
+    });
+  });
+
+  describe('BlueprintUE', () => {
+    test('should generate blueprintue html', () => {
+      const html = markdownToHtml(
+        '@[blueprintue](https://blueprintue.com/render/aaaaaaaaaa/)'
+      );
+      expect(html).toContain(
+        '<div class="embed-blueprintue"><iframe src="https://blueprintue.com/render/aaaaaaaaaa/" width="100%" height="500px" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>'
+      );
+    });
+
+    test.each`
+      url
+      ${'https://blueprintue.com/aaaaaaaaaaaaaa/'}
+      ${'https://blueprintue.com/render/aaaaaaaaaa'}
+    `(
+      '$url should not generate blueprintue html with invalid url',
+      ({ url }) => {
+        const html = markdownToHtml(`@[blueprintue](${url})`);
+        expect(html).toContain(
+          '「https://blueprintue.com/render/」から始まる正しいURLを指定してください'
+        );
+      }
+    );
+  });
 });

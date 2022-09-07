@@ -52,3 +52,21 @@ export function extractYoutubeVideoParameters(
 export function isYoutubeUrl(url: string): boolean {
   return youtubeRegexp.test(url);
 }
+
+/**
+ * 参考: https://blueprintue.com/
+ * 生成されるURLをもとに正規表現を定義した
+ */
+
+export function isBlueprintUEUrl(url: string): boolean {
+  return /^https:\/\/blueprintue\.com\/render\/.+\/$/.test(url);
+}
+
+/**
+ * 参考: https://www.figma.com/developers/embed
+ */
+export function isFigmaUrl(url: string): boolean {
+  return /^https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/.*)?$/.test(
+    url
+  );
+}
