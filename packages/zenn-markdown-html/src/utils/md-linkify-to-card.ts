@@ -79,8 +79,20 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
 
 export function mdLinkifyToCard(md: MarkdownIt) {
   md.core.ruler.after('replacements', 'link-to-card', function ({ tokens }) {
+    // 埋め込みを許可するネストレベル
+    let allowLevel = 0;
+
     // 本文内のすべてのtokenをチェック
     tokens.forEach((token, i) => {
+      if (token.type === 'container_details_open') {
+        allowLevel++;
+        return;
+      }
+      if (token.type === 'container_details_close' && allowLevel > 0) {
+        allowLevel--;
+        return;
+      }
+
       // autolinkはinline内のchildrenにのみ存在
       if (token.type !== 'inline') return;
 
@@ -99,7 +111,7 @@ export function mdLinkifyToCard(md: MarkdownIt) {
       const isParentRootParagraph =
         parentToken &&
         parentToken.type === 'paragraph_open' &&
-        parentToken.level === 0;
+        parentToken.level === allowLevel;
       if (!isParentRootParagraph) return;
 
       token.children = convertAutolinkToEmbed(children);
