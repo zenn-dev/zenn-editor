@@ -1,17 +1,34 @@
 # Zenn Markdown Html
 
-マークダウンを HTML へ変換するためのライブラリ。
+マークダウンを HTML へ変換するためのライブラリです。
 
-## 使い方
+## API
+
+### markdownToHtml
+
+MarkdownをHTMLに変換します。
 
 ```js
 import markdownToHtml from 'zenn-markdown-html';
 const html = markdownToHtml(markdown);
 ```
 
-## 使用できる Markdown の記法について
+サポートする記法については、[Zenn の Markdown 記法一覧](https://zenn.dev/zenn/articles/markdown-guide) を参照してください。
 
-- [Zenn の Markdown 記法一覧 | Zenn](https://zenn.dev/zenn/articles/markdown-guide)
+### markdownToSimpleHtml
+
+MarkdownをHTMLに変換します。markdownToHtmlと比べてサポートする記法が限られています。
+
+```js
+import { markdownToSimpleHtml } from 'zenn-markdown-html';
+const html = markdownToSimpleHtml(markdown);
+```
+
+サポートする記法
+
+- Markdown記法（リンク、リスト、太字・斜体）
+- パラグラフ内の改行
+- URLをリンクに変換
 
 ## 開発者向けのドキュメント
 

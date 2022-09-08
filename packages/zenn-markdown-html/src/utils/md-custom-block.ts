@@ -12,6 +12,8 @@ import {
   isCodesandboxUrl,
   isCodepenUrl,
   isJsfiddleUrl,
+  isBlueprintUEUrl,
+  isFigmaUrl,
 } from './url-matcher';
 
 // e.g. @[youtube](youtube-video-id)
@@ -74,6 +76,16 @@ const blockOptions = {
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
     return generateEmbedIframe('tweet', str);
+  },
+  blueprintue(str: string) {
+    if (!isBlueprintUEUrl(str))
+      return '「https://blueprintue.com/render/」から始まる正しいURLを指定してください';
+    return `<div class="embed-blueprintue"><iframe src="${str}" width="100%" height="500px" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
+  },
+  figma(str: string) {
+    if (!isFigmaUrl(str))
+      return 'ファイルまたはプロトタイプのFigma URLを指定してください';
+    return `<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=${str}" scrolling="no" frameborder="no" loading="lazy" allowfullscreen width="100%" height="500px"></iframe></div>`;
   },
   card(str: string) {
     if (!isValidHttpUrl(str)) return 'URLが不正です';

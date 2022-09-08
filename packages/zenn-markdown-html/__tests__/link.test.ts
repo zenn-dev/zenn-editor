@@ -232,5 +232,43 @@ describe('Linkify properly', () => {
         );
       });
     });
+
+    describe('When in details', () => {
+      test('should convert to iframe element', () => {
+        const html = markdownToHtml(
+          [`:::details example`, `https://example1.com`, `:::`].join('\n')
+        );
+
+        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+
+        expect(iframe).not.toBe(null);
+      });
+
+      test('should convert iframe even when nests details', () => {
+        const html = markdownToHtml(
+          [
+            `::::details example`,
+            `:::details nest-example`,
+            `https://example1.com`,
+            `:::`,
+            `::::`,
+          ].join('\n')
+        );
+
+        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+
+        expect(iframe).not.toBe(null);
+      });
+
+      test('should not convert in nests other than details', () => {
+        const html = markdownToHtml(
+          [`:::details example`, `- https://example1.com`, `:::`].join('\n')
+        );
+
+        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+
+        expect(iframe).toBe(null);
+      });
+    });
   });
 });
