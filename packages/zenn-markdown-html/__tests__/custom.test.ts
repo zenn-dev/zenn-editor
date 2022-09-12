@@ -159,7 +159,7 @@ describe('Handle custom markdown format properly', () => {
         '@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)'
       );
       expect(html).toContain(
-        '<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File" scrolling="no" frameborder="no" loading="lazy" allowfullscreen width="100%" height="500px"></iframe></div>'
+        '<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>'
       );
     });
 
@@ -179,7 +179,7 @@ describe('Handle custom markdown format properly', () => {
         '@[blueprintue](https://blueprintue.com/render/aaaaaaaaaa/)'
       );
       expect(html).toContain(
-        '<div class="embed-blueprintue"><iframe src="https://blueprintue.com/render/aaaaaaaaaa/" width="100%" height="500px" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>'
+        '<div class="embed-blueprintue"><iframe src="https://blueprintue.com/render/aaaaaaaaaa/" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>'
       );
     });
 
