@@ -30,6 +30,10 @@
   border: 1px solid $c-contrast;
 }
 
+.embed-figma {
+  border: solid 1px $c-gray-border;
+}
+
 .zenn-embedded {
   iframe {
     width: 100%;
