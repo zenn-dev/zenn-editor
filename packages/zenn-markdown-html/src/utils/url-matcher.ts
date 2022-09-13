@@ -59,14 +59,14 @@ export function isYoutubeUrl(url: string): boolean {
  */
 
 export function isBlueprintUEUrl(url: string): boolean {
-  return /^https:\/\/blueprintue\.com\/render\/.+\/$/.test(url);
+  return /^https:\/\/blueprintue\.com\/render\/[A-Za-z0-9]+\/?$/.test(url);
 }
 
 /**
  * 参考: https://www.figma.com/developers/embed
  */
 export function isFigmaUrl(url: string): boolean {
-  return /^https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/.*)?$/.test(
+  return /^https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/[\w-]+)?$/.test(
     url
   );
 }
