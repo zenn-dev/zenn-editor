@@ -3,9 +3,8 @@ import { isBlueprintUEUrl } from '../../src/utils/url-matcher';
 describe('isBlueprintUEUrlのテスト', () => {
   describe('Trueを返す場合', () => {
     test('blueprintUEの埋め込みURL', () => {
-      const url = 'https://blueprintue.com/render/xmdvzpam';
+      const url = 'https://blueprintue.com/render/xmdvzpam/';
       expect(isBlueprintUEUrl(url)).toBe(true);
-      expect(isBlueprintUEUrl(`${url}/`)).toBe(true);
     });
   });
 
