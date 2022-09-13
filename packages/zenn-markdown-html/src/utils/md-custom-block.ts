@@ -51,7 +51,9 @@ const blockOptions = {
     if (!url.includes('embed')) {
       url = url.endsWith('/') ? `${url}embedded/` : `${url}/embedded/`;
     }
-    return `<div class="embed-jsfiddle"><iframe src="${url}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
+    return `<div class="embed-jsfiddle"><iframe src="${encodeDoubleQuote(
+      url
+    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
   },
   codepen(str: string) {
     if (!isCodepenUrl(str)) {
@@ -59,19 +61,25 @@ const blockOptions = {
     }
     const url = new URL(str.replace('/pen/', '/embed/'));
     url.searchParams.set('embed-version', '2');
-    return `<div class="embed-codepen"><iframe src="${url}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
+    return `<div class="embed-codepen"><iframe src="${encodeDoubleQuote(
+      url.toString()
+    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
   },
   codesandbox(str: string) {
     if (!isCodesandboxUrl(str)) {
       return '「https://codesandbox.io/embed/」から始まる正しいURLを入力してください';
     }
-    return `<div class="embed-codesandbox"><iframe src="${str}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>`;
+    return `<div class="embed-codesandbox"><iframe src="${encodeDoubleQuote(
+      str
+    )}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>`;
   },
   stackblitz(str: string) {
     if (!isStackblitzUrl(str)) {
       return 'StackBlitzのembed用のURLを指定してください';
     }
-    return `<div class="embed-stackblitz"><iframe src="${str}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
+    return `<div class="embed-stackblitz"><iframe src="${encodeDoubleQuote(
+      str
+    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
   },
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
@@ -80,12 +88,16 @@ const blockOptions = {
   blueprintue(str: string) {
     if (!isBlueprintUEUrl(str))
       return '「https://blueprintue.com/render/」から始まる正しいURLを指定してください';
-    return `<div class="embed-blueprintue"><iframe src="${str}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
+    return `<div class="embed-blueprintue"><iframe src="${encodeDoubleQuote(
+      str
+    )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
   },
   figma(str: string) {
     if (!isFigmaUrl(str))
       return 'ファイルまたはプロトタイプのFigma URLを指定してください';
-    return `<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=${str}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
+    return `<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=${encodeDoubleQuote(
+      str
+    )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
   },
   card(str: string) {
     if (!isValidHttpUrl(str)) return 'URLが不正です';
@@ -102,6 +114,10 @@ const blockOptions = {
     return generateEmbedIframe('gist', str);
   },
 };
+
+function encodeDoubleQuote(str: string): string {
+  return str.replace(/"/g, '%22');
+}
 
 // Forked from: https://github.com/posva/markdown-it-custom-block
 
