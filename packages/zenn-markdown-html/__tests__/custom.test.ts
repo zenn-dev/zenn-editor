@@ -183,18 +183,18 @@ describe('Handle custom markdown format properly', () => {
       );
     });
 
-    test.each`
-      url
-      ${'https://blueprintue.com/aaaaaaaaaaaaaa/'}
-      ${'https://blueprintue.com/render/aaaaaaaaaa'}
-    `(
-      '$url should not generate blueprintue html with invalid url',
-      ({ url }) => {
+    test('should not generate blueprintue html with invalid url', () => {
+      const invalidUrls = [
+        'https://blueprintue.com/aaaaaaaaaaaaaa',
+        'https://blueprintue.com/render/aaaaaaaaaa/hogetest',
+      ];
+
+      invalidUrls.forEach((url) => {
         const html = markdownToHtml(`@[blueprintue](${url})`);
         expect(html).toContain(
           '「https://blueprintue.com/render/」から始まる正しいURLを指定してください'
         );
-      }
-    );
+      });
+    });
   });
 });
