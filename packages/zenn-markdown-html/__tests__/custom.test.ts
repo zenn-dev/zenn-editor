@@ -175,12 +175,19 @@ describe('Handle custom markdown format properly', () => {
 
   describe('BlueprintUE', () => {
     test('should generate blueprintue html', () => {
-      const html = markdownToHtml(
-        '@[blueprintue](https://blueprintue.com/render/aaaaaaaaaa/)'
-      );
-      expect(html).toContain(
-        '<div class="embed-blueprintue"><iframe src="https://blueprintue.com/render/aaaaaaaaaa/" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>'
-      );
+      const validUrls = [
+        'https://blueprintue.com/render/aaa/',
+        'https://blueprintue.com/render/aaa',
+        'https://blueprintue.com/render/a-aa',
+        'https://blueprintue.com/render/a_aa',
+      ];
+
+      validUrls.forEach((url) => {
+        const html = markdownToHtml(`@[blueprintue](${url})`);
+        expect(html).toContain(
+          `<div class="embed-blueprintue"><iframe src="${url}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`
+        );
+      });
     });
 
     test('should not generate blueprintue html with invalid url', () => {
