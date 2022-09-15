@@ -9,6 +9,26 @@ const getIframeHtml = (markdown: string): string | null => {
 };
 
 describe('Handle custom markdown format properly', () => {
+  describe('Embed URL', () => {
+    describe('When Other than LinkCard', () => {
+      test('should be 300 characters or less', () => {
+        const dummy = Array(300).fill('a').join('');
+        const html = markdownToHtml(`@[youtube](http://youtu.be/${dummy})`);
+        expect(html).toContain('埋め込みURLは300文字以内にする必要があります');
+      });
+    });
+
+    describe('When LinkCard', () => {
+      test('should generate LinkCard embed html', () => {
+        const dummy = Array(300).fill('a').join('');
+        const html = markdownToHtml(`@[card](http://youtu.be/${dummy})`);
+        expect(html).not.toContain(
+          '埋め込みURLは300文字以内にする必要があります'
+        );
+      });
+    });
+  });
+
   describe('CodeSandBox', () => {
     test('should generate codesandbox html', () => {
       const html = markdownToHtml(

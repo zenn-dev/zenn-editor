@@ -1,134 +1,16 @@
 import MarkdownIt from 'markdown-it';
-import { escapeHtml } from 'markdown-it/lib/common/utils';
-import {
-  isValidHttpUrl,
-  generateYoutubeHtmlFromVideoId,
-  generateEmbedIframe,
-} from './helper';
-import {
-  isGistUrl,
-  isTweetUrl,
-  isStackblitzUrl,
-  isCodesandboxUrl,
-  isCodepenUrl,
-  isJsfiddleUrl,
-  isBlueprintUEUrl,
-  isFigmaUrl,
-} from './url-matcher';
-
-// e.g. @[youtube](youtube-video-id)
-
-const blockOptions = {
-  youtube(videoId: string) {
-    if (!videoId?.match(/^[a-zA-Z0-9_-]+$/)) {
-      return 'YouTubeのvideoIDが不正です';
-    }
-    return generateYoutubeHtmlFromVideoId(videoId);
-  },
-  slideshare(key: string) {
-    if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
-      return 'Slide Shareのkeyが不正です';
-    }
-    return `<div class="embed-slideshare"><iframe src="https://www.slideshare.net/slideshow/embed_code/key/${escapeHtml(
-      key
-    )}" scrolling="no" allowfullscreen loading="lazy"></iframe></div>`;
-  },
-  speakerdeck(key: string) {
-    if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
-      return 'Speaker Deckのkeyが不正です';
-    }
-    return `<div class="embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
-      key
-    )}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></div>`;
-  },
-  jsfiddle(str: string) {
-    if (!isJsfiddleUrl(str)) {
-      return 'jsfiddleのURLが不正です';
-    }
-    // URLを~/embedded/とする
-    // ※ すでにembeddedもしくはembedが含まれるURLが入力されている場合は、そのままURLを使用する。
-    let url = str;
-    if (!url.includes('embed')) {
-      url = url.endsWith('/') ? `${url}embedded/` : `${url}/embedded/`;
-    }
-    return `<div class="embed-jsfiddle"><iframe src="${encodeDoubleQuote(
-      url
-    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
-  },
-  codepen(str: string) {
-    if (!isCodepenUrl(str)) {
-      return 'CodePenのURLが不正です';
-    }
-    const url = new URL(str.replace('/pen/', '/embed/'));
-    url.searchParams.set('embed-version', '2');
-    return `<div class="embed-codepen"><iframe src="${encodeDoubleQuote(
-      url.toString()
-    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
-  },
-  codesandbox(str: string) {
-    if (!isCodesandboxUrl(str)) {
-      return '「https://codesandbox.io/embed/」から始まる正しいURLを入力してください';
-    }
-    return `<div class="embed-codesandbox"><iframe src="${encodeDoubleQuote(
-      str
-    )}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>`;
-  },
-  stackblitz(str: string) {
-    if (!isStackblitzUrl(str)) {
-      return 'StackBlitzのembed用のURLを指定してください';
-    }
-    return `<div class="embed-stackblitz"><iframe src="${encodeDoubleQuote(
-      str
-    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
-  },
-  tweet(str: string) {
-    if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
-    return generateEmbedIframe('tweet', str);
-  },
-  blueprintue(str: string) {
-    if (!isBlueprintUEUrl(str))
-      return '「https://blueprintue.com/render/」から始まる正しいURLを指定してください';
-    return `<div class="embed-blueprintue"><iframe src="${encodeDoubleQuote(
-      str
-    )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
-  },
-  figma(str: string) {
-    if (!isFigmaUrl(str))
-      return 'ファイルまたはプロトタイプのFigma URLを指定してください';
-    return `<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=${encodeDoubleQuote(
-      str
-    )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
-  },
-  card(str: string) {
-    if (!isValidHttpUrl(str)) return 'URLが不正です';
-    return generateEmbedIframe('link-card', str);
-  },
-  gist(str: string) {
-    if (!isGistUrl(str)) return 'GitHub GistのページURLを指定してください';
-    /**
-     * gistのURL は
-     * - https://gist.github.com/foo/bar.json
-     * - https://gist.github.com/foo/bar.json?file=example.js
-     * のような形式
-     */
-    return generateEmbedIframe('gist', str);
-  },
-};
-
-function encodeDoubleQuote(str: string): string {
-  return str.replace(/"/g, '%22');
-}
+import { generateEmbedHTML, isEmbedType } from './embed-helper';
 
 // Forked from: https://github.com/posva/markdown-it-custom-block
-
 export function mdCustomBlock(md: MarkdownIt) {
   md.renderer.rules.custom = function tokenizeBlock(tokens, idx) {
-    // eslint-disable-next-line
-    const { tag, arg }: any = tokens[idx].info;
-    if (!tag || !arg) return '';
+    const { tag, arg }: any = tokens[idx].info; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    if (!isEmbedType(tag)) return '';
+    if (typeof arg !== 'string') return '';
+
     try {
-      // eslint-disable-next-line
-      return (blockOptions as any)[tag](arg) + '\n';
+      return generateEmbedHTML(tag, arg) + '\n';
     } catch (e) {
       return '';
     }

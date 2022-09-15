@@ -1,11 +1,6 @@
 import MarkdownIt from 'markdown-it';
-import { isTweetUrl, isYoutubeUrl } from './url-matcher';
-import {
-  isGithubUrl,
-  generateEmbedIframe,
-  generateYoutubeHtmlFromUrl,
-} from './helper';
 import Token from 'markdown-it/lib/token';
+import { generateLinkifyEmbedHTML } from './embed-helper';
 
 function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
   const newTokens: Token[] = [];
@@ -49,15 +44,10 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
 
     // 埋め込み用のHTMLを生成
     const embedToken = new Token('html_inline', '', 0);
-    if (isYoutubeUrl(url)) {
-      embedToken.content = generateYoutubeHtmlFromUrl(url);
-    } else if (isTweetUrl(url)) {
-      embedToken.content = generateEmbedIframe('tweet', url);
-    } else if (isGithubUrl(url)) {
-      embedToken.content = generateEmbedIframe('github', url);
-    } else {
-      embedToken.content = generateEmbedIframe('link-card', url);
-    }
+
+    // 埋め込み要素のHTML生成
+    embedToken.content = generateLinkifyEmbedHTML(url);
+
     // a要素自体はカードにより不要になるため非表示に
     linkOpenToken.attrJoin('style', 'display: none');
 
