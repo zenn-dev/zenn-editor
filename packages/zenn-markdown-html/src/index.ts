@@ -1,5 +1,7 @@
 import markdownIt from 'markdown-it';
 import crypto from 'crypto';
+import sanitizeHtml from 'sanitize-html';
+import { attributes, tags } from './allowed-tags';
 
 // plugis
 import {
@@ -63,7 +65,14 @@ const markdownToHtml = (text: string): string => {
   // - https://github.com/zenn-dev/zenn-community/issues/356
   // - https://github.com/markdown-it/markdown-it-footnote/pull/8
   const docId = crypto.randomBytes(2).toString('hex');
-  return md.render(text, { docId });
+  const html = md.render(text, { docId });
+  return sanitizeHtml(html, {
+    allowedTags: tags,
+    allowedAttributes: attributes,
+    disallowedTagsMode: 'discard',
+    allowedSchemes: ['http', 'https'],
+    selfClosing: [], // 閉じタグを強制的に付与するオプションは利用しない
+  });
 };
 
 export default markdownToHtml;

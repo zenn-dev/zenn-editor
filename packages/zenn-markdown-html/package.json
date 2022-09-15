@@ -30,6 +30,7 @@
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^14.0.5",
     "@types/prismjs": "^1.26.0",
+    "@types/sanitize-html": "^2.6.2",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "babel-jest": "^28.1.1",
@@ -51,7 +52,8 @@
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-task-lists": "^2.1.1",
-    "prismjs": "^1.27.0"
+    "prismjs": "^1.27.0",
+    "sanitize-html": "^2.7.1"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
