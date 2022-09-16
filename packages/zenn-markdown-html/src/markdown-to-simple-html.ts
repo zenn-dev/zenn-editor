@@ -1,7 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import { mdLinkAttributes } from './utils/md-link-attributes';
-import sanitizeHtml from 'sanitize-html';
-import { attributes, tags } from './allowed-tags';
+import { sanitize } from './sanitizer';
 
 // preset 'zero' はデフォルトで全ての変換を無効化したプリセットです。
 // Ref: https://github.com/markdown-it/markdown-it/blob/master/lib/presets/zero.js
@@ -30,11 +29,6 @@ md.use(mdLinkAttributes);
 export const markdownToSimpleHtml = (text: string): string => {
   if (!(text && text.length)) return '';
 
-  const html = md.render(text);
-  return sanitizeHtml(html, {
-    allowedTags: tags,
-    allowedAttributes: attributes,
-    disallowedTagsMode: 'discard',
-    selfClosing: [], // 閉じタグを強制的に付与するオプションは利用しない
-  });
+  // return md.render(text);
+  return sanitize(md.render(text));
 };

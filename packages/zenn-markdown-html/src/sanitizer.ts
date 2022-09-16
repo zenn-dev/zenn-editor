@@ -1,3 +1,5 @@
+import sanitizeHtml from 'sanitize-html';
+
 export const tags = [
   'a',
   'aside',
@@ -106,3 +108,11 @@ export const attributes = {
   tr: [],
   ul: ['class'],
 };
+
+export const sanitize = (html: string) =>
+  sanitizeHtml(html, {
+    allowedTags: tags,
+    allowedAttributes: attributes,
+    disallowedTagsMode: 'discard',
+    selfClosing: [], // 閉じタグを強制的に付与するオプションは利用しない
+  });
