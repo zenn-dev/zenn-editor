@@ -114,5 +114,16 @@ export const sanitize = (html: string) =>
     allowedTags: tags,
     allowedAttributes: attributes,
     disallowedTagsMode: 'discard',
-    selfClosing: [], // 閉じタグを強制的に付与するオプションは利用しない
+    // from: default value https://github.com/apostrophecms/sanitize-html#default-options
+    selfClosing: [
+      'img',
+      'br',
+      'hr',
+      'area',
+      'base',
+      'basefont',
+      'input',
+      'link',
+      'meta',
+    ],
   });
