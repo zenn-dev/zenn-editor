@@ -26,6 +26,7 @@ function parseArgs(argv?: string[]) {
         '--type': String,
         '--emoji': String,
         '--published': String,
+        '--publication-name': String,
         '--machine-readable': Boolean,
         '--help': Boolean,
         // Alias
@@ -59,6 +60,7 @@ export const exec: CliExecFn = (argv) => {
   const emoji = args['--emoji'] || pickRandomEmoji();
   const type = args['--type'] === 'idea' ? 'idea' : 'tech';
   const published = args['--published'] === 'true' ? 'true' : 'false'; // デフォルトはfalse
+  const publicationName = args['--publication-name'] || '';
   const machineReadable = args['--machine-readable'] === true;
 
   if (!validateSlug(slug)) {
@@ -78,8 +80,9 @@ export const exec: CliExecFn = (argv) => {
       `type: "${type}" # tech: 技術記事 / idea: アイデア`,
       'topics: []',
       `published: ${published}`,
+      publicationName !== '' ? `publication-name: ${publicationName.replace(/"/g, '\\"')}` : null,
       '---',
-    ].join('\n') + '\n';
+    ].filter(v => v).join('\n') + '\n';
 
   try {
     generateFileIfNotExist(fullFilepath, fileBody);
