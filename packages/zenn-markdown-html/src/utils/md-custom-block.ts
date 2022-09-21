@@ -29,17 +29,17 @@ const blockOptions = {
     if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
       return 'Slide Shareのkeyが不正です';
     }
-    return `<div class="embed-slideshare"><iframe src="https://www.slideshare.net/slideshow/embed_code/key/${escapeHtml(
+    return `<span class="embed-block embed-slideshare"><iframe src="https://www.slideshare.net/slideshow/embed_code/key/${escapeHtml(
       key
-    )}" scrolling="no" allowfullscreen loading="lazy"></iframe></div>`;
+    )}" scrolling="no" allowfullscreen loading="lazy"></iframe></span>`;
   },
   speakerdeck(key: string) {
     if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
       return 'Speaker Deckのkeyが不正です';
     }
-    return `<div class="embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
+    return `<span class="embed-block embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
       key
-    )}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></div>`;
+    )}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></span>`;
   },
   jsfiddle(str: string) {
     if (!isJsfiddleUrl(str)) {
@@ -51,9 +51,9 @@ const blockOptions = {
     if (!url.includes('embed')) {
       url = url.endsWith('/') ? `${url}embedded/` : `${url}/embedded/`;
     }
-    return `<div class="embed-jsfiddle"><iframe src="${encodeDoubleQuote(
+    return `<span class="embed-block embed-jsfiddle"><iframe src="${encodeDoubleQuote(
       url
-    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
+    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></span>`;
   },
   codepen(str: string) {
     if (!isCodepenUrl(str)) {
@@ -61,25 +61,25 @@ const blockOptions = {
     }
     const url = new URL(str.replace('/pen/', '/embed/'));
     url.searchParams.set('embed-version', '2');
-    return `<div class="embed-codepen"><iframe src="${encodeDoubleQuote(
+    return `<span class="embed-block embed-codepen"><iframe src="${encodeDoubleQuote(
       url.toString()
-    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
+    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></span>`;
   },
   codesandbox(str: string) {
     if (!isCodesandboxUrl(str)) {
       return '「https://codesandbox.io/embed/」から始まる正しいURLを入力してください';
     }
-    return `<div class="embed-codesandbox"><iframe src="${encodeDoubleQuote(
+    return `<span class="embed-block embed-codesandbox"><iframe src="${encodeDoubleQuote(
       str
-    )}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>`;
+    )}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></span>`;
   },
   stackblitz(str: string) {
     if (!isStackblitzUrl(str)) {
       return 'StackBlitzのembed用のURLを指定してください';
     }
-    return `<div class="embed-stackblitz"><iframe src="${encodeDoubleQuote(
+    return `<span class="embed-block embed-stackblitz"><iframe src="${encodeDoubleQuote(
       str
-    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></div>`;
+    )}" scrolling="no" frameborder="no" loading="lazy"></iframe></span>`;
   },
   tweet(str: string) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
@@ -88,16 +88,16 @@ const blockOptions = {
   blueprintue(str: string) {
     if (!isBlueprintUEUrl(str))
       return '「https://blueprintue.com/render/」から始まる正しいURLを指定してください';
-    return `<div class="embed-blueprintue"><iframe src="${encodeDoubleQuote(
+    return `<span class="embed-block embed-blueprintue"><iframe src="${encodeDoubleQuote(
       str
-    )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
+    )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`;
   },
   figma(str: string) {
     if (!isFigmaUrl(str))
       return 'ファイルまたはプロトタイプのFigma URLを指定してください';
-    return `<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=${encodeDoubleQuote(
+    return `<span class="embed-block embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=${encodeDoubleQuote(
       str
-    )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`;
+    )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`;
   },
   card(str: string) {
     if (!isValidHttpUrl(str)) return 'URLが不正です';
@@ -179,7 +179,6 @@ export function mdCustomBlock(md: MarkdownIt) {
       // }
 
       if (pointer.line >= endLine) return false;
-
       if (!silent) {
         const token = state.push('custom', 'div', 0);
         token.markup = state.src.slice(startPos, pointer.pos);

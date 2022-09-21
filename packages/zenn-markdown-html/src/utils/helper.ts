@@ -13,7 +13,7 @@ function generateYoutubeHtml(videoId: string, start?: string) {
   // 48時間以内
   const time = Math.min(Number(start || 0), 48 * 60 * 60);
   const startQuery = time ? `&start=${time}` : '';
-  return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapedVideoId}?loop=1&playlist=${escapedVideoId}${startQuery}" allowfullscreen loading="lazy"></iframe></div>`;
+  return `<span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/${escapedVideoId}?loop=1&playlist=${escapedVideoId}${startQuery}" allowfullscreen loading="lazy"></iframe></span>`;
 }
 
 export function generateYoutubeHtmlFromUrl(url: string) {
@@ -47,5 +47,5 @@ export function generateEmbedIframe(type: ZennEmbedTypes, src: string): string {
   const id = `zenn-embedded__${Math.random().toString(16).slice(2)}`;
   const iframeSrc = `https://embed.zenn.studio/${encodedType}#${id}`;
 
-  return `<div class="zenn-embedded zenn-embedded-${encodedType}"><iframe id="${id}" src="${iframeSrc}" data-content="${encodedSrc}" frameborder="0" scrolling="no" loading="lazy"></iframe></div>`;
+  return `<span class="embed-block zenn-embedded zenn-embedded-${encodedType}"><iframe id="${id}" src="${iframeSrc}" data-content="${encodedSrc}" frameborder="0" scrolling="no" loading="lazy"></iframe></span>`;
 }

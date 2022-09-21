@@ -53,7 +53,7 @@ md.use(mdBr)
 // custom footnote
 md.renderer.rules.footnote_block_open = () =>
   '<section class="footnotes">\n' +
-  '<div class="footnotes-title">脚注</div>\n' +
+  '<span class="footnotes-title">脚注</span>\n' +
   '<ol class="footnotes-list">\n';
 
 const markdownToHtml = (text: string): string => {
