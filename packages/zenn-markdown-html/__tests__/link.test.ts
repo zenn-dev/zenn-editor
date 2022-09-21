@@ -63,7 +63,7 @@ describe('Linkify properly', () => {
     test('should not convert links inside block', () => {
       const html = markdownToHtml(':::message alert\nhttps://example.com\n:::');
       expect(html).toEqual(
-        '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>\n'
+        '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>\n'
       );
     });
 
@@ -72,7 +72,7 @@ describe('Linkify properly', () => {
         ':::message alert\nhello\n\nhttps://example.com\n:::'
       );
       expect(html).toContain(
-        '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>'
+        '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>'
       );
     });
 
@@ -95,7 +95,7 @@ describe('Linkify properly', () => {
         `a: https://example.com\nb: https://example.com`
       );
       expect(html).toEqual(
-        '<p>a: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a><br>\nb: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
+        '<p>a: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a><br />\nb: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
       );
     });
 
@@ -120,7 +120,7 @@ describe('Linkify properly', () => {
         html: string,
         url: string
       ) => {
-        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
         expect(iframe?.attributes).toEqual(
           expect.objectContaining({
             src: expect.stringMatching(
@@ -169,7 +169,7 @@ describe('Linkify properly', () => {
 
         expect(elements.length).toBe(2);
         expect(
-          elements[0]?.querySelector('div.zenn-embedded iframe')
+          elements[0]?.querySelector('span.zenn-embedded iframe')
         ).toBeDefined();
       });
 
@@ -179,7 +179,7 @@ describe('Linkify properly', () => {
         // prettier-ignore
         const html = markdownToHtml(`${linkCardUrls[0]}\n${rawLinkUrls[0]} text\ntext ${rawLinkUrls[1]}\n${linkCardUrls[1]}\ntext`);
         const root = parse(html);
-        const iframes = root.querySelectorAll('div.zenn-embedded iframe');
+        const iframes = root.querySelectorAll('span.zenn-embedded iframe');
         const rawLinks = root.querySelectorAll('a:not([style])');
 
         expect(iframes.length).toBe(2);
@@ -196,7 +196,7 @@ describe('Linkify properly', () => {
         const linkCardUrls = ['https://example1.com', 'https://example2.com'];
         const html = markdownToHtml(`${linkCardUrls[0]}\n${linkCardUrls[1]}\n`);
         const iframes = parse(html).querySelectorAll(
-          'div.zenn-embedded iframe'
+          'span.zenn-embedded iframe'
         );
 
         expect(iframes.length).toBe(2);
@@ -210,7 +210,7 @@ describe('Linkify properly', () => {
       test('should convert a tweet-link to embedded iframe', () => {
         const url = 'https://twitter.com/jack/status/20';
         const html = markdownToHtml(`${url}`);
-        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
         expect(iframe?.attributes).toEqual(
           expect.objectContaining({
             src: expect.stringMatching(/https:\/\/embed.zenn.studio\/tweet#.+/),
@@ -222,7 +222,7 @@ describe('Linkify properly', () => {
       test('should convert a tweet-link with query string to embedded iframe', () => {
         const url = `https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef`;
         const html = markdownToHtml(url);
-        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
         expect(iframe?.attributes).toEqual(
           expect.objectContaining({
@@ -239,7 +239,7 @@ describe('Linkify properly', () => {
           [`:::details example`, `https://example1.com`, `:::`].join('\n')
         );
 
-        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
         expect(iframe).not.toBe(null);
       });
@@ -255,7 +255,7 @@ describe('Linkify properly', () => {
           ].join('\n')
         );
 
-        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
         expect(iframe).not.toBe(null);
       });
@@ -265,7 +265,7 @@ describe('Linkify properly', () => {
           [`:::details example`, `- https://example1.com`, `:::`].join('\n')
         );
 
-        const iframe = parse(html).querySelector('div.zenn-embedded iframe');
+        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
         expect(iframe).toBe(null);
       });

@@ -53,7 +53,7 @@
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-task-lists": "^2.1.1",
     "prismjs": "^1.27.0",
-    "sanitize-html": "^2.7.1"
+    "sanitize-html": "^2.7.2"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
