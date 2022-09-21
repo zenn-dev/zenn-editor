@@ -64,7 +64,6 @@ const markdownToHtml = (text: string): string => {
   // - https://github.com/zenn-dev/zenn-community/issues/356
   // - https://github.com/markdown-it/markdown-it-footnote/pull/8
   const docId = crypto.randomBytes(2).toString('hex');
-  // return md.render(text, { docId });
   return sanitize(md.render(text, { docId }));
 };
 

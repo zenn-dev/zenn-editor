@@ -29,6 +29,5 @@ md.use(mdLinkAttributes);
 export const markdownToSimpleHtml = (text: string): string => {
   if (!(text && text.length)) return '';
 
-  // return md.render(text);
   return sanitize(md.render(text));
 };
