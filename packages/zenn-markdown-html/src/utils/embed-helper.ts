@@ -29,6 +29,7 @@ export type EmbedType =
   | 'gist'
   | 'github';
 
+// TODO: EmbedType の `card` と ZennEmbedTypes の `link-card` をどちらかに統一する
 /** embedサーバーで表示する埋め込み要素の種別 */
 export type ZennEmbedTypes =
   | 'tweet'
@@ -36,6 +37,35 @@ export type ZennEmbedTypes =
   | 'mermaid'
   | 'github'
   | 'gist';
+
+/** 検証から除外する埋め込みの種別 */
+const ignoredEmbedType: Array<EmbedType | ZennEmbedTypes> = [
+  'card',
+  'link-card',
+  'github',
+];
+
+/** 埋め込みURLまたはTokenの最大文字数( excludeEmbedTypeは除く ) */
+const MAX_EMBED_TOKEN_LENGTH = 300;
+
+/** 渡された埋め込みURLまたはTokenを検証する */
+export const validateEmbedToken = (
+  str: string,
+  type?: EmbedType | ZennEmbedTypes
+): { isValid: boolean; message: string } => {
+  if (type && ignoredEmbedType.includes(type)) {
+    return { isValid: true, message: '' };
+  }
+
+  if (str.length > MAX_EMBED_TOKEN_LENGTH) {
+    return {
+      isValid: false,
+      message: `埋め込みURLは${MAX_EMBED_TOKEN_LENGTH}文字以内にする必要があります`,
+    };
+  }
+
+  return { isValid: true, message: '' };
+};
 
 /** 渡された文字列をサニタイズする */
 function sanitaizeEmbedToken(str: string): string {
@@ -185,42 +215,26 @@ const embedGenerators: { [key in EmbedType]: (key: string) => string } = {
   },
 };
 
-/** 検証から除外する埋め込みの種別 */
-const excludeEmbedType: EmbedType[] = ['card', 'github'];
-
-/** 埋め込みURLまたはTokenの最大文字数( excludeEmbedTypeは除く ) */
-const MAX_EMBED_TOKEN_LENGTH = 300;
-
 /** `EmbedType`か判定する */
 export function isEmbedType(type: unknown): type is EmbedType {
   return typeof type === 'string' && type in embedGenerators;
 }
 
-/** 渡された埋め込みURLまたはTokenを検証する */
-export const validateEmbedToken = (str: string): boolean => {
-  return str.length <= MAX_EMBED_TOKEN_LENGTH;
-};
-
 /** 渡された`type`の埋め込み要素のHTML文字列を返す */
 export const generateEmbedHTML = (type: EmbedType, str: string): string => {
-  if (!excludeEmbedType.includes(type) && !validateEmbedToken(str)) {
-    return `埋め込みURLは${MAX_EMBED_TOKEN_LENGTH}文字以内にする必要があります`;
-  }
-
-  return embedGenerators[type](str);
+  const { isValid, message } = validateEmbedToken(str, type);
+  return isValid ? embedGenerators[type](str) : message;
 };
 
 /** Linkifyな埋め込み要素のHTML生成する */
 export const generateLinkifyEmbedHTML = (url: string): string => {
-  let html: string | null = null;
+  const { isValid, message: msg } = validateEmbedToken(url);
 
-  if (isTweetUrl(url)) html = generateEmbedIframe('tweet', url);
-  else if (isYoutubeUrl(url)) html = generateYoutubeHtmlFromUrl(url);
+  if (isTweetUrl(url)) return isValid ? generateEmbedIframe('tweet', url) : msg;
+  if (isYoutubeUrl(url)) return isValid ? generateYoutubeHtmlFromUrl(url) : msg;
 
-  if (!html && isGithubUrl(url)) return generateEmbedIframe('github', url);
-  if (!html) return generateEmbedIframe('link-card', url);
+  // GitHub は URL が長くなりやすいためバリデーション(`validateEmbedToken`)から外す
+  if (isGithubUrl(url)) return generateEmbedIframe('github', url);
 
-  return validateEmbedToken(url)
-    ? html
-    : `埋め込みURLは${MAX_EMBED_TOKEN_LENGTH}文字以内にする必要があります`;
+  return generateEmbedIframe('link-card', url);
 };
