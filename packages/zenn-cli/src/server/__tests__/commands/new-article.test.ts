@@ -77,6 +77,14 @@ describe('cli exec new:article', () => {
     );
   });
 
+  test('should call generateFileIfNotExist with specified publication name', () => {
+    exec(['--publication-name', 'myPublication']);
+    expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
+      expect.stringContaining(expectedArticlesDirpath),
+      expect.stringContaining(`publication-name: myPublication`)
+    );
+  });
+
   test('should log help text with --help', () => {
     exec(['--help']);
     expect(console.log).toHaveBeenCalledWith(

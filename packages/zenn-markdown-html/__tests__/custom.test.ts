@@ -10,6 +10,59 @@ const getIframeHtml = (markdown: string): string | null => {
 };
 
 describe('Handle custom markdown format properly', () => {
+  describe('When embed URLs longer than 300 characters', () => {
+    describe('When restricted types', () => {
+      test('generate error message', () => {
+        const dummy = Array(350).fill('a').join('');
+
+        [
+          // linkify
+          `https://twitter.com/zenn_dev/status/${dummy}`,
+          `http://youtu.be/${dummy}`,
+
+          // custom
+          `@[youtube](${dummy})`,
+          `@[slideshare](${dummy})`,
+          `@[speakerdeck](${dummy})`,
+          `@[jsfiddle](${dummy})`,
+          `@[codepen](${dummy})`,
+          `@[codesandbox](${dummy})`,
+          `@[stackblitz](${dummy})`,
+          `@[tweet](${dummy})`,
+          `@[blueprintue](${dummy})`,
+          `@[figma](${dummy})`,
+          `@[gist](${dummy})`,
+        ].forEach((text) => {
+          const html = markdownToHtml(text);
+          expect(html).toContain(
+            '埋め込みURLは300文字以内にする必要があります'
+          );
+        });
+      });
+    });
+
+    describe('When types excluded from restrictions', () => {
+      test('should generate a embed html', () => {
+        const dummy = Array(350).fill('a').join('');
+
+        [
+          // linkify
+          `https://zenn.dev/${dummy}`,
+          `https://github.com/zenn-dev/zenn-editor/blob/canary/${dummy}`,
+
+          // custom
+          `@[card](http://youtu.be/${dummy})`,
+          `@[github](https://github.com/zenn-dev/zenn-editor/blob/canary/${dummy})`,
+        ].forEach((text) => {
+          const html = markdownToHtml(text);
+          expect(html).not.toContain(
+            '埋め込みURLは300文字以内にする必要があります'
+          );
+        });
+      });
+    });
+  });
+
   describe('CodeSandBox', () => {
     test('should generate codesandbox html', () => {
       const html = markdownToHtml(
@@ -176,26 +229,33 @@ describe('Handle custom markdown format properly', () => {
 
   describe('BlueprintUE', () => {
     test('should generate blueprintue html', () => {
-      const html = markdownToHtml(
-        '@[blueprintue](https://blueprintue.com/render/aaaaaaaaaa/)'
-      );
-      expect(html).toContain(
-        '<span class="embed-block embed-blueprintue"><iframe src="https://blueprintue.com/render/aaaaaaaaaa/" width="100%" style="aspect-ratio:16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>'
-      );
+      const validUrls = [
+        'https://blueprintue.com/render/aaa/',
+        'https://blueprintue.com/render/aaa',
+        'https://blueprintue.com/render/a-aa',
+        'https://blueprintue.com/render/a_aa',
+      ];
+
+      validUrls.forEach((url) => {
+        const html = markdownToHtml(`@[blueprintue](${url})`);
+        expect(html).toContain(
+          `<span class="embed-block embed-blueprintue"><iframe src="${url}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`
+        );
+      });
     });
 
-    test.each`
-      url
-      ${'https://blueprintue.com/aaaaaaaaaaaaaa/'}
-      ${'https://blueprintue.com/render/aaaaaaaaaa'}
-    `(
-      '$url should not generate blueprintue html with invalid url',
-      ({ url }) => {
+    test('should not generate blueprintue html with invalid url', () => {
+      const invalidUrls = [
+        'https://blueprintue.com/aaaaaaaaaaaaaa',
+        'https://blueprintue.com/render/aaaaaaaaaa/hogetest',
+      ];
+
+      invalidUrls.forEach((url) => {
         const html = markdownToHtml(`@[blueprintue](${url})`);
         expect(html).toContain(
           '「https://blueprintue.com/render/」から始まる正しいURLを指定してください'
         );
-      }
-    );
+      });
+    });
   });
 });
