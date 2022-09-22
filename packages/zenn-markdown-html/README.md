@@ -32,6 +32,10 @@ const html = markdownToSimpleHtml(markdown);
 
 ## 開発者向けのドキュメント
 
+### サニタイズ方針
+
+[sanitize-html](https://github.com/apostrophecms/sanitize-html)を利用しています。サポートしているマークダウン記法から利用できるHTMLタグと属性を指定してサニタイズしています。網羅しているつもりですが、もし抜け漏れがあったらISSUEで報告してください。
+
 ### Babel の使用について
 
 `zenn-markdown-html` では、PrismJS の言語プラグインを予め全て読み込むために `babel-plugin-prismjs` を使用しているため、ソースコードのビルドには `babel` を使用し、型ファイル(\*.d.ts)のビルドには `tsc` を使用してビルドしています。
