@@ -239,7 +239,7 @@ describe('Handle custom markdown format properly', () => {
       validUrls.forEach((url) => {
         const html = markdownToHtml(`@[blueprintue](${url})`);
         expect(html).toContain(
-          `<span class="embed-block embed-blueprintue"><iframe src="${url}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`
+          `<span class="embed-block embed-blueprintue"><iframe src="${url}" width="100%" style="aspect-ratio:16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`
         );
       });
     });
