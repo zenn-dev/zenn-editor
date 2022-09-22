@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
+import { MdOutlineArrowBackIos } from 'react-icons/md';
 import styled from 'styled-components';
 import { Book, Chapter } from '../../../../common/types';
 import { getChapterErrors } from '../../../lib/validator';
 import { ContentContainer } from '../../ContentContainer';
 import { PropertyRow } from '../../PropertyRow';
-import { ValidationErrors } from '../../ValidationErrors';
 import { LinkBook } from '../../Routes';
-import { MdOutlineArrowBackIos } from 'react-icons/md';
+import { TemporarySanitizeMessageBar } from '../../TemporarySanitizeMessageBar';
+import { ValidationErrors } from '../../ValidationErrors';
 
 type Props = { chapter: Chapter; book: Book };
 
@@ -45,6 +46,9 @@ export const ChapterHeader: React.VFC<Props> = ({ chapter, book }) => {
               <ValidationErrors validationErrors={validationErrors} />
             </div>
           )}
+          <div className="chapter-header__temporary-messages">
+            <TemporarySanitizeMessageBar />
+          </div>
         </ContentContainer>
       </div>
     </StyledChapterHeader>
@@ -86,6 +90,9 @@ const StyledChapterHeader = styled.header`
     margin-top: 1rem;
   }
   .chapter-header__validation-errors {
+    margin-top: 1.4rem;
+  }
+  .chapter-header__temporary-messages {
     margin-top: 1.4rem;
   }
 `;
