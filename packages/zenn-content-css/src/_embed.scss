@@ -1,3 +1,17 @@
+// TODO:[sanitize] 後方互換性の維持のため、もともとmarginを指定していたクラスにはdiv限定で適用しつづける
+// すべての埋め込み要素がspanに変わったらこの宣言は消せる
+div {
+  &.embed-speakerdeck,
+  &.embed-figma,
+  &.embed-slideshare,
+  &.embed-codepen,
+  &.embed-jsfiddle,
+  &.embed-youtube,
+  &.embed-codesandbox,
+  &.embed-stackblitz {
+    margin: 1.5rem 0;
+  }
+}
 span.embed-block {
   // markdown-it が<p>タグでコンテンツを囲むので、内部で<div>が使えない
   // そのため、<div>を使いたいシーンでは<div>のかわりに<span>で囲み、このCSSでdisplay: block;を指定する
