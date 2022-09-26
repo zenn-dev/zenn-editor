@@ -1,6 +1,6 @@
 import sanitizeHtml from 'sanitize-html';
 
-export const tags = [
+const tags = [
   'a',
   'aside',
   'blockquote',
@@ -44,7 +44,7 @@ export const tags = [
   'ul',
 ];
 
-export const attributes = {
+const attributes = {
   a: ['aria-hidden', 'class', 'href', 'id', 'rel', 'style', 'target', 'title'],
   aside: ['class'],
   blockquote: [],
