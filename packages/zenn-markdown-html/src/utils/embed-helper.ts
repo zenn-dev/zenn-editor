@@ -215,9 +215,11 @@ const embedGenerators: { [key in EmbedType]: (key: string) => string } = {
   },
 };
 
+const embedKeys = Object.keys(embedGenerators);
+
 /** `EmbedType`か判定する */
 export function isEmbedType(type: unknown): type is EmbedType {
-  return typeof type === 'string' && type in embedGenerators;
+  return typeof type === 'string' && embedKeys.includes(type);
 }
 
 /** 渡された`type`の埋め込み要素のHTML文字列を返す */
