@@ -1,6 +1,6 @@
 span.embed-block {
   // markdown-it が<p>タグでコンテンツを囲むので、内部で<div>が使えない
-  // そのため、<div>を使いたいシーンではのかわりに<span>で囲み、このCSSでdisplay: block;を指定する
+  // そのため、<div>を使いたいシーンでは<div>のかわりに<span>で囲み、このCSSでdisplay: block;を指定する
   // 参考: https://stackoverflow.com/questions/8397852/why-cant-the-p-tag-contain-a-div-tag-inside-it
   display: block;
   width: 100%;
