@@ -1,4 +1,4 @@
-import { isGithubUrl } from '../../src/utils/helper';
+import { isGithubUrl } from '../../src/utils/url-matcher';
 
 describe('isGithubUrlのテスト', () => {
   describe('Trueを返す場合', () => {

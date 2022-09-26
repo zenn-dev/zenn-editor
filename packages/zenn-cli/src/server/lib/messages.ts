@@ -65,6 +65,7 @@ Options:
   --type      TYPE     記事のタイプ. tech (技術記事) / idea (アイデア記事) のどちらかから選択
   --emoji     EMOJI    アイキャッチとして使われる絵文字（1文字だけ）
   --published          公開設定. true か false を指定する. デフォルトで"false"
+  --publication-name   Publication名. Zenn Publication に紐付ける場合のみ指定
   --machine-readable   作成成功時にファイル名のみを出力する
 
   --help, -h       このヘルプを表示

@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
-import { generateEmbedIframe } from './helper';
+import { generateEmbedIframe } from './embed-helper';
 import { highlight } from './highlight';
 
 function getHtml({
