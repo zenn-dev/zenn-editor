@@ -1,11 +1,12 @@
 import MarkdownIt from 'markdown-it';
 import { mdLinkAttributes } from './utils/md-link-attributes';
+import { sanitize } from './sanitizer';
 
 // preset 'zero' はデフォルトで全ての変換を無効化したプリセットです。
 // Ref: https://github.com/markdown-it/markdown-it/blob/master/lib/presets/zero.js
 const md = MarkdownIt('zero', {
   breaks: true, // 改行を<br>に変換する
-  linkify: true // URLをリンクに変換する
+  linkify: true, // URLをリンクに変換する
 });
 
 md.enable('emphasis'); // 太字と斜体を有効化
@@ -28,5 +29,5 @@ md.use(mdLinkAttributes);
 export const markdownToSimpleHtml = (text: string): string => {
   if (!(text && text.length)) return '';
 
-  return md.render(text);
+  return sanitize(md.render(text));
 };

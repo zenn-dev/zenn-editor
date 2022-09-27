@@ -1,7 +1,8 @@
 import markdownToHtml from '../src/index';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 
-const embeddedPattern = /<div class="zenn-embedded[-\w\s]*">(.+)<\/div>/;
+const embeddedPattern =
+  /<span class="embed-block zenn-embedded[-\w\s]*">(.+)<\/span>/;
 
 /** 埋め込み要素の <iframe /> 文字列を返す */
 const getIframeHtml = (markdown: string): string | null => {
@@ -68,7 +69,7 @@ describe('Handle custom markdown format properly', () => {
         '@[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)'
       );
       expect(html).toContain(
-        '<div class="embed-codesandbox"><iframe src="https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></div>'
+        '<span class="embed-block embed-codesandbox"><iframe src="https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&amp;hidenavigation=1&amp;theme=dark" style="width:100%;height:500px;border:none;overflow:hidden" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></span>'
       );
     });
 
@@ -123,7 +124,7 @@ describe('Handle custom markdown format properly', () => {
     test('should generate valid message box html', () => {
       const html = markdownToHtml(':::message\nhello\n:::');
       expect(html).toContain(
-        '<aside class="msg message"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="message" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+        '<aside class="msg message"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 101 101" role="img" aria-label="message" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
       );
     });
 
@@ -136,7 +137,7 @@ describe('Handle custom markdown format properly', () => {
       validMarkdownPatterns.forEach((markdown) => {
         const html = markdownToHtml(markdown);
         expect(html).toContain(
-          '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+          '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
         );
       });
     });
@@ -151,7 +152,7 @@ describe('Handle custom markdown format properly', () => {
     test('should generate youtube html', () => {
       const html = markdownToHtml('@[youtube](AXaoi6dz59A)');
       expect(html.trim()).toStrictEqual(
-        `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/AXaoi6dz59A?loop=1&playlist=AXaoi6dz59A" allowfullscreen loading="lazy"></iframe></div>`.trim()
+        `<span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/AXaoi6dz59A?loop=1&amp;playlist=AXaoi6dz59A" allowfullscreen loading="lazy"></iframe></span>`.trim()
       );
     });
 
@@ -170,7 +171,7 @@ describe('Handle custom markdown format properly', () => {
         const html = markdownToHtml(url);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
-          `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
+          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&amp;playlist=${videoId}" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
         );
       }
     );
@@ -188,7 +189,7 @@ describe('Handle custom markdown format properly', () => {
         const html = markdownToHtml(url);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
-          `<p><div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&playlist=${videoId}&start=${start}" allowfullscreen loading="lazy"></iframe></div><a href="${escapeUrl}" style="display: none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
+          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&amp;playlist=${videoId}&amp;start=${start}" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
         );
       }
     );
@@ -212,7 +213,7 @@ describe('Handle custom markdown format properly', () => {
         '@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)'
       );
       expect(html).toContain(
-        '<div class="embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>'
+        '<span class="embed-block embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&amp;url=https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File" width="100%" style="aspect-ratio:16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>'
       );
     });
 
@@ -238,7 +239,7 @@ describe('Handle custom markdown format properly', () => {
       validUrls.forEach((url) => {
         const html = markdownToHtml(`@[blueprintue](${url})`);
         expect(html).toContain(
-          `<div class="embed-blueprintue"><iframe src="${url}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></div>`
+          `<span class="embed-block embed-blueprintue"><iframe src="${url}" width="100%" style="aspect-ratio:16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`
         );
       });
     });
