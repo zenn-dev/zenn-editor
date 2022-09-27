@@ -61,7 +61,6 @@ export function mdCustomBlock(md: MarkdownIt) {
       // }
 
       if (pointer.line >= endLine) return false;
-
       if (!silent) {
         const token = state.push('custom', 'div', 0);
         token.markup = state.src.slice(startPos, pointer.pos);

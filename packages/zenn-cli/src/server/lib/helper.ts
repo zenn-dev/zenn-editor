@@ -129,6 +129,9 @@ export function completeHtml(html: string): string {
   const $ = cheerio.load(html);
   $('img').map((i, el) => {
     const src = el.attribs['src'];
+    // サニタイズなどにより、srcが空になっている場合はスキップ
+    if (!src) return;
+
     // srcがURLの場合はチェックしない
     if (isUrl(src)) return;
 

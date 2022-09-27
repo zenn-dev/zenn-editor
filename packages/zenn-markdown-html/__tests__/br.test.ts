@@ -5,7 +5,7 @@ describe('Handle br tag properly', () => {
     const patterns = ['foo<br>bar', 'foo<br/>bar', 'foo<br />bar'];
     patterns.forEach((pattern) => {
       const html = markdownToHtml(pattern);
-      expect(html).toMatch(/<p>foo<br>bar<\/p>/);
+      expect(html).toMatch(/<p>foo<br \/>bar<\/p>/);
     });
   });
   test('should preserve br tag inside table', () => {
@@ -15,7 +15,7 @@ describe('Handle br tag properly', () => {
       `| foo<br>bar | c |`,
     ].join('\n');
     const html = markdownToHtml(tableString);
-    expect(html).toContain('foo<br>bar');
+    expect(html).toContain('foo<br />bar');
   });
   test('should escape br tag inside inline code', () => {
     const html = markdownToHtml('foo`<br>`bar');

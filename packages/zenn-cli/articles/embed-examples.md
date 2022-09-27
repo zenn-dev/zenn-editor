@@ -9,9 +9,11 @@ published: false
 ## Figma
 
 @[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)
+@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)
 
 ## Blueprint UE
 
+@[blueprintue](https://blueprintue.com/render/xmdvzpam/)
 @[blueprintue](https://blueprintue.com/render/xmdvzpam/)
 
 ## Gists

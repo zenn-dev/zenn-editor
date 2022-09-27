@@ -1,6 +1,7 @@
 import markdownToHtml from '../src/index';
 
-const iframPattern = /<div class="zenn-embedded[-\w\s]*">(.+)<\/div>/;
+const iframPattern =
+  /<span class="embed-block zenn-embedded[-\w\s]*">(.+)<\/span>/;
 
 const generateIframeHTML = (content: string) => {
   return markdownToHtml(content).match(iframPattern)?.[1];

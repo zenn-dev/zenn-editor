@@ -1,19 +1,20 @@
-import markdownIt from 'markdown-it';
 import crypto from 'crypto';
+import markdownIt from 'markdown-it';
+import { sanitize } from './sanitizer';
 
 // plugis
+import markdownItImSize from '@steelydylan/markdown-it-imsize';
+import markdownItAnchor from 'markdown-it-anchor';
+import { mdBr } from './utils/md-br';
 import {
   containerDetailsOptions,
   containerMessageOptions,
 } from './utils/md-container';
-import { mdRendererFence } from './utils/md-renderer-fence';
+import { mdCustomBlock } from './utils/md-custom-block';
+import { mdKatex } from './utils/md-katex';
 import { mdLinkAttributes } from './utils/md-link-attributes';
 import { mdLinkifyToCard } from './utils/md-linkify-to-card';
-import { mdKatex } from './utils/md-katex';
-import { mdBr } from './utils/md-br';
-import { mdCustomBlock } from './utils/md-custom-block';
-import markdownItImSize from '@steelydylan/markdown-it-imsize';
-import markdownItAnchor from 'markdown-it-anchor';
+import { mdRendererFence } from './utils/md-renderer-fence';
 
 const mdContainer = require('markdown-it-container');
 const mdFootnote = require('markdown-it-footnote');
@@ -52,7 +53,7 @@ md.use(mdBr)
 // custom footnote
 md.renderer.rules.footnote_block_open = () =>
   '<section class="footnotes">\n' +
-  '<div class="footnotes-title">脚注</div>\n' +
+  '<span class="footnotes-title">脚注</span>\n' +
   '<ol class="footnotes-list">\n';
 
 const markdownToHtml = (text: string): string => {
@@ -63,7 +64,7 @@ const markdownToHtml = (text: string): string => {
   // - https://github.com/zenn-dev/zenn-community/issues/356
   // - https://github.com/markdown-it/markdown-it-footnote/pull/8
   const docId = crypto.randomBytes(2).toString('hex');
-  return md.render(text, { docId });
+  return sanitize(md.render(text, { docId }));
 };
 
 export default markdownToHtml;

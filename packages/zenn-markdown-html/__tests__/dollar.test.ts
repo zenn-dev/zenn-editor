@@ -35,7 +35,7 @@ describe('should escape html tag', () => {
   test('should escape script tag', () => {
     const html = markdownToHtml('$a,<script>alert("XSS")</script>,c$');
     expect(html).toEqual(
-      `<p><embed-katex><eq class="zenn-katex">a,&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;,c</eq></embed-katex></p>\n`
+      `<p><embed-katex><eq class="zenn-katex">a,&lt;script&gt;alert("XSS")&lt;/script&gt;,c</eq></embed-katex></p>\n`
     );
   });
 });

@@ -24,4 +24,9 @@ describe('Convert markdown to html properly', () => {
       )
     );
   });
+
+  test('should remove data scheme img tag', () => {
+    const html = markdownToHtml(`![](data:image/png;base64,xxxx)`);
+    expect(html).toContain('<img alt />');
+  });
 });
