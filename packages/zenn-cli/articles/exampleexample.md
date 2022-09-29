@@ -282,3 +282,23 @@ here be dragons
 ::: message alert
 here be dragons
 :::
+
+
+:::: message
+nested
+::: details summary
+content
+:::
+::::
+
+:::: message
+::: details summary
+content
+:::
+nested
+::::
+
+:::: message
+content
+@[card](https://zenn.dev)
+::::
