@@ -60,8 +60,8 @@ const validatePublishedAtParse: ItemValidator<Article> = {
     if (publishedAt == undefined) return true;
     if (!publishedAt.match(publishedAtRegex)) return false;
 
-    // safari でも Data.parse() できるように `YYYY/MM/DD hh:mm` のフォーマットに修正する
-    return !isNaN(Date.parse(publishedAt.replaceAll('-', '/')));
+    // safari でも Data.parse() できるように `YYYY-MM-DDThh:mm` のフォーマットに修正する
+    return !isNaN(Date.parse(publishedAt.replace(' ', 'T')));
   },
 };
 
