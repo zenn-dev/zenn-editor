@@ -3,6 +3,6 @@ module.exports = {
   transform: {
     '^.+\\.ts$': '@swc/jest',
   },
-  testMatch: ['<rootDir>/src/__tests__/**/*.test.ts'],
+  testMatch: ['<rootDir>/__tests__/**/*.test.ts'],
   resetMocks: true,
 };

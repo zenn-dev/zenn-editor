@@ -1,4 +1,8 @@
-import { validateArticle, validateBook, validateBookChapter } from '../index';
+import {
+  validateArticle,
+  validateBook,
+  validateBookChapter,
+} from '../src/index';
 
 describe('validateArticle', () => {
   const validArticle = {
