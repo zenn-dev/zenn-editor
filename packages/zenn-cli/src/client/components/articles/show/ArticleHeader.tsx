@@ -15,13 +15,17 @@ function completePublishedAt(publishedAt?: null | string): string | undefined {
   if (publishedAt == null) return undefined;
   if (!publishedAt.match(publishedAtRegex))
     return 'フォーマットを確認してください';
+
+  // safari でも Data.parse() できるように `YYYY/MM/DD hh:mm` のフォーマットに修正する
+  publishedAt = publishedAt.replaceAll('-', '/');
+
   if (isNaN(Date.parse(publishedAt))) return 'フォーマットを確認してください';
 
   // 日付だけだとUTC時間になるので、00:00を追加してローカルタイムにする
   return formatPublishedAt(
     new Date(
       Date.parse(
-        publishedAt.length === 10 ? publishedAt + ' 00:00' : publishedAt
+        publishedAt.length === 10 ? `${publishedAt} 00:00` : publishedAt
       )
     )
   );
