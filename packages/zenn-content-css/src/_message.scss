@@ -39,9 +39,11 @@ aside.msg.alert .msg-icon {
 
   & > * {
     margin: 0.7rem 0;
-    &:first-child,
+    &:first-child {
+      margin-top: 0;
+    }
     &:last-child {
-      margin: 0;
+      margin-bottom: 0;
     }
   }
 }

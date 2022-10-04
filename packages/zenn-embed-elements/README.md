@@ -1,29 +1,23 @@
 # zenn-embed-elements
 
-Using web components to achieve embedding inside user generated markdown contents.
+以下の記法を利用するためにこのモジュールの読み込みが必要になります。
 
-TODO: useEffect と twitter用のscriptをまとめて1つのReactコンポーネントとしてnpm配布する
+- KaTeX
+
+※ v0.1.106 以降のバージョンでは zenn-embed-elements での以下の機能の提供は終了されています。
+- ~~ツイートの埋め込み~~
+- ~~Gistの埋め込み~~
+- ~~Mermaidの埋め込み~~
+
+最新のパッケージでこれらの埋め込みを行う方法についてはzenn-editorの[README](https://github.com/zenn-dev/zenn-editor#readme)をご確認ください。
+
+
+Reactの場合、以下のような形でモジュールを読み込みます。
 
 ```tsx
-import initTwitterScriptInner from 'zenn-embed-elements/lib/init-twitter-script-inner';
-
-// define web components in root of the app. (e.g. _app.tsx)
 export default function App(...) {
-    // init custom elements
-    useEffect(()=> import("zenn-embed-elements"),[])
-
-    // need to load twitter widgets.js to use window.twttr.createTweet
-    return (
-        <script
-            dangerouslySetInnerHTML={{
-                __html: initTwitterScriptInner
-            }}
-            />)
+  useEffect(()=> {
+    import("zenn-embed-elements")
+  },[])
 }
-```
-
-Then, use these elements are wherever you want.
-```html
-<embed-tweet src="https://tweeturl..." />
-<embed-gist page-url="https://gistsurl..." file="test.ext"/>
 ```
