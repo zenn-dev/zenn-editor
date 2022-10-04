@@ -9,7 +9,7 @@ published: false
 ## Figma
 
 @[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)
-@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)
+@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File?node-id=0%3A1)
 
 ## Blueprint UE
 

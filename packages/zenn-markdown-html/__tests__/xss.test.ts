@@ -58,4 +58,11 @@ describe('No XSS Vulnerability', () => {
     const html = markdownToHtml(`\`\`\`mermaid\n${content}\`\`\``);
     expect(html).toContain(encodeURIComponent(content));
   });
+  test('should escape img tag around figma syntax', () => {
+    const content = `@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File"></iframe><img src onerror=alert("XSS") />)`;
+    const html = markdownToHtml(content);
+    expect(html).toContain(
+      'ファイルまたはプロトタイプのFigma URLを指定してください'
+    );
+  });
 });

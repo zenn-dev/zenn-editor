@@ -71,7 +71,7 @@ export function isBlueprintUEUrl(url: string): boolean {
  * 参考: https://www.figma.com/developers/embed
  */
 export function isFigmaUrl(url: string): boolean {
-  return /^https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/[\w-]+)?$/.test(
+  return /^https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/[\w-?=&%]+)?$/.test(
     url
   );
 }

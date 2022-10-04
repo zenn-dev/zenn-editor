@@ -8,7 +8,7 @@ published: false
 
 `<iframe />` を用いて要素を表示する機能の一覧
 
-## Github
+## GitHub
 
 **短い行数**
 
@@ -26,7 +26,7 @@ https://github.com/zenn-dev/zenn-editor/blob/canary/yarn.lock#L4-L14
 
 https://github.com/zenn-dev/zenn-editor/blob/canary/yarn.lock#L4
 
-## Github Gist
+## GitHub Gist
 
 @[gist](https://gist.github.com/octocat/6cad326836d38bd3a7ae)
 
@@ -34,11 +34,11 @@ https://github.com/zenn-dev/zenn-editor/blob/canary/yarn.lock#L4
 
 https://zenn.dev
 
-## Link Card ( Github Repository )
+## Link Card ( GitHub Repository )
 
 https://github.com/zenn-dev/zenn-editor
 
-## Link Card ( Github Repository 以外のページ )
+## Link Card ( GitHub Repository 以外のページ )
 
 https://github.com/zenn-dev/zenn-editor/issues
 
