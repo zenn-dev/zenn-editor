@@ -32,7 +32,7 @@ lerna を使ったモノレポ管理をしています
 
 - **zenn-cli**: ローカルの markdown ファイルを管理/プレビュー
 - **zenn-content-css**: コンテンツ本文の CSS（ZennCLI および zenn.dev で使用）
-- **zenn-embed-elements**: Twitter や Gists の埋め込みを効率化するための custom elements（ZennCLI および zenn.dev で使用）
+- **zenn-embed-elements**: KaTeX記法を有効化するためのCustom Elements（ZennCLI および zenn.dev で使用）
 - **zenn-markdown-html**: マークダウンから HTML への変換を行う（Zenn CLI および zenn.dev で使用）
 
 ### Develop
