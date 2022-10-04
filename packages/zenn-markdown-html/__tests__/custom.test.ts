@@ -209,12 +209,17 @@ describe('Handle custom markdown format properly', () => {
 
   describe('Figma', () => {
     test('should generate figma html', () => {
-      const html = markdownToHtml(
-        '@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)'
-      );
-      expect(html).toContain(
-        '<span class="embed-block embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&amp;url=https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File" width="100%" style="aspect-ratio:16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>'
-      );
+      const validUrls = [
+        'https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File',
+        'https://www.figma.com/proto/LKQ4FJ4bTnCSjedbRpk931/Sample-File',
+        'https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File?node-id=0%3A1',
+      ];
+      validUrls.forEach((url) => {
+        const html = markdownToHtml(`@[figma](${url})`);
+        expect(html).toContain(
+          `<span class="embed-block embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&amp;url=${url}" width="100%" style="aspect-ratio:16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`
+        );
+      });
     });
 
     test('should not generate figma html with invalid url', () => {
