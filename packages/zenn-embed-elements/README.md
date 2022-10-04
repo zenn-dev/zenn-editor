@@ -16,6 +16,8 @@ Reactの場合、以下のような形でモジュールを読み込みます。
 
 ```tsx
 export default function App(...) {
-  useEffect(()=> import("zenn-embed-elements"),[])
+  useEffect(()=> {
+    import("zenn-embed-elements")
+  },[])
 }
 ```

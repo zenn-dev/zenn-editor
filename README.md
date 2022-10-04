@@ -16,7 +16,7 @@
 import markdownHtml from 'zenn-markdown-html';
 ```
 
-以下のようにMarkdownをHTMLに変換します。
+以下のようにMarkdownをHTMLに変換します。この処理は、Node.jsでのみ実行できます。ブラウザで実行するとエラーになることにご注意ください。
 
 
 ```tsx
@@ -57,10 +57,24 @@ import 'zenn-content-css';
 `zenn-embed-elements`はSSRに対応していないため、クライアント側で読み込む必要があります。
 
 ```ts
-// Reactで使う場合
-useEffect(() => {
-  import('zenn-embed-elements');
-}, []);
+// React で使う場合の例
+import 'zenn-content-css';
+
+export default function App(props) {
+
+  useEffect(()=> {
+    import("zenn-embed-elements")
+  },[])
+
+  return (
+    <div 
+      className="znc"
+      dangerouslySetInnerHTML={{
+        __html: props.html // markdownから変換されたHTMLを渡す
+      }}
+    />
+  )
+}
 ```
 
 
