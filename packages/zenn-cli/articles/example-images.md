@@ -13,6 +13,10 @@ published: false
 
 ![](/images/example-images/zenn-editor.png)
 
+`![](/images/example-images/zenn-editor.webp)`
+
+![](/images/example-images/zenn-editor.webp)
+
 ## 存在しないパス
 
 `![](/images/example-images/not-exist.png)`

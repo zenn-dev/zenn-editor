@@ -10,15 +10,16 @@ import {
 
 import { getValidSortTypes } from '../../common/helper';
 
-const bookNotFoundMessage =
-  '本の設定ファイルの取得時にエラーが発生しました。ターミナルの出力をご確認ください';
+function getBookNotFoundMessage(slug: string) {
+  return `${slug}の本のファイルを取得できませんでした`;
+}
 
 export function getBook(req: Express.Request, res: Express.Response) {
   const slug = req.params.slug;
   const book = getLocalBook(slug);
   if (!book) {
     res.status(404).json({
-      message: bookNotFoundMessage,
+      message: getBookNotFoundMessage(slug),
     });
     return;
   }
@@ -36,7 +37,7 @@ export function getChapter(req: Express.Request, res: Express.Response) {
   const book = getLocalBookMeta(bookSlug);
   if (!book) {
     res.status(404).json({
-      message: bookNotFoundMessage,
+      message: getBookNotFoundMessage(bookSlug),
     });
     return;
   }
@@ -56,7 +57,7 @@ export function getChapters(req: Express.Request, res: Express.Response) {
   const book = getLocalBookMeta(bookSlug);
   if (!book) {
     res.status(404).json({
-      message: bookNotFoundMessage,
+      message: getBookNotFoundMessage(bookSlug),
     });
     return;
   }

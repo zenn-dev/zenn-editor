@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import crypto from 'crypto';
 import fetch from 'node-fetch';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import { networkInterfaces } from 'os';
 import * as Log from './log';
 import pkg from '../../../package.json';
@@ -113,7 +113,44 @@ export function getImageSize(fullpath: string): number {
   return stat.size;
 }
 
-export function bufferToDataURL(buffer: Buffer, mediaType: string): string {
+const acceptImageTypes = [
+  {
+    ext: '.png',
+    type: 'image/png',
+  },
+  {
+    ext: '.jpg',
+    type: 'image/jpeg',
+  },
+  {
+    ext: '.jpeg',
+    type: 'image/jpeg',
+  },
+  {
+    ext: '.webp',
+    type: 'image/webp',
+  },
+  {
+    ext: '.gif',
+    type: 'image/gif',
+  },
+] as const;
+
+export const acceptImageExtensions = acceptImageTypes.map(({ ext }) => ext);
+
+type AcceptImageType = typeof acceptImageTypes[number]['type'];
+
+export function inferImageTypeFromUrl(url: string): null | AcceptImageType {
+  const targetImageType = acceptImageTypes.find(({ ext }) => url.endsWith(ext));
+  if (!targetImageType) return null;
+
+  return targetImageType.type;
+}
+
+export function bufferToDataURL(
+  buffer: Buffer,
+  mediaType: AcceptImageType
+): string {
   return `data:${mediaType};base64,${buffer.toString('base64')}`;
 }
 
@@ -144,10 +181,12 @@ export function completeHtml(html: string): string {
       return;
     }
 
-    // 拡張子が png,jpg,jpeg,gif であること
-    if (!src.match(/(.png|.jpg|.jpeg|.gif)$/)) {
+    // 拡張子が png,jpg,jpeg,gif,webp であること
+    if (!acceptImageExtensions.some((ext) => src.endsWith(ext))) {
       $(el).before(
-        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。対応している画像の拡張子は <code>png, jpg, jpeg, gif</code> です。</p>`
+        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。対応している画像の拡張子は <code>${acceptImageExtensions.join(
+          ','
+        )}</code> です。</p>`
       );
       $(el).remove();
       return;
