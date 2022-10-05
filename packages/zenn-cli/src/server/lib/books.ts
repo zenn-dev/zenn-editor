@@ -15,6 +15,7 @@ import {
   getWorkingPath,
   completeHtml,
   inferImageTypeFromUrl,
+  acceptImageExtensions,
 } from './helper';
 import {
   Book,
@@ -30,9 +31,9 @@ export function getLocalBook(slug: string): null | Book {
 
   const fullDirpath = getBookFullDirpath(slug);
   const filenames = listFilenames(fullDirpath);
-  console.log('filenames', filenames);
+  // カバー画像のファイル名候補（"cover" + 対応拡張子）に該当するファイルを探す
   const targetCoverFilename = filenames?.find((filename) =>
-    /^cover\.(png|jpeg|jpg|webp|gif)$/.test(filename)
+    acceptImageExtensions.map((ext) => `cover${ext}`).includes(filename)
   );
   // カバー画像の候補となるファイルは存在しない場合
   if (!targetCoverFilename) return bookMeta;

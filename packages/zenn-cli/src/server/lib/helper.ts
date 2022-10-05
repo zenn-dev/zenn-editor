@@ -136,7 +136,7 @@ const acceptImageTypes = [
   },
 ] as const;
 
-const acceptImageExtensions = acceptImageTypes.map(({ ext }) => ext);
+export const acceptImageExtensions = acceptImageTypes.map(({ ext }) => ext);
 
 type AcceptImageType = typeof acceptImageTypes[number]['type'];
 
