@@ -113,20 +113,43 @@ export function getImageSize(fullpath: string): number {
   return stat.size;
 }
 
-type AcceptMediaType = 'image/png' | 'image/jpeg' | 'image/gif' | 'image/webp';
+const acceptImageTypes = [
+  {
+    ext: '.png',
+    type: 'image/png',
+  },
+  {
+    ext: '.jpg',
+    type: 'image/jpeg',
+  },
+  {
+    ext: '.jpeg',
+    type: 'image/jpeg',
+  },
+  {
+    ext: '.webp',
+    type: 'image/webp',
+  },
+  {
+    ext: '.gif',
+    type: 'image/gif',
+  },
+] as const;
 
-export function inferMediaTypeFromUrl(url: string): null | AcceptMediaType {
-  if (url.endsWith('.jpg') || url.endsWith('.jpeg')) return 'image/jpeg';
-  if (url.endsWith('.png')) return 'image/png';
-  if (url.endsWith('.webp')) return 'image/webp';
-  if (url.endsWith('.gif')) return 'image/gif';
+const acceptImageExtensions = acceptImageTypes.map(({ ext }) => ext);
 
-  return null;
+type AcceptImageType = typeof acceptImageTypes[number]['type'];
+
+export function inferMediaTypeFromUrl(url: string): null | AcceptImageType {
+  const targetImageType = acceptImageTypes.find(({ ext }) => url.endsWith(ext));
+  if (!targetImageType) return null;
+
+  return targetImageType.type;
 }
 
 export function bufferToDataURL(
   buffer: Buffer,
-  mediaType: AcceptMediaType
+  mediaType: AcceptImageType
 ): string {
   return `data:${mediaType};base64,${buffer.toString('base64')}`;
 }
@@ -159,9 +182,11 @@ export function completeHtml(html: string): string {
     }
 
     // 拡張子が png,jpg,jpeg,gif,webp であること
-    if (!src.match(/(.png|.webp|.jpg|.jpeg|.gif)$/)) {
+    if (!acceptImageExtensions.some((ext) => src.endsWith(ext))) {
       $(el).before(
-        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。対応している画像の拡張子は <code>png, webp, jpg, jpeg, gif</code> です。</p>`
+        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。対応している画像の拡張子は <code>${acceptImageExtensions.join(
+          ','
+        )}</code> です。</p>`
       );
       $(el).remove();
       return;
