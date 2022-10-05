@@ -14,6 +14,7 @@ import {
   listFilenames,
   getWorkingPath,
   completeHtml,
+  inferMediaTypeFromUrl,
 } from './helper';
 import {
   Book,
@@ -27,19 +28,22 @@ export function getLocalBook(slug: string): null | Book {
   const bookMeta = getLocalBookMeta(slug);
   if (!bookMeta) return null;
 
-  // get details
   const fullDirpath = getBookFullDirpath(slug);
-  const coverData =
-    readCoverFile(path.join(fullDirpath, 'cover.jpg')) ||
-    readCoverFile(path.join(fullDirpath, 'cover.jpeg')) ||
-    readCoverFile(path.join(fullDirpath, 'cover.png'));
+  const filenames = listFilenames(fullDirpath);
+  console.log('filenames', filenames);
+  const targetCoverFilename = filenames?.find((filename) =>
+    /^cover\.(png|jpeg|jpg|webp|gif)$/.test(filename)
+  );
+  // カバー画像の候補となるファイルは存在しない場合
+  if (!targetCoverFilename) return bookMeta;
 
+  const coverData = readCoverFile(path.join(fullDirpath, targetCoverFilename));
+
+  // カバー画像が取得できなかった場合
   if (!coverData) return bookMeta;
 
-  return {
-    ...bookMeta,
-    ...coverData,
-  };
+  // カバー画像が取得できた場合はカバー画像のデータを含めて返す
+  return { ...bookMeta, ...coverData };
 }
 
 export function getLocalBookMeta(slug: string) {
@@ -177,9 +181,9 @@ function readCoverFile(imageFullpath: string) {
     if (!bufferImage) return null;
     const coverFilesize = getImageSize(imageFullpath);
     const { width, height } = imageSizeOf(bufferImage);
-    const mediaType = imageFullpath.endsWith('.png')
-      ? 'image/png'
-      : 'image/jpeg';
+    const mediaType = inferMediaTypeFromUrl(imageFullpath);
+    if (!mediaType) return null;
+
     const coverDataUrl = bufferToDataURL(bufferImage, mediaType);
 
     return {

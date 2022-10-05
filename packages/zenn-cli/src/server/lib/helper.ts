@@ -113,7 +113,21 @@ export function getImageSize(fullpath: string): number {
   return stat.size;
 }
 
-export function bufferToDataURL(buffer: Buffer, mediaType: string): string {
+type AcceptMediaType = 'image/png' | 'image/jpeg' | 'image/gif' | 'image/webp';
+
+export function inferMediaTypeFromUrl(url: string): null | AcceptMediaType {
+  if (url.endsWith('.jpg') || url.endsWith('.jpeg')) return 'image/jpeg';
+  if (url.endsWith('.png')) return 'image/png';
+  if (url.endsWith('.webp')) return 'image/webp';
+  if (url.endsWith('.gif')) return 'image/gif';
+
+  return null;
+}
+
+export function bufferToDataURL(
+  buffer: Buffer,
+  mediaType: AcceptMediaType
+): string {
   return `data:${mediaType};base64,${buffer.toString('base64')}`;
 }
 
