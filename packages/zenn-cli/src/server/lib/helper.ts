@@ -140,7 +140,7 @@ const acceptImageExtensions = acceptImageTypes.map(({ ext }) => ext);
 
 type AcceptImageType = typeof acceptImageTypes[number]['type'];
 
-export function inferMediaTypeFromUrl(url: string): null | AcceptImageType {
+export function inferImageTypeFromUrl(url: string): null | AcceptImageType {
   const targetImageType = acceptImageTypes.find(({ ext }) => url.endsWith(ext));
   if (!targetImageType) return null;
 

@@ -14,7 +14,7 @@ import {
   listFilenames,
   getWorkingPath,
   completeHtml,
-  inferMediaTypeFromUrl,
+  inferImageTypeFromUrl,
 } from './helper';
 import {
   Book,
@@ -181,7 +181,7 @@ function readCoverFile(imageFullpath: string) {
     if (!bufferImage) return null;
     const coverFilesize = getImageSize(imageFullpath);
     const { width, height } = imageSizeOf(bufferImage);
-    const mediaType = inferMediaTypeFromUrl(imageFullpath);
+    const mediaType = inferImageTypeFromUrl(imageFullpath);
     if (!mediaType) return null;
 
     const coverDataUrl = bufferToDataURL(bufferImage, mediaType);
