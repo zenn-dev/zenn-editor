@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import crypto from 'crypto';
 import fetch from 'node-fetch';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import { networkInterfaces } from 'os';
 import * as Log from './log';
 import pkg from '../../../package.json';
@@ -144,10 +144,10 @@ export function completeHtml(html: string): string {
       return;
     }
 
-    // 拡張子が png,jpg,jpeg,gif であること
-    if (!src.match(/(.png|.jpg|.jpeg|.gif)$/)) {
+    // 拡張子が png,jpg,jpeg,gif,webp であること
+    if (!src.match(/(.png|.webp|.jpg|.jpeg|.gif)$/)) {
       $(el).before(
-        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。対応している画像の拡張子は <code>png, jpg, jpeg, gif</code> です。</p>`
+        `<p style="color: var(--c-error); font-weight: 700"><code>${src}</code>を表示できません。対応している画像の拡張子は <code>png, webp, jpg, jpeg, gif</code> です。</p>`
       );
       $(el).remove();
       return;
