@@ -26,7 +26,6 @@ import {
   validateTooManyTopics,
   validateTopicType,
   validateUseTags,
-  PUBLISHED_AT_PATTERN,
 } from './utils';
 
 function getValidationErrors(
@@ -110,32 +109,5 @@ export const validateBookChapter = (chapter: Dect): ValidationError[] => {
   ];
   return getValidationErrors(chapter, validators);
 };
-
-export function completePublishedAt(
-  publishedAt?: null | string
-): string | undefined {
-  if (publishedAt == null) return undefined;
-  if (!publishedAt.match(PUBLISHED_AT_PATTERN)) return 'フォーマットを確認してください'; // prettier-ignore
-  if (isNaN(Date.parse(publishedAt))) return 'フォーマットを確認してください';
-
-  // 日付だけだとUTC時間になるので、00:00を追加してローカルタイムにする
-  return formatPublishedAt(
-    new Date(
-      Date.parse(
-        publishedAt.length === 10 ? publishedAt + ' 00:00' : publishedAt
-      )
-    )
-  );
-}
-
-export function formatPublishedAt(publishedAt: Date): string {
-  return new Intl.DateTimeFormat('ja-jp', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(publishedAt);
-}
 
 export type { ValidationError };
