@@ -1,20 +1,23 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { Article } from '../../../../common/types';
-import { getArticleErrors } from '../../../lib/validator';
+import { validateArticle, ValidationError } from 'zenn-validator';
 import { ContentContainer } from '../../ContentContainer';
 import { TopicList } from '../../TopicList';
 import { PropertyRow } from '../../PropertyRow';
-import { publishedAtRegex } from '../../../lib/validator';
 import { ValidationErrors } from '../../ValidationErrors';
 import { TemporarySanitizeMessageBar } from '../../TemporarySanitizeMessageBar';
 
 type Props = { article: Article };
 
-function completePublishedAt(publishedAt?: null | string): string | undefined {
-  if (publishedAt == null) return undefined;
-  if (!publishedAt.match(publishedAtRegex))
-    return 'フォーマットを確認してください';
+function completePublishedAt(
+  publishedAt: string | null | undefined,
+  errors: ValidationError[]
+): string | undefined {
+  const publishedAtError = errors.find((v) => v.type === 'published-at-parse');
+
+  if (!publishedAt) return;
+  if (publishedAtError) return 'フォーマットを確認してください';
 
   // safari でも Data.parse() できるように `YYYY-MM-DDThh:mm` のフォーマットでパースする
   const publishedAtUnixTime = Date.parse(
@@ -25,22 +28,21 @@ function completePublishedAt(publishedAt?: null | string): string | undefined {
 
   if (isNaN(publishedAtUnixTime)) return 'フォーマットを確認してください';
 
-  return formatPublishedAt(new Date(publishedAtUnixTime));
-}
-
-function formatPublishedAt(publishedAt: Date): string {
   return new Intl.DateTimeFormat('ja-jp', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-  }).format(publishedAt);
+  }).format(new Date(publishedAtUnixTime));
 }
 
 export const ArticleHeader: React.VFC<Props> = ({ article }) => {
-  const validationErrors = useMemo(() => getArticleErrors(article), [article]);
-  const publishedAt = completePublishedAt(article.published_at);
+  const validationErrors = useMemo(() => validateArticle(article), [article]);
+  const publishedAt = completePublishedAt(
+    article.published_at,
+    validationErrors
+  );
   const scheduledPublish = publishedAt && Date.parse(publishedAt) > Date.now();
 
   return (

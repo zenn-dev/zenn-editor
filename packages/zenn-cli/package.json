@@ -95,7 +95,8 @@
     "ws": "^7.4.6",
     "zenn-content-css": "^0.1.131",
     "zenn-embed-elements": "^0.1.131",
-    "zenn-markdown-html": "^0.1.131"
+    "zenn-markdown-html": "^0.1.131",
+    "zenn-validator": "^0.1.131"
   },
   "engines": {
     "node": ">=14.0.0"

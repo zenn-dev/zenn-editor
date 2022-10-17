@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { Book } from '../../../../common/types';
-import { getBookErrors } from '../../../lib/validator';
+import { validateBook } from 'zenn-validator';
 import { ContentContainer } from '../../ContentContainer';
 import { TopicList } from '../../TopicList';
 import { PropertyRow } from '../../PropertyRow';
@@ -10,7 +10,7 @@ import { ValidationErrors } from '../../ValidationErrors';
 type Props = { book: Book };
 
 export const BookHeader: React.VFC<Props> = ({ book }) => {
-  const validationErrors = useMemo(() => getBookErrors(book), [book]);
+  const validationErrors = useMemo(() => validateBook(book), [book]);
 
   return (
     <StyledBookHeader>

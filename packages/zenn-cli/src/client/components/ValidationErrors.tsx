@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { ValidationError } from '../types';
+import { ValidationError } from 'zenn-validator';
 
 import { MdError, MdOutlineCallMade } from 'react-icons/md';
 
