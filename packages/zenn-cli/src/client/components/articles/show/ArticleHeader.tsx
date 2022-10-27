@@ -7,7 +7,6 @@ import { TopicList } from '../../TopicList';
 import { PropertyRow } from '../../PropertyRow';
 import { publishedAtRegex } from '../../../lib/validator';
 import { ValidationErrors } from '../../ValidationErrors';
-import { TemporarySanitizeMessageBar } from '../../TemporarySanitizeMessageBar';
 
 type Props = { article: Article };
 
@@ -105,9 +104,6 @@ export const ArticleHeader: React.VFC<Props> = ({ article }) => {
             <ValidationErrors validationErrors={validationErrors} />
           </div>
         )}
-        <div className="article-header__temporary-messages">
-          <TemporarySanitizeMessageBar />
-        </div>
       </ContentContainer>
     </StyledArticleHeader>
   );
@@ -128,9 +124,6 @@ const StyledArticleHeader = styled.header`
     margin-top: 1rem;
   }
   .article-header__validation-errors {
-    margin-top: 1.4rem;
-  }
-  .article-header__temporary-messages {
     margin-top: 1.4rem;
   }
 `;
