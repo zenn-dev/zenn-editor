@@ -1,4 +1,4 @@
-name: Pull Reuqest Policy Comment
+name: Pull Request Policy Comment
 
 on:
   pull_request:
@@ -8,9 +8,12 @@ on:
     types:
       - opened
 
+permissions:
+  pull-requests: write
+
 jobs:
   policy-comment:
-    name: Pull Reuqest Policy Comment
+    name: Pull Request Policy Comment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v5
