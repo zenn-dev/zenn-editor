@@ -152,7 +152,7 @@ describe('Handle custom markdown format properly', () => {
     test('should generate youtube html', () => {
       const html = markdownToHtml('@[youtube](AXaoi6dz59A)');
       expect(html.trim()).toStrictEqual(
-        `<span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/AXaoi6dz59A?loop=1&amp;playlist=AXaoi6dz59A" allowfullscreen loading="lazy"></iframe></span>`.trim()
+        `<span class=\"embed-block embed-youtube\"><iframe src=\"https://www.youtube-nocookie.com/embed/AXaoi6dz59A\" allow=\"accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen loading=\"lazy\"></iframe></span>`.trim()
       );
     });
 
@@ -171,7 +171,7 @@ describe('Handle custom markdown format properly', () => {
         const html = markdownToHtml(url);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
-          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&amp;playlist=${videoId}" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
+          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
         );
       }
     );
@@ -189,7 +189,7 @@ describe('Handle custom markdown format properly', () => {
         const html = markdownToHtml(url);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
-          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&amp;playlist=${videoId}&amp;start=${start}" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
+          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}?start=${start}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
         );
       }
     );

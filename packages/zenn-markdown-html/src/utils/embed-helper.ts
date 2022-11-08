@@ -86,8 +86,8 @@ function isValidHttpUrl(str: string) {
 function generateYoutubeHtmlFromVideoId(videoId: string, start?: string) {
   const escapedVideoId = escapeHtml(videoId);
   const time = Math.min(Number(start || 0), 48 * 60 * 60); // 48時間以内
-  const startQuery = time ? `&start=${time}` : '';
-  return `<span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/${escapedVideoId}?loop=1&playlist=${escapedVideoId}${startQuery}" allowfullscreen loading="lazy"></iframe></span>`;
+  const startQuery = time ? `?start=${time}` : '';
+  return `<span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${escapedVideoId}${startQuery}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span>`;
 }
 
 /** Youtube の埋め込み要素の文字列を生成する */
