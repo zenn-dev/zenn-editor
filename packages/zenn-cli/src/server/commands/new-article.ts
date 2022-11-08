@@ -80,9 +80,13 @@ export const exec: CliExecFn = (argv) => {
       `type: "${type}" # tech: 技術記事 / idea: アイデア`,
       'topics: []',
       `published: ${published}`,
-      publicationName !== '' ? `publication-name: ${publicationName.replace(/"/g, '\\"')}` : null,
+      publicationName !== ''
+        ? `publication_name: ${publicationName.replace(/"/g, '\\"')}`
+        : null,
       '---',
-    ].filter(v => v).join('\n') + '\n';
+    ]
+      .filter((v) => v)
+      .join('\n') + '\n';
 
   try {
     generateFileIfNotExist(fullFilepath, fileBody);

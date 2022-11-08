@@ -81,7 +81,7 @@ describe('cli exec new:article', () => {
     exec(['--publication-name', 'myPublication']);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(expectedArticlesDirpath),
-      expect.stringContaining(`publication-name: myPublication`)
+      expect.stringContaining(`publication_name: myPublication`)
     );
   });
 

@@ -1,12 +1,11 @@
-import { Article, Book, Chapter } from '../../../common/types';
 import {
-  getArticleErrors,
-  getBookErrors,
-  getChapterErrors,
-} from '../../lib/validator';
+  validateArticle,
+  validateBook,
+  validateBookChapter,
+} from '../src/index';
 
-describe('getArticleErrors', () => {
-  const validArticle: Article = {
+describe('validateArticle', () => {
+  const validArticle = {
     slug: 'example-slug',
     title: 'title',
     bodyHtml: 'Hello',
@@ -18,13 +17,13 @@ describe('getArticleErrors', () => {
   };
 
   test('return no errors with valid article', () => {
-    const errors = getArticleErrors(validArticle);
+    const errors = validateArticle(validArticle);
     expect(errors).toEqual([]);
   });
 
   describe('validateItemSlug', () => {
     test('return error with too short slug', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         slug: 'too-short',
       });
@@ -32,7 +31,7 @@ describe('getArticleErrors', () => {
       expect(errors[0].message).toContain('12〜50字の組み合わせ');
     });
     test('return error with slug which includes invalid letters', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         slug: 'invalid/slug',
       });
@@ -43,7 +42,7 @@ describe('getArticleErrors', () => {
 
   describe('validateMissingTitle', () => {
     test('return error without title', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         title: undefined,
       });
@@ -53,7 +52,7 @@ describe('getArticleErrors', () => {
       );
     });
     test('return error with empty title', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         title: '',
       });
@@ -66,7 +65,7 @@ describe('getArticleErrors', () => {
 
   describe('validateTitleLength', () => {
     test('return error with too long title', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         title:
           'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijklmnopqrstu', // 71 letters
@@ -78,7 +77,7 @@ describe('getArticleErrors', () => {
 
   describe('validatePublishedStatus', () => {
     test('return error if published is specified as string', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         published: 'true' as any,
       });
@@ -88,7 +87,7 @@ describe('getArticleErrors', () => {
       );
     });
     test('return error if published is specified as string', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         published: 1 as any,
       });
@@ -101,7 +100,7 @@ describe('getArticleErrors', () => {
 
   describe('validateArticleType', () => {
     test('return error if articleType is neither tech or idea', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         type: 'hello' as any,
       });
@@ -111,7 +110,7 @@ describe('getArticleErrors', () => {
       );
     });
     test('return error if articleType is missing', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         type: undefined,
       });
@@ -124,7 +123,7 @@ describe('getArticleErrors', () => {
 
   describe('validateMissingEmoji', () => {
     test('return error with undefined emoji', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         emoji: undefined,
       });
@@ -134,7 +133,7 @@ describe('getArticleErrors', () => {
       );
     });
     test('return error with empty emoji', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         emoji: '',
       });
@@ -147,7 +146,7 @@ describe('getArticleErrors', () => {
 
   describe('validateEmojiFormat', () => {
     test('return error with non emoji string for emoji property', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         emoji: '絵',
       });
@@ -159,7 +158,7 @@ describe('getArticleErrors', () => {
   });
   describe('validateMissingTopics', () => {
     test('return error with undefined topics', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         topics: undefined,
       });
@@ -169,7 +168,7 @@ describe('getArticleErrors', () => {
       );
     });
     test('return error with empty topics', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         topics: [],
       });
@@ -181,7 +180,7 @@ describe('getArticleErrors', () => {
   });
   describe('validateTooManyTopics', () => {
     test('return error with 6 topics', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         topics: ['a', 'b', 'c', 'd', 'e', 'f'],
       });
@@ -191,7 +190,7 @@ describe('getArticleErrors', () => {
   });
   describe('validateInvalidTopicLetters', () => {
     test('return error with topic including symbols', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         topics: ['a', 'vue.js'],
       });
@@ -203,7 +202,7 @@ describe('getArticleErrors', () => {
   });
   describe('validateTopicType', () => {
     test('return error with number value', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         topics: [123] as any,
       });
@@ -213,7 +212,7 @@ describe('getArticleErrors', () => {
       );
     });
     test('return error with empty string topic', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         topics: [''],
       });
@@ -225,7 +224,7 @@ describe('getArticleErrors', () => {
   });
   describe('validateUseTags', () => {
     test('return error with tag property', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         tags: ['a', 'b'],
       });
@@ -235,7 +234,7 @@ describe('getArticleErrors', () => {
   });
   describe('validatePublicationName', () => {
     test('return error with too short publication name', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         publication_name: 't',
       });
@@ -243,7 +242,7 @@ describe('getArticleErrors', () => {
       expect(errors[0].message).toContain('2〜15字の組み合わせ');
     });
     test('return error with publication name which includes invalid letters', () => {
-      const errors = getArticleErrors({
+      const errors = validateArticle({
         ...validArticle,
         publication_name: 'invalid/name',
       });
@@ -253,8 +252,8 @@ describe('getArticleErrors', () => {
   });
 });
 
-describe('getBookErrors', () => {
-  const validBook: Book = {
+describe('validateBook', () => {
+  const validBook = {
     slug: 'example-slug',
     title: 'title',
     summary: 'summary',
@@ -270,14 +269,14 @@ describe('getBookErrors', () => {
   };
 
   test('return no errors with valid book', () => {
-    const errors = getBookErrors(validBook);
+    const errors = validateBook(validBook);
     expect(errors).toEqual([]);
   });
 
   describe('validateItemSlug', () => {
     describe('validateItemSlug', () => {
       test('return error with too short slug', () => {
-        const errors = getBookErrors({
+        const errors = validateBook({
           ...validBook,
           slug: 'too-short',
         });
@@ -285,7 +284,7 @@ describe('getBookErrors', () => {
         expect(errors[0].message).toContain('12〜50字の組み合わせ');
       });
       test('return error with slug which includes invalid letters', () => {
-        const errors = getBookErrors({
+        const errors = validateBook({
           ...validBook,
           slug: 'invalid/slug',
         });
@@ -297,7 +296,7 @@ describe('getBookErrors', () => {
 
   describe('validateMissingTitle', () => {
     test('return error without title', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         title: undefined,
       });
@@ -307,7 +306,7 @@ describe('getBookErrors', () => {
       );
     });
     test('return error with empty title', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         title: '',
       });
@@ -320,7 +319,7 @@ describe('getBookErrors', () => {
 
   describe('validateTitleLength', () => {
     test('return error with too long title', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         title:
           'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijklmnopqrstu', // 71 letters
@@ -332,7 +331,7 @@ describe('getBookErrors', () => {
 
   describe('validatePublishedStatus', () => {
     test('return error if published is specified as string', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         published: 'true' as any,
       });
@@ -342,7 +341,7 @@ describe('getBookErrors', () => {
       );
     });
     test('return error if published is specified as string', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         published: 1 as any,
       });
@@ -355,7 +354,7 @@ describe('getBookErrors', () => {
 
   describe('validateMissingTopics', () => {
     test('return error with undefined topics', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         topics: undefined,
       });
@@ -365,7 +364,7 @@ describe('getBookErrors', () => {
       );
     });
     test('return error with empty topics', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         topics: [],
       });
@@ -378,7 +377,7 @@ describe('getBookErrors', () => {
 
   describe('validateTooManyTopics', () => {
     test('return error with 6 topics', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         topics: ['a', 'b', 'c', 'd', 'e', 'f'],
       });
@@ -389,7 +388,7 @@ describe('getBookErrors', () => {
 
   describe('validateInvalidTopicLetters', () => {
     test('return error with topic including symbols', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         topics: ['a', 'vue.js'],
       });
@@ -402,7 +401,7 @@ describe('getBookErrors', () => {
 
   describe('validateTopicType', () => {
     test('return error with number value', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         topics: [123] as any,
       });
@@ -412,7 +411,7 @@ describe('getBookErrors', () => {
       );
     });
     test('return error with empty string topic', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         topics: [''],
       });
@@ -425,7 +424,7 @@ describe('getBookErrors', () => {
 
   describe('validateUseTags', () => {
     test('return error with tag property', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         tags: ['a', 'b'],
       });
@@ -436,7 +435,7 @@ describe('getBookErrors', () => {
 
   describe('validateBookSummary', () => {
     test('return error with undefined summary', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         summary: undefined,
       });
@@ -449,7 +448,7 @@ describe('getBookErrors', () => {
 
   describe('validateBookPriceType', () => {
     test('return error with undefined price', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         price: undefined,
       });
@@ -462,7 +461,7 @@ describe('getBookErrors', () => {
 
   describe('validateBookPriceRange', () => {
     test('return error with price more than 6000', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         price: 6000,
       });
@@ -472,7 +471,7 @@ describe('getBookErrors', () => {
       );
     });
     test('return error with price less than 200', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         price: 100,
       });
@@ -485,7 +484,7 @@ describe('getBookErrors', () => {
 
   describe('validateBookPriceFraction', () => {
     test('return error if price is not divisible by 100', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         price: 1050,
       });
@@ -498,7 +497,7 @@ describe('getBookErrors', () => {
 
   describe('validateMissingBookCover', () => {
     test('return error with undefined coverDataUrl', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         coverDataUrl: undefined,
       });
@@ -511,7 +510,7 @@ describe('getBookErrors', () => {
 
   describe('validateBookCoverSize', () => {
     test('return error with undefined coverDataUrl', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         coverFilesize: 1024 * 1024 * 2,
       });
@@ -524,7 +523,7 @@ describe('getBookErrors', () => {
 
   describe('validateBookCoverAspectRatio', () => {
     test('return error if cover aspect ratios is not 1.4', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         coverHeight: 800,
         coverWidth: 500,
@@ -536,7 +535,7 @@ describe('getBookErrors', () => {
     });
 
     test('return error if cover aspect ratios is not 1.4', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         coverHeight: 500,
         coverWidth: 700,
@@ -548,7 +547,7 @@ describe('getBookErrors', () => {
     });
 
     test('return no errors with allowable aspect ratio', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         coverHeight: 710,
         coverWidth: 500,
@@ -560,7 +559,7 @@ describe('getBookErrors', () => {
   describe('validateBookChapterSlugs', () => {
     test('return no errors with undefined specifiedChapterSlugs', () => {
       // specifiedChapterSlugs is optional
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         specifiedChapterSlugs: undefined,
         chapterOrderedByConfig: false,
@@ -569,7 +568,7 @@ describe('getBookErrors', () => {
     });
     test('return error if specifiedChapterSlugs is not array of string', () => {
       // specifiedChapterSlugs is optional
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         specifiedChapterSlugs: [123, 'text'] as any,
       });
@@ -582,7 +581,7 @@ describe('getBookErrors', () => {
 
   describe('validateBookChaptersFormat', () => {
     test('return error if specifiedChapterSlugs includes .md', () => {
-      const errors = getBookErrors({
+      const errors = validateBook({
         ...validBook,
         specifiedChapterSlugs: ['example1.md', 'example2.md'],
       });
@@ -594,8 +593,8 @@ describe('getBookErrors', () => {
   });
 });
 
-describe('getChapterErrors', () => {
-  const validChapter: Chapter = {
+describe('validateBookChapter', () => {
+  const validChapter = {
     slug: 'example',
     filename: 'example.md',
     title: 'title',
@@ -605,20 +604,20 @@ describe('getChapterErrors', () => {
   };
 
   test('return no errors with valid chapter', () => {
-    const errors = getChapterErrors(validChapter);
+    const errors = validateBookChapter(validChapter);
     expect(errors).toEqual([]);
   });
 
   describe('validateChapterItemSlug', () => {
     test('return no errors with short slug', () => {
-      const errors = getChapterErrors({
+      const errors = validateBookChapter({
         ...validChapter,
         slug: 's',
       });
       expect(errors).toEqual([]);
     });
     test('return error with slug which includes invalid letters', () => {
-      const errors = getChapterErrors({
+      const errors = validateBookChapter({
         ...validChapter,
         slug: 'invalid/slug',
       });
@@ -629,7 +628,7 @@ describe('getChapterErrors', () => {
 
   describe('validateMissingTitle', () => {
     test('return error without title', () => {
-      const errors = getChapterErrors({
+      const errors = validateBookChapter({
         ...validChapter,
         title: undefined,
       });
@@ -639,7 +638,7 @@ describe('getChapterErrors', () => {
       );
     });
     test('return error with empty title', () => {
-      const errors = getChapterErrors({
+      const errors = validateBookChapter({
         ...validChapter,
         title: '',
       });
@@ -652,7 +651,7 @@ describe('getChapterErrors', () => {
 
   describe('validateTitleLength', () => {
     test('return error with too long title', () => {
-      const errors = getChapterErrors({
+      const errors = validateBookChapter({
         ...validChapter,
         title:
           'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijklmnopqrstu', // 71 letters
@@ -664,7 +663,7 @@ describe('getChapterErrors', () => {
 
   describe('validateChapterFreeType', () => {
     test('return error if free property is not boolean', () => {
-      const errors = getChapterErrors({
+      const errors = validateBookChapter({
         ...validChapter,
         free: 'true' as any,
       });
@@ -675,7 +674,7 @@ describe('getChapterErrors', () => {
     });
 
     test('return no error if free property is undefined', () => {
-      const errors = getChapterErrors({
+      const errors = validateBookChapter({
         ...validChapter,
         free: undefined,
       });
