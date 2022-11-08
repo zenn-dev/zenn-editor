@@ -152,7 +152,7 @@ describe('Handle custom markdown format properly', () => {
     test('should generate youtube html', () => {
       const html = markdownToHtml('@[youtube](AXaoi6dz59A)');
       expect(html.trim()).toStrictEqual(
-        `<span class=\"embed-block embed-youtube\"><iframe src=\"https://www.youtube-nocookie.com/embed/AXaoi6dz59A\" allow=\"accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen loading=\"lazy\"></iframe></span>`.trim()
+        `<span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/AXaoi6dz59A" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span>`.trim()
       );
     });
 
