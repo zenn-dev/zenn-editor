@@ -20,6 +20,7 @@ aside.msg {
   }
 }
 
+// TODO: markdown一括変換をしたあと削除する
 .msg-icon {
   position: relative;
   top: 0.05em;
@@ -28,8 +29,25 @@ aside.msg {
   color: #ffb84c;
 }
 
+.msg-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 99rem;
+  background-color: #ffb84c;
+  color: #ffffff;
+}
+
+// TODO: markdown一括変換をしたあと削除する
 aside.msg.alert .msg-icon {
   color: #ff7670;
+}
+
+aside.msg.alert .msg-symbol {
+  background-color: #ff7670;
 }
 
 .msg-content {
@@ -37,11 +55,13 @@ aside.msg.alert .msg-icon {
   margin-left: 0.6em;
   min-width: 0; // flexboxからはみ出してしまうのを防ぐ
 
-  & > * {
+  &>* {
     margin: 0.7rem 0;
+
     &:first-child {
       margin-top: 0;
     }
+
     &:last-child {
       margin-bottom: 0;
     }
