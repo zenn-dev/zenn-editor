@@ -1,8 +1,13 @@
-# Zenn Markdown Html
+# zenn-markdown-html
 
-マークダウンを HTML へ変換するためのライブラリです。
+zenn-markdown-html は、Zenn独自の記法を含む markdown を HTML に変換するためのパッケージです。
 
-## API
+## 使い方
+
+このパッケージは2つのインターフェイスを提供します。
+
+- `markdownToHtml`: Zennの記事、本、コメントなどで使用するHTMLに変換します。
+- `markdownToSimpleHtml`: Publicationの定型メッセージなど、限られた装飾のみをサポートするHTMLに変換します。
 
 ### markdownToHtml
 
@@ -13,7 +18,7 @@ import markdownToHtml from 'zenn-markdown-html';
 const html = markdownToHtml(markdown);
 ```
 
-サポートする記法については、[Zenn の Markdown 記法一覧](https://zenn.dev/zenn/articles/markdown-guide) を参照してください。
+サポートする記法については、Zennの[Markdown記法一覧](https://zenn.dev/zenn/articles/markdown-guide)を参照してください。
 
 ### markdownToSimpleHtml
 
@@ -30,23 +35,6 @@ const html = markdownToSimpleHtml(markdown);
 - パラグラフ内の改行
 - URLをリンクに変換
 
-## 開発者向けのドキュメント
+## 開発者向けドキュメント
 
-### サニタイズ方針
-
-[sanitize-html](https://github.com/apostrophecms/sanitize-html)を利用しています。サポートしているマークダウン記法から利用できるHTMLタグと属性を指定してサニタイズしています。網羅しているつもりですが、もし抜け漏れがあったらISSUEで報告してください。
-
-### Babel の使用について
-
-`zenn-markdown-html` では、PrismJS の言語プラグインを予め全て読み込むために `babel-plugin-prismjs` を使用しているため、ソースコードのビルドには `babel` を使用し、型ファイル(\*.d.ts)のビルドには `tsc` を使用してビルドしています。
-
-### 埋め込み対応ガイドライン
-
-Markdownにカスタムブロックを追加し、外部ページの埋め込みを追加することができます。（例: `@[youtube](youtube-video-id)`）新しい埋め込みを追加する場合は、以下のガイドラインに従ってください。
-
-- iframeで埋め込みができること。ただし、外部から提供されているscriptを使ってiframeを生成するのはセキュリティ上の理由からNGです。
-- 埋め込みの対象となるサービスが広く普及しており、継続的に安定して運営されることが見込まれること。
-
-### Link Cardの埋め込みについて
-
-本文中にURLがある場合、それをLink Cardとして埋め込みで表示します。なお、一部のメジャーなサービス（Twitter、Youtube、など）は、Link Cardではなくサービスに対応する埋め込みに変換しています。この変換に対応するサービスの基準は、現在対応しているサービスと同等のものとします。
+https://zenn-dev.github.io/zenn-docs-for-developers/guides/zenn-editor/zenn-markdown-html
