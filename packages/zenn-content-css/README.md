@@ -1,21 +1,25 @@
-# Zenn Content CSS
-Style for post content.
+# zenn-content-css
 
-## Getting Started
-1. Some Css loader might be needed if you use this with Webpack.
+zenn-markdown-html で markdown から変換された HTML に適用するためのCSSです。
+
+## 使い方
+
+Webpackと併用する場合は、CSSローダーが必要になる場合があります。
+
 ```js
 import 'zenn-content-css';
 ```
 
-2. Add post content wrapper class `znc`
+スタイルを適用したい要素に `class=znc` を指定します。
+
 ```html
 <div class="znc">
   <!-- html parsed from markdown comes here. -->
 </div>
 ```
 
-Note that the styles are not applied to elements outside wrapper class `znc`.
+zncの外側の要素にはスタイルが適用されないことに注意してください。
 
-## ToDo
-- [ ] Add autoprefixer if needed.
+## 開発者向けドキュメント
 
+https://zenn-dev.github.io/zenn-docs-for-developers/guides/zenn-editor/zenn-content-css

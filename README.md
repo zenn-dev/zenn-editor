@@ -1,11 +1,6 @@
 ![Zenn Editor](https://user-images.githubusercontent.com/34590683/91540859-60e06780-e956-11ea-9762-0acac2b7c4c5.png)
 
-## 利用方法
-
-- [GitHubリポジトリをZennに連携する](https://zenn.dev/zenn/articles/connect-to-github)
-- [Zenn CLIをインストールする](https://zenn.dev/zenn/articles/install-zenn-cli)
-- [Zenn CLIの使い方](https://zenn.dev/zenn/articles/zenn-cli-guide)
-- [ZennのMarkdown記法](https://zenn.dev/zenn/articles/markdown-guide)
+このリポジトリは、主にZennのMarkdownエディタで使用するパッケージを管理しています。
 
 ## ご自身のWebサイトで使う場合
 
@@ -44,15 +39,16 @@ import 'zenn-content-css';
 ```
 
 ### 3. 埋め込みコンテンツを有効にするためscriptを読み込む
+
 以下のスクリプトを読み込むことで、TweetやMermaidなどの埋め込み記法が使用できるようになります。
 
 ```html
 <script src="https://embed.zenn.studio/js/listen-embed-event.js" ></script>
 ```
+
 このスクリプトは`<head>`タグ内で読み込みます。また、defer属性やasync属性を指定するとSPA等でのページ遷移時に正しく埋め込みが行われない可能性があることにご注意ください。
 
-
-### （KaTeX記法を使う場合のみ）`zenn-embed-elements`を読み込む
+### 4. （KaTeX記法を使う場合のみ）`zenn-embed-elements`を読み込む
 
 `zenn-embed-elements`はSSRに対応していないため、クライアント側で読み込む必要があります。
 
@@ -77,7 +73,10 @@ export default function App(props) {
 }
 ```
 
+## 開発者向けドキュメント
+
+https://zenn-dev.github.io/zenn-docs-for-developers/
 
 ## Licence
 
-MIT
+非営利目的の利用のみ許可します。
