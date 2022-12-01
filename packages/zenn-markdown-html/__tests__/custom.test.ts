@@ -124,7 +124,7 @@ describe('Handle custom markdown format properly', () => {
     test('should generate valid message box html', () => {
       const html = markdownToHtml(':::message\nhello\n:::');
       expect(html).toContain(
-        '<aside class="msg message"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 101 101" role="img" aria-label="message" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+        '<aside class="msg message"><span class="msg-symbol">!</span><div class="msg-content"><p>hello</p>\n</div></aside>'
       );
     });
 
@@ -137,7 +137,7 @@ describe('Handle custom markdown format properly', () => {
       validMarkdownPatterns.forEach((markdown) => {
         const html = markdownToHtml(markdown);
         expect(html).toContain(
-          '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+          '<aside class="msg alert"><span class="msg-symbol">!</span><div class="msg-content"><p>hello</p>\n</div></aside>'
         );
       });
     });
