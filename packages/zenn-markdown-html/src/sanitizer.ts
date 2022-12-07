@@ -33,7 +33,6 @@ const tags = [
   'strong',
   'summary',
   'sup',
-  'svg',
   'table',
   'tbody',
   'td',
@@ -90,9 +89,6 @@ const attributes = {
   strong: [],
   summary: [],
   sup: ['class'],
-  // キャメルケースはすべて小文字に変換でなければ認識してくれないそうなので、念の為両方指定しておく
-  // refs: https://github.com/apostrophecms/sanitize-html/issues/489
-  svg: ['aria-label', 'class', 'role', 'viewBox', 'viewbox', 'xmlns'],
   table: [],
   tbody: [],
   td: ['style'],
