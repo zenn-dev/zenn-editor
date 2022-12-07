@@ -1,16 +1,8 @@
 # zenn-embed-elements
 
-以下の記法を利用するためにこのモジュールの読み込みが必要になります。
+zenn-embed-elements は、 markdown のZenn独自の埋め込み要素をHTMLに変換するためのパッケージです。現在はKaTeXによる数式のレンダリングのためにのみ利用しています。
 
-- KaTeX
-
-※ v0.1.106 以降のバージョンでは zenn-embed-elements での以下の機能の提供は終了されています。
-- ~~ツイートの埋め込み~~
-- ~~Gistの埋め込み~~
-- ~~Mermaidの埋め込み~~
-
-最新のパッケージでこれらの埋め込みを行う方法についてはzenn-editorの[README](https://github.com/zenn-dev/zenn-editor#readme)をご確認ください。
-
+## 使い方
 
 Reactの場合、以下のような形でモジュールを読み込みます。
 
@@ -21,3 +13,7 @@ export default function App(...) {
   },[])
 }
 ```
+
+## 開発者向けドキュメント
+
+https://zenn-dev.github.io/zenn-docs-for-developers/guides/zenn-editor/zenn-embed-elements

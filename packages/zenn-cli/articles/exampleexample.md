@@ -283,7 +283,6 @@ here be dragons
 here be dragons
 :::
 
-
 :::: message
 nested
 ::: details summary

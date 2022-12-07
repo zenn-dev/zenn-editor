@@ -1,351 +1,356 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Zenn CSS</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-    />
-    <link rel="stylesheet" href="./lib/index.css" />
-    <style>
-      .container {
-        max-width: 700px;
-        margin: 1.5rem auto;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="znc container">
-      <p>このページではZennのマークダウンエディターの使い方を解説します。</p>
-      <h1 id="🖥ショートカット">🖥 ショートカット</h1>
-      <p>
-        Zennのエディターでは以下のショートカットを使うことができます。<code>Ctrl</code>と記載している部分はMacでは<code>⌘(Command)</code>キーを使用してください。
-      </p>
-      <h2 id="プレビュー">プレビュー</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>Ctrl + P</code></pre>
-      </div>
-      <p>
-        マークダウンがどのように表示されるかをチェックできます。もう一度ショートカットを実行すると、エディターに戻ります。
-      </p>
-      <h2 id="内容の保存">内容の保存</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>Ctrl + S</code></pre>
-      </div>
-      <h2 id="埋め込み">埋め込み</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>Ctrl + I</code></pre>
-      </div>
-      <p>
-        👇このようなモーダルが開きます。<br />
-        <img
-          src="https://storage.googleapis.com/zenn-user-upload/3eczstjiajdxbqujkloer616mj6r"
-          width="400"
-          alt=""
-          loading="lazy"
-        /><br />
-        ツイートやYouTube、CodePen、SpeakerDeckなどを挿入できます。
-      </p>
-      <h2 id="その他のショートカット">その他のショートカット</h2>
-      <ul>
-        <li><code>Ctrl + B</code>：選択部分を<strong>太字</strong>に</li>
-        <li><code>Ctrl + Z</code>：1つ戻る</li>
-        <li><code>Ctrl + K</code>：テキストリンクの挿入</li>
-        <li><code>Ctrl + alt + C</code>：コードブロックの挿入</li>
-        <li><code>Ctrl + L</code>：リストの挿入</li>
-        <li><code>Ctrl + alt + L</code>：番号付きリストの挿入</li>
-      </ul>
 
-      <p>
-        👆Macでは<code>alt</code>の代わりに<code>option</code>キーを使います。
-      </p>
-      <h1 id="📝マークダウンの基本">📝 マークダウンの基本</h1>
-      <h2 id="コードブロック">コードブロック</h2>
-      <blockquote>
-        <p>```</p>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zenn CSS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+  <link rel="stylesheet" href="./lib/index.css" />
+  <style>
+    .container {
+      max-width: 700px;
+      margin: 1.5rem auto;
+    }
 
-        <p>```</p>
-      </blockquote>
+  </style>
+</head>
 
-      <p>言語を指定するとシンタックスハイライトが適用されます。</p>
+<body>
+  <div class="znc container">
+    <p>このページではZennのマークダウンエディターの使い方を解説します。</p>
+    <h1 id="🖥ショートカット">🖥 ショートカット</h1>
+    <p>
+      Zennのエディターでは以下のショートカットを使うことができます。<code>Ctrl</code>と記載している部分はMacでは<code>⌘(Command)</code>キーを使用してください。
+    </p>
+    <h2 id="プレビュー">プレビュー</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>Ctrl + P</code></pre>
+    </div>
+    <p>
+      マークダウンがどのように表示されるかをチェックできます。もう一度ショートカットを実行すると、エディターに戻ります。
+    </p>
+    <h2 id="内容の保存">内容の保存</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>Ctrl + S</code></pre>
+    </div>
+    <h2 id="埋め込み">埋め込み</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>Ctrl + I</code></pre>
+    </div>
+    <p>
+      👇このようなモーダルが開きます。<br />
+      <img src="https://storage.googleapis.com/zenn-user-upload/3eczstjiajdxbqujkloer616mj6r" width="400" alt=""
+        loading="lazy" /><br />
+      ツイートやYouTube、CodePen、SpeakerDeckなどを挿入できます。
+    </p>
+    <h2 id="その他のショートカット">その他のショートカット</h2>
+    <ul>
+      <li><code>Ctrl + B</code>：選択部分を<strong>太字</strong>に</li>
+      <li><code>Ctrl + Z</code>：1つ戻る</li>
+      <li><code>Ctrl + K</code>：テキストリンクの挿入</li>
+      <li><code>Ctrl + alt + C</code>：コードブロックの挿入</li>
+      <li><code>Ctrl + L</code>：リストの挿入</li>
+      <li><code>Ctrl + alt + L</code>：番号付きリストの挿入</li>
+    </ul>
 
-      <blockquote>
-        <p>```js</p>
+    <p>
+      👆Macでは<code>alt</code>の代わりに<code>option</code>キーを使います。
+    </p>
+    <h1 id="📝マークダウンの基本">📝 マークダウンの基本</h1>
+    <h2 id="コードブロック">コードブロック</h2>
+    <blockquote>
+      <p>```</p>
 
-        <p>```</p>
-      </blockquote>
-      <div class="highlight">
-        <pre
-          class="highlight javascript"
-        ><code><span class="kd">const</span> <span class="kd">var</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <p>```</p>
+    </blockquote>
+
+    <p>言語を指定するとシンタックスハイライトが適用されます。</p>
+
+    <blockquote>
+      <p>```js</p>
+
+      <p>```</p>
+    </blockquote>
+    <div class="highlight">
+      <pre class="highlight javascript"><code><span class="kd">const</span> <span class="kd">var</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">)</span>
       <span class="p">}</span></code></pre>
-      </div>
-      <h2 id="数式">数式</h2>
-      <p>
-        <code>math</code>を指定されたコードブロックでは、TeX記法を使用できます。
-      </p>
+    </div>
+    <h2 id="数式">数式</h2>
+    <p>
+      <code>math</code>を指定されたコードブロックでは、TeX記法を使用できます。
+    </p>
 
-      <blockquote>
-        <p>```math</p>
+    <blockquote>
+      <p>```math</p>
 
-        <p>```</p>
-      </blockquote>
-      <p>
-        <mjx-container
-          class="MathJax CtxtMenu_Attached_0"
-          jax="CHTML"
-          display="true"
-          role="presentation"
-          tabindex="0"
-          ctxtmenu_counter="0"
-          style="font-size: 122.9%; position: relative;"
-          ><mjx-math
-            display="true"
-            class="MJX-TEX"
-            aria-hidden="true"
-            style="margin-left: 0px; margin-right: 0px;"
-            ><mjx-mi class="mjx-i"
-              ><mjx-c class="mjx-c1D465 TEX-I"></mjx-c></mjx-mi
-            ><mjx-mo class="mjx-n" space="4"
-              ><mjx-c class="mjx-c3D"></mjx-c></mjx-mo
-            ><mjx-texatom space="4" texclass="ORD"
-              ><mjx-mfrac
-                ><mjx-frac type="d"
-                  ><mjx-num
-                    ><mjx-nstrut type="d"></mjx-nstrut
-                    ><mjx-mrow
-                      ><mjx-mo class="mjx-n"
-                        ><mjx-c class="mjx-c2212"></mjx-c></mjx-mo
-                      ><mjx-mi class="mjx-i"
-                        ><mjx-c class="mjx-c1D44F TEX-I"></mjx-c></mjx-mi
-                      ><mjx-mo class="mjx-n" space="3"
-                        ><mjx-c class="mjx-cB1"></mjx-c></mjx-mo
-                      ><mjx-msqrt space="3"
-                        ><mjx-sqrt
-                          ><mjx-surd
-                            ><mjx-mo class="mjx-n"
-                              ><mjx-c
-                                class="mjx-c221A"
-                              ></mjx-c></mjx-mo></mjx-surd
-                          ><mjx-box style="padding-top: 0.087em;"
-                            ><mjx-msup
-                              ><mjx-mi class="mjx-i"
-                                ><mjx-c
-                                  class="mjx-c1D44F TEX-I"
-                                ></mjx-c></mjx-mi
-                              ><mjx-script style="vertical-align: 0.289em;"
-                                ><mjx-mn class="mjx-n" size="s"
-                                  ><mjx-c
-                                    class="mjx-c32"
-                                  ></mjx-c></mjx-mn></mjx-script></mjx-msup
-                            ><mjx-mo class="mjx-n" space="3"
-                              ><mjx-c class="mjx-c2212"></mjx-c></mjx-mo
-                            ><mjx-mn class="mjx-n" space="3"
-                              ><mjx-c class="mjx-c34"></mjx-c></mjx-mn
-                            ><mjx-mi class="mjx-i"
-                              ><mjx-c class="mjx-c1D44E TEX-I"></mjx-c></mjx-mi
-                            ><mjx-mi class="mjx-i"
-                              ><mjx-c
-                                class="mjx-c1D450 TEX-I"
-                              ></mjx-c></mjx-mi></mjx-box></mjx-sqrt></mjx-msqrt></mjx-mrow></mjx-num
-                  ><mjx-dbox
-                    ><mjx-dtable
-                      ><mjx-line type="d"></mjx-line
-                      ><mjx-row
-                        ><mjx-den
-                          ><mjx-dstrut type="d"></mjx-dstrut
-                          ><mjx-mrow
-                            ><mjx-mn class="mjx-n"
-                              ><mjx-c class="mjx-c32"></mjx-c></mjx-mn
-                            ><mjx-mi class="mjx-i"
-                              ><mjx-c
-                                class="mjx-c1D44E TEX-I"
-                              ></mjx-c></mjx-mi></mjx-mrow></mjx-den></mjx-row></mjx-dtable></mjx-dbox></mjx-frac></mjx-mfrac></mjx-texatom
-            ><mjx-mo class="mjx-n"
-              ><mjx-c class="mjx-c2E"></mjx-c></mjx-mo></mjx-math
-          ><mjx-assistive-mml
-            role="presentation"
-            unselectable="on"
-            display="block"
-            ><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"
-              ><mi>x</mi><mo>=</mo
-              ><mrow
-                ><mfrac
-                  ><mrow
-                    ><mo>−</mo><mi>b</mi><mo>±</mo
-                    ><msqrt
-                      ><msup><mi>b</mi><mn>2</mn></msup
-                      ><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt
-                    ></mrow
-                  ><mrow><mn>2</mn><mi>a</mi></mrow></mfrac
-                ></mrow
-              ><mo>.</mo></math
-            ></mjx-assistive-mml
-          ></mjx-container
-        >
-      </p>
+      <p>```</p>
+    </blockquote>
+    <p>
+      <mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" role="presentation" tabindex="0"
+        ctxtmenu_counter="0" style="font-size: 122.9%; position: relative;">
+        <mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;">
+          <mjx-mi class="mjx-i">
+            <mjx-c class="mjx-c1D465 TEX-I"></mjx-c>
+          </mjx-mi>
+          <mjx-mo class="mjx-n" space="4">
+            <mjx-c class="mjx-c3D"></mjx-c>
+          </mjx-mo>
+          <mjx-texatom space="4" texclass="ORD">
+            <mjx-mfrac>
+              <mjx-frac type="d">
+                <mjx-num>
+                  <mjx-nstrut type="d"></mjx-nstrut>
+                  <mjx-mrow>
+                    <mjx-mo class="mjx-n">
+                      <mjx-c class="mjx-c2212"></mjx-c>
+                    </mjx-mo>
+                    <mjx-mi class="mjx-i">
+                      <mjx-c class="mjx-c1D44F TEX-I"></mjx-c>
+                    </mjx-mi>
+                    <mjx-mo class="mjx-n" space="3">
+                      <mjx-c class="mjx-cB1"></mjx-c>
+                    </mjx-mo>
+                    <mjx-msqrt space="3">
+                      <mjx-sqrt>
+                        <mjx-surd>
+                          <mjx-mo class="mjx-n">
+                            <mjx-c class="mjx-c221A"></mjx-c>
+                          </mjx-mo>
+                        </mjx-surd>
+                        <mjx-box style="padding-top: 0.087em;">
+                          <mjx-msup>
+                            <mjx-mi class="mjx-i">
+                              <mjx-c class="mjx-c1D44F TEX-I"></mjx-c>
+                            </mjx-mi>
+                            <mjx-script style="vertical-align: 0.289em;">
+                              <mjx-mn class="mjx-n" size="s">
+                                <mjx-c class="mjx-c32"></mjx-c>
+                              </mjx-mn>
+                            </mjx-script>
+                          </mjx-msup>
+                          <mjx-mo class="mjx-n" space="3">
+                            <mjx-c class="mjx-c2212"></mjx-c>
+                          </mjx-mo>
+                          <mjx-mn class="mjx-n" space="3">
+                            <mjx-c class="mjx-c34"></mjx-c>
+                          </mjx-mn>
+                          <mjx-mi class="mjx-i">
+                            <mjx-c class="mjx-c1D44E TEX-I"></mjx-c>
+                          </mjx-mi>
+                          <mjx-mi class="mjx-i">
+                            <mjx-c class="mjx-c1D450 TEX-I"></mjx-c>
+                          </mjx-mi>
+                        </mjx-box>
+                      </mjx-sqrt>
+                    </mjx-msqrt>
+                  </mjx-mrow>
+                </mjx-num>
+                <mjx-dbox>
+                  <mjx-dtable>
+                    <mjx-line type="d"></mjx-line>
+                    <mjx-row>
+                      <mjx-den>
+                        <mjx-dstrut type="d"></mjx-dstrut>
+                        <mjx-mrow>
+                          <mjx-mn class="mjx-n">
+                            <mjx-c class="mjx-c32"></mjx-c>
+                          </mjx-mn>
+                          <mjx-mi class="mjx-i">
+                            <mjx-c class="mjx-c1D44E TEX-I"></mjx-c>
+                          </mjx-mi>
+                        </mjx-mrow>
+                      </mjx-den>
+                    </mjx-row>
+                  </mjx-dtable>
+                </mjx-dbox>
+              </mjx-frac>
+            </mjx-mfrac>
+          </mjx-texatom>
+          <mjx-mo class="mjx-n">
+            <mjx-c class="mjx-c2E"></mjx-c>
+          </mjx-mo>
+        </mjx-math>
+        <mjx-assistive-mml role="presentation" unselectable="on" display="block"><math
+            xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mi>x</mi>
+            <mo>=</mo>
+            <mrow>
+              <mfrac>
+                <mrow>
+                  <mo>−</mo>
+                  <mi>b</mi>
+                  <mo>±</mo>
+                  <msqrt>
+                    <msup>
+                      <mi>b</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mo>−</mo>
+                    <mn>4</mn>
+                    <mi>a</mi>
+                    <mi>c</mi>
+                  </msqrt>
+                </mrow>
+                <mrow>
+                  <mn>2</mn>
+                  <mi>a</mi>
+                </mrow>
+              </mfrac>
+            </mrow>
+            <mo>.</mo>
+          </math></mjx-assistive-mml>
+      </mjx-container>
+    </p>
 
-      <p>
-        また、<code>$$</code>で数式を挟むことでも、数式ブロックを作ることもできます。
-      </p>
-      <h3 id="インラインで数式を書く">インラインで数式を書く</h3>
+    <p>
+      また、<code>$$</code>で数式を挟むことでも、数式ブロックを作ることもできます。
+    </p>
+    <h3 id="インラインで数式を書く">インラインで数式を書く</h3>
 
-      <h2 id="見出し">見出し</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code># 見出し1
+    <h2 id="見出し">見出し</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code># 見出し1
       ## 見出し2
       ### 見出し3
       #### 見出し4</code></pre>
-      </div>
-      <h2 id="リスト">リスト</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>- Hello!
+    </div>
+    <h2 id="リスト">リスト</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>- Hello!
       - Hola!
         - Bonjour!
         * Hi!</code></pre>
-      </div>
-      <ul>
-        <li>Hello!</li>
-        <li>
-          Hola!
+    </div>
+    <ul>
+      <li>Hello!</li>
+      <li>
+        Hola!
 
-          <ul>
-            <li>Bonjour!</li>
-            <li>Hi!</li>
-          </ul>
-        </li>
-      </ul>
+        <ul>
+          <li>Bonjour!</li>
+          <li>Hi!</li>
+        </ul>
+      </li>
+    </ul>
 
-      <p>
-        リストのアイテムには<code>*</code>もしくは<code>-</code>を使います。
-      </p>
-      <h2 id="番号付きリスト">番号付きリスト</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>1. First
+    <p>
+      リストのアイテムには<code>*</code>もしくは<code>-</code>を使います。
+    </p>
+    <h2 id="番号付きリスト">番号付きリスト</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>1. First
       2. Second</code></pre>
-      </div>
-      <ol>
-        <li>First</li>
-        <li>Second</li>
-      </ol>
-      <h2 id="インラインスタイル">インラインスタイル</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>*イタリック*
+    </div>
+    <ol>
+      <li>First</li>
+      <li>Second</li>
+    </ol>
+    <h2 id="インラインスタイル">インラインスタイル</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>*イタリック*
       **太字**
       ~~打ち消し線~~
       インラインで`code`を挿入する</code></pre>
-      </div>
-      <p>
-        <em>イタリック</em><br />
-        <strong>太字</strong><br />
-        <del>打ち消し線</del><br />
-        インラインで<code>code</code>を挿入する
-      </p>
-      <h2 id="リンクテキスト">リンクテキスト</h2>
-      <div class="highlight">
-        <pre
-          class="highlight plaintext"
-        ><code>[アンカーテキスト](リンクのURL)</code></pre>
-      </div>
-      <p>
-        <a href="https://zenn.dev" rel="nofollow">アンカーテキスト</a><br />
-        <code>Ctrl + K</code>のショートカットでも挿入できます。
-      </p>
-      <h2 id="画像の挿入">画像の挿入</h2>
-      <div class="highlight">
-        <pre
-          class="highlight plaintext"
-        ><code>![altテキスト](https://画像のURL)</code></pre>
-      </div>
-      <p>
-        <img
-          src="https://storage.googleapis.com/zenn-user-upload/gxnwu3br83nsbqs873uibiy6fd43"
-          title=""
-          alt="altテキスト"
-        />
-      </p>
-      <h3 id="画像の横幅を指定する">画像の横幅を指定する</h3>
-      <div class="highlight">
-        <pre
-          class="highlight plaintext"
-        ><code>![altテキスト](https://画像のURL =250x)</code></pre>
-      </div>
-      <p>
-        <img
-          src="https://storage.googleapis.com/zenn-user-upload/gxnwu3br83nsbqs873uibiy6fd43"
-          width="250"
-          alt="altテキスト"
-          loading="lazy"
-        /><br />
-        画像の表示が大きすぎる場合は、URLの後に半角スペースを空けて<code>=○○x</code>と記述すると、画像の幅を指定できます。
-      </p>
-      <h2 id="テーブル">テーブル</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>| Head | Head | Head |
+    </div>
+    <p>
+      <em>イタリック</em><br />
+      <strong>太字</strong><br />
+      <del>打ち消し線</del><br />
+      インラインで<code>code</code>を挿入する
+    </p>
+    <h2 id="リンクテキスト">リンクテキスト</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>[アンカーテキスト](リンクのURL)</code></pre>
+    </div>
+    <p>
+      <a href="https://zenn.dev" rel="nofollow">アンカーテキスト</a><br />
+      <code>Ctrl + K</code>のショートカットでも挿入できます。
+    </p>
+    <h2 id="画像の挿入">画像の挿入</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>![altテキスト](https://画像のURL)</code></pre>
+    </div>
+    <p>
+      <img src="https://storage.googleapis.com/zenn-user-upload/gxnwu3br83nsbqs873uibiy6fd43" title="" alt="altテキスト" />
+    </p>
+    <h3 id="画像の横幅を指定する">画像の横幅を指定する</h3>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>![altテキスト](https://画像のURL =250x)</code></pre>
+    </div>
+    <p>
+      <img src="https://storage.googleapis.com/zenn-user-upload/gxnwu3br83nsbqs873uibiy6fd43" width="250" alt="altテキスト"
+        loading="lazy" /><br />
+      画像の表示が大きすぎる場合は、URLの後に半角スペースを空けて<code>=○○x</code>と記述すると、画像の幅を指定できます。
+    </p>
+    <h2 id="テーブル">テーブル</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>| Head | Head | Head |
       | ---- | ---- | ---- |
       | Text | Text | Text |
       | Text | Text | Text |</code></pre>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Head</th>
-            <th>Head</th>
-            <th>Head</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Text</td>
-            <td>Text</td>
-            <td>Text</td>
-          </tr>
-          <tr>
-            <td>Text</td>
-            <td>Text</td>
-            <td>Text</td>
-          </tr>
-        </tbody>
-      </table>
-      <h2 id="引用">引用</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>&gt; 引用文
-      &gt; 引用文</code></pre>
-      </div>
-      <blockquote>
-        <p>
-          引用文<br />
-          引用文
-        </p>
-      </blockquote>
-      <h2 id="区切り線">区切り線</h2>
-      <div class="highlight">
-        <pre class="highlight plaintext"><code>-----</code></pre>
-      </div>
-      <hr />
-      <aside class="msg ">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="message">
-          <circle cx="51" cy="51" r="50" fill="#ffb84c"></circle>
-          <text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text>
-        </svg>
-        <p>メッセージをここに</p>
-      </aside>
-      <aside class="msg alert">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="alert">
-          <circle cx="51" cy="51" r="50" fill="#ff7670"></circle>
-          <text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text>
-        </svg>
-        <p>警告メッセージをここに</p>
-      </aside>
-      <h3 id="サニタイズ適用前のYouTube埋め込み">サニタイズ適用前のYouTube埋め込み</h3>
-      <div class="embed-youtube"><iframe src="https://www.youtube.com/embed/ApXoWvfEYVU?loop=1&amp;playlist=ApXoWvfEYVU" allowfullscreen="" loading="lazy"></iframe></div>
-      <div class="embed-youtube"><iframe src="https://www.youtube.com/embed/ApXoWvfEYVU?loop=1&amp;playlist=ApXoWvfEYVU" allowfullscreen="" loading="lazy"></iframe></div>
-      <h3 id="サニタイズ適用後のYouTube埋め込み">サニタイズ適用後のYouTube埋め込み</h3>
-      <span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/ApXoWvfEYVU?loop=1&amp;playlist=ApXoWvfEYVU" allowfullscreen="" loading="lazy"></iframe></span>
-      <span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/ApXoWvfEYVU?loop=1&amp;playlist=ApXoWvfEYVU" allowfullscreen="" loading="lazy"></iframe></span>
     </div>
-  </body>
+    <table>
+      <thead>
+        <tr>
+          <th>Head</th>
+          <th>Head</th>
+          <th>Head</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Text</td>
+          <td>Text</td>
+          <td>Text</td>
+        </tr>
+        <tr>
+          <td>Text</td>
+          <td>Text</td>
+          <td>Text</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="引用">引用</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>&gt; 引用文
+      &gt; 引用文</code></pre>
+    </div>
+    <blockquote>
+      <p>
+        引用文<br />
+        引用文
+      </p>
+    </blockquote>
+    <h2 id="区切り線">区切り線</h2>
+    <div class="highlight">
+      <pre class="highlight plaintext"><code>-----</code></pre>
+    </div>
+    <hr />
+    <aside class="msg ">
+      <span class="msg-symbol">!</span>
+      <p>メッセージをここに</p>
+    </aside>
+    <aside class="msg alert">
+      <span class="msg-symbol">!</span>
+      <p>警告メッセージをここに</p>
+    </aside>
+    <h3 id="サニタイズ適用前のYouTube埋め込み">サニタイズ適用前のYouTube埋め込み</h3>
+    <div class="embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/X8NBvQDDXXc"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""
+        loading="lazy"></iframe></div>
+    <div class="embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/X8NBvQDDXXc"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""
+        loading="lazy"></iframe></div>
+    <h3 id="サニタイズ適用後のYouTube埋め込み">サニタイズ適用後のYouTube埋め込み</h3>
+    <span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/X8NBvQDDXXc"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""
+        loading="lazy"></iframe></span>
+    <span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/X8NBvQDDXXc"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""
+        loading="lazy"></iframe></span>
+  </div>
+</body>
+
 </html>

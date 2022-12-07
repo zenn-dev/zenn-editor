@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "lerna run test --stream",
-    "lint": "lerna run lint --stream",
+    "lint": "lerna run lint --stream && npm run lint-lockfile",
+    "lint-lockfile": "npx lockfile-lint --path yarn.lock --allowed-hosts npm yarn --validate-https",
     "lint:strict": "lerna run lint:strict --stream",
     "lint:fix": "lerna run lint:fix --stream",
     "build": "lerna run build --stream",

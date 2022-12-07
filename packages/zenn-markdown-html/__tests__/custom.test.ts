@@ -124,7 +124,7 @@ describe('Handle custom markdown format properly', () => {
     test('should generate valid message box html', () => {
       const html = markdownToHtml(':::message\nhello\n:::');
       expect(html).toContain(
-        '<aside class="msg message"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 101 101" role="img" aria-label="message" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+        '<aside class="msg message"><span class="msg-symbol">!</span><div class="msg-content"><p>hello</p>\n</div></aside>'
       );
     });
 
@@ -137,7 +137,7 @@ describe('Handle custom markdown format properly', () => {
       validMarkdownPatterns.forEach((markdown) => {
         const html = markdownToHtml(markdown);
         expect(html).toContain(
-          '<aside class="msg alert"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 101 101" role="img" aria-label="alert" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg><div class="msg-content"><p>hello</p>\n</div></aside>'
+          '<aside class="msg alert"><span class="msg-symbol">!</span><div class="msg-content"><p>hello</p>\n</div></aside>'
         );
       });
     });
@@ -152,7 +152,7 @@ describe('Handle custom markdown format properly', () => {
     test('should generate youtube html', () => {
       const html = markdownToHtml('@[youtube](AXaoi6dz59A)');
       expect(html.trim()).toStrictEqual(
-        `<span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/AXaoi6dz59A?loop=1&amp;playlist=AXaoi6dz59A" allowfullscreen loading="lazy"></iframe></span>`.trim()
+        `<span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/AXaoi6dz59A" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span>`.trim()
       );
     });
 
@@ -171,7 +171,7 @@ describe('Handle custom markdown format properly', () => {
         const html = markdownToHtml(url);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
-          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&amp;playlist=${videoId}" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
+          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
         );
       }
     );
@@ -189,7 +189,7 @@ describe('Handle custom markdown format properly', () => {
         const html = markdownToHtml(url);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
-          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube.com/embed/${videoId}?loop=1&amp;playlist=${videoId}&amp;start=${start}" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
+          `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}?start=${start}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
         );
       }
     );

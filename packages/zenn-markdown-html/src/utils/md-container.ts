@@ -42,8 +42,8 @@ export const containerMessageOptions = {
 
     if (tokens[idx].nesting === 1) {
       // opening tag
-      const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 101" role="img" aria-label="${messageName}" class="msg-icon"><circle cx="51" cy="51" r="50" fill="currentColor"></circle><text x="50%" y="50%" text-anchor="middle" fill="#ffffff" font-size="70" font-weight="bold" dominant-baseline="central">!</text></svg>`;
-      return `<aside class="msg ${messageName}">${icon}<div class="msg-content">`;
+      const symbol = `<span class="msg-symbol">!</span>`;
+      return `<aside class="msg ${messageName}">${symbol}<div class="msg-content">`;
     } else {
       // closing tag
       return `</div></aside>\n`;

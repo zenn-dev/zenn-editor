@@ -1,11 +1,11 @@
-# `zenn-validator`
+# zenn-validator
 
-> TODO: description
+記事や本のファイル名やメタ情報（frontmatter）などを検証してエラーメッセージを返すモジュールです。
 
-## Usage
+## 使い方
 
-```
-const zennValidator = require('zenn-validator');
+zenn-cliの実装を参照してください。
 
-// TODO: DEMONSTRATE API
-```
+## 開発者向けドキュメント
+
+https://zenn-dev.github.io/zenn-docs-for-developers/guides/zenn-editor/zenn-validator
