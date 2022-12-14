@@ -17,7 +17,7 @@
     "lint:strict": "eslint . --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "build": "rimraf lib/* && yarn build:src && yarn build:types",
-    "build:src": "esbuild ./src/*.ts --outdir=lib",
+    "build:src": "esbuild ./src/*.ts --format=cjs --outdir=lib",
     "build:types": "tsc --project ./tsconfig.build.json",
     "test": "jest"
   },
