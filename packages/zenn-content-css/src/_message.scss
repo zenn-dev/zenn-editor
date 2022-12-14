@@ -20,15 +20,6 @@ aside.msg {
   }
 }
 
-// TODO: markdown一括変換をしたあと削除する
-.msg-icon {
-  position: relative;
-  top: 0.05em;
-  width: 1.4em;
-  height: 1.4em;
-  color: #ffb84c;
-}
-
 .msg-symbol {
   display: flex;
   align-items: center;
@@ -39,11 +30,6 @@ aside.msg {
   border-radius: 99rem;
   background-color: #ffb84c;
   color: #ffffff;
-}
-
-// TODO: markdown一括変換をしたあと削除する
-aside.msg.alert .msg-icon {
-  color: #ff7670;
 }
 
 aside.msg.alert .msg-symbol {
