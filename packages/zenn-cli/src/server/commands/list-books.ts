@@ -1,6 +1,6 @@
 import arg from 'arg';
 import { CliExecFn } from '../types';
-import { BookMeta } from '../../common/types';
+import { BookMeta } from 'zenn-validator';
 import colors from 'colors/safe';
 import { invalidOptionText, listBooksHelpText } from '../lib/messages';
 

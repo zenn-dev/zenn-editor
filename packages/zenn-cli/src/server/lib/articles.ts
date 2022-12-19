@@ -9,7 +9,8 @@ import {
   getWorkingPath,
   completeHtml,
 } from './helper';
-import { Article, ArticleMeta, ItemSortType } from '../../common/types';
+import { Article, ArticleMeta } from 'zenn-validator';
+import { ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
 
 export function getLocalArticle(slug: string): null | Article {

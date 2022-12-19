@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { Article } from '../../../../common/types';
-import { validateArticle, ValidationError } from 'zenn-validator';
+import { Article, validateArticle, ValidationError } from 'zenn-validator';
 import { ContentContainer } from '../../ContentContainer';
 import { TopicList } from '../../TopicList';
 import { PropertyRow } from '../../PropertyRow';
