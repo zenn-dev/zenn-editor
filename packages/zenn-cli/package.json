@@ -20,7 +20,7 @@
     "dev:server": "nodemon ./src/server/zenn.ts",
     "build": "rimraf dist/* && run-p build:client build:server",
     "build:client": "tsc --project tsconfig.client.json && vite build",
-    "build:server": "webpack -c webpack.server.js",
+    "build:server": "tsc --project tsconfig.server.json --noEmit && webpack -c webpack.server.js",
     "zenn": "node dist/server/zenn.js",
     "test": "run-s test:client test:server",
     "test:client": "jest --config=jest.config.client.js",
