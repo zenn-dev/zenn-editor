@@ -1,6 +1,6 @@
 import arg from 'arg';
 import { CliExecFn } from '../types';
-import { ArticleMeta } from '../../common/types';
+import { ArticleMeta } from 'zenn-validator';
 import { invalidOptionText, listArticlesHelpText } from '../lib/messages';
 import { getLocalArticleMetaList } from '../lib/articles';
 import * as Log from '../lib/log';

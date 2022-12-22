@@ -1,4 +1,14 @@
-import { Dect, ItemValidator, ValidationError } from './types';
+import type {
+  Dect,
+  ItemValidator,
+  ValidationError,
+  Article,
+  ArticleMeta,
+  Book,
+  BookMeta,
+  Chapter,
+  ChapterMeta,
+} from './types';
 import {
   validateArticleType,
   validateBookChaptersFormat,
@@ -110,4 +120,12 @@ export const validateBookChapter = (chapter: Dect): ValidationError[] => {
   return getValidationErrors(chapter, validators);
 };
 
-export type { ValidationError };
+export type {
+  ValidationError,
+  Article,
+  ArticleMeta,
+  Book,
+  BookMeta,
+  Chapter,
+  ChapterMeta,
+};

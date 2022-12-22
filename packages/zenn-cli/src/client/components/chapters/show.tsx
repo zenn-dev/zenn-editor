@@ -8,7 +8,7 @@ import { Loading } from '../Loading';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { useFetch } from '../../hooks/useFetch';
 import { useTitle } from '../../hooks/useTitle';
-import { Book, Chapter } from '../../../common/types';
+import { Book, Chapter } from 'zenn-validator';
 
 type ChapterShowProps = {
   bookSlug: string;
