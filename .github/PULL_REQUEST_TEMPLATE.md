@@ -1,4 +1,5 @@
 ## :bookmark_tabs: Summary
+
 プルリクエストに含む内容の簡潔な記述
 
 Resolves #<issue-url>
@@ -9,3 +10,10 @@ Resolves #<issue-url>
 
 - [ ] :book: [Contribution Guide](https://github.com/zenn-dev/zenn-editor/blob/main/CONTRIBUTING.md) を読んだ
 - [ ] :woman_technologist: `canary` ブランチに対するプルリクエストである
+- [ ] zenn-cli で実行して正しく動作しているか確認する
+- [ ] 不要なコードが含まれていないか( コメントやログの消し忘れに注意 )
+- [ ] XSS になるようなコードが含まれていないか
+- [ ] モバイル端末での表示が考慮されているか
+- [ ] Pull Reuqest の内容は妥当か( 膨らみすぎてないか )
+
+より詳しい内容は [Pull Request Policy](https://github.com/zenn-dev/zenn-editor/tree/canary/docs/pull_request_policy.md) を参照してください。
