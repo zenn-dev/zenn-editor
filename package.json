@@ -1,20 +1,20 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "devDependencies": {
-    "lerna": "^5.4.3"
+    "@lerna-lite/cli": "^1.13.0",
+    "npm-run-all": "^4.1.5",
+    "turbo": "^1.7.0"
   },
   "scripts": {
-    "test": "lerna run test --stream",
-    "lint": "lerna run lint --stream && npm run lint-lockfile",
-    "lint-lockfile": "npx lockfile-lint --path yarn.lock --allowed-hosts npm yarn --validate-https",
-    "lint:strict": "lerna run lint:strict --stream",
-    "lint:fix": "lerna run lint:fix --stream",
-    "build": "lerna run build --stream",
-    "publish:all": "npm run test && npm run build && lerna publish",
-    "publish:canary": "npm run build && lerna publish --pre-dist-tag canary"
+    "build": "turbo build",
+    "lint": "run-p lint:*",
+    "lint:src": "turbo lint",
+    "lint:lockfile": "npx lockfile-lint --path pnpm-lock.yaml --allowed-hosts npm yarn --validate-https",
+    "strict:lint": "turbo strict:lint",
+    "fix": "turbo fix",
+    "publish:all": "pnpm test && pnpm build && lerna publish",
+    "publish:canary": "pnpm build && lerna publish --pre-dist-tag canary",
+    "test": "turbo test"
   },
   "repository": {
     "type": "git",
@@ -28,5 +28,11 @@
   "homepage": "https://github.com/zenn-dev/zenn-editor#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "packageManager": "pnpm@7.19.0",
+  "engines": {
+    "npm": "use pnpm please!",
+    "yarn": "use pnpm please!",
+    "pnpm": ">=7.19.0"
   }
 }
