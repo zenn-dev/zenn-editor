@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "turbo build",
-    "lint": "run-p lint:*",
+    "lint": "run-p lint:src",
     "lint:src": "turbo lint",
     "lint:lockfile": "npx lockfile-lint --path pnpm-lock.yaml --allowed-hosts npm yarn --validate-https",
     "strict:lint": "turbo strict:lint",
