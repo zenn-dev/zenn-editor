@@ -13,7 +13,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Install modules
-        run: yarn
+
+      # pnpm installも実行されます
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
       - name: Lint
-        run: yarn lint:strict
+        run: pnpm lint:strict
