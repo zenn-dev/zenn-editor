@@ -19,12 +19,8 @@ import { ListItemInner } from './sidebar/ListItemInner';
 import { Settings } from './sidebar/Settings';
 
 // others
-import {
-  ArticleMeta,
-  BookMeta,
-  ChapterMeta,
-  ItemSortType,
-} from '../../common/types';
+import { ArticleMeta, BookMeta, ChapterMeta } from 'zenn-validator';
+import { ItemSortType } from '../../common/types';
 import {
   LinkArticle,
   LinkBook,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChapterMeta } from '../../../../common/types';
+import { ChapterMeta } from 'zenn-validator';
 import { LinkChapter } from '../../Routes';
 import styled from 'styled-components';
 

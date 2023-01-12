@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.1.134",
+  "version": "0.1.135-alpha.2",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "dev:server": "nodemon ./src/server/zenn.ts",
     "build": "rimraf dist/* && run-p build:client build:server",
     "build:client": "tsc --project tsconfig.client.json && vite build",
-    "build:server": "webpack -c webpack.server.js",
+    "build:server": "tsc --project tsconfig.server.json --noEmit && webpack -c webpack.server.js",
     "zenn": "node dist/server/zenn.js",
     "test": "run-s test:client test:server",
     "test:client": "jest --config=jest.config.client.js",
@@ -93,10 +93,10 @@
     "webpack": "^5.73.0",
     "webpack-cli": "^4.9.2",
     "ws": "^7.4.6",
-    "zenn-content-css": "^0.1.134",
-    "zenn-embed-elements": "^0.1.134",
-    "zenn-markdown-html": "^0.1.134",
-    "zenn-validator": "^0.1.134"
+    "zenn-content-css": "^0.1.135-alpha.2",
+    "zenn-embed-elements": "^0.1.135-alpha.2",
+    "zenn-markdown-html": "^0.1.135-alpha.2",
+    "zenn-validator": "^0.1.135-alpha.2"
   },
   "engines": {
     "node": ">=14.0.0"

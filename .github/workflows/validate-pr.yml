@@ -28,10 +28,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: ${{ github.event.pull_request.comments_url }}
         run: |
-          echo "Please add one of the following labels: fix, bugfix, enhancement, feature, chore, release" >> comments
-          sed -i -z 's/\n/\\n/g' comments
-          curl -X POST \
-              -H "Authorization: token ${GITHUB_TOKEN}" \
-              -d "{\"body\": \"$(cat comments)\"}" \
-              ${URL}
+          echo "::error::次のラベルを付けてください。 labels: fix, bugfix, enhancement, feature, chore, release"
           exit 1
