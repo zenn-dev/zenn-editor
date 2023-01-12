@@ -20,4 +20,4 @@ jobs:
           version: 7
 
       - name: Lint
-        run: pnpm lint:strict
+        run: pnpm strict:lint
