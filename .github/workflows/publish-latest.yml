@@ -24,10 +24,10 @@ jobs:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
 
-      # pnpm install も実行されます
       - uses: pnpm/action-setup@v2
         with:
           version: 7
+          run_install: true # pnpm installも実行されます
 
       # Enable lerna to commit on GitHub.
       # Note that this does not work with protected branch.

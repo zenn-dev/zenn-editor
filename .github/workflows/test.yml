@@ -14,10 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # pnpm installも実行されます
       - uses: pnpm/action-setup@v2
         with:
           version: 7
+          run_install: true # pnpm installも実行されます
 
       - name: Build
         run: pnpm build
