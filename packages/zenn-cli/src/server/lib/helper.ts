@@ -138,7 +138,7 @@ const acceptImageTypes = [
 
 export const acceptImageExtensions = acceptImageTypes.map(({ ext }) => ext);
 
-type AcceptImageType = typeof acceptImageTypes[number]['type'];
+type AcceptImageType = (typeof acceptImageTypes)[number]['type'];
 
 export function inferImageTypeFromUrl(url: string): null | AcceptImageType {
   const targetImageType = acceptImageTypes.find(({ ext }) => url.endsWith(ext));

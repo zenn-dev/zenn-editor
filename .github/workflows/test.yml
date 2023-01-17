@@ -12,14 +12,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Install modules
-        run: yarn
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: パッケージをインストール
+        run: pnpm install
+
       - name: Build
-        run: yarn build
+        run: pnpm build
+
       - name: Run tests for zenn-markdown-html
-        run: yarn test
+        run: pnpm test
         working-directory: packages/zenn-markdown-html
+
       - name: Run tests for zenn-cli
-        run: yarn test
+        run: pnpm test
         working-directory: packages/zenn-cli

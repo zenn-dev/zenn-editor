@@ -13,8 +13,8 @@
     "lib/index.css"
   ],
   "scripts": {
-    "build": "sass ./src/index.scss ./lib/index.css --style compressed --no-source-map",
     "dev": "sass ./src/index.scss ./lib/index.css --watch --no-source-map",
+    "build": "sass ./src/index.scss ./lib/index.css --style compressed --no-source-map",
     "test": "echo 'no test yet'"
   },
   "devDependencies": {

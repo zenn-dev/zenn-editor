@@ -16,12 +16,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          cache: 'pnpm'
+          node-version: 18
           registry-url: 'https://registry.npmjs.org'
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: パッケージをインストール
+        run: pnpm install
+
       # Enable lerna to commit on GitHub.
       # Note that this does not work with protected branch.
       - name: Configure git identity
@@ -31,18 +41,20 @@ jobs:
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install
-        run: yarn --frozen-lockfile
+
       - name: Build
-        run: yarn build
+        run: pnpm build
+
       # zenn-editor packages does not follow semantic versioning.
       # This is because anyone should use latest version which is synced with zenn.dev
       - name: Bump version to canary
-        run: lerna version prerelease --yes --no-private
+        run: pnpm lerna version prerelease --yes --no-private
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set released version to env
         run: node -p -e '`RELEASED_PACKAGE_VERSION=${require("./lerna.json").version}`' >> $GITHUB_ENV
+
       - name: Create release
         uses: release-drafter/release-drafter@v5
         with:
@@ -53,8 +65,9 @@ jobs:
           prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish canary
-        run: 'lerna publish from-package --yes --pre-dist-tag canary'
+        run: pnpm lerna publish from-package --yes --pre-dist-tag canary
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
