@@ -43,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        run: yarn build
+        run: pnpm build
 
       # zenn-editor packages does not follow semantic versioning.
       # This is because anyone should use latest version which is synced with zenn.dev
