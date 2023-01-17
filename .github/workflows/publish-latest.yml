@@ -16,18 +16,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup node
         uses: actions/setup-node@v2
         with:
+          cache: 'pnpm'
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
 
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-          run_install: true # pnpm installも実行されます
+
+      - name: パッケージをインストール
+        run: pnpm install
 
       # Enable lerna to commit on GitHub.
       # Note that this does not work with protected branch.
