@@ -1,6 +1,6 @@
 {
   "name": "zenn-validator",
-  "version": "0.1.136-alpha.1",
+  "version": "0.1.136",
   "license": "MIT",
   "description": "Validator for Zenn contents",
   "main": "lib/index.js",
