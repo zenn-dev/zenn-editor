@@ -1,3 +1,3 @@
 import { itemSortTypes } from './helper';
 
-export type ItemSortType = typeof itemSortTypes[number];
+export type ItemSortType = (typeof itemSortTypes)[number];

@@ -1,6 +1,6 @@
 {
   "name": "zenn-markdown-html",
-  "version": "0.1.135",
+  "version": "0.1.136-alpha.1",
   "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
@@ -13,12 +13,13 @@
     "lib"
   ],
   "scripts": {
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:strict": "eslint . --ext .ts,.tsx --max-warnings 0",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "build": "rimraf lib/* && yarn build:types && yarn build:src",
+    "clean": "rimraf lib/*",
+    "build": "npm run clean && run-p build:*",
     "build:src": "babel ./src --extensions '.ts,.tsx' --ignore '**/*.d.ts' --out-dir ./lib",
     "build:types": "tsc --project ./tsconfig.build.json",
+    "lint": "eslint . --ext .ts,.tsx",
+    "fix": "eslint . --ext .ts,.tsx --fix",
+    "strict:lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "jest"
   },
   "devDependencies": {

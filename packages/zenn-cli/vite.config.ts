@@ -12,11 +12,11 @@ export default defineConfig({
   build: {
     outDir: path.join(__dirname, distDirRoot),
     commonjsOptions: {
-      include: [/zenn-validator/, /node_modules/]
-    }
+      include: [/zenn-validator/, /node_modules/],
+    },
   },
   optimizeDeps: {
-    include: ['zenn-validator']
+    include: ['zenn-validator'],
   },
   plugins: [reactRefresh()],
   // for developing preview

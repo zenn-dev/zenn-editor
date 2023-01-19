@@ -21,7 +21,11 @@ module.exports = {
   },
   testMatch: ['<rootDir>/src/server/__tests__/**/*.test.ts'],
   resetMocks: true,
+
   // esmが使われているパッケージはcommonjsにトランスパイルする必要があるため
-  // esmのパッケージを除いてIgnoreすることで、esmのパッケージを`transform`の対象に含める
-  transformIgnorePatterns: [`node_modules/(?!(${esmPackages.join('|')})/)`],
+  // esmパッケージのみを`transform`の対象に含める
+  // pnpmではルートの.pnpmにインストールされるため、それを考慮したパスを指定する必要がある
+  transformIgnorePatterns: [
+    `node_modules/(?!(?:.pnpm/)?(${esmPackages.join('|')}))`,
+  ],
 };

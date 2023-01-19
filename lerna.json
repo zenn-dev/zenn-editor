@@ -2,7 +2,6 @@
   "packages": [
     "packages/*"
   ],
-  "version": "0.1.135",
-  "npmClient": "yarn",
-  "useWorkspaces": true
+  "version": "0.1.136-alpha.1",
+  "npmClient": "pnpm"
 }
