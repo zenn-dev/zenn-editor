@@ -8,7 +8,7 @@ import { Loading } from '../Loading';
 import { useFetch } from '../../hooks/useFetch';
 import { useTitle } from '../../hooks/useTitle';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
-import { Book, ChapterMeta } from 'zenn-validator';
+import { Book, ChapterMeta } from 'zenn-model';
 import { MdOutlineCallMade } from 'react-icons/md';
 
 type BookShowProps = {

@@ -17,7 +17,7 @@ import {
   inferImageTypeFromUrl,
   acceptImageExtensions,
 } from './helper';
-import { Book, BookMeta, Chapter, ChapterMeta } from 'zenn-validator';
+import { Book, BookMeta, Chapter, ChapterMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
 
 export function getLocalBook(slug: string): null | Book {

@@ -8,7 +8,7 @@ import { Loading } from '../Loading';
 import { useFetch } from '../../hooks/useFetch';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { useTitle } from '../../hooks/useTitle';
-import { Article } from 'zenn-validator';
+import { Article } from 'zenn-model';
 
 type ArticleShowProps = {
   slug: string;
