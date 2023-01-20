@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { MdOutlineArrowBackIos } from 'react-icons/md';
 import styled from 'styled-components';
-import { Book, Chapter, validateBookChapter } from 'zenn-validator';
+import { Book, Chapter, validateBookChapter } from 'zenn-model';
 import { ContentContainer } from '../../ContentContainer';
 import { PropertyRow } from '../../PropertyRow';
 import { LinkBook } from '../../Routes';

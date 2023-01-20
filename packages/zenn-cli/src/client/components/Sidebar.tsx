@@ -19,7 +19,7 @@ import { ListItemInner } from './sidebar/ListItemInner';
 import { Settings } from './sidebar/Settings';
 
 // others
-import { ArticleMeta, BookMeta, ChapterMeta } from 'zenn-validator';
+import { ArticleMeta, BookMeta, ChapterMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
 import {
   LinkArticle,

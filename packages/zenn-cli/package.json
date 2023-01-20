@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.1.136",
+  "version": "0.1.137-alpha.0",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -97,7 +97,7 @@
     "zenn-content-css": "workspace:*",
     "zenn-embed-elements": "workspace:*",
     "zenn-markdown-html": "workspace:*",
-    "zenn-validator": "workspace:*"
+    "zenn-model": "workspace:*"
   },
   "engines": {
     "node": ">=14.0.0"

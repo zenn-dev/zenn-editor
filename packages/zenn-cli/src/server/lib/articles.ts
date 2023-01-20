@@ -9,7 +9,7 @@ import {
   getWorkingPath,
   completeHtml,
 } from './helper';
-import { Article, ArticleMeta } from 'zenn-validator';
+import { Article, ArticleMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
 
