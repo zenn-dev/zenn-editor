@@ -1,12 +1,17 @@
 import markdownToHtml from '../src/index';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { MarkdownOptions } from '../src/types';
+
+const options: MarkdownOptions = {
+  embedOrigin: 'https://embed-server.example.com',
+};
 
 const embeddedPattern =
   /<span class="embed-block zenn-embedded[-\w\s]*">(.+)<\/span>/;
 
 /** 埋め込み要素の <iframe /> 文字列を返す */
 const getIframeHtml = (markdown: string): string | null => {
-  return markdownToHtml(markdown).match(embeddedPattern)?.[1] || null;
+  return markdownToHtml(markdown, options).match(embeddedPattern)?.[1] || null;
 };
 
 describe('Handle custom markdown format properly', () => {
@@ -54,7 +59,7 @@ describe('Handle custom markdown format properly', () => {
           `@[card](http://youtu.be/${dummy})`,
           `@[github](https://github.com/zenn-dev/zenn-editor/blob/canary/${dummy})`,
         ].forEach((text) => {
-          const html = markdownToHtml(text);
+          const html = markdownToHtml(text, options);
           expect(html).not.toContain(
             '埋め込みURLは300文字以内にする必要があります'
           );
@@ -93,7 +98,7 @@ describe('Handle custom markdown format properly', () => {
 
     test('should convert a gist-link to embedded iframe with an encoded url string', () => {
       const url = 'https://gist.github.com/foo/bar?file=あ漢字$';
-      const html = markdownToHtml(`@[gist](${url})`);
+      const html = getIframeHtml(`@[gist](${url})`);
       expect(html).toContain(encodeURIComponent(url));
     });
 
@@ -122,7 +127,7 @@ describe('Handle custom markdown format properly', () => {
 
   describe('MessageBox', () => {
     test('should generate valid message box html', () => {
-      const html = markdownToHtml(':::message\nhello\n:::');
+      const html = markdownToHtml(':::message\nhello\n:::', options);
       expect(html).toContain(
         '<aside class="msg message"><span class="msg-symbol">!</span><div class="msg-content"><p>hello</p>\n</div></aside>'
       );
@@ -135,7 +140,7 @@ describe('Handle custom markdown format properly', () => {
         ':::message   alert  \nhello\n:::',
       ];
       validMarkdownPatterns.forEach((markdown) => {
-        const html = markdownToHtml(markdown);
+        const html = markdownToHtml(markdown, options);
         expect(html).toContain(
           '<aside class="msg alert"><span class="msg-symbol">!</span><div class="msg-content"><p>hello</p>\n</div></aside>'
         );
@@ -143,14 +148,14 @@ describe('Handle custom markdown format properly', () => {
     });
 
     test('should not generate message box with invalid class', () => {
-      const html = markdownToHtml(':::message invalid"\nhello\n:::');
+      const html = markdownToHtml(':::message invalid"\nhello\n:::', options);
       expect(html).not.toContain('<aside class="msg');
     });
   });
 
   describe('Youtube', () => {
     test('should generate youtube html', () => {
-      const html = markdownToHtml('@[youtube](AXaoi6dz59A)');
+      const html = markdownToHtml('@[youtube](AXaoi6dz59A)', options);
       expect(html.trim()).toStrictEqual(
         `<span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/AXaoi6dz59A" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span>`.trim()
       );
@@ -168,7 +173,7 @@ describe('Handle custom markdown format properly', () => {
     `(
       '$url should generate youtube html without start time',
       ({ url, videoId }) => {
-        const html = markdownToHtml(url);
+        const html = markdownToHtml(url, options);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
           `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
@@ -186,7 +191,7 @@ describe('Handle custom markdown format properly', () => {
     `(
       '$url should generate youtube html with start time',
       ({ url, videoId, start }) => {
-        const html = markdownToHtml(url);
+        const html = markdownToHtml(url, options);
         const escapeUrl = escapeHtml(url);
         expect(html.trim()).toStrictEqual(
           `<p><span class="embed-block embed-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}?start=${start}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></span><a href="${escapeUrl}" style="display:none" target="_blank" rel="nofollow noopener noreferrer">${escapeUrl}</a></p>`.trim()
@@ -201,7 +206,7 @@ describe('Handle custom markdown format properly', () => {
       url                                                                                          | videoId
       ${'youtube.com/watch?gl=NL&hl=nl&feature=g-vrec&context=G2584313RVAAAAAAAABA&v=35LqQPKylEA'} | ${'35LqQPKylEA'}
     `('$url should not generate youtube html', ({ url }) => {
-      const html = markdownToHtml(url);
+      const html = markdownToHtml(url, options);
       const escapeUrl = escapeHtml(url);
       expect(html.trim()).toStrictEqual(`<p>${escapeUrl}</p>`.trim());
     });
@@ -215,7 +220,7 @@ describe('Handle custom markdown format properly', () => {
         'https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File?node-id=0%3A1',
       ];
       validUrls.forEach((url) => {
-        const html = markdownToHtml(`@[figma](${url})`);
+        const html = markdownToHtml(`@[figma](${url})`, options);
         expect(html).toContain(
           `<span class="embed-block embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&amp;url=${url}" width="100%" style="aspect-ratio:16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`
         );
@@ -224,7 +229,8 @@ describe('Handle custom markdown format properly', () => {
 
     test('should not generate figma html with invalid url', () => {
       const html = markdownToHtml(
-        '@[figma](https://www.figma.com/Sample-File)'
+        '@[figma](https://www.figma.com/Sample-File)',
+        options
       );
       expect(html).toContain(
         'ファイルまたはプロトタイプのFigma URLを指定してください'
@@ -242,7 +248,7 @@ describe('Handle custom markdown format properly', () => {
       ];
 
       validUrls.forEach((url) => {
-        const html = markdownToHtml(`@[blueprintue](${url})`);
+        const html = markdownToHtml(`@[blueprintue](${url})`, options);
         expect(html).toContain(
           `<span class="embed-block embed-blueprintue"><iframe src="${url}" width="100%" style="aspect-ratio:16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`
         );
@@ -256,7 +262,7 @@ describe('Handle custom markdown format properly', () => {
       ];
 
       invalidUrls.forEach((url) => {
-        const html = markdownToHtml(`@[blueprintue](${url})`);
+        const html = markdownToHtml(`@[blueprintue](${url})`, options);
         expect(html).toContain(
           '「https://blueprintue.com/render/」から始まる正しいURLを指定してください'
         );

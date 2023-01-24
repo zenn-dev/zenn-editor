@@ -93,7 +93,9 @@ export function getLocalChapter(
   if (!data) return null;
 
   const { meta, bodyMarkdown } = data;
-  const rawHtml = markdownToHtml(bodyMarkdown);
+  const rawHtml = markdownToHtml(bodyMarkdown, {
+    embedOrigin: 'https://embed.zenn.studio',
+  });
   const bodyHtml = completeHtml(rawHtml);
   return {
     ...meta,

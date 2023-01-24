@@ -1,22 +1,28 @@
 import markdownToHtml from '../src/index';
+import { MarkdownOptions } from '../src/types';
+
+const options: MarkdownOptions = {
+  embedOrigin: 'https://embed-sever.example.com',
+};
 
 const iframPattern =
   /<span class="embed-block zenn-embedded[-\w\s]*">(.+)<\/span>/;
 
 const generateIframeHTML = (content: string) => {
-  return markdownToHtml(content).match(iframPattern)?.[1];
+  return markdownToHtml(content, options).match(iframPattern)?.[1];
 };
 
 describe('Detect mermaid property', () => {
   test('should wrap in zenn-embedded', () => {
     const content = `graph TD\nA --> B`;
-    const html = markdownToHtml(`\`\`\`mermaid\n${content}\n\`\`\``);
+    const html = markdownToHtml(`\`\`\`mermaid\n${content}\n\`\`\``, options);
     expect(html).toMatch(iframPattern);
   });
 
-  test('should have "embed.zenn.studio" url in iframe src attribute', () => {
+  test('should have `embedOrigin` in iframe src attribute', () => {
     const html = generateIframeHTML(`\`\`\`mermaid\n\n\`\`\``);
-    expect(html).toMatch(/src="https:\/\/embed.zenn.studio\/mermaid#.+"/);
+    const pattern = new RegExp(`src="${options.embedOrigin}/mermaid#.+"`);
+    expect(html).toMatch(pattern);
   });
 
   test('should generate TD valid code format html', () => {

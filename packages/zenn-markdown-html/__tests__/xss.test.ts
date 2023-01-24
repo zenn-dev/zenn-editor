@@ -55,7 +55,9 @@ describe('No XSS Vulnerability', () => {
   });
   test('should escape img tag around mermaid syntax', () => {
     const content = `graph TD\nA["<img src="invalid" onerror=alert('XSS')/>"] --> B`;
-    const html = markdownToHtml(`\`\`\`mermaid\n${content}\`\`\``);
+    const html = markdownToHtml(`\`\`\`mermaid\n${content}\`\`\``, {
+      embedOrigin: 'https://embed-server.example.com',
+    });
     expect(html).toContain(encodeURIComponent(content));
   });
   test('should escape img tag around figma syntax', () => {

@@ -1,8 +1,9 @@
 import MarkdownIt from 'markdown-it';
+import { MarkdownOptions } from '../types';
 import { generateEmbedHTML, isEmbedType } from './embed-helper';
 
 // Forked from: https://github.com/posva/markdown-it-custom-block
-export function mdCustomBlock(md: MarkdownIt) {
+export function mdCustomBlock(md: MarkdownIt, options?: MarkdownOptions) {
   md.renderer.rules.custom = function tokenizeBlock(tokens, idx) {
     const { tag, arg }: any = tokens[idx].info; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -10,7 +11,7 @@ export function mdCustomBlock(md: MarkdownIt) {
     if (typeof arg !== 'string') return '';
 
     try {
-      return generateEmbedHTML(tag, arg) + '\n';
+      return generateEmbedHTML(tag, arg, options || {}) + '\n';
     } catch (e) {
       return '';
     }

@@ -38,22 +38,6 @@ export function isJsfiddleUrl(url: string): boolean {
 const youtubeRegexp =
   /^(http(s?):\/\/)?(www\.)?youtu(be)?\.([a-z])+\/(watch(.*?)([?&])v=)?(.*?)(&(.)*)?$/;
 
-export function extractYoutubeVideoParameters(
-  youtubeUrl: string
-): { videoId: string; start?: string } | undefined {
-  const match = youtubeUrl.match(youtubeRegexp);
-  if (match && match[9].length == 11) {
-    const urlParams = new URLSearchParams(youtubeUrl);
-    const start = urlParams.get('t');
-    return {
-      videoId: match[9],
-      start: start?.replace('s', ''), // https://www.youtube.com/watch?v=ABCSDGG&t=19101s => 19101
-    };
-  } else {
-    return undefined;
-  }
-}
-
 export function isYoutubeUrl(url: string): boolean {
   return youtubeRegexp.test(url);
 }
@@ -74,4 +58,23 @@ export function isFigmaUrl(url: string): boolean {
   return /^https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/[\w-?=&%]+)?$/.test(
     url
   );
+}
+
+/**
+ * youtube の URL から videoId と開始位置の秒数を取得する
+ */
+export function extractYoutubeVideoParameters(
+  youtubeUrl: string
+): { videoId: string; start?: string } | undefined {
+  const match = youtubeUrl.match(youtubeRegexp);
+  if (match && match[9].length == 11) {
+    const urlParams = new URLSearchParams(youtubeUrl);
+    const start = urlParams.get('t');
+    return {
+      videoId: match[9],
+      start: start?.replace('s', ''), // https://www.youtube.com/watch?v=ABCSDGG&t=19101s => 19101
+    };
+  } else {
+    return undefined;
+  }
 }
