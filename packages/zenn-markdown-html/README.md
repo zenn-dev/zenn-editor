@@ -20,6 +20,14 @@ const html = markdownToHtml(markdown);
 
 サポートする記法については、Zennの[Markdown記法一覧](https://zenn.dev/zenn/articles/markdown-guide)を参照してください。
 
+埋め込み機能を使用する場合は、ホスティングされている埋め込みサーバーの Origin URL を `embedOrigin` を指定してください。
+非商用の場合のみ Zenn が提供する埋め込みサーバーを指定できます。
+
+```js
+import markdownToHtml from 'zenn-markdown-html';
+const html = markdownToHtml(markdown, { embedOrigin: "https://embed.zenn.studio" });
+```
+
 ### markdownToSimpleHtml
 
 MarkdownをHTMLに変換します。markdownToHtmlと比べてサポートする記法が限られています。
