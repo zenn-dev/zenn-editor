@@ -41,17 +41,20 @@ function getArticleSlugs(sort?: ItemSortType): string[] {
 
 function getArticleFilenames(sort?: ItemSortType): string[] {
   const dirpath = getWorkingPath('articles');
-  const listOrderedItems =
-    sort === 'system' ? listFilenames : listFilenamesOrderByModified;
-  const allFiles = listOrderedItems(dirpath);
-
+  const allFiles =
+    sort === 'system'
+      ? listFilenames(dirpath)
+      : listFilenamesOrderByModified(dirpath);
   if (allFiles === null) {
     Log.error(
       'プロジェクトルートの articles ディレクトリを取得できませんでした。`npx zenn init`を実行して作成してください'
     );
     return [];
   }
-  return allFiles ? allFiles.filter((f) => f.match(/\.md$/)) : []; // filter markdown files
+  // filter markdown files
+  return allFiles
+    .filter((f) => !/^\./.test(f)) // `.`から始まるファイルは除外する
+    .filter((f) => /\.md$/.test(f)); // `.md`で終わるファイルのみに絞り込む
 }
 
 function getArticleMetaData(slug: string): null | ArticleMeta {
