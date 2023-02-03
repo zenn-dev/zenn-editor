@@ -52,9 +52,7 @@ function getArticleFilenames(sort?: ItemSortType): string[] {
     return [];
   }
   // filter markdown files
-  return allFiles
-    .filter((f) => !/^\./.test(f)) // `.`から始まるファイルは除外する
-    .filter((f) => /\.md$/.test(f)); // `.md`で終わるファイルのみに絞り込む
+  return allFiles.filter((f) => /\.md$/.test(f)); // `.md`で終わるファイルのみに絞り込む
 }
 
 function getArticleMetaData(slug: string): null | ArticleMeta {
