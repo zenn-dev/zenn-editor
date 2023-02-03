@@ -98,11 +98,9 @@ export function mdRendererFence(md: MarkdownIt, options?: MarkdownOptions) {
     const { langName, fileName, hasDiff } = parseInfo(info);
 
     if (langName === 'mermaid') {
-      return generateEmbedServerIframe(
-        'mermaid',
-        content.trim(),
-        options || {}
-      );
+      const generator = options?.customEmbed?.mermaid;
+      // generator が(上書きされて)定義されてない場合はそのまま出力する
+      return generator ? generator(content.trim()) : content;
     }
 
     const className = getClassName({

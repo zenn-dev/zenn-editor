@@ -1,21 +1,22 @@
 import crypto from 'crypto';
 import markdownIt from 'markdown-it';
 import { sanitize } from './sanitizer';
+import { embedGenerators } from './embed';
 import { MarkdownOptions } from './types';
 
 // plugis
 import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
 import { mdBr } from './utils/md-br';
+import { mdKatex } from './utils/md-katex';
+import { mdCustomBlock } from './utils/md-custom-block';
+import { mdLinkAttributes } from './utils/md-link-attributes';
+import { mdLinkifyToCard } from './utils/md-linkify-to-card';
+import { mdRendererFence } from './utils/md-renderer-fence';
 import {
   containerDetailsOptions,
   containerMessageOptions,
 } from './utils/md-container';
-import { mdCustomBlock } from './utils/md-custom-block';
-import { mdKatex } from './utils/md-katex';
-import { mdLinkAttributes } from './utils/md-link-attributes';
-import { mdLinkifyToCard } from './utils/md-linkify-to-card';
-import { mdRendererFence } from './utils/md-renderer-fence';
 
 const mdContainer = require('markdown-it-container');
 const mdFootnote = require('markdown-it-footnote');
@@ -24,6 +25,14 @@ const mdInlineComments = require('markdown-it-inline-comments');
 
 const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   if (!(text && text.length)) return '';
+
+  const markdownOptions: MarkdownOptions = {
+    ...options,
+    customEmbed: {
+      ...embedGenerators,
+      ...options?.customEmbed,
+    },
+  };
 
   const md = markdownIt({ breaks: true, linkify: true });
 
@@ -35,9 +44,9 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
     .use(mdInlineComments)
     .use(markdownItImSize)
     .use(mdLinkAttributes)
-    .use(mdCustomBlock, options)
-    .use(mdRendererFence, options)
-    .use(mdLinkifyToCard, options)
+    .use(mdCustomBlock, markdownOptions)
+    .use(mdRendererFence, markdownOptions)
+    .use(mdLinkifyToCard, markdownOptions)
     .use(mdTaskLists, { enabled: true })
     .use(mdContainer, 'details', containerDetailsOptions)
     .use(mdContainer, 'message', containerMessageOptions)
