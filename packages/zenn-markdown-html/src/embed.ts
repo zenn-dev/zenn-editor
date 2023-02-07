@@ -1,6 +1,5 @@
 import type { MarkdownOptions } from './types';
 
-import mermaid from 'mermaid';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 import { extractYoutubeVideoParameters } from './utils/url-matcher';
 import {
@@ -142,16 +141,14 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (options?.embedOrigin)
       return generateEmbedServerIframe('card', str, options.embedOrigin);
 
-    return `<a href="${str}" rel="noreferrer noopener nofollow " target="_blank">${str}</a>`;
+    return `<a href="${str}" rel="noreferrer noopener nofollow" target="_blank">${str}</a>`;
   },
   tweet(str, options) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
     if (options?.embedOrigin)
-      return generateEmbedServerIframe('tweet', str, options?.embedOrigin);
+      return generateEmbedServerIframe('tweet', str, options.embedOrigin);
 
-    return `<blockquoteclassName="twitter-tweet" data-conversation="${
-      str.split(/&|\?/).includes('conversation=none') ? 'none' : ''
-    }"><a href=${str} rel="nofollow noopener noreferrer" target="_blank">${str}</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`;
+    return `<a href="${str}" rel="noreferrer noopener nofollow" target="_blank">${str}</a>`;
   },
   gist(str, options) {
     /**
@@ -162,7 +159,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
      */
     if (!isGistUrl(str)) return 'GitHub GistのページURLを指定してください';
     if (options?.embedOrigin)
-      return generateEmbedServerIframe('gist', str, options?.embedOrigin);
+      return generateEmbedServerIframe('gist', str, options.embedOrigin);
 
     return `<a href="${str}" rel="noreferrer noopener nofollow" target="_blank">${str}</a>`;
   },
@@ -170,15 +167,16 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (!isGithubUrl(str))
       return 'GitHub のファイルURLまたはパーマリンクを指定してください';
     if (options?.embedOrigin)
-      return generateEmbedServerIframe('github', str, options?.embedOrigin);
+      return generateEmbedServerIframe('github', str, options.embedOrigin);
 
     return `<a href="${str}" rel="noreferrer noopener nofollow" target="_blank">${str}</a>`;
   },
   mermaid(str, options) {
     if (options?.embedOrigin)
-      return generateEmbedServerIframe('mermaid', str, options?.embedOrigin);
+      return generateEmbedServerIframe('mermaid', str, options.embedOrigin);
 
-    return mermaid.render('embed-mermaid', str);
+    // ブラウザじゃないと mermaid はレンダリングできないので、Node.jsで描画するときはコードブロックのまま出力する
+    return `<div class="code-block-container"><pre><code>${str}</code></pre></div>`;
   },
 } as const;
 
