@@ -38,7 +38,9 @@ export function isCodesandboxUrl(url: string): boolean {
 }
 
 export function isCodepenUrl(url: string): boolean {
-  return /^https:\/\/codepen\.io\/[a-zA-Z0-9]/.test(url);
+  return /^https:\/\/codepen\.io\/[a-zA-Z0-9\-_/@]+\/pen\/[a-zA-Z0-9\-_/.@?&=%,]+$/.test(
+    url
+  );
 }
 
 export function isJsfiddleUrl(url: string): boolean {
