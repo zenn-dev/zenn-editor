@@ -99,7 +99,7 @@ export function mdRendererFence(md: MarkdownIt, options?: MarkdownOptions) {
     if (langName === 'mermaid') {
       const generator = options?.customEmbed?.mermaid;
       // generator が(上書きされて)定義されてない場合はそのまま出力する
-      return generator ? generator(content.trim()) : content;
+      return generator ? generator(content.trim(), options) : content;
     }
 
     const className = getClassName({

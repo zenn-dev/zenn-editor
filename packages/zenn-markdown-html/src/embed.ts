@@ -175,8 +175,11 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (options?.embedOrigin)
       return generateEmbedServerIframe('mermaid', str, options.embedOrigin);
 
+    // エスケープ処理しておく
+    const src = str.replace(/>/g, '&gt;');
+
     // ブラウザじゃないと mermaid はレンダリングできないので、Node.jsで描画するときはコードブロックのまま出力する
-    return `<div class="code-block-container"><pre><code>${str}</code></pre></div>`;
+    return `<div class="code-block-container"><pre><code>${src}</code></pre></div>`;
   },
 } as const;
 
