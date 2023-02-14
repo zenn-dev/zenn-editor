@@ -1,5 +1,5 @@
 import { parse } from 'node-html-parser';
-import markdownToHtml from '../../src/index';
+import markdownToHtml from '../../../src/index';
 
 describe('GitHub Gist埋め込み要素のテスト', () => {
   const validUrl = 'https://gist.github.com/examples/9164408';

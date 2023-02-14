@@ -1,5 +1,5 @@
 import { parse } from 'node-html-parser';
-import markdownToHtml from '../../src/index';
+import markdownToHtml from '../../../src/index';
 
 describe('Youtube埋め込み要素のテスト', () => {
   const validVideoId = 'exampletest'; // 11文字する

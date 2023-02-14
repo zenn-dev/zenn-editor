@@ -1,14 +1,14 @@
 import { parse } from 'node-html-parser';
-import markdownToHtml from '../../src/index';
+import markdownToHtml from '../../../src/index';
 
-describe('LinkCard埋め込み要素のテスト', () => {
-  const validUrl = 'https://example.com';
-  const invalidUrl = 'bad-example.com';
+describe('Tweet埋め込み要素のテスト', () => {
+  const validUrl = 'https://twitter.com/zenn-dev/status/example';
+  const invalidUrl = 'https://bad-url.twitter.com/zenn-dev/status/example';
 
   describe('デフォルトの挙動', () => {
-    describe('有効なURL', () => {
+    describe('有効なURLの場合', () => {
       test('リンクに変換する', () => {
-        const html = markdownToHtml(`@[card](${validUrl})`);
+        const html = markdownToHtml(`@[tweet](${validUrl})`);
         const link = parse(html).querySelector(`a`);
 
         expect(link?.attributes).toEqual(
@@ -23,8 +23,8 @@ describe('LinkCard埋め込み要素のテスト', () => {
 
     describe('無効なURLの場合', () => {
       test('エラーメッセージを出力する', () => {
-        const html = markdownToHtml(`@[card](${invalidUrl})`);
-        expect(html).toContain('URLが不正です');
+        const html = markdownToHtml(`@[tweet](${invalidUrl})`);
+        expect(html).toContain('ツイートページのURLを指定してください');
       });
     });
   });
@@ -44,13 +44,12 @@ describe('LinkCard埋め込み要素のテスト', () => {
     });
   });
 
-  describe('customEmbed.card()を設定している場合', () => {
+  describe('customEmbed.tweet()を設定している場合', () => {
     test('渡した関数を実行する', () => {
-      const url = 'https://example.com';
       const customizeText = 'customized text';
       const mock = jest.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`@[card](${url})`, {
-        customEmbed: { card: mock },
+      const html = markdownToHtml('https://twitter.com/jack/status/20', {
+        customEmbed: { tweet: mock },
       });
 
       expect(mock).toBeCalled();
