@@ -31,6 +31,7 @@ const html = markdownToHtml(markdown, {
   customEmbed: {
     // @[tweet](...)に対応している埋め込み要素をカスタマイズする
     tweet(url) {
+      // 注意: サニタイズによって<script src="https://platform.twitter.com/widgets.js" />は埋め込めないので、別の場所で埋め込み必要があります！
       return `
         <blockquote
           className="twitter-tweet"
@@ -42,7 +43,6 @@ const html = markdownToHtml(markdown, {
             ${url}
           </a>
         </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       `;
     },
   },
