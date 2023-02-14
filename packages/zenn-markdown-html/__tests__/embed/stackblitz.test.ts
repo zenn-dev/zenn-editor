@@ -5,14 +5,18 @@ describe('Stackblitz埋め込み要素のテスト', () => {
   const validUrl = 'https://stackblitz.com/edit/test-examples';
   const invalidUrl = '@https://bad-url.stackblitz.com/edit/test-examples';
 
-  describe('デフォルトの挙動の場合', () => {
-    test('@[stackblitz](...)を<iframe />に変換する', () => {
-      const html = markdownToHtml(`@[stackblitz](${validUrl})`);
-      const iframe = parse(html).querySelector(`span.embed-stackblitz iframe`);
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('<iframe />に変換する', () => {
+        const html = markdownToHtml(`@[stackblitz](${validUrl})`);
+        const iframe = parse(html).querySelector(
+          `span.embed-stackblitz iframe`
+        );
 
-      expect(iframe?.attributes).toEqual(
-        expect.objectContaining({ src: validUrl })
-      );
+        expect(iframe?.attributes).toEqual(
+          expect.objectContaining({ src: validUrl })
+        );
+      });
     });
 
     describe('無効なURLの場合', () => {
@@ -23,7 +27,7 @@ describe('Stackblitz埋め込み要素のテスト', () => {
     });
   });
 
-  describe('`customEmbed.stackblitz()`を設定している場合', () => {
+  describe('customEmbed.stackblitz()を設定している場合', () => {
     test('渡した関数を実行する', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);

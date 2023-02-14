@@ -5,18 +5,20 @@ describe('GitHub Gist埋め込み要素のテスト', () => {
   const validUrl = 'https://gist.github.com/examples/9164408';
   const invalidUrl = 'https://bad-example.gist.github.com/examples/9164408';
 
-  describe('デフォルトの挙動の場合', () => {
-    test('@[gist](...)をリンクに変換する', () => {
-      const html = markdownToHtml(`@[gist](${validUrl})`);
-      const link = parse(html).querySelector(`a`);
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('リンクに変換する', () => {
+        const html = markdownToHtml(`@[gist](${validUrl})`);
+        const link = parse(html).querySelector(`a`);
 
-      expect(link?.attributes).toEqual(
-        expect.objectContaining({
-          href: validUrl,
-          rel: 'noreferrer noopener nofollow',
-          target: '_blank',
-        })
-      );
+        expect(link?.attributes).toEqual(
+          expect.objectContaining({
+            href: validUrl,
+            rel: 'noreferrer noopener nofollow',
+            target: '_blank',
+          })
+        );
+      });
     });
 
     describe('無効なURLの場合', () => {
@@ -27,7 +29,7 @@ describe('GitHub Gist埋め込み要素のテスト', () => {
     });
 
     describe('embedOriginを設定している場合', () => {
-      test('渡した`embedOrigin`を`src`として<iframe />を表示する', () => {
+      test('渡したembedOriginを`src`として<iframe />を表示する', () => {
         const embedOrigin = 'https://embed.example.com';
         const html = markdownToHtml(validUrl, { embedOrigin });
         const iframe = parse(html).querySelector('span.zenn-embedded iframe');

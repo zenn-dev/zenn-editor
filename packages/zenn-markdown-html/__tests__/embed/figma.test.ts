@@ -7,14 +7,16 @@ describe('Figma埋め込み要素のテスト', () => {
   const invalidUrl =
     'https://www.figma.com/bad-example/file/LKQ4FJ4ExAmPLEedbRp931/Sample-File?node-id=0%3A1';
 
-  describe('デフォルトの挙動の場合', () => {
-    test('@[figma](...)を<iframe />に変換する', () => {
-      const html = markdownToHtml(`@[figma](${validUrl})`);
-      const iframe = parse(html).querySelector(`span.embed-figma iframe`);
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('<iframe />に変換する', () => {
+        const html = markdownToHtml(`@[figma](${validUrl})`);
+        const iframe = parse(html).querySelector(`span.embed-figma iframe`);
 
-      expect(iframe?.attributes).toEqual(
-        expect.objectContaining({ src: expect.stringContaining(validUrl) })
-      );
+        expect(iframe?.attributes).toEqual(
+          expect.objectContaining({ src: expect.stringContaining(validUrl) })
+        );
+      });
     });
 
     describe('無効なURLの場合', () => {
@@ -28,7 +30,7 @@ describe('Figma埋め込み要素のテスト', () => {
     });
   });
 
-  describe('`customEmbed.figma()`を設定している場合', () => {
+  describe('customEmbed.figma()を設定している場合', () => {
     test('渡した関数を実行する', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);

@@ -5,16 +5,20 @@ describe('SpeakerDeck埋め込み要素のテスト', () => {
   const validToken = 'example-token';
   const invalidToken = '@invalid-token';
 
-  describe('デフォルトの挙動の場合', () => {
-    test('@[speakerdeck](...)を<iframe />に変換する', () => {
-      const html = markdownToHtml(`@[speakerdeck](${validToken})`);
-      const iframe = parse(html).querySelector(`span.embed-speakerdeck iframe`);
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('<iframe />に変換する', () => {
+        const html = markdownToHtml(`@[speakerdeck](${validToken})`);
+        const iframe = parse(html).querySelector(
+          `span.embed-speakerdeck iframe`
+        );
 
-      expect(iframe?.attributes).toEqual(
-        expect.objectContaining({
-          src: `https://speakerdeck.com/player/${validToken}`,
-        })
-      );
+        expect(iframe?.attributes).toEqual(
+          expect.objectContaining({
+            src: `https://speakerdeck.com/player/${validToken}`,
+          })
+        );
+      });
     });
 
     describe('無効なURLの場合', () => {
@@ -25,7 +29,7 @@ describe('SpeakerDeck埋め込み要素のテスト', () => {
     });
   });
 
-  describe('`customEmbed.speakerdeck()`を設定している場合', () => {
+  describe('customEmbed.speakerdeck()を設定している場合', () => {
     test('渡した関数を実行する', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);

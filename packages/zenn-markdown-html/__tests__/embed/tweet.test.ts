@@ -5,31 +5,20 @@ describe('Tweet埋め込み要素のテスト', () => {
   const validUrl = 'https://twitter.com/zenn-dev/status/example';
   const invalidUrl = 'https://bad-url.twitter.com/zenn-dev/status/example';
 
-  describe('デフォルトの挙動の場合', () => {
-    test('@[tweet](...)をリンクに変換する', () => {
-      const html = markdownToHtml(`@[tweet](${validUrl})`);
-      const link = parse(html).querySelector(`a`);
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('リンクに変換する', () => {
+        const html = markdownToHtml(`@[tweet](${validUrl})`);
+        const link = parse(html).querySelector(`a`);
 
-      expect(link?.attributes).toEqual(
-        expect.objectContaining({
-          href: validUrl,
-          rel: 'noreferrer noopener nofollow',
-          target: '_blank',
-        })
-      );
-    });
-
-    test('TwitterのツイートURLをリンクに変換する', () => {
-      const html = markdownToHtml(validUrl);
-      const link = parse(html).querySelector(`a`);
-
-      expect(link?.attributes).toEqual(
-        expect.objectContaining({
-          href: validUrl,
-          rel: 'noreferrer noopener nofollow',
-          target: '_blank',
-        })
-      );
+        expect(link?.attributes).toEqual(
+          expect.objectContaining({
+            href: validUrl,
+            rel: 'noreferrer noopener nofollow',
+            target: '_blank',
+          })
+        );
+      });
     });
 
     describe('無効なURLの場合', () => {
@@ -41,10 +30,9 @@ describe('Tweet埋め込み要素のテスト', () => {
   });
 
   describe('embedOriginを設定している場合', () => {
-    test('渡した embedOrigin を src として<iframe />を表示する', () => {
+    test('渡したembedOriginを`src`として<iframe />を表示する', () => {
       const embedOrigin = 'https://embed.example.com';
       const html = markdownToHtml(validUrl, { embedOrigin });
-
       const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
       expect(iframe?.attributes).toEqual(

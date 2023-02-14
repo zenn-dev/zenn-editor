@@ -6,16 +6,17 @@ describe('Codepen埋め込み要素のテスト', () => {
   const invalidUrl =
     'https://bad-example.codepen.io/examples/pen/test?default-tab=hoge';
 
-  describe('デフォルトの挙動の場合', () => {
-    test('@[codepen](...)を<iframe />に変換する', () => {
-      const html = markdownToHtml(`@[codepen](${validUrl})`);
-      const iframe = parse(html).querySelector(`span.embed-codepen iframe`);
-      const passedUrl = validUrl.replace('/pen/', '/embed/');
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('<iframe />に変換する', () => {
+        const html = markdownToHtml(`@[codepen](${validUrl})`);
+        const iframe = parse(html).querySelector(`span.embed-codepen iframe`);
+        const passedUrl = validUrl.replace('/pen/', '/embed/');
 
-      console.log({ html });
-      expect(iframe?.attributes).toEqual(
-        expect.objectContaining({ src: expect.stringContaining(passedUrl) })
-      );
+        expect(iframe?.attributes).toEqual(
+          expect.objectContaining({ src: expect.stringContaining(passedUrl) })
+        );
+      });
     });
 
     describe('無効なURLの場合', () => {
@@ -26,7 +27,7 @@ describe('Codepen埋め込み要素のテスト', () => {
     });
   });
 
-  describe('`customEmbed.codepen()`を設定している場合', () => {
+  describe('customEmbed.codepen()を設定している場合', () => {
     test('渡した関数を実行する', () => {
       const customizeText = 'customized text';
       const mock = jest.fn().mockReturnValue(customizeText);

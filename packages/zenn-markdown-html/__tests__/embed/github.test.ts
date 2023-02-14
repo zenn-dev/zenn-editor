@@ -7,18 +7,20 @@ describe('GitHub埋め込み要素のテスト', () => {
   const invalidUrl =
     'https://bad-example.github.com/zenn-dev/example-repo/blob/main/example.json';
 
-  describe('デフォルトの挙動の場合', () => {
-    test('@[github](...)をリンクに変換する', () => {
-      const html = markdownToHtml(`@[github](${validUrl})`);
-      const link = parse(html).querySelector(`a`);
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('リンクに変換する', () => {
+        const html = markdownToHtml(`@[github](${validUrl})`);
+        const link = parse(html).querySelector(`a`);
 
-      expect(link?.attributes).toEqual(
-        expect.objectContaining({
-          href: validUrl,
-          rel: 'noreferrer noopener nofollow',
-          target: '_blank',
-        })
-      );
+        expect(link?.attributes).toEqual(
+          expect.objectContaining({
+            href: validUrl,
+            rel: 'noreferrer noopener nofollow',
+            target: '_blank',
+          })
+        );
+      });
     });
 
     describe('無効なURLの場合', () => {
@@ -29,20 +31,20 @@ describe('GitHub埋め込み要素のテスト', () => {
         );
       });
     });
+  });
 
-    describe('embedOriginを設定している場合', () => {
-      test('渡した embedOrigin を src として<iframe />を表示する', () => {
-        const embedOrigin = 'https://embed.example.com';
-        const html = markdownToHtml(`@[github](${validUrl})`, { embedOrigin });
-        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+  describe('embedOriginを設定している場合', () => {
+    test('渡したembedOriginを`src`として<iframe />を表示する', () => {
+      const embedOrigin = 'https://embed.example.com';
+      const html = markdownToHtml(`@[github](${validUrl})`, { embedOrigin });
+      const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
-        expect(iframe?.attributes).toEqual(
-          expect.objectContaining({
-            src: expect.stringMatching(embedOrigin),
-            'data-content': encodeURIComponent(validUrl),
-          })
-        );
-      });
+      expect(iframe?.attributes).toEqual(
+        expect.objectContaining({
+          src: expect.stringMatching(embedOrigin),
+          'data-content': encodeURIComponent(validUrl),
+        })
+      );
     });
   });
 
