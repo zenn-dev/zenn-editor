@@ -1,10 +1,9 @@
-import React from 'react';
 import styled from 'styled-components';
 import { usePersistedState } from '../../hooks/usePersistedState';
 import { ListItemInner } from './ListItemInner';
 import { MdOutlineArrowForwardIos } from 'react-icons/md';
 
-export const Directory: React.VFC<{
+export const Directory: React.FC<{
   title: string;
   uniqueKey: string;
   defaultOpen: boolean;

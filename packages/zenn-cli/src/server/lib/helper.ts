@@ -18,7 +18,7 @@ export function getCurrentCliVersion() {
 
 export async function getPublishedCliVersion() {
   const response = await fetch(`https://registry.npmjs.org/zenn-cli/latest`);
-  const data: { version: string } = await response.json();
+  const data = (await response.json()) as { version: string };
   const latest = data['version'];
   return latest;
 }

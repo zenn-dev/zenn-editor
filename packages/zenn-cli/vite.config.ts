@@ -1,6 +1,6 @@
 // for preview client
 import { defineConfig } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import path from 'path';
 
 const srcDirRoot = 'src/client';
@@ -18,7 +18,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ['zenn-model'],
   },
-  plugins: [reactRefresh()],
+  plugins: [react()],
   // for developing preview
   server: {
     port: 3333,

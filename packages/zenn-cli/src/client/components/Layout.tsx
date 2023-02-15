@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Sidebar } from './Sidebar';
 
@@ -6,7 +5,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const Layout: React.VFC<Props> = ({ children }) => {
+export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <StyledLayout className="layout">
       <aside className="layout__sidebar">

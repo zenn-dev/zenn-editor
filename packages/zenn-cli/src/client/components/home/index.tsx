@@ -1,4 +1,3 @@
-import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
@@ -6,7 +5,7 @@ import { LinkGuide } from '../Routes';
 import { useFetch } from '../../hooks/useFetch';
 import { useTitle } from '../../hooks/useTitle';
 
-const UpdateNotificationBar: React.VFC = () => {
+const UpdateNotificationBar: React.FC = () => {
   const { data } = useFetch<{
     latest: 'string';
     current: 'string';
