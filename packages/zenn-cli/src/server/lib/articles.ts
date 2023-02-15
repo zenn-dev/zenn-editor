@@ -17,7 +17,9 @@ export function getLocalArticle(slug: string): null | Article {
   const data = readArticleFile(slug);
   if (!data) return null;
   const { meta, bodyMarkdown } = data;
-  const rawHtml = markdownToHtml(bodyMarkdown);
+  const rawHtml = markdownToHtml(bodyMarkdown, {
+    embedOrigin: 'https://embed.zenn.studio',
+  });
   const bodyHtml = completeHtml(rawHtml);
   return {
     ...meta,
@@ -41,17 +43,18 @@ function getArticleSlugs(sort?: ItemSortType): string[] {
 
 function getArticleFilenames(sort?: ItemSortType): string[] {
   const dirpath = getWorkingPath('articles');
-  const listOrderedItems =
-    sort === 'system' ? listFilenames : listFilenamesOrderByModified;
-  const allFiles = listOrderedItems(dirpath);
-
+  const allFiles =
+    sort === 'system'
+      ? listFilenames(dirpath)
+      : listFilenamesOrderByModified(dirpath);
   if (allFiles === null) {
     Log.error(
       'プロジェクトルートの articles ディレクトリを取得できませんでした。`npx zenn init`を実行して作成してください'
     );
     return [];
   }
-  return allFiles ? allFiles.filter((f) => f.match(/\.md$/)) : []; // filter markdown files
+  // filter markdown files
+  return allFiles.filter((f) => /\.md$/.test(f)); // `.md`で終わるファイルのみに絞り込む
 }
 
 function getArticleMetaData(slug: string): null | ArticleMeta {

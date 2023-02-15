@@ -1,19 +1,28 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../src/index';
+import { MarkdownOptions } from '../src/types';
+
+const options: MarkdownOptions = {
+  embedOrigin: 'https://embed-server.example.com',
+};
+
+const renderLink = (src: string) => {
+  return markdownToHtml(src, options);
+};
 
 describe('Link syntax', () => {
   test('should convert link syntax properly', () => {
-    const html = markdownToHtml('[example](https://example.com)');
+    const html = renderLink('[example](https://example.com)');
     expect(html).toContain(
       '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">example</a>'
     );
   });
   test('should convert link with no attributes if href starts with slash', () => {
-    const html = markdownToHtml('[Articles](/articles)');
+    const html = renderLink('[Articles](/articles)');
     expect(html).toContain('<a href="/articles">Articles</a>');
   });
   test('should convert link with no attributes if href starts with #', () => {
-    const html = markdownToHtml('[Example](#example)');
+    const html = renderLink('[Example](#example)');
     expect(html).toContain('<a href="#example">Example</a>');
   });
 });
@@ -21,54 +30,54 @@ describe('Link syntax', () => {
 describe('Linkify properly', () => {
   describe('Raw Link', () => {
     test('should linkify url with nofollow if hostname is not zenn.dev', () => {
-      expect(markdownToHtml('URL is https://example.com')).toContain(
+      expect(renderLink('URL is https://example.com')).toContain(
         'URL is <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
-      expect(markdownToHtml('URL is http://example.com')).toContain(
+      expect(renderLink('URL is http://example.com')).toContain(
         'URL is <a href="http://example.com" target="_blank" rel="nofollow noopener noreferrer">http://example.com</a>'
       );
-      expect(markdownToHtml('URL is https://zenn.dev.example.com')).toContain(
+      expect(renderLink('URL is https://zenn.dev.example.com')).toContain(
         'URL is <a href="https://zenn.dev.example.com" target="_blank" rel="nofollow noopener noreferrer">https://zenn.dev.example.com</a>'
       );
     });
 
     test('should linkify url without rel if hostname is zenn.dev', () => {
-      const html = markdownToHtml('URL is https://zenn.dev');
+      const html = renderLink('URL is https://zenn.dev');
       expect(html).toContain(
         'URL is <a href="https://zenn.dev" target="_blank">https://zenn.dev</a>'
       );
     });
 
     test('should not convert links to card if text exists before url', () => {
-      const html = markdownToHtml('foo https://example.com');
+      const html = renderLink('foo https://example.com');
       expect(html).toEqual(
         '<p>foo <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
       );
     });
 
     test('should not convert intentional links to card', () => {
-      const html = markdownToHtml('[https://example.com](https://example.com)');
+      const html = renderLink('[https://example.com](https://example.com)');
       expect(html).toEqual(
         '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
       );
     });
 
     test('should not convert links inside list', () => {
-      const html = markdownToHtml('- https://example.com\n- second');
+      const html = renderLink('- https://example.com\n- second');
       expect(html).toEqual(
         '<ul>\n<li><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></li>\n<li>second</li>\n</ul>\n'
       );
     });
 
     test('should not convert links inside block', () => {
-      const html = markdownToHtml(':::message alert\nhttps://example.com\n:::');
+      const html = renderLink(':::message alert\nhttps://example.com\n:::');
       expect(html).toEqual(
         '<aside class="msg alert"><span class="msg-symbol">!</span><div class="msg-content"><p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>\n'
       );
     });
 
     test('should not convert links inside block with 2 paragraphs', () => {
-      const html = markdownToHtml(
+      const html = renderLink(
         ':::message alert\nhello\n\nhttps://example.com\n:::'
       );
       expect(html).toContain(
@@ -77,37 +86,35 @@ describe('Linkify properly', () => {
     });
 
     test('should not convert links inside list', () => {
-      const html = markdownToHtml('- https://example.com\n- second');
+      const html = renderLink('- https://example.com\n- second');
       expect(html).toEqual(
         '<ul>\n<li><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></li>\n<li>second</li>\n</ul>\n'
       );
     });
 
     test('should not convert links if text follows', () => {
-      const html = markdownToHtml('https://example.com foo');
+      const html = renderLink('https://example.com foo');
       expect(html).toEqual(
         '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a> foo</p>\n'
       );
     });
 
     test('should not convert a link with any text in same paragraph', () => {
-      const html = markdownToHtml(
-        `a: https://example.com\nb: https://example.com`
-      );
+      const html = renderLink(`a: https://example.com\nb: https://example.com`);
       expect(html).toEqual(
         '<p>a: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a><br />\nb: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
       );
     });
 
     test('should not convert links even when the links are the start of the line unless the next elements are texts', () => {
-      const html = markdownToHtml('\n\nhttps://example.com text');
+      const html = renderLink('\n\nhttps://example.com text');
       expect(html).toEqual(
         '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a> text</p>\n'
       );
     });
 
     test('should not convert links even when the links are the end of the line, unless previous elements are texts', () => {
-      const html = markdownToHtml('text https://example.com\n\n');
+      const html = renderLink('text https://example.com\n\n');
       expect(html).toEqual(
         '<p>text <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
       );
@@ -121,11 +128,11 @@ describe('Linkify properly', () => {
         url: string
       ) => {
         const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+        const pattern = new RegExp(`${options.embedOrigin}/card#.+`);
+
         expect(iframe?.attributes).toEqual(
           expect.objectContaining({
-            src: expect.stringMatching(
-              /https:\/\/embed.zenn.studio\/link-card#.+/
-            ),
+            src: expect.stringMatching(pattern),
             'data-content': encodeURIComponent(url),
           })
         );
@@ -133,37 +140,37 @@ describe('Linkify properly', () => {
 
       test('should convert links to card if prev elem is br', () => {
         const url = 'https://example.com';
-        const html = markdownToHtml(`foo\n${url}`);
+        const html = renderLink(`foo\n${url}`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
       test('should convert links when surrounded by softbreaks', () => {
         const url = 'https://example.com';
-        const html = markdownToHtml(`\n\n${url}\n\n`);
+        const html = renderLink(`\n\n${url}\n\n`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
       test('should convert links when previous element is a softbreak and the links are end of the paragraph', () => {
         const url = 'https://example.com';
-        const html = markdownToHtml(`text\n${url}\n\n`);
+        const html = renderLink(`text\n${url}\n\n`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
       test('should convert links when the links are the start of the line and the next elements are softbreaks', () => {
         const url = 'https://example.com';
-        const html = markdownToHtml(`\n\n${url}\ntext`);
+        const html = renderLink(`\n\n${url}\ntext`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
       test('should convert links when previous and next elements are softbreaks', () => {
         const url = 'https://example.com';
-        const html = markdownToHtml(`text\n${url}\ntext`);
+        const html = renderLink(`text\n${url}\ntext`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
       test('should convert links to card if first element in p', () => {
         const url = 'https://example.com';
-        const html = markdownToHtml(`foo\n\n${url}`);
+        const html = renderLink(`foo\n\n${url}`);
         const root = parse(html);
         const elements = root.getElementsByTagName('p');
 
@@ -177,7 +184,7 @@ describe('Linkify properly', () => {
         const linkCardUrls = ['https://example1.com', 'https://example2.com'];
         const rawLinkUrls = ['https://example3.com', 'https://example4.com'];
         // prettier-ignore
-        const html = markdownToHtml(`${linkCardUrls[0]}\n${rawLinkUrls[0]} text\ntext ${rawLinkUrls[1]}\n${linkCardUrls[1]}\ntext`);
+        const html = renderLink(`${linkCardUrls[0]}\n${rawLinkUrls[0]} text\ntext ${rawLinkUrls[1]}\n${linkCardUrls[1]}\ntext`);
         const root = parse(html);
         const iframes = root.querySelectorAll('span.zenn-embedded iframe');
         const rawLinks = root.querySelectorAll('a:not([style])');
@@ -194,7 +201,7 @@ describe('Linkify properly', () => {
 
       test('should convert links even when some links exist in the line, when each links are separated by linebreaks', () => {
         const linkCardUrls = ['https://example1.com', 'https://example2.com'];
-        const html = markdownToHtml(`${linkCardUrls[0]}\n${linkCardUrls[1]}\n`);
+        const html = renderLink(`${linkCardUrls[0]}\n${linkCardUrls[1]}\n`);
         const iframes = parse(html).querySelectorAll(
           'span.zenn-embedded iframe'
         );
@@ -209,11 +216,13 @@ describe('Linkify properly', () => {
     describe('Tweet', () => {
       test('should convert a tweet-link to embedded iframe', () => {
         const url = 'https://twitter.com/jack/status/20';
-        const html = markdownToHtml(`${url}`);
+        const html = renderLink(`${url}`);
         const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+        const pattern = new RegExp(`${options.embedOrigin}/tweet#.+`);
+
         expect(iframe?.attributes).toEqual(
           expect.objectContaining({
-            src: expect.stringMatching(/https:\/\/embed.zenn.studio\/tweet#.+/),
+            src: expect.stringMatching(pattern),
             'data-content': encodeURIComponent(url),
           })
         );
@@ -221,12 +230,13 @@ describe('Linkify properly', () => {
 
       test('should convert a tweet-link with query string to embedded iframe', () => {
         const url = `https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef`;
-        const html = markdownToHtml(url);
+        const html = renderLink(url);
         const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+        const pattern = new RegExp(`${options.embedOrigin}/tweet#.+`);
 
         expect(iframe?.attributes).toEqual(
           expect.objectContaining({
-            src: expect.stringMatching(/https:\/\/embed.zenn.studio\/tweet#.+/),
+            src: expect.stringMatching(pattern),
             'data-content': encodeURIComponent(url),
           })
         );
@@ -235,7 +245,7 @@ describe('Linkify properly', () => {
 
     describe('When in details', () => {
       test('should convert to iframe element', () => {
-        const html = markdownToHtml(
+        const html = renderLink(
           [`:::details example`, `https://example1.com`, `:::`].join('\n')
         );
 
@@ -245,7 +255,7 @@ describe('Linkify properly', () => {
       });
 
       test('should convert iframe even when nests details', () => {
-        const html = markdownToHtml(
+        const html = renderLink(
           [
             `::::details example`,
             `:::details nest-example`,
@@ -261,7 +271,7 @@ describe('Linkify properly', () => {
       });
 
       test('should not convert in nests other than details', () => {
-        const html = markdownToHtml(
+        const html = renderLink(
           [`:::details example`, `- https://example1.com`, `:::`].join('\n')
         );
 

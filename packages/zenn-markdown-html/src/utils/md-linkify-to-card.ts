@@ -1,8 +1,12 @@
 import MarkdownIt from 'markdown-it';
 import Token from 'markdown-it/lib/token';
+import { MarkdownOptions } from '../types';
 import { generateLinkifyEmbedHTML } from './embed-helper';
 
-function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
+function convertAutolinkToEmbed(
+  inlineChildTokens: Token[],
+  options: MarkdownOptions
+): Token[] {
   const newTokens: Token[] = [];
 
   inlineChildTokens.forEach((token, i) => {
@@ -46,7 +50,7 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
     const embedToken = new Token('html_inline', '', 0);
 
     // 埋め込み要素のHTML生成
-    embedToken.content = generateLinkifyEmbedHTML(url);
+    embedToken.content = generateLinkifyEmbedHTML(url, options);
 
     // a要素自体はカードにより不要になるため非表示に
     linkOpenToken.attrJoin('style', 'display: none');
@@ -67,7 +71,7 @@ function convertAutolinkToEmbed(inlineChildTokens: Token[]): Token[] {
   return newTokens;
 }
 
-export function mdLinkifyToCard(md: MarkdownIt) {
+export function mdLinkifyToCard(md: MarkdownIt, options?: MarkdownOptions) {
   md.core.ruler.after('replacements', 'link-to-card', function ({ tokens }) {
     // 埋め込みを許可するネストレベル
     let allowLevel = 0;
@@ -104,7 +108,7 @@ export function mdLinkifyToCard(md: MarkdownIt) {
         parentToken.level === allowLevel;
       if (!isParentRootParagraph) return;
 
-      token.children = convertAutolinkToEmbed(children);
+      token.children = convertAutolinkToEmbed(children, options || {});
     });
 
     return true;

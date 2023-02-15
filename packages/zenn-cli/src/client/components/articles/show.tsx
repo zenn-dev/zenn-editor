@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
@@ -14,7 +13,7 @@ type ArticleShowProps = {
   slug: string;
 };
 
-export const ArticleShow: React.VFC<ArticleShowProps> = ({ slug }) => {
+export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
   const { data, error, isValidating, mutate } = useFetch<{ article: Article }>(
     `/api/articles/${slug}`,
     {

@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 // icons
@@ -29,7 +28,7 @@ import {
   LinkHome,
 } from './Routes';
 
-const ArticleLinkItem: React.VFC<{ article: ArticleMeta }> = ({ article }) => {
+const ArticleLinkItem: React.FC<{ article: ArticleMeta }> = ({ article }) => {
   return (
     <LinkArticle slug={article.slug}>
       <ListItemInner
@@ -41,7 +40,7 @@ const ArticleLinkItem: React.VFC<{ article: ArticleMeta }> = ({ article }) => {
   );
 };
 
-const ChapterLinkItem: React.VFC<{
+const ChapterLinkItem: React.FC<{
   bookSlug: string;
   chapter: ChapterMeta;
   chapterNumber?: number;
@@ -60,9 +59,7 @@ const ChapterLinkItem: React.VFC<{
   );
 };
 
-const ListItemBookChildren: React.VFC<{ bookSlug: string }> = ({
-  bookSlug,
-}) => {
+const ListItemBookChildren: React.FC<{ bookSlug: string }> = ({ bookSlug }) => {
   const { data, mutate } = useFetch<{ chapters: ChapterMeta[] }>(
     `/api/books/${bookSlug}/chapters`,
     {
@@ -102,7 +99,7 @@ const ListItemBookChildren: React.VFC<{ bookSlug: string }> = ({
   );
 };
 
-const ListItemBook: React.VFC<{ book: BookMeta }> = ({ book }) => {
+const ListItemBook: React.FC<{ book: BookMeta }> = ({ book }) => {
   return (
     <Directory
       title={book.title || book.slug}
@@ -115,7 +112,7 @@ const ListItemBook: React.VFC<{ book: BookMeta }> = ({ book }) => {
   );
 };
 
-const ListArticles: React.VFC<{ sort: ItemSortType }> = ({ sort }) => {
+const ListArticles: React.FC<{ sort: ItemSortType }> = ({ sort }) => {
   const { data, mutate } = useFetch<{ articles: ArticleMeta[] }>(
     `/api/articles?sort=${sort}`,
     {
@@ -148,7 +145,7 @@ const ListArticles: React.VFC<{ sort: ItemSortType }> = ({ sort }) => {
   );
 };
 
-const ListBooks: React.VFC<{ sort: ItemSortType }> = ({ sort }) => {
+const ListBooks: React.FC<{ sort: ItemSortType }> = ({ sort }) => {
   const { data, mutate } = useFetch<{ books: BookMeta[] }>(
     `/api/books?sort=${sort}`,
     {
@@ -175,7 +172,7 @@ const ListBooks: React.VFC<{ sort: ItemSortType }> = ({ sort }) => {
   );
 };
 
-export const Sidebar: React.VFC = () => {
+export const Sidebar: React.FC = () => {
   const [isFolded, setIsFolded] = usePersistedState<boolean>({
     cacheKey: 'fold-sidebar',
     defaultValue: false,

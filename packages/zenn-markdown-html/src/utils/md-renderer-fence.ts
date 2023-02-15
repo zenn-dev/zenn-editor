@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import { escapeHtml } from 'markdown-it/lib/common/utils';
-import { generateEmbedIframe } from './embed-helper';
+import { MarkdownOptions } from '../types';
 import { highlight } from './highlight';
 
 function getHtml({
@@ -89,7 +89,7 @@ export function parseInfo(str: string): {
   };
 }
 
-export function mdRendererFence(md: MarkdownIt) {
+export function mdRendererFence(md: MarkdownIt, options?: MarkdownOptions) {
   // override fence
   md.renderer.rules.fence = function (...args) {
     const [tokens, idx] = args;
@@ -97,7 +97,9 @@ export function mdRendererFence(md: MarkdownIt) {
     const { langName, fileName, hasDiff } = parseInfo(info);
 
     if (langName === 'mermaid') {
-      return generateEmbedIframe('mermaid', content.trim());
+      const generator = options?.customEmbed?.mermaid;
+      // generator が(上書きされて)定義されてない場合はそのまま出力する
+      return generator ? generator(content.trim(), options) : content;
     }
 
     const className = getClassName({

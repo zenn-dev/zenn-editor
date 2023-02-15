@@ -93,7 +93,9 @@ export function getLocalChapter(
   if (!data) return null;
 
   const { meta, bodyMarkdown } = data;
-  const rawHtml = markdownToHtml(bodyMarkdown);
+  const rawHtml = markdownToHtml(bodyMarkdown, {
+    embedOrigin: 'https://embed.zenn.studio',
+  });
   const bodyHtml = completeHtml(rawHtml);
   return {
     ...meta,
@@ -126,9 +128,15 @@ export function getLocalChapterMetaList(book: BookMeta): ChapterMeta[] {
 
 function getBookSlugs(sort?: ItemSortType): string[] {
   const dirFullpath = getWorkingPath('books');
-  const listOrderedDirs =
-    sort === 'system' ? listDirnames : listDirnamesOrderByModified;
-  return listOrderedDirs(dirFullpath) || [];
+  const allDirs =
+    sort === 'system'
+      ? listDirnames(dirFullpath)
+      : listDirnamesOrderByModified(dirFullpath);
+
+  if (allDirs === null) return [];
+
+  // `.`から始まるディレクトリは除外する
+  return allDirs.filter((filename) => !/^\./.test(filename));
 }
 
 function readBookFile(slug: string) {
@@ -238,7 +246,8 @@ function getChapterFilenames(bookSlug: string): string[] {
     Log.error(`${dirpath}を取得できませんでした`);
     return [];
   }
-  return allFiles ? allFiles.filter((f) => f.match(/\.md$/)) : []; // filter markdown files
+  // filter markdown files
+  return allFiles.filter((f) => /\.md$/.test(f)); // `.md`で終わるファイルのみに絞り込む
 }
 
 function readChapterFile(book: BookMeta, filename: string) {

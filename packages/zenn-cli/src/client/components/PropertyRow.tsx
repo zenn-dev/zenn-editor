@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -6,7 +5,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const PropertyRow: React.VFC<Props> = (props) => {
+export const PropertyRow: React.FC<Props> = (props) => {
   return (
     <StyledPropertyRow className="property-row">
       <div className="property-row__title">{props.title}</div>

@@ -1,9 +1,8 @@
-import React from 'react';
 import styled from 'styled-components';
 
 type Props = { message?: string };
 
-export const ErrorMessage: React.VFC<Props> = (props) => {
+export const ErrorMessage: React.FC<Props> = (props) => {
   return (
     <StyledErrorMessage className="error-message">
       <div className="error-message__inner">
