@@ -1,7 +1,7 @@
 import type { Express } from 'express';
 import { createServer } from 'http';
 import type { Server as HttpServer } from 'http';
-import websocket from 'ws';
+import { WebSocketServer } from 'ws';
 import chokidar from 'chokidar';
 import open from 'open';
 import { resolveHostname } from './helper';
@@ -50,7 +50,7 @@ export async function startLocalChangesWatcher(
   server: HttpServer,
   watchPathGlob: string
 ) {
-  const wss = new websocket.Server({ server });
+  const wss = new WebSocketServer({ server });
   const watcher = await chokidar.watch(watchPathGlob);
   watcher.on('change', () => {
     wss.clients.forEach((client) => client.send('Should refresh'));
