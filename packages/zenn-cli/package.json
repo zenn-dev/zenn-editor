@@ -31,7 +31,8 @@
     "strict:lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
     "test": "run-s test:client test:server",
     "test:client": "jest --config=jest.config.client.js",
-    "test:server": "jest --config=jest.config.server.js"
+    "test:server": "jest --config=jest.config.server.js",
+    "exec:zenn": "node ./dist/server/zenn.js"
   },
   "devDependencies": {
     "@swc/core": "1.2.205",
