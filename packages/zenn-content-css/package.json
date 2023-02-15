@@ -18,7 +18,7 @@
     "test": "echo 'no test yet'"
   },
   "devDependencies": {
-    "sass": "^1.35.1"
+    "sass": "^1.58.1"
   },
   "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
   "publishConfig": {
