@@ -1,11 +1,10 @@
-import React from 'react';
 import styled from 'styled-components';
 
 type Props = {
   topics: string[];
 };
 
-export const TopicList: React.VFC<Props> = ({ topics }) => {
+export const TopicList: React.FC<Props> = ({ topics }) => {
   return (
     <StyledTopicList className="topic-list">
       {topics.map((t, i) => (

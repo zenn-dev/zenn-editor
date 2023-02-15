@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { ContentContainer } from '../ContentContainer';
 import { ChapterHeader } from './show/ChapterHeader';
@@ -15,7 +14,7 @@ type ChapterShowProps = {
   chapterFilename: string;
 };
 
-export const ChapterShow: React.VFC<ChapterShowProps> = ({
+export const ChapterShow: React.FC<ChapterShowProps> = ({
   bookSlug,
   chapterFilename,
 }) => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChapterMeta } from 'zenn-model';
 import { LinkChapter } from '../../Routes';
 import styled from 'styled-components';
@@ -9,7 +8,7 @@ type Props = {
   showListNumber: boolean;
 };
 
-export const BookChapterList: React.VFC<Props> = ({
+export const BookChapterList: React.FC<Props> = ({
   bookSlug,
   chapters,
   showListNumber,

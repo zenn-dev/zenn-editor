@@ -7,7 +7,7 @@ export async function getCliGuide(req: Express.Request, res: Express.Response) {
   const slug = req.params.slug;
   try {
     const response = await fetch(`https://zenn.dev/api/articles/${slug}`);
-    const { article }: ArticleResponse = await response.json();
+    const { article } = (await response.json()) as ArticleResponse;
     const { body_html, title } = article;
     res.setHeader('Cache-Control', 'public, max-age=7200'); // cache on browser
     res.json({ bodyHtml: body_html, title });

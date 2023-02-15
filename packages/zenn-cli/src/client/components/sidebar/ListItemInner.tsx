@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { MdOutlineCallMade } from 'react-icons/md';
 
@@ -10,7 +9,7 @@ interface Props {
   showNewTabIcon?: boolean;
 }
 
-export const ListItemInner: React.VFC<Props> = (props) => {
+export const ListItemInner: React.FC<Props> = (props) => {
   return (
     <StyledListItemInner className="list-item-inner">
       {typeof props.emoji === 'string' && (

@@ -11,7 +11,9 @@ type State = {
 // @ts-ignore
 const isProd = import.meta.env.PROD;
 
-export class ErrorBoundary extends React.Component {
+export class ErrorBoundary extends React.Component<{
+  children: React.ReactNode;
+}> {
   state: State = {
     error: null,
   };

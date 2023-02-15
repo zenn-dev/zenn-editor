@@ -1,9 +1,8 @@
-import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 type Props = { margin?: string };
 
-export const Loading: React.VFC<Props> = (props) => {
+export const Loading: React.FC<Props> = (props) => {
   return <StyledLoading style={{ margin: props.margin }} />;
 };
 
