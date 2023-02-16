@@ -57,18 +57,6 @@ pre[class*='language-'] {
   display: block;
 }
 
-// ==== 🚩 Temporary Workaround ====
-// Prismjs v1.23.0 時点では jsx/tsx と diff をあわせて使うと余計な改行が出来てしまう問題が発生する
-// ref: https://github.com/zenn-dev/zenn-editor/issues/130
-// これを防ぐためにネストされたunchangedトークンを非表示にする
-.token.prefix.unchanged {
-  display: none;
-}
-.token.unchanged > .token.prefix.unchanged {
-  display: inline;
-}
-// ==== 🚩 Temporary Workaround END ====
-
 .token.coord {
   color: #aad4ff;
 }
