@@ -4,7 +4,7 @@
 
 Resolves #<issue-url>
 
-### :clipboard: Tasks
+## :clipboard: Tasks
 
 プルリクエストを作成いただく際、お手数ですが以下の内容についてご確認をお願いします。
 
