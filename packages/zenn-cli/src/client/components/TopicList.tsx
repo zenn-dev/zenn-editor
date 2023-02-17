@@ -7,11 +7,24 @@ type Props = {
 export const TopicList: React.FC<Props> = ({ topics }) => {
   return (
     <StyledTopicList className="topic-list">
-      {topics.map((t, i) => (
-        <span className="topic-list__item" key={`topic-${i}`}>
-          {t}
-        </span>
-      ))}
+      {topics.map((t, i) =>
+        typeof t === 'string' ? (
+          <a
+            href={`https://zenn.dev/topics/${t.toLowerCase()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={`topic-${i}`}
+          >
+            <span className="topic-list__item topic-list__item--valid">
+              {t}
+            </span>
+          </a>
+        ) : (
+          <span className="topic-list__item" key={`topic-${i}`}>
+            {t}
+          </span>
+        )
+      )}
     </StyledTopicList>
   );
 };
@@ -29,5 +42,10 @@ const StyledTopicList = styled.div`
     padding: 0.1em 0.4em;
     border-radius: 5px;
     margin: ${itemMarginPx} 6px ${itemMarginPx} 0;
+  }
+  .topic-list__item--valid {
+    &:hover {
+      background: var(--c-primary-bg-lightest);
+    }
   }
 `;
