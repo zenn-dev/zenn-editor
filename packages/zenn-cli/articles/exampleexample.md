@@ -4,6 +4,7 @@ type: 'idea' # or "idea"
 topics:
   - React
   - Rust
+  - 初心者
 emoji: 👩‍💻
 published: true
 published_at: 2023-05-30 09:00
