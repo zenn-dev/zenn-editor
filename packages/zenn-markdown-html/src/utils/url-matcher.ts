@@ -28,7 +28,7 @@ export function isTweetUrl(url: string): boolean {
 }
 
 export function isStackblitzUrl(url: string): boolean {
-  return /^https:\/\/stackblitz\.com\/[a-zA-Z0-9\-_/.@?&=%\[\]]+$/.test(url);
+  return /^https:\/\/stackblitz\.com\/[a-zA-Z0-9\-_/.@?&=%[\]]+$/.test(url);
 }
 
 export function isCodesandboxUrl(url: string): boolean {
