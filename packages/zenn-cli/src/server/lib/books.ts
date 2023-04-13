@@ -94,7 +94,7 @@ export function getLocalChapter(
 
   const { meta, bodyMarkdown } = data;
   const rawHtml = markdownToHtml(bodyMarkdown, {
-    embedOrigin: 'https://embed.zenn.studio',
+    embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
   });
   const bodyHtml = completeHtml(rawHtml);
   return {
