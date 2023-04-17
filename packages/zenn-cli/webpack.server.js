@@ -1,4 +1,7 @@
 const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+const ENV = dotenv.config().parsed || {};
 
 /**
  * @type {import('webpack').Configuration}
@@ -75,5 +78,12 @@ module.exports = {
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
     // 出力先のファイルを`zenn.js`のみするための設定
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+    // 環境変数を埋め込む
+    new webpack.DefinePlugin(
+      Object.entries(ENV).reduce((env, [key, value]) => {
+        env[`process.env.${key}`] = JSON.stringify(value);
+        return env;
+      }, {})
+    ),
   ],
 };

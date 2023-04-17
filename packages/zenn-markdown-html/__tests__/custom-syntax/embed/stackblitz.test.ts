@@ -2,7 +2,7 @@ import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
 describe('Stackblitz埋め込み要素のテスト', () => {
-  const validUrl = 'https://stackblitz.com/edit/test-examples';
+  const validUrl = 'https://stackblitz.com/edit/test-examples?embed=1&file=pages/api/[id].ts';
   const invalidUrl = '@https://bad-url.stackblitz.com/edit/test-examples';
 
   describe('デフォルトの挙動', () => {
