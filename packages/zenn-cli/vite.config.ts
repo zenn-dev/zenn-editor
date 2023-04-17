@@ -9,6 +9,7 @@ const distDirRoot = 'dist/client';
 export default defineConfig({
   root: path.join(__dirname, srcDirRoot),
   publicDir: path.join(__dirname, `${srcDirRoot}/public`),
+  envDir: __dirname,
   build: {
     outDir: path.join(__dirname, distDirRoot),
     commonjsOptions: {

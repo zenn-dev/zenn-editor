@@ -4,3 +4,4 @@ yarn-error.log
 /dist
 /temp
 .temp
+.env
