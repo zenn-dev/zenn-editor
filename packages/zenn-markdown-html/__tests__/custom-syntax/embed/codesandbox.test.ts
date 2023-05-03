@@ -1,15 +1,15 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('CodeSandBox埋め込み要素のテスト', () => {
+describe('Testing CodeSandBox Embedded Elements', () => {
   const validUrl =
     'https://codesandbox.io/embed/test-example?fontsize=14&hidenavigation=1&theme=dark';
   const invalidUrl =
     'https://bad-example.codesandbox.io/embed/test-example?fontsize=14&hidenavigation=1&theme=dark';
 
-  describe('デフォルトの挙動', () => {
-    describe('有効なURLの場合', () => {
-      test('<iframe />に変換する', () => {
+  describe('Default behavior', () => {
+    describe('For valid URLs', () => {
+      test('should be converted to <iframe />', () => {
         const html = markdownToHtml(`@[codesandbox](${validUrl})`);
         const iframe = parse(html).querySelector(
           `span.embed-codesandbox iframe`
@@ -21,8 +21,8 @@ describe('CodeSandBox埋め込み要素のテスト', () => {
       });
     });
 
-    describe('無効なURLの場合', () => {
-      test('エラーメッセージを出力する', () => {
+    describe('For invalid URLs', () => {
+      test('should output error message', () => {
         const html = markdownToHtml(`@[codesandbox](${invalidUrl})`);
 
         expect(html).toContain(
@@ -32,8 +32,8 @@ describe('CodeSandBox埋め込み要素のテスト', () => {
     });
   });
 
-  describe('customEmbed.codesandbox()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+  describe('If customEmbed.codesandbox() is set', () => {
+    test('should function be executed', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`@[codesandbox](${validUrl})`, {

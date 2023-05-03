@@ -1,13 +1,13 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('jsfiddle埋め込み要素のテスト', () => {
+describe('Testing jsfiddle embedded elements', () => {
   const validUrl = 'https://jsfiddle.net/examples/embedded';
   const invalidUrl = 'https://bad-example.jsfiddle.net/examples/embedded';
 
-  describe('デフォルトの挙動', () => {
-    describe('有効なURLの場合', () => {
-      test('<iframe />に変換する', () => {
+  describe('Default behavior', () => {
+    describe('For valid URLs', () => {
+      test('should be converted to <iframe />', () => {
         const html = markdownToHtml(`@[jsfiddle](${validUrl})`);
         const iframe = parse(html).querySelector(`span.embed-jsfiddle iframe`);
 
@@ -17,16 +17,16 @@ describe('jsfiddle埋め込み要素のテスト', () => {
       });
     });
 
-    describe('無効なURLの場合', () => {
-      test('エラーメッセージを出力する', () => {
+    describe('For invalid URLs', () => {
+      test('should output error message', () => {
         const html = markdownToHtml(`@[jsfiddle](${invalidUrl})`);
         expect(html).toContain('jsfiddleのURLが不正です');
       });
     });
   });
 
-  describe('customEmbed.jsfiddle()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+  describe('If customEmbed.jsfiddle() is set', () => {
+    test('should function be executed', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`@[jsfiddle](${validUrl})`, {
