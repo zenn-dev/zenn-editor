@@ -20,7 +20,7 @@ jest.mock(
     }
 );
 
-describe('CLIのアップデート通知のテスト', () => {
+describe('Testing the CLI update notification', () => {
   let consoleLogMock: jest.SpyInstance;
   let getCurrentCliVersionMock: jest.SpyInstance;
   let getPublishedCliVersionMock: jest.SpyInstance;
@@ -35,7 +35,7 @@ describe('CLIのアップデート通知のテスト', () => {
       .mockResolvedValue(publishedVersion);
   });
 
-  test('公開されているバージョンがローカルと違う場合はアラートを表示する', async () => {
+  test('should display alert if the published version is different from the local version', async () => {
     await notifyNeedUpdateCLI();
 
     expect(consoleLogMock).toHaveBeenCalledWith(
@@ -49,7 +49,7 @@ describe('CLIのアップデート通知のテスト', () => {
     );
   });
 
-  test('ローカルと公開されているバージョンが同じ場合はアラートを表示しない', async () => {
+  test('should not display alert, if local and published versions are the same', async () => {
     getCurrentCliVersionMock.mockReturnValueOnce('v0.0.0');
     getPublishedCliVersionMock.mockResolvedValueOnce('v0.0.0');
 
@@ -58,7 +58,7 @@ describe('CLIのアップデート通知のテスト', () => {
     expect(consoleLogMock).not.toBeCalled();
   });
 
-  test('一度アラート表示したら一定時間経過しないと再度表示されない', async () => {
+  test('should not be shown again until a certain amount of time has passed, if Once an alert is displayed', async () => {
     await notifyNeedUpdateCLI();
     expect(consoleLogMock).toBeCalled();
 

@@ -1,8 +1,8 @@
 import { isGithubUrl } from '../../src/utils/url-matcher';
 
-describe('isGithubUrlのテスト', () => {
-  describe('Trueを返す場合', () => {
-    test('GithubファイルへのURLの時', () => {
+describe('Testing isGithubUrl', () => {
+  describe('If True is returned', () => {
+    test('When the URL to the Github file', () => {
       const goodUrlList = [
         'https://github.com/owner-name/repo-name/blob/branch-name/file-path',
         'https://github.com/owner/repo.name/blob/branch-name/file-path',
@@ -13,7 +13,7 @@ describe('isGithubUrlのテスト', () => {
       });
     });
 
-    test('Githubファイルへのパーマリンクの時', () => {
+    test('When permalinks to Github files', () => {
       const goodUrlList = [
         'https://github.com/owner/repo/blob/362e2428248daabce3da74bef4c41b0879c15392/file-path',
       ];
@@ -23,7 +23,7 @@ describe('isGithubUrlのテスト', () => {
       });
     });
 
-    test('GithubファイルへのURLに行数指定がある時', () => {
+    test('When the URL to the Github file has a line number specification', () => {
       const goodUrlList = [
         'https://github.com/owner-name/repo-name/blob/branch-name/file-path#L100',
         'https://github.com/owner-name/repo-name/blob/branch-name/file-path#L10-L100',
@@ -37,8 +37,8 @@ describe('isGithubUrlのテスト', () => {
     });
   });
 
-  describe('Falseを返す場合', () => {
-    test('GithubファイルへのURLでは無い時', () => {
+  describe('If False is returned', () => {
+    test('When not a URL to a Github file', () => {
       const badUrlList = [
         'bad-string',
         'https://example.com',
@@ -52,7 +52,7 @@ describe('isGithubUrlのテスト', () => {
       });
     });
 
-    test('オーナー名またはリポジトリ名が正しく無い時', () => {
+    test('Incorrect owner or repository name', () => {
       const badOwnerNames = ['.owner', '-owner', 'owner.name'];
       const badRepoNames = ['.repo', '-repo'];
 
@@ -69,7 +69,7 @@ describe('isGithubUrlのテスト', () => {
       });
     });
 
-    test('XSSを含んでいる時', () => {
+    test('should be contained XSS', () => {
       const badUrlList = [
         'https://github.com.example.com/owner-name/repo-name/blob/branch-name/file-path',
       ];

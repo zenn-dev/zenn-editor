@@ -1,10 +1,10 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../src/index';
 
-describe('メッセージボックスのカスタム記法テスト', () => {
-  describe('通常表示の場合', () => {
-    describe('正しい構文の場合', () => {
-      test('htmlを出力する', () => {
+describe('Custom Notation Testing for Message Boxes', () => {
+  describe('Normal display', () => {
+    describe('For correct syntax', () => {
+      test('should html be output', () => {
         const html = markdownToHtml(':::message\nhello\n:::');
         const messagebox = parse(html).querySelector('aside.msg');
         const msgSymbol = messagebox?.querySelector('.msg-symbol');
@@ -16,8 +16,8 @@ describe('メッセージボックスのカスタム記法テスト', () => {
       });
     });
 
-    describe('間違った構文の場合', () => {
-      test('htmlを出力しない', () => {
+    describe('For incorrect syntax', () => {
+      test('should not html be output', () => {
         const html = markdownToHtml(':::message invalid"\nhello\n:::');
         const messagebox = parse(html).querySelector('aside.msg.alert');
 
@@ -26,9 +26,9 @@ describe('メッセージボックスのカスタム記法テスト', () => {
     });
   });
 
-  describe('アラート表示の場合', () => {
-    describe('正しい構文の場合', () => {
-      test('htmlを出力する', () => {
+  describe('For alert display', () => {
+    describe('For correct syntax', () => {
+      test('should html be output', () => {
         const validMarkdownPatterns = [
           ':::message alert\nhello\n:::',
           ':::message alert  \nhello\n:::',
@@ -47,8 +47,8 @@ describe('メッセージボックスのカスタム記法テスト', () => {
       });
     });
 
-    describe('間違った構文の場合', () => {
-      test('htmlを出力しない', () => {
+    describe('For incorrect syntax', () => {
+      test('should not html be output', () => {
         const html = markdownToHtml(':::message invalid"\nhello\n:::');
         const messagebox = parse(html).querySelector('aside.msg.alert');
 
