@@ -1,13 +1,13 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing Stackblitz Embedded Elements', () => {
+describe('Stackblitz埋め込み要素のテスト', () => {
   const validUrl = 'https://stackblitz.com/edit/test-examples?embed=1&file=pages/api/[id].ts';
   const invalidUrl = '@https://bad-url.stackblitz.com/edit/test-examples';
 
-  describe('Default behavior', () => {
-    describe('For valid URLs', () => {
-      test('should be converted to <iframe />', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('<iframe />に変換する', () => {
         const html = markdownToHtml(`@[stackblitz](${validUrl})`);
         const iframe = parse(html).querySelector(
           `span.embed-stackblitz iframe`
@@ -19,16 +19,16 @@ describe('Testing Stackblitz Embedded Elements', () => {
       });
     });
 
-    describe('For invalid URLs', () => {
-      test('should output error message', () => {
+    describe('無効なURLの場合', () => {
+      test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[stackblitz](${invalidUrl})`);
         expect(html).toContain('StackBlitzのembed用のURLを指定してください');
       });
     });
   });
 
-  describe('If customEmbed.stackblitz() is set', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.stackblitz()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`@[stackblitz](${validUrl})`, {

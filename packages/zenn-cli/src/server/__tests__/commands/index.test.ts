@@ -3,7 +3,7 @@ import * as Log from '../../lib/log';
 import { commandListText } from '../../lib/messages';
 import * as notify from '../../lib/notify-update';
 
-describe('Testing the default behavior of the CLI', () => {
+describe('CLIのデフォルトの挙動のテスト', () => {
   let notifyNeedUpdateCLIMock: jest.SpyInstance<Promise<void>>;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('Testing the default behavior of the CLI', () => {
       .mockResolvedValue();
   });
 
-  test('should display an error message, if an invalid command be specified', () => {
+  test('存在しないコマンドが指定された場合はエラーメッセージを表示する', () => {
     exec('not-exist-args', []);
     expect(Log.error).toHaveBeenCalledWith(
       expect.stringContaining('該当するCLIコマンドが存在しません')
@@ -25,7 +25,7 @@ describe('Testing the default behavior of the CLI', () => {
     );
   });
 
-  test('should be executed notifyNeedUpdateCLI(), if canNotifyUpdate option is enabled', () => {
+  test('canNotifyUpdateオプションが有効ならnotifyNeedUpdateCLI()を実行する', () => {
     exec('not-exist-args', [], { canNotifyUpdate: true });
     expect(notifyNeedUpdateCLIMock).toBeCalled();
   });

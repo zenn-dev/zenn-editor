@@ -1,8 +1,8 @@
 import { isYoutubeUrl } from '../../src/utils/url-matcher';
 
-describe('Testing isYoutubeUrl', () => {
-  describe('If True is returned', () => {
-    test('When the video URL', () => {
+describe('isYoutubeUrlのテスト', () => {
+  describe('Trueを返す場合', () => {
+    test('動画URLの時', () => {
       const goodUrlList = [
         'http://www.youtube.com/watch?v=Xx0XXxXXXx0',
         'https://www.youtube.com/watch?v=Xx0XXxXXXx0',
@@ -15,7 +15,7 @@ describe('Testing isYoutubeUrl', () => {
       });
     });
 
-    test('When the URL of the shared link', () => {
+    test('共有リンクのURLの時', () => {
       const goodUrlList = [
         'https://youtu.be/Xx0XXxXXXx0',
         'http://youtu.be/Xx0XXxXXXx0',
@@ -28,8 +28,8 @@ describe('Testing isYoutubeUrl', () => {
       });
     });
 
-    describe('If False is returned', () => {
-      test('When the URL is incorrect', () => {
+    describe('Falseを返す場合', () => {
+      test('URLが正しくない時', () => {
         const badUrlList = [
           'bad-string',
           'https://example.com',
@@ -45,7 +45,7 @@ describe('Testing isYoutubeUrl', () => {
         });
       });
 
-      test('should be contained XSS', () => {
+      test('XSSを含んでいる時', () => {
         const badUrlList = [
           'https://youtu.be/Xx0XXxXXXx0?onload=alert(1)',
           'https://www.youtube.com/watch?v=Xx0XXxXXXx0&onload=alert(1)',
