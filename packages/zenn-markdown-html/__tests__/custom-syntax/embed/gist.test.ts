@@ -1,13 +1,13 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing of GitHub Gist Embedded Elements', () => {
+describe('GitHub Gist埋め込み要素のテスト', () => {
   const validUrl = 'https://gist.github.com/examples/9164408';
   const invalidUrl = 'https://bad-example.gist.github.com/examples/9164408';
 
-  describe('Default behavior', () => {
-    describe('For valid URLs', () => {
-      test('should be converted to link', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('リンクに変換する', () => {
         const html = markdownToHtml(`@[gist](${validUrl})`);
         const link = parse(html).querySelector(`a`);
 
@@ -21,15 +21,15 @@ describe('Testing of GitHub Gist Embedded Elements', () => {
       });
     });
 
-    describe('For invalid URLs', () => {
-      test('should output error message', () => {
+    describe('無効なURLの場合', () => {
+      test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[gist](${invalidUrl})`);
         expect(html).toContain('GitHub GistのページURLを指定してください');
       });
     });
 
-    describe('If you have set up an embedOrigin', () => {
-      test('shoud be displayed <iframe /> with the passed embeddedOrigin as `src`', () => {
+    describe('embedOriginを設定している場合', () => {
+      test('渡したembedOriginを`src`として<iframe />を表示する', () => {
         const embedOrigin = 'https://embed.example.com';
         const html = markdownToHtml(validUrl, { embedOrigin });
         const iframe = parse(html).querySelector('span.zenn-embedded iframe');
@@ -44,8 +44,8 @@ describe('Testing of GitHub Gist Embedded Elements', () => {
     });
   });
 
-  describe('If customEmbed.gist() is set', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.gist()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const url = 'https://example.com';
       const customizeText = 'customized text';
       const mock = jest.fn().mockReturnValue(customizeText);

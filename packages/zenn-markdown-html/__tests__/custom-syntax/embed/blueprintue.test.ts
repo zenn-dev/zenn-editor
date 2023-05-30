@@ -1,13 +1,13 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing Blueprintue Embedded Elements', () => {
+describe('Blueprintue埋め込み要素のテスト', () => {
   const validUrl = 'https://blueprintue.com/render/examples';
   const invalidUrl = 'https://bad-example.blueprintue.com/render/examples';
 
-  describe('Default behavior', () => {
-    describe('For valid URLs', () => {
-      test('should be converted to <iframe />', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('<iframe />に変換する', () => {
         const html = markdownToHtml(`@[blueprintue](${validUrl})`);
         const iframe = parse(html).querySelector(
           `span.embed-blueprintue iframe`
@@ -19,8 +19,8 @@ describe('Testing Blueprintue Embedded Elements', () => {
       });
     });
 
-    describe('For invalid URLs', () => {
-      test('should output error message', () => {
+    describe('無効なURLの場合', () => {
+      test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[blueprintue](${invalidUrl})`);
 
         expect(html).toContain(
@@ -30,8 +30,8 @@ describe('Testing Blueprintue Embedded Elements', () => {
     });
   });
 
-  describe('If customEmbed.blueprintue() is set', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.blueprintue()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`@[blueprintue](${validUrl})`, {

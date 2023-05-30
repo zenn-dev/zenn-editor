@@ -1,13 +1,13 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing SpeakerDeck Embedded Elements', () => {
+describe('SpeakerDeck埋め込み要素のテスト', () => {
   const validToken = 'example-token';
   const invalidToken = '@invalid-token';
 
-  describe('Default behavior', () => {
-    describe('For valid URLs', () => {
-      test('should be converted to <iframe />', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('<iframe />に変換する', () => {
         const html = markdownToHtml(`@[speakerdeck](${validToken})`);
         const iframe = parse(html).querySelector(
           `span.embed-speakerdeck iframe`
@@ -21,16 +21,16 @@ describe('Testing SpeakerDeck Embedded Elements', () => {
       });
     });
 
-    describe('For invalid URLs', () => {
-      test('should output error message', () => {
+    describe('無効なURLの場合', () => {
+      test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[speakerdeck](${invalidToken})`);
         expect(html).toContain('Speaker Deckのkeyが不正です');
       });
     });
   });
 
-  describe('If you have set customEmbed.speakerdeck()', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.speakerdeck()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`@[speakerdeck](${validToken})`, {

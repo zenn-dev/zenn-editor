@@ -1,13 +1,13 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing Tweet Embedded Elements', () => {
+describe('Tweet埋め込み要素のテスト', () => {
   const validUrl = 'https://twitter.com/zenn-dev/status/example';
   const invalidUrl = 'https://bad-url.twitter.com/zenn-dev/status/example';
 
-  describe('Default behavior', () => {
-    describe('For valid URLs', () => {
-      test('should be converted to link', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('リンクに変換する', () => {
         const html = markdownToHtml(`@[tweet](${validUrl})`);
         const link = parse(html).querySelector(`a`);
 
@@ -21,16 +21,16 @@ describe('Testing Tweet Embedded Elements', () => {
       });
     });
 
-    describe('For invalid URLs', () => {
-      test('should output error message', () => {
+    describe('無効なURLの場合', () => {
+      test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[tweet](${invalidUrl})`);
         expect(html).toContain('ツイートページのURLを指定してください');
       });
     });
   });
 
-  describe('If you have set up an embedOrigin', () => {
-    test('shoud be displayed <iframe /> with the passed embeddedOrigin as `src`', () => {
+  describe('embedOriginを設定している場合', () => {
+    test('渡したembedOriginを`src`として<iframe />を表示する', () => {
       const embedOrigin = 'https://embed.example.com';
       const html = markdownToHtml(validUrl, { embedOrigin });
       const iframe = parse(html).querySelector('span.zenn-embedded iframe');
@@ -44,8 +44,8 @@ describe('Testing Tweet Embedded Elements', () => {
     });
   });
 
-  describe('If you have set customEmbed.tweet()', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.tweet()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const customizeText = 'customized text';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml('https://twitter.com/jack/status/20', {

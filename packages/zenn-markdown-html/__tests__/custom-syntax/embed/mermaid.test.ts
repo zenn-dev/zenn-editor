@@ -1,7 +1,7 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing Mermaid Embedded Elements', () => {
+describe('Mermaid埋め込み要素のテスト', () => {
   const validSrc = `
     graph TD;
       A-->B;
@@ -11,9 +11,9 @@ describe('Testing Mermaid Embedded Elements', () => {
   `.trim();
   const invalidSrc = `invalid src text`;
 
-  describe('Default behavior', () => {
-    describe('For valid codes', () => {
-      test('should display input values as code blocks as they are', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なコードの場合', () => {
+      test('入力値をコードブロックとしてそのまま表示する', () => {
         const html = markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``);
         // <code />が取得できないので<pre />で取得する
         const preElement = parse(html).querySelector(
@@ -26,8 +26,8 @@ describe('Testing Mermaid Embedded Elements', () => {
       });
     });
 
-    describe('For invalid codes', () => {
-      test('should display input values as code blocks as they are', () => {
+    describe('無効なコードの場合', () => {
+      test('入力値をコードブロックとしてそのまま表示する', () => {
         const html = markdownToHtml(`\`\`\`mermaid\n${invalidSrc}\n\`\`\``);
         // <code />が取得できないので<pre />で取得する
         const codeElement = parse(html).querySelector(
@@ -39,8 +39,8 @@ describe('Testing Mermaid Embedded Elements', () => {
     });
   });
 
-  describe('If you have set up an embedOrigin', () => {
-    test('shoud be displayed <iframe /> with the passed embeddedOrigin as `src`', () => {
+  describe('embedOriginを設定している場合', () => {
+    test('渡したembedOriginを`src`として<iframe />を表示する', () => {
       const embedOrigin = 'https://embed.example.com';
       const html = markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``, {
         embedOrigin,
@@ -56,8 +56,8 @@ describe('Testing Mermaid Embedded Elements', () => {
     });
   });
 
-  describe('If customEmbed.mermaid() is set', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.mermaid()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const customizeText = 'customized text';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``, {

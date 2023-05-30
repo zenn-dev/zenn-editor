@@ -1,8 +1,8 @@
 import markdownToHtml from '../../../src';
 
-describe('Common Tests for Embedded Elements', () => {
-  describe('Validation Testing of Embedded Elements', () => {
-    describe('Notation with character limit', () => {
+describe('埋め込み要素の共通テスト', () => {
+  describe('埋め込み要素のバリデーションテスト', () => {
+    describe('文字数制限がある記法について', () => {
       const getRestrictedEmbedList = (token: string) => [
         // linkify
         `https://twitter.com/zenn_dev/status/${token}`,
@@ -22,8 +22,8 @@ describe('Common Tests for Embedded Elements', () => {
         `@[gist](${token})`,
       ];
 
-      describe('If the URL or Token is longer than 300 characters', () => {
-        test('should output error message', () => {
+      describe('URLやTokenが300文字より長い場合', () => {
+        test('エラーメッセージを出力', () => {
           const dummy = Array(301).fill('a').join('');
           const tokens = getRestrictedEmbedList(dummy);
 
@@ -36,8 +36,8 @@ describe('Common Tests for Embedded Elements', () => {
         });
       });
 
-      describe('If the URL or Token is less than 300 characters', () => {
-        test('should not output error message', () => {
+      describe('URLやTokenが300文字以下の場合', () => {
+        test('エラーメッセージを出力しない', () => {
           const tokens = getRestrictedEmbedList('example');
           tokens.forEach((text) => {
             const html = markdownToHtml(text);
@@ -49,7 +49,7 @@ describe('Common Tests for Embedded Elements', () => {
       });
     });
 
-    describe('Notation with no character limit', () => {
+    describe('文字数制限が無い記法について', () => {
       const getEmbedList = (token: string) => [
         // linkify
         `https://zenn.dev/${token}`,
@@ -60,8 +60,8 @@ describe('Common Tests for Embedded Elements', () => {
         `@[github](https://github.com/zenn-dev/zenn-editor/blob/canary/${token})`,
       ];
 
-      describe('If the URL or Token is longer than 300 characters', () => {
-        test('should not output error message', () => {
+      describe('URLやTokenが300文字より長い場合', () => {
+        test('エラーメッセージを出力しない', () => {
           const dummy = Array(350).fill('a').join('');
           const tokens = getEmbedList(dummy);
 
@@ -74,8 +74,8 @@ describe('Common Tests for Embedded Elements', () => {
         });
       });
 
-      describe('If the URL or Token is less than 300 characters', () => {
-        test('should not output error message', () => {
+      describe('URLやTokenが300文字以下の場合', () => {
+        test('エラーメッセージを出力しない', () => {
           const tokens = getEmbedList('example');
 
           tokens.forEach((text) => {

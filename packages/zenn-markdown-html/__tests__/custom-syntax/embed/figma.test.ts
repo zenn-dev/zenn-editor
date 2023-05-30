@@ -1,15 +1,15 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing of Figma Embedded Elements', () => {
+describe('Figma埋め込み要素のテスト', () => {
   const validUrl =
     'https://www.figma.com/file/LKQ4FJ4ExAmPLEedbRp931/Sample-File?node-id=0%3A1';
   const invalidUrl =
     'https://www.figma.com/bad-example/file/LKQ4FJ4ExAmPLEedbRp931/Sample-File?node-id=0%3A1';
 
-  describe('Default behavior', () => {
-    describe('For valid URLs', () => {
-      test('should be converted to <iframe />', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('<iframe />に変換する', () => {
         const html = markdownToHtml(`@[figma](${validUrl})`);
         const iframe = parse(html).querySelector(`span.embed-figma iframe`);
 
@@ -19,8 +19,8 @@ describe('Testing of Figma Embedded Elements', () => {
       });
     });
 
-    describe('For invalid URLs', () => {
-      test('should output error message', () => {
+    describe('無効なURLの場合', () => {
+      test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[figma](${invalidUrl})`);
 
         expect(html).toContain(
@@ -30,8 +30,8 @@ describe('Testing of Figma Embedded Elements', () => {
     });
   });
 
-  describe('If customEmbed.figma() is set', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.figma()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const customizeText = 'customized text!';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`@[figma](${validUrl})`, {

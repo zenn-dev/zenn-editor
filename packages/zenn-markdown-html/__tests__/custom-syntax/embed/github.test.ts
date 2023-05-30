@@ -1,15 +1,15 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing of GitHub Embedded Elements', () => {
+describe('GitHub埋め込み要素のテスト', () => {
   const validUrl =
     'https://github.com/zenn-dev/example-repo/blob/main/example.json';
   const invalidUrl =
     'https://bad-example.github.com/zenn-dev/example-repo/blob/main/example.json';
 
-  describe('Default behavior', () => {
-    describe('For valid URLs', () => {
-      test('should be converted to link', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なURLの場合', () => {
+      test('リンクに変換する', () => {
         const html = markdownToHtml(`@[github](${validUrl})`);
         const link = parse(html).querySelector(`a`);
 
@@ -23,8 +23,8 @@ describe('Testing of GitHub Embedded Elements', () => {
       });
     });
 
-    describe('For invalid URLs', () => {
-      test('should output error message', () => {
+    describe('無効なURLの場合', () => {
+      test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[github](${invalidUrl})`);
         expect(html).toContain(
           'GitHub のファイルURLまたはパーマリンクを指定してください'
@@ -33,8 +33,8 @@ describe('Testing of GitHub Embedded Elements', () => {
     });
   });
 
-  describe('If you have set up an embedOrigin', () => {
-    test('shoud be displayed <iframe /> with the passed embeddedOrigin as `src`', () => {
+  describe('embedOriginを設定している場合', () => {
+    test('渡したembedOriginを`src`として<iframe />を表示する', () => {
       const embedOrigin = 'https://embed.example.com';
       const html = markdownToHtml(`@[github](${validUrl})`, { embedOrigin });
       const iframe = parse(html).querySelector('span.zenn-embedded iframe');
@@ -48,8 +48,8 @@ describe('Testing of GitHub Embedded Elements', () => {
     });
   });
 
-  describe('If you have set up customEmbed.github()', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.github()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const url = 'https://example.com';
       const customizeText = 'customized text';
       const mock = jest.fn().mockReturnValue(customizeText);

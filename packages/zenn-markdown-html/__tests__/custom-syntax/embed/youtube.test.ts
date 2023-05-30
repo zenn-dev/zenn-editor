@@ -1,13 +1,13 @@
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
-describe('Testing Youtube Embedded Elements', () => {
+describe('Youtube埋め込み要素のテスト', () => {
   const validVideoId = 'exampletest'; // 11文字する
   const invalidVideoId = '@bad-video-id';
 
-  describe('Default behavior', () => {
-    describe('For a valid videoId', () => {
-      test('should be converted to <iframe />', () => {
+  describe('デフォルトの挙動', () => {
+    describe('有効なvideoIdの場合', () => {
+      test('<iframe />に変換する', () => {
         const html = markdownToHtml(`@[youtube](${validVideoId})`);
         const iframe = parse(html).querySelector(`span.embed-youtube iframe`);
 
@@ -19,16 +19,16 @@ describe('Testing Youtube Embedded Elements', () => {
       });
     });
 
-    describe('For a invalid videoId', () => {
-      test('should output error message', () => {
+    describe('無効なvideoIdの場合', () => {
+      test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[youtube](${invalidVideoId})`);
         expect(html).toContain('YouTubeのvideoIDが不正です');
       });
     });
   });
 
-  describe('If you have set customEmbed.youtube()', () => {
-    test('should function be executed', () => {
+  describe('customEmbed.youtube()を設定している場合', () => {
+    test('渡した関数を実行する', () => {
       const customizeText = 'customized text';
       const mock = jest.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`@[youtube](${validVideoId})`, {
