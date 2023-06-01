@@ -3,6 +3,7 @@
     "target": "es6", // important for web components
     "module": "commonjs",
     "declaration": true,
+    "emitDeclarationOnly": true,
     "outDir": "./lib",
     "rootDir": "./src",
     "strict": true,
@@ -11,6 +12,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "lib"],
   "include": ["**/*.ts", "**/*.tsx"]
 }

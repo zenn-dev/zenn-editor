@@ -15,18 +15,22 @@
   "scripts": {
     "clean": "rimraf lib/*",
     "build": "pnpm clean && run-p build:*",
-    "build:tsc": "tsc -p .",
+    "build:types": "tsc -p .",
+    "build:esbuild": "esbuild ./src/index.ts --bundle --outdir=./lib --target=es2020 --platform=browser --loader:.woff=file --loader:.woff2=file --loader:.ttf=file --asset-names=fonts/[name]",
     "lint": "eslint . --ext .ts,.tsx",
     "fix": "eslint . --ext .ts,.tsx --fix",
     "strict:lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "echo 'no test yet'"
   },
   "devDependencies": {
+    "@types/katex": "^0.16.0",
     "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
+    "esbuild": "^0.17.8",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
+    "katex": "^0.16.7",
     "rimraf": "^4.1.2",
     "typescript": "^4.9.5"
   },

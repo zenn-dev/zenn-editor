@@ -29,7 +29,9 @@ export default defineConfig({
       },
     },
     fs: {
-      allow: [path.join(__dirname, '..')],
+      // pnpm workspaceによりルートディレクトリにパッケージがインストールされるため、
+      // ルートディレクトリへのアクセス権限を許可する
+      allow: [path.join(__dirname, '../..')],
     },
   },
   // required to resolve monorepo packages from vite

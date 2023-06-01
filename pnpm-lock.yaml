@@ -158,19 +158,25 @@ importers:
 
   packages/zenn-embed-elements:
     specifiers:
+      '@types/katex': ^0.16.0
       '@types/node': ^18.13.0
       '@typescript-eslint/eslint-plugin': ^5.52.0
       '@typescript-eslint/parser': ^5.52.0
+      esbuild: ^0.17.8
       eslint: ^8.34.0
       eslint-config-prettier: ^8.6.0
+      katex: ^0.16.7
       rimraf: ^4.1.2
       typescript: ^4.9.5
     devDependencies:
+      '@types/katex': 0.16.0
       '@types/node': 18.13.0
       '@typescript-eslint/eslint-plugin': 5.52.0_6cfvjsbua5ptj65675bqcn6oza
       '@typescript-eslint/parser': 5.52.0_7kw3g6rralp5ps6mg3uyzz6azm
+      esbuild: 0.17.8
       eslint: 8.34.0
       eslint-config-prettier: 8.6.0_eslint@8.34.0
+      katex: 0.16.7
       rimraf: 4.1.2
       typescript: 4.9.5
 
@@ -3062,6 +3068,10 @@ packages:
       '@types/node': 18.13.0
     dev: true
 
+  /@types/katex/0.16.0:
+    resolution: {integrity: sha512-hz+S3nV6Mym5xPbT9fnO8dDhBFQguMYpY0Ipxv06JMi1ORgnEM4M1ymWDUhUNer3ElLmT583opRo4RzxKmh9jw==}
+    dev: true
+
   /@types/linkify-it/3.0.2:
     resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==}
 
@@ -4325,6 +4335,11 @@ packages:
   /commander/4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
+    dev: true
+
+  /commander/8.3.0:
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
+    engines: {node: '>= 12'}
     dev: true
 
   /commander/9.5.0:
@@ -7041,6 +7056,13 @@ packages:
 
   /just-diff/5.2.0:
     resolution: {integrity: sha512-6ufhP9SHjb7jibNFrNxyFZ6od3g+An6Ai9mhGRvcYe8UJlH0prseN64M+6ZBBUoKYHZsitDP42gAJ8+eVWr3lw==}
+    dev: true
+
+  /katex/0.16.7:
+    resolution: {integrity: sha512-Xk9C6oGKRwJTfqfIbtr0Kes9OSv6IFsuhFGc7tW4urlpMJtuh+7YhzU6YEG9n8gmWKcMAFzkp7nr+r69kV0zrA==}
+    hasBin: true
+    dependencies:
+      commander: 8.3.0
     dev: true
 
   /kind-of/6.0.3:
