@@ -14,10 +14,7 @@ categories:
       - 'enhancement'
   - title: '🐛 Bug Fixes'
     labels:
-      - 'bugfix'
-  - title: '👷 Fixes'
-    labels:
-      - 'fix'
+      - 'bug'
   - title: '🧰 Maintenance'
     label: 'chore'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'

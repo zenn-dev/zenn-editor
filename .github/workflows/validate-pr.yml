@@ -18,8 +18,7 @@ jobs:
     steps:
       - name: Check label
         if: |
-          !contains(github.event.pull_request.labels.*.name, 'fix') && 
-          !contains(github.event.pull_request.labels.*.name, 'bugfix') && 
+          !contains(github.event.pull_request.labels.*.name, 'bug') && 
           !contains(github.event.pull_request.labels.*.name, 'enhancement') && 
           !contains(github.event.pull_request.labels.*.name, 'chore') && 
           !contains(github.event.pull_request.labels.*.name, 'feature') && 
@@ -28,5 +27,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: ${{ github.event.pull_request.comments_url }}
         run: |
-          echo "::error::次のラベルを付けてください。 labels: fix, bugfix, enhancement, feature, chore, release"
+          echo "::error::次のラベルを付けてください。 labels: bug, enhancement, feature, chore, release"
           exit 1
