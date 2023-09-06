@@ -53,9 +53,9 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
       // ボタンをクリックしたら見出しのアンカーリンクをクリップボードにコピーする
       // 親要素が React で管理されてないので、アンマウント時の removeEventListener はあまり意味がないので実装しない
       anchorButton.addEventListener('click', async () => {
-        const text = 'test';
+        const text = headerAnchorLink.getAttribute('href') ?? '';
 
-        await navigator.clipboard.writeText(text.replace(/\n$/, ''));
+        await navigator.clipboard.writeText(text);
 
         // この時にツールチップを表示する
         anchorButton.setAttribute('role', 'tooltip');
