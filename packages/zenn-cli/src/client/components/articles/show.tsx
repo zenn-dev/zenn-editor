@@ -43,9 +43,7 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
       <ContentContainer>
         <StyledArticleShow className="article-show">
           <div className="article-show__content">
-            {/* @ts-expect-error TODO */}
             {article.toc && article.toc.length > 0 && (
-              // @ts-expect-error TODO
               <Toc maxDepth={2} toc={article.toc} />
             )}
             <BodyContent rawHtml={article.bodyHtml || ''} />
