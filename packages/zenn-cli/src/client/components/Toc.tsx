@@ -1,30 +1,14 @@
-// import { IconButton, Link, Tooltip } from 'react-icons';
 import React from 'react';
 import styled from 'styled-components';
-// import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { usePersistedState } from '../hooks/usePersistedState';
 import { TocNode } from 'zenn-model/lib/types';
-import { Tooltip } from './Tooltip';
-import { TooltipText } from './TooltipText';
 
 const TocList: React.FC<{
   toc: TocNode[];
   depth?: number;
   maxDepth: number;
 }> = ({ toc, depth = 1, maxDepth }) => {
-  const [selectedId, setSelectedId] = React.useState<string>('');
-  const handleCopyHeaderId = (id: string) => {
-    navigator.clipboard.writeText(id);
-
-    // この時にツールチップを表示する
-    setSelectedId(id);
-
-    setTimeout(() => {
-      setSelectedId('');
-    }, 1500);
-  };
-
   return (
     <ol className={`toc__ol-depth-${depth}`}>
       {toc.map((node) => {
@@ -34,35 +18,6 @@ const TocList: React.FC<{
               <a className="toc__list-item__id-link" href={`#${node.id}`}>
                 {node.text}
               </a>
-
-              {/* <Tooltip
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                arrow
-                placement="top"
-                title="idをコピーしました！"
-                open={selectedId === node.id}
-              >
-                <IconButton
-                  className="toc__list-item__id-copy-button"
-                  size="small"
-                  disableFocusRipple={true}
-                  disableRipple={true}
-                  disableTouchRipple={true}
-                  color="inherit"
-                  data-tooltip-position="top-left"
-                  aria-label="クリップボードにコピー"
-                  onClick={() => handleCopyHeaderId(node.id)}
-                >
-                  <img
-                    src="/static-images/copy-icon.svg"
-                    width={15}
-                    height={15}
-                    alt=""
-                  />
-                </IconButton>
-              </Tooltip> */}
             </div>
             {depth < maxDepth && node.children.length > 0 && (
               <TocList
