@@ -47,10 +47,10 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
       anchorButton.setAttribute('data-tooltip-position', 'top-left');
       anchorButton.setAttribute(
         'aria-label',
-        '公開時のアンカーリンクをクリップボードにコピー'
+        '見出しのアンカーリンクをクリップボードにコピー'
       );
 
-      // ボタンをクリックしたら公開時のアンカーリンクをクリップボードにコピーする
+      // ボタンをクリックしたら見出しのアンカーリンクをクリップボードにコピーする
       // 親要素が React で管理されてないので、アンマウント時の removeEventListener はあまり意味がないので実装しない
       anchorButton.addEventListener('click', async () => {
         const text = 'test';
@@ -61,7 +61,7 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
         anchorButton.setAttribute('role', 'tooltip');
         anchorButton.setAttribute(
           'aria-label',
-          '公開時のアンカーリンクをコピーしました！'
+          'アンカーリンクをコピーしました！'
         );
 
         // 3秒後に非表示にする
@@ -69,7 +69,7 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
           anchorButton.removeAttribute('role');
           anchorButton.setAttribute(
             'aria-label',
-            '公開時のアンカーリンクをクリップボードにコピー'
+            '見出しのアンカーリンクをクリップボードにコピー'
           );
         }, 3000);
       });
