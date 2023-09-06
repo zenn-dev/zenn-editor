@@ -1,14 +1,9 @@
-import { IconButton, Link, Tooltip } from '@material-ui/core';
+// import { IconButton, Link, Tooltip } from 'react-icons';
 import React from 'react';
 import styled from 'styled-components';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+// import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { usePersistedState } from '../hooks/usePersistedState';
-
-export type TocNode = {
-  text: string;
-  id: string;
-  children: TocNode[];
-};
+import { TocNode } from 'zenn-model/lib/types';
 
 const TocList: React.FC<{
   toc: TocNode[];
@@ -33,10 +28,10 @@ const TocList: React.FC<{
         return (
           <li key={node.id}>
             <div className="toc__list-item">
-              <Link className="toc__list-item__id-link" href={`#${node.id}`}>
+              <a className="toc__list-item__id-link" href={`#${node.id}`}>
                 {node.text}
-              </Link>
-              <Tooltip
+              </a>
+              {/* <Tooltip
                 disableFocusListener
                 disableHoverListener
                 disableTouchListener
@@ -63,7 +58,7 @@ const TocList: React.FC<{
                     alt=""
                   />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
             </div>
             {depth < maxDepth && node.children.length > 0 && (
               <TocList
@@ -100,11 +95,11 @@ export const Toc: React.FC<TocProps> = ({ ...tocListProps }) => {
           onClick={() => setIsTocFolded(!isTocFolded)}
         >
           目次のプレビュー
-          <KeyboardArrowDownIcon
+          {/* <KeyboardArrowDownIcon
             width={16}
             height={16}
             className="title-container__toggle-icon"
-          />
+          /> */}
         </div>
         <div className="toc">
           <TocList {...tocListProps} />

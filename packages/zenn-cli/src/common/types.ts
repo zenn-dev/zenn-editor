@@ -1,5 +1,11 @@
-import { TocNode } from '../client/components/Toc';
 import { itemSortTypes } from './helper';
+
+// TODO TocNodeの定義箇所を統一した方が良いか検討する
+export type TocNode = {
+  text: string;
+  id: string;
+  children: TocNode[];
+};
 
 export type Article = {
   slug: string;
