@@ -45,10 +45,18 @@ export type ValidationError = {
   detailUrlText?: string;
 };
 
+// TODO TocNodeの定義箇所を統一した方が良いか検討する
+export type TocNode = {
+  text: string;
+  id: string;
+  children: TocNode[];
+};
+
 export type Article = {
   slug: string;
   title?: string;
   bodyHtml?: string;
+  toc?: TocNode[];
   emoji?: string;
   type?: 'tech' | 'idea';
   topics?: string[];
