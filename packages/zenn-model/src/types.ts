@@ -45,7 +45,6 @@ export type ValidationError = {
   detailUrlText?: string;
 };
 
-// TODO TocNodeの定義箇所を統一した方が良いか検討する
 export type TocNode = {
   text: string;
   id: string;
