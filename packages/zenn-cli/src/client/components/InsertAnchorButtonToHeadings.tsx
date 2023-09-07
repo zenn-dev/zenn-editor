@@ -114,7 +114,7 @@ const StyledInsertAnchorButtonToHeadings = styled.div`
     opacity: 0;
 
     // モバイルでは非表示にする
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
       display: none;
     }
 
