@@ -9,7 +9,7 @@ import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from 'zenn-model';
 import { Toc } from '../Toc';
-import { InsertAnchorButtonToHeadings } from '../InsertAnchorButtonToHeaings';
+import { InsertAnchorButtonToHeadings } from '../InsertAnchorButtonToHeadings';
 
 type ArticleShowProps = {
   slug: string;
