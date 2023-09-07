@@ -58,6 +58,7 @@
     "boxen": "^6.2.1",
     "cheerio": "1.0.0-rc.12",
     "chokidar": "^3.5.3",
+    "clsx": "^2.0.0",
     "colors": "1.4.0",
     "configstore": "^6.0.0",
     "connect-history-api-fallback": "^2.0.0",

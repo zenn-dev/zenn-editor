@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import clsx from 'clsx';
 
 type Props = {
   children: React.ReactNode;
@@ -18,34 +20,18 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
       '.header-anchor-link'
     );
 
-    // 見出しの隣にアンカー 🔗 を表示する
+    // 見出しの隣にアンカーボタン 🔗 を表示する
     headerAnchorLinks.forEach((headerAnchorLink) => {
       const anchorButton = document.createElement('button');
+      anchorButton.setAttribute('class', 'anchorButton');
+
       const parent = headerAnchorLink.parentElement;
       if (!parent) return;
 
-      parent.setAttribute('style', 'position: relative;');
-      anchorButton.setAttribute(
-        'style',
-        `
-          position: absolute;
-          top: 0.23em;
-          left: -25px;
-          display: block;
-          width: 24px;
-          height: 1em;
-          padding-right: 5px;
-
-          background: url('https://zenn.dev/permanent/link-gray.svg') no-repeat
-            center;
-          background-size: 20px 20px;
-          opacity: 0;
-        `
+      parent.setAttribute(
+        'class',
+        clsx(parent.getAttribute('class'), 'heading')
       );
-
-      // hover 時にボタンを表示する
-      anchorButton.setAttribute('onMouseOver', 'this.style.opacity = 1;');
-      anchorButton.setAttribute('onMouseOut', 'this.style.opacity = 0;');
 
       // 見出しの隣にボタンを追加する
       parent.insertBefore(anchorButton, headerAnchorLink);
@@ -58,7 +44,6 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
       );
 
       // ボタンをクリックしたら見出しのアンカーリンクをクリップボードにコピーする
-      // 親要素が React で管理されてないので、アンマウント時の removeEventListener はあまり意味がないので実装しない
       anchorButton.addEventListener('click', async () => {
         // アンカーリンクの href を取得し、クリップボードにコピーする
         const text = headerAnchorLink.getAttribute('href') ?? '';
@@ -81,7 +66,51 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
         }, 3000);
       });
     });
+
+    return () => {
+      // クリーンアップ処理でボタンを削除と、見出しの追加クラスを削除する
+      headerAnchorLinks.forEach((headerAnchorLink) => {
+        const parent = headerAnchorLink.parentElement;
+        if (!parent) return;
+
+        parent.getAttribute('class')?.replace('heading', '');
+
+        const anchorButton = parent.querySelector('anchorButton');
+        if (!anchorButton) return;
+
+        parent.removeChild(anchorButton);
+      });
+    };
   }, []);
 
-  return <div ref={containerRef}>{children}</div>;
+  return (
+    <StyledInsertAnchorButtonToHeadings>
+      <div ref={containerRef}>{children}</div>
+    </StyledInsertAnchorButtonToHeadings>
+  );
 };
+
+const StyledInsertAnchorButtonToHeadings = styled.div`
+  .heading {
+    position: relative;
+  }
+
+  .anchorButton {
+    position: absolute;
+    top: 0.23em;
+    left: -25px;
+    display: block;
+    width: 24px;
+    height: 1em;
+    padding-right: 5px;
+
+    background: url('https://zenn.dev/permanent/link-gray.svg') no-repeat center;
+    background-size: 20px 20px;
+    opacity: 0;
+
+    // hover 時にボタンを表示する
+    &:hover {
+      opacity: 1;
+    }
+  }
+`;
