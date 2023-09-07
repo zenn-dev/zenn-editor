@@ -73,12 +73,17 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
         const parent = headerAnchorLink.parentElement;
         if (!parent) return;
 
-        parent.getAttribute('class')?.replace('heading', '');
+        // 見出しの追加クラスを削除する
+        const parentClass = parent.getAttribute('class');
+        if (parentClass) {
+          parent.setAttribute('class', parentClass.replace('heading', ''));
+        }
 
-        const anchorButton = parent.querySelector('anchorButton');
-        if (!anchorButton) return;
-
-        parent.removeChild(anchorButton);
+        // ボタンを削除する
+        const anchorButton = parent.querySelector('.anchorButton');
+        if (anchorButton) {
+          parent.removeChild(anchorButton);
+        }
       });
     };
   }, []);
