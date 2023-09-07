@@ -23,7 +23,7 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
     // 見出しの隣にアンカーボタン 🔗 を表示する
     headerAnchorLinks.forEach((headerAnchorLink) => {
       const anchorButton = document.createElement('button');
-      anchorButton.setAttribute('class', 'anchorButton');
+      anchorButton.setAttribute('class', 'anchor__button');
 
       const parent = headerAnchorLink.parentElement;
       if (!parent) return;
@@ -80,7 +80,7 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
         }
 
         // ボタンを削除する
-        const anchorButton = parent.querySelector('.anchorButton');
+        const anchorButton = parent.querySelector('.anchor__button');
         if (anchorButton) {
           parent.removeChild(anchorButton);
         }
@@ -100,7 +100,7 @@ const StyledInsertAnchorButtonToHeadings = styled.div`
     position: relative;
   }
 
-  .anchorButton {
+  .anchor__button {
     position: absolute;
     top: 0.23em;
     left: -25px;
