@@ -14,7 +14,7 @@
   ],
   "exports": {
     ".": "./lib/index.js",
-    "./lib/utils": "./lib/utils/index.js"
+    "./utils": "./utils/index.js"
   },
   "scripts": {
     "clean": "rimraf lib/*",
