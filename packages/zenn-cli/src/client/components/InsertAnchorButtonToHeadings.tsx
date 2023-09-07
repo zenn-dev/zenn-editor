@@ -113,6 +113,11 @@ const StyledInsertAnchorButtonToHeadings = styled.div`
     background-size: 20px 20px;
     opacity: 0;
 
+    // モバイルでは非表示にする
+    @media (max-width: 768px) {
+      display: none;
+    }
+
     // hover 時にボタンを表示する
     &:hover {
       opacity: 1;
