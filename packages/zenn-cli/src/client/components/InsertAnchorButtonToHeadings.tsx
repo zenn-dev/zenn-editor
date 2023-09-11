@@ -109,7 +109,7 @@ const StyledInsertAnchorButtonToHeadings = styled.div`
     height: 1em;
     padding-right: 5px;
 
-    background: url('https://zenn.dev/permanent/link-gray.svg') no-repeat center;
+    background: url('/static-images/copy-icon.svg') no-repeat center;
     background-size: 20px 20px;
     opacity: 0;
 
