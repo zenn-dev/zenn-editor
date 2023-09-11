@@ -45,10 +45,17 @@ export type ValidationError = {
   detailUrlText?: string;
 };
 
+export type TocNode = {
+  text: string;
+  id: string;
+  children: TocNode[];
+};
+
 export type Article = {
   slug: string;
   title?: string;
   bodyHtml?: string;
+  toc?: TocNode[];
   emoji?: string;
   type?: 'tech' | 'idea';
   topics?: string[];

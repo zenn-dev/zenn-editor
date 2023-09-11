@@ -12,6 +12,10 @@
   "files": [
     "lib"
   ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./lib/utils": "./lib/utils/index.js"
+  },
   "scripts": {
     "clean": "rimraf lib/*",
     "build": "npm run clean && run-p build:*",

@@ -12,6 +12,7 @@ import {
 import { Article, ArticleMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
+import { parseToc } from 'zenn-markdown-html/lib/utils';
 
 export function getLocalArticle(slug: string): null | Article {
   const data = readArticleFile(slug);
@@ -21,9 +22,11 @@ export function getLocalArticle(slug: string): null | Article {
     embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
   });
   const bodyHtml = completeHtml(rawHtml);
+  const toc = parseToc(bodyHtml);
   return {
     ...meta,
     bodyHtml,
+    toc,
   };
 }
 
