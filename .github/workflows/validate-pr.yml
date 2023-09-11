@@ -22,10 +22,11 @@ jobs:
           !contains(github.event.pull_request.labels.*.name, 'enhancement') && 
           !contains(github.event.pull_request.labels.*.name, 'chore') && 
           !contains(github.event.pull_request.labels.*.name, 'feature') && 
-          !contains(github.event.pull_request.labels.*.name, 'release')
+          !contains(github.event.pull_request.labels.*.name, 'release') &&
+          !contains(github.event.pull_request.labels.*.name, 'dependencies') &&
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: ${{ github.event.pull_request.comments_url }}
         run: |
-          echo "::error::次のラベルを付けてください。 labels: bug, enhancement, feature, chore, release"
+          echo "::error::次のラベルを付けてください。 labels: bug, enhancement, feature, chore, release, dependencies"
           exit 1
