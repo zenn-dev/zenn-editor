@@ -8,6 +8,8 @@ import { useFetch } from '../../hooks/useFetch';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from 'zenn-model';
+import { Toc } from '../Toc';
+import { InsertAnchorButtonToHeadings } from '../InsertAnchorButtonToHeadings';
 
 type ArticleShowProps = {
   slug: string;
@@ -42,7 +44,12 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
       <ContentContainer>
         <StyledArticleShow className="article-show">
           <div className="article-show__content">
-            <BodyContent rawHtml={article.bodyHtml || ''} />
+            {article.toc && article.toc.length > 0 && (
+              <Toc maxDepth={2} toc={article.toc} />
+            )}
+            <InsertAnchorButtonToHeadings>
+              <BodyContent rawHtml={article.bodyHtml || ''} />
+            </InsertAnchorButtonToHeadings>
           </div>
         </StyledArticleShow>
       </ContentContainer>
