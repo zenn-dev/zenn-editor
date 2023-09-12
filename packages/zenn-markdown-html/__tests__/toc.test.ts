@@ -1,4 +1,4 @@
-import { parseToc } from './toc';
+import { parseToc } from '../src/utils/toc';
 
 describe('generateToc', () => {
   describe('生成対象がないとき', () => {
