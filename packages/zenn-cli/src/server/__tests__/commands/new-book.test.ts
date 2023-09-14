@@ -4,7 +4,7 @@ import * as helper from '../../lib/helper';
 import * as Log from '../../lib/log';
 import { newBookHelpText } from '../../lib/messages';
 
-describe('cli exec new:book', () => {
+describe('new:book コマンドのテスト', () => {
   const expectedBooksDirpath = path.join(process.cwd(), 'books');
   const anyConfigYamlPathRegex = new RegExp(
     `${expectedBooksDirpath}/[a-zA-Z0-9-_]+/config.yaml`
@@ -20,7 +20,7 @@ describe('cli exec new:book', () => {
     console.log = jest.fn();
   });
 
-  test('should call generateFileIfNotExist for config.yaml with proper arguments', () => {
+  test('config.yaml のデフォルト値で generateFileIfNotExist を実行する', () => {
     exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringMatching(anyConfigYamlPathRegex),
@@ -40,7 +40,7 @@ describe('cli exec new:book', () => {
     );
   });
 
-  test('should call generateFileIfNotExist for chapter files with proper arguments', () => {
+  test('チャプターの初期値で generateFileIfNotExist を２回実行する', () => {
     const expectedChapterBody = [`---`, `title: ""`, `---`].join('\n');
     exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenNthCalledWith(
@@ -55,7 +55,7 @@ describe('cli exec new:book', () => {
     );
   });
 
-  test('should call generateFileIfNotExist with the path including slug', () => {
+  test('指定した slug を含むパスで generateFileIfNotExist を実装する', () => {
     const slug = 'example-book';
     exec(['--slug', slug]);
 
@@ -75,7 +75,7 @@ describe('cli exec new:book', () => {
     );
   });
 
-  test('should call generateFileIfNotExist for config.yaml with specified title', () => {
+  test('指定したタイトル文字列と config.yaml のパスで generateFileIfNotExist を実行する', () => {
     exec(['--title', 'A"B/C']);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringMatching(anyConfigYamlPathRegex),
@@ -83,7 +83,7 @@ describe('cli exec new:book', () => {
     );
   });
 
-  test('should call generateFileIfNotExist for config.yaml with specified published value true', () => {
+  test('`published: true` と config.yaml のパスで generateFileIfNotExist を実行する', () => {
     exec(['--published', 'true']);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringMatching(anyConfigYamlPathRegex),
@@ -91,7 +91,7 @@ describe('cli exec new:book', () => {
     );
   });
 
-  test('should call generateFileIfNotExist for config.yaml with specified published value false', () => {
+  test('`published: false` と config.yaml のパスで generateFileIfNotExist を実行する', () => {
     exec(['--published', 'false']);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringMatching(anyConfigYamlPathRegex),
@@ -99,14 +99,14 @@ describe('cli exec new:book', () => {
     );
   });
 
-  test('should log help text with --help', () => {
+  test('--help オプションを渡すとヘルプメッセージを表示する', () => {
     exec(['--help']);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(newBookHelpText)
     );
   });
 
-  test('should log error with invalid slug', () => {
+  test('無効な slug が渡されたらエラーメッセージを表示する', () => {
     exec(['--slug', 'invalid/slug']);
     expect(Log.error).toHaveBeenCalledWith(
       expect.stringContaining(

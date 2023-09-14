@@ -3,7 +3,7 @@ import { exec } from '../../commands/init';
 import * as helper from '../../lib/helper';
 import { initHelpText } from '../../lib/messages';
 
-describe('cli exec init', () => {
+describe('initコマンドのテスト', () => {
   beforeEach(() => {
     // mock
     jest.spyOn(helper, 'generateFileIfNotExist').mockImplementation();
@@ -11,7 +11,7 @@ describe('cli exec init', () => {
     console.error = jest.fn();
   });
 
-  test('should call generateFileIfNotExist for directories', () => {
+  test('ディレクトリに対して generateFileIfNotExist を実行する', () => {
     exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), 'articles/.keep')),
@@ -23,7 +23,7 @@ describe('cli exec init', () => {
     );
   });
 
-  test('should call generateFileIfNotExist for .gitignore', () => {
+  test('.gitignore に対して generateFileIfNotExist を実行する', () => {
     exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), '.gitignore')),
@@ -31,7 +31,7 @@ describe('cli exec init', () => {
     );
   });
 
-  test('should call generateFileIfNotExist for README', () => {
+  test('README に対して generateFileIfNotExist を実行する', () => {
     exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), 'README.md')),
@@ -39,14 +39,14 @@ describe('cli exec init', () => {
     );
   });
 
-  test('should log success message', () => {
+  test('成功メッセージを表示する', () => {
     exec([]);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('🎉  Done!')
     );
   });
 
-  test('should log help text with --help', () => {
+  test('--helpでもヘルプメッセージを表示する', () => {
     exec(['--help']);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(initHelpText)
