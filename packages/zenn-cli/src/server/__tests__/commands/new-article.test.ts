@@ -4,7 +4,7 @@ import * as helper from '../../lib/helper';
 import * as Log from '../../lib/log';
 import { newArticleHelpText } from '../../lib/messages';
 
-describe('cli exec new:article', () => {
+describe('new:articleコマンドのテスト', () => {
   const expectedArticlesDirpath = path.join(process.cwd(), 'articles');
 
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('cli exec new:article', () => {
     console.log = jest.fn();
   });
 
-  test('should call generateFileIfNotExist with proper arguments', () => {
+  test('有効な引数に generateFileIfNotExist を実行する', () => {
     exec(['--emoji', '💭']);
 
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
@@ -33,7 +33,7 @@ describe('cli exec new:article', () => {
     );
   });
 
-  test('should call generateFileIfNotExist with specified title', () => {
+  test('指定されたタイトルで generateFileIfNotExist を実行する', () => {
     exec(['--title', 'A"B/C']);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(expectedArticlesDirpath),
@@ -41,7 +41,7 @@ describe('cli exec new:article', () => {
     );
   });
 
-  test('should call generateFileIfNotExist with specified published value true', () => {
+  test('`published: true` で generateFileIfNotExist を実行する', () => {
     exec(['--published', 'true']);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(expectedArticlesDirpath),
@@ -49,7 +49,7 @@ describe('cli exec new:article', () => {
     );
   });
 
-  test('should call generateFileIfNotExist with specified published value false', () => {
+  test('`published: false` で generateFileIfNotExist を実行する', () => {
     exec(['--published', 'false']);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(expectedArticlesDirpath),
@@ -57,7 +57,7 @@ describe('cli exec new:article', () => {
     );
   });
 
-  test('should call generateFileIfNotExist with the path including slug', () => {
+  test('指定した slug を含むパスで generateFileIfNotExist を実行する', () => {
     const slug = 'example-article';
     exec(['--slug', slug]);
 
@@ -67,17 +67,7 @@ describe('cli exec new:article', () => {
     );
   });
 
-  test('should call generateFileIfNotExist with the path including slug', () => {
-    const slug = 'example-article';
-    exec(['--slug', slug]);
-
-    expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
-      expect.stringMatching(`${expectedArticlesDirpath}/${slug}.md`),
-      expect.stringContaining(`---`)
-    );
-  });
-
-  test('should call generateFileIfNotExist with specified publication name', () => {
+  test('指定された Publication 名で generateFileIfNotExist を実行する', () => {
     exec(['--publication-name', 'myPublication']);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(expectedArticlesDirpath),
@@ -85,14 +75,14 @@ describe('cli exec new:article', () => {
     );
   });
 
-  test('should log help text with --help', () => {
+  test('--help オプションを渡すとヘルプメッセージを表示する', () => {
     exec(['--help']);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(newArticleHelpText)
     );
   });
 
-  test('should log error with invalid slug', () => {
+  test('無効な slug が渡されたらエラーメッセージを表示する', () => {
     exec(['--slug', 'invalid/slug']);
     expect(Log.error).toHaveBeenCalledWith(
       expect.stringContaining(

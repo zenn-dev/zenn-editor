@@ -10,26 +10,26 @@ const renderLink = (src: string) => {
   return markdownToHtml(src, options);
 };
 
-describe('Link syntax', () => {
-  test('should convert link syntax properly', () => {
+describe('Linkシンタックスのテスト', () => {
+  test('リンクに変換する', () => {
     const html = renderLink('[example](https://example.com)');
     expect(html).toContain(
       '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">example</a>'
     );
   });
-  test('should convert link with no attributes if href starts with slash', () => {
+  test('hrefが"/"から始まる場合は属性のないリンクに変換する', () => {
     const html = renderLink('[Articles](/articles)');
     expect(html).toContain('<a href="/articles">Articles</a>');
   });
-  test('should convert link with no attributes if href starts with #', () => {
+  test('hrefが"#"で始まる場合は属性のないリンクに変換する', () => {
     const html = renderLink('[Example](#example)');
     expect(html).toContain('<a href="#example">Example</a>');
   });
 });
 
-describe('Linkify properly', () => {
-  describe('Raw Link', () => {
-    test('should linkify url with nofollow if hostname is not zenn.dev', () => {
+describe('Linkifyのテスト', () => {
+  describe('直書きのリンクのテスト', () => {
+    test('ホスト名が"zenn.dev"じゃない場合はURLを nofollow のリンクに変換する', () => {
       expect(renderLink('URL is https://example.com')).toContain(
         'URL is <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
@@ -41,42 +41,42 @@ describe('Linkify properly', () => {
       );
     });
 
-    test('should linkify url without rel if hostname is zenn.dev', () => {
+    test('ホスト名が"zenn.dev"ならrel無しのリンクに変換する', () => {
       const html = renderLink('URL is https://zenn.dev');
       expect(html).toContain(
         'URL is <a href="https://zenn.dev" target="_blank">https://zenn.dev</a>'
       );
     });
 
-    test('should not convert links to card if text exists before url', () => {
+    test('URLの前にテキストが存在する場合はリンクをリンクカードに変換しない', () => {
       const html = renderLink('foo https://example.com');
       expect(html).toEqual(
         '<p>foo <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
       );
     });
 
-    test('should not convert intentional links to card', () => {
+    test('意図的にリンクしているURLはリンクカードに変換しない', () => {
       const html = renderLink('[https://example.com](https://example.com)');
       expect(html).toEqual(
         '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
       );
     });
 
-    test('should not convert links inside list', () => {
+    test('リンク内のリンクを変換しない', () => {
       const html = renderLink('- https://example.com\n- second');
       expect(html).toEqual(
         '<ul>\n<li><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></li>\n<li>second</li>\n</ul>\n'
       );
     });
 
-    test('should not convert links inside block', () => {
+    test('<details />内のリンクはリンクカードに変換しない', () => {
       const html = renderLink(':::message alert\nhttps://example.com\n:::');
       expect(html).toEqual(
         '<aside class="msg alert"><span class="msg-symbol">!</span><div class="msg-content"><p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>\n'
       );
     });
 
-    test('should not convert links inside block with 2 paragraphs', () => {
+    test('<details />内の2段落空いたリンクをリンクカードに変換しない', () => {
       const html = renderLink(
         ':::message alert\nhello\n\nhttps://example.com\n:::'
       );
@@ -85,35 +85,35 @@ describe('Linkify properly', () => {
       );
     });
 
-    test('should not convert links inside list', () => {
+    test('リスト内のリンクをリンクカードに変換しない', () => {
       const html = renderLink('- https://example.com\n- second');
       expect(html).toEqual(
         '<ul>\n<li><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></li>\n<li>second</li>\n</ul>\n'
       );
     });
 
-    test('should not convert links if text follows', () => {
+    test('URLにテキストが続く場合はリンクカードに変換しない', () => {
       const html = renderLink('https://example.com foo');
       expect(html).toEqual(
         '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a> foo</p>\n'
       );
     });
 
-    test('should not convert a link with any text in same paragraph', () => {
+    test('同じ段落内のテキストを含むリンクをリンクカードに変換しない', () => {
       const html = renderLink(`a: https://example.com\nb: https://example.com`);
       expect(html).toEqual(
         '<p>a: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a><br />\nb: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
       );
     });
 
-    test('should not convert links even when the links are the start of the line unless the next elements are texts', () => {
+    test('URLにテキストが続くならリンクが先頭であってもリンクカードに変換しない', () => {
       const html = renderLink('\n\nhttps://example.com text');
       expect(html).toEqual(
         '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a> text</p>\n'
       );
     });
 
-    test('should not convert links even when the links are the end of the line, unless previous elements are texts', () => {
+    test('URLの前にテキストがあるならリンクが行末でもリンクカードに変換しない', () => {
       const html = renderLink('text https://example.com\n\n');
       expect(html).toEqual(
         '<p>text <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
@@ -121,8 +121,8 @@ describe('Linkify properly', () => {
     });
   });
 
-  describe('Embedded Iframe', () => {
-    describe('LinkCard', () => {
+  describe('埋め込みiframeのテスト', () => {
+    describe('LinkCardのテスト', () => {
       const validateConvertLinkCardEmbeddedIframe = (
         html: string,
         url: string
@@ -138,37 +138,37 @@ describe('Linkify properly', () => {
         );
       };
 
-      test('should convert links to card if prev elem is br', () => {
+      test('前の要素が<br />の場合はリンクカードに変換する', () => {
         const url = 'https://example.com';
         const html = renderLink(`foo\n${url}`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
-      test('should convert links when surrounded by softbreaks', () => {
+      test('改行で囲まれている場合はリンクカードに変換する', () => {
         const url = 'https://example.com';
         const html = renderLink(`\n\n${url}\n\n`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
-      test('should convert links when previous element is a softbreak and the links are end of the paragraph', () => {
+      test('前に改行があってリンクが段落の終わりならリンクカードに変換する', () => {
         const url = 'https://example.com';
         const html = renderLink(`text\n${url}\n\n`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
-      test('should convert links when the links are the start of the line and the next elements are softbreaks', () => {
+      test('リンクが段落の先頭でその後に開業が続く場合はリンクカードに変換する', () => {
         const url = 'https://example.com';
         const html = renderLink(`\n\n${url}\ntext`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
-      test('should convert links when previous and next elements are softbreaks', () => {
+      test('リンクの前後に改行があるならリンクカードに変換する', () => {
         const url = 'https://example.com';
         const html = renderLink(`text\n${url}\ntext`);
         validateConvertLinkCardEmbeddedIframe(html, url);
       });
 
-      test('should convert links to card if first element in p', () => {
+      test('<p />の最初の要素ならリンクカードに変換する', () => {
         const url = 'https://example.com';
         const html = renderLink(`foo\n\n${url}`);
         const root = parse(html);
@@ -180,7 +180,7 @@ describe('Linkify properly', () => {
         ).toBeDefined();
       });
 
-      test('should convert links even when some links exist in the line, unless softbreaks exist before and after the each links', () => {
+      test('各リンクの前後に改行があればリンクカードに変換する', () => {
         const linkCardUrls = ['https://example1.com', 'https://example2.com'];
         const rawLinkUrls = ['https://example3.com', 'https://example4.com'];
         // prettier-ignore
@@ -199,7 +199,7 @@ describe('Linkify properly', () => {
         );
       });
 
-      test('should convert links even when some links exist in the line, when each links are separated by linebreaks', () => {
+      test('行内にリンクが存在する場合でも、各リンクが改行で区切られている場合は、リンクを変換する', () => {
         const linkCardUrls = ['https://example1.com', 'https://example2.com'];
         const html = renderLink(`${linkCardUrls[0]}\n${linkCardUrls[1]}\n`);
         const iframes = parse(html).querySelectorAll(
@@ -213,8 +213,8 @@ describe('Linkify properly', () => {
       });
     });
 
-    describe('Tweet', () => {
-      test('should convert a tweet-link to embedded iframe', () => {
+    describe('Tweet埋め込みのテスト', () => {
+      test('ツイートリンクを<iframe />に変換する', () => {
         const url = 'https://twitter.com/jack/status/20';
         const html = renderLink(`${url}`);
         const iframe = parse(html).querySelector('span.zenn-embedded iframe');
@@ -228,7 +228,7 @@ describe('Linkify properly', () => {
         );
       });
 
-      test('should convert a tweet-link with query string to embedded iframe', () => {
+      test('クエリ文字列を含むツイートリンクを埋め込み<iframe />に変換する', () => {
         const url = `https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef`;
         const html = renderLink(url);
         const iframe = parse(html).querySelector('span.zenn-embedded iframe');
@@ -243,8 +243,8 @@ describe('Linkify properly', () => {
       });
     });
 
-    describe('When in details', () => {
-      test('should convert to iframe element', () => {
+    describe('<details /> 内のテスト', () => {
+      test('埋め込みiframeに変換できる', () => {
         const html = renderLink(
           [`:::details example`, `https://example1.com`, `:::`].join('\n')
         );
@@ -254,7 +254,7 @@ describe('Linkify properly', () => {
         expect(iframe).not.toBe(null);
       });
 
-      test('should convert iframe even when nests details', () => {
+      test('<details />がネストされていても埋め込みiframeに変換する', () => {
         const html = renderLink(
           [
             `::::details example`,
@@ -270,7 +270,7 @@ describe('Linkify properly', () => {
         expect(iframe).not.toBe(null);
       });
 
-      test('should not convert in nests other than details', () => {
+      test('<details />以外のネストは埋め込みiframeに変換しない', () => {
         const html = renderLink(
           [`:::details example`, `- https://example1.com`, `:::`].join('\n')
         );

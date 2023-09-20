@@ -2,19 +2,19 @@ import { exec } from '../../commands/preview';
 import { previewHelpText } from '../../lib/messages';
 import * as server from '../../lib/server';
 
-describe('cli exec preview', () => {
+describe('preview コマンドのテスト', () => {
   beforeEach(() => {
     console.log = jest.fn();
     jest.spyOn(server, 'startServer').mockImplementation();
     jest.spyOn(server, 'startLocalChangesWatcher').mockImplementation();
   });
 
-  test('should log help message with --help args', async () => {
+  test('--help オプションを渡すとヘルプメッセージを表示する', async () => {
     await exec(['--help']);
     expect(console.log).toHaveBeenCalledWith(previewHelpText);
   });
 
-  test('should listen with port 8000', async () => {
+  test('8000 ポートでサーバーを起動する', async () => {
     await exec([]);
     expect(server.startServer).toHaveBeenCalledWith({
       port: 8000,
@@ -23,7 +23,7 @@ describe('cli exec preview', () => {
     });
   });
 
-  test('should listen with spcified port', async () => {
+  test('--port オプションで特定のポートを指定してサーバーを起動できる', async () => {
     await exec(['--port', '8001']);
     expect(server.startServer).toHaveBeenCalledWith({
       port: 8001,
@@ -32,7 +32,7 @@ describe('cli exec preview', () => {
     });
   });
 
-  test('should not open browser by default', async () => {
+  test('デフォルトではサーバー起動時にブラウザを開かない', async () => {
     await exec([]);
     expect(server.startServer).toHaveBeenCalledWith({
       port: expect.anything(),
@@ -41,7 +41,7 @@ describe('cli exec preview', () => {
     });
   });
 
-  test('should open browser if specified', async () => {
+  test('--open オプションを渡すとブラウザを開く', async () => {
     await exec(['--open']);
     expect(server.startServer).toHaveBeenCalledWith({
       port: expect.anything(),
@@ -50,7 +50,7 @@ describe('cli exec preview', () => {
     });
   });
 
-  test('should listen with passed hostname', async () => {
+  test('--host オプションで hostname を指定してサーバーを起動できる', async () => {
     await exec(['--host', '0.0.0.0']);
     expect(server.startServer).toHaveBeenCalledWith({
       hostname: '0.0.0.0',
@@ -60,7 +60,7 @@ describe('cli exec preview', () => {
     });
   });
 
-  test('should call startLocalChangesWatcher by default', async () => {
+  test('デフォルトでは startLocalChangesWatcher を実行する', async () => {
     await exec([]);
     expect(server.startLocalChangesWatcher).toHaveBeenCalledWith(
       undefined,
@@ -68,7 +68,7 @@ describe('cli exec preview', () => {
     );
   });
 
-  test('should not call startLocalChangesWatcher if --no-watch specified', async () => {
+  test('--no-watch オプションを渡した場合は startLocalChangesWatcher を実行しない', async () => {
     await exec(['--no-watch']);
     expect(server.startLocalChangesWatcher).toHaveBeenCalledTimes(0);
   });
