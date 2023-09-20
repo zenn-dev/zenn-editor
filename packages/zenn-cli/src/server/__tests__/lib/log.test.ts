@@ -1,12 +1,13 @@
+import { vi, describe, test, expect, beforeEach, SpyInstance } from 'vitest';
 import * as Log from '../../lib/log';
 import colors from 'colors/safe';
 
 describe('Log のテスト', () => {
   beforeEach(() => {
     // mock
-    console.log = jest.fn();
-    console.warn = jest.fn();
-    console.error = jest.fn();
+    console.log = vi.fn();
+    console.warn = vi.fn();
+    console.error = vi.fn();
   });
 
   test('エラーメッセージを表示する', () => {

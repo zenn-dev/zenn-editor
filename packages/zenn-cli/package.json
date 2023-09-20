@@ -31,7 +31,7 @@
     "strict:lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
     "test": "run-s test:client test:server",
     "test:client": "vitest run --config vitest.client.config.ts",
-    "test:server": "jest --config=jest.config.server.js",
+    "test:server": "vitest run --config=vitest.server.config.ts",
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "devDependencies": {
@@ -95,7 +95,6 @@
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.5",
     "vite": "^4.2.1",
-    "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^0.34.4",
     "wait-on": "^7.0.1",
     "webpack": "^5.75.0",

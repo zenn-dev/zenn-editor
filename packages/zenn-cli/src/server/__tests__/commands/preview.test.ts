@@ -1,12 +1,17 @@
+import { vi, describe, test, expect, beforeEach } from 'vitest';
+import type { Server as HttpServer } from 'http';
 import { exec } from '../../commands/preview';
 import { previewHelpText } from '../../lib/messages';
 import * as server from '../../lib/server';
 
 describe('preview コマンドのテスト', () => {
+  let mockReturnServer: HttpServer;
+
   beforeEach(() => {
-    console.log = jest.fn();
-    jest.spyOn(server, 'startServer').mockImplementation();
-    jest.spyOn(server, 'startLocalChangesWatcher').mockImplementation();
+    console.log = vi.fn();
+    mockReturnServer = {} as HttpServer;
+    vi.spyOn(server, 'startServer').mockResolvedValue(mockReturnServer);
+    vi.spyOn(server, 'startLocalChangesWatcher').mockResolvedValue(undefined);
   });
 
   test('--help オプションを渡すとヘルプメッセージを表示する', async () => {
@@ -63,7 +68,7 @@ describe('preview コマンドのテスト', () => {
   test('デフォルトでは startLocalChangesWatcher を実行する', async () => {
     await exec([]);
     expect(server.startLocalChangesWatcher).toHaveBeenCalledWith(
-      undefined,
+      mockReturnServer,
       `${process.cwd()}/{articles,books}/**/*`
     );
   });

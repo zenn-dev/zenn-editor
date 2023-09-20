@@ -1,3 +1,4 @@
+import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
 import path from 'path';
 import fs from 'fs-extra';
 import * as helper from '../../lib/helper';
@@ -24,9 +25,9 @@ describe('getCurrentCliVersion() のテスト', () => {
 describe('getWorkingPath() のテスト', () => {
   beforeEach(() => {
     // mock
-    jest.spyOn(process, 'cwd').mockReturnValue('foo');
-    jest.spyOn(process, 'exit').mockImplementation();
-    jest.spyOn(Log, 'error').mockImplementation();
+    vi.spyOn(process, 'cwd').mockReturnValue('foo');
+    vi.spyOn(process, 'exit').mockReturnValue(undefined as never);
+    vi.spyOn(Log, 'error').mockReturnValue(undefined);
   });
 
   test('結合されたパスを返す', () => {
@@ -156,10 +157,10 @@ describe('generateFileIfNotExist() のテスト', () => {
 describe('completeHtml() のテスト', () => {
   beforeEach(() => {
     // process.cwdがfixturesディレクトリを指すようにする
-    jest.spyOn(process, 'cwd').mockReturnValue(fixtureDirPath);
+    vi.spyOn(process, 'cwd').mockReturnValue(fixtureDirPath);
   });
 
-  test.only('src の値が URL なら検証に成功する', () => {
+  test('src の値が URL なら検証に成功する', () => {
     const html = helper.completeHtml(
       '<img src="https://example.com/images/example.png">'
     );
