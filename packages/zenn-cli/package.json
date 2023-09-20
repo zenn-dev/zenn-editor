@@ -30,7 +30,7 @@
     "fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "strict:lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
     "test": "run-s test:client test:server",
-    "test:client": "jest --config=jest.config.client.js",
+    "test:client": "vitest run --config vitest.client.config.ts",
     "test:server": "jest --config=jest.config.server.js",
     "exec:zenn": "node ./dist/server/zenn.js"
   },
@@ -95,6 +95,8 @@
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.5",
     "vite": "^4.2.1",
+    "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^0.34.4",
     "wait-on": "^7.0.1",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
