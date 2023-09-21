@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { parseToc } from '../src/utils/toc';
 
 describe('generateToc', () => {

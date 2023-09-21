@@ -1,3 +1,4 @@
+import { vi, describe, test, expect } from 'vitest';
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
@@ -35,7 +36,7 @@ describe('CodeSandBox埋め込み要素のテスト', () => {
   describe('customEmbed.codesandbox()を設定している場合', () => {
     test('渡した関数を実行する', () => {
       const customizeText = 'customized text!';
-      const mock = jest.fn().mockReturnValue(customizeText);
+      const mock = vi.fn().mockReturnValue(customizeText);
       const html = markdownToHtml(`@[codesandbox](${validUrl})`, {
         customEmbed: { codesandbox: mock },
       });

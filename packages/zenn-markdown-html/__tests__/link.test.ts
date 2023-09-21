@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../src/index';
 import { MarkdownOptions } from '../src/types';

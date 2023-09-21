@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { markdownToSimpleHtml } from '../src/index';
 
 describe('Convert markdown to html properly', () => {
