@@ -1,4 +1,4 @@
-import { vi, describe, test, expect, beforeEach, SpyInstance } from 'vitest';
+import { vi, describe, test, expect, beforeEach } from 'vitest';
 import * as Log from '../../lib/log';
 import colors from 'colors/safe';
 
