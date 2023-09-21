@@ -31,7 +31,7 @@
     "strict:lint": "eslint 'src/**/*.{ts,tsx}' --max-warnings 0",
     "test": "run-s test:client test:server",
     "test:client": "vitest run --config vitest.client.config.ts",
-    "test:server": "vitest run --config=vitest.server.config.ts",
+    "test:server": "vitest run --config vitest.server.config.ts",
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "devDependencies": {
