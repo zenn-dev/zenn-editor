@@ -1,5 +1,10 @@
+import loadLanguages from 'prismjs/components/index';
+
 import { describe, test, expect } from 'vitest';
 import markdownToHtml from '../src/index';
+
+// markdownToHtml で diff を使っているので、あらかじめ読み込んでおく
+loadLanguages('diff');
 
 describe('コードハイライトのテスト', () => {
   test('コードブロックを正しい<code />に変換する', () => {
