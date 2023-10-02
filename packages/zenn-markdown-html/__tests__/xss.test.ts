@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import markdownToHtml from '../src/index';
 
 describe('XSS脆弱性のテスト', () => {

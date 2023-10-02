@@ -1,3 +1,4 @@
+import { vi, describe, test, expect } from 'vitest';
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
 
@@ -47,7 +48,7 @@ describe('Tweet埋め込み要素のテスト', () => {
   describe('customEmbed.tweet()を設定している場合', () => {
     test('渡した関数を実行する', () => {
       const customizeText = 'customized text';
-      const mock = jest.fn().mockReturnValue(customizeText);
+      const mock = vi.fn().mockReturnValue(customizeText);
       const html = markdownToHtml('https://twitter.com/jack/status/20', {
         customEmbed: { tweet: mock },
       });

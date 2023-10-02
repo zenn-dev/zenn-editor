@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { isGithubUrl } from '../../src/utils/url-matcher';
 
 describe('isGithubUrlのテスト', () => {

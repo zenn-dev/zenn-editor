@@ -1,3 +1,4 @@
+import { vi, describe, test, expect, beforeEach } from 'vitest';
 import path from 'path';
 import { exec } from '../../commands/new-article';
 import * as helper from '../../lib/helper';
@@ -9,9 +10,9 @@ describe('new:articleコマンドのテスト', () => {
 
   beforeEach(() => {
     // mock
-    jest.spyOn(helper, 'generateFileIfNotExist').mockImplementation();
-    jest.spyOn(Log, 'error').mockImplementation();
-    console.log = jest.fn();
+    vi.spyOn(helper, 'generateFileIfNotExist').mockReturnValue(undefined);
+    vi.spyOn(Log, 'error').mockReturnValue(undefined);
+    console.log = vi.fn();
   });
 
   test('有効な引数に generateFileIfNotExist を実行する', () => {

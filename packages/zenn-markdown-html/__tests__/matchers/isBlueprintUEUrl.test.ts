@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { isBlueprintUEUrl } from '../../src/utils/url-matcher';
 
 describe('isBlueprintUEUrlのテスト', () => {

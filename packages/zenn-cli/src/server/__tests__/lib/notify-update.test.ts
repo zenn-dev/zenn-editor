@@ -1,3 +1,4 @@
+import { vi, describe, test, expect, beforeEach, SpyInstance } from 'vitest';
 import * as helper from '../../lib/helper';
 import {
   CLI_UPDATE_CHECK_INTERVAL,
@@ -7,30 +8,28 @@ import {
 const localVersion = 'v0.0.1';
 const publishedVersion = 'v0.0.2';
 
-const configGetMock = jest.fn();
+const configGetMock = vi.fn();
 
-jest.mock(
-  'configstore',
-  () =>
-    function () {
-      return {
-        set: () => void 0,
-        get: configGetMock.mockReturnValue(0),
-      };
-    }
-);
+vi.mock('configstore', () => ({
+  default: function () {
+    return {
+      set: () => void 0,
+      get: configGetMock.mockReturnValue(0),
+    };
+  },
+}));
 
 describe('CLIのアップデート通知のテスト', () => {
-  let consoleLogMock: jest.SpyInstance;
-  let getCurrentCliVersionMock: jest.SpyInstance;
-  let getPublishedCliVersionMock: jest.SpyInstance;
+  let consoleLogMock: SpyInstance;
+  let getCurrentCliVersionMock: SpyInstance;
+  let getPublishedCliVersionMock: SpyInstance;
 
   beforeEach(() => {
-    consoleLogMock = jest.spyOn(console, 'log').mockImplementation();
-    getCurrentCliVersionMock = jest
+    consoleLogMock = vi.spyOn(console, 'log').mockReturnValue(undefined);
+    getCurrentCliVersionMock = vi
       .spyOn(helper, 'getCurrentCliVersion')
       .mockReturnValue(localVersion);
-    getPublishedCliVersionMock = jest
+    getPublishedCliVersionMock = vi
       .spyOn(helper, 'getPublishedCliVersion')
       .mockResolvedValue(publishedVersion);
   });

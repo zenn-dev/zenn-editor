@@ -1,3 +1,4 @@
+import { vi, describe, test, expect, beforeEach } from 'vitest';
 import path from 'path';
 import { exec } from '../../commands/init';
 import * as helper from '../../lib/helper';
@@ -6,9 +7,9 @@ import { initHelpText } from '../../lib/messages';
 describe('initコマンドのテスト', () => {
   beforeEach(() => {
     // mock
-    jest.spyOn(helper, 'generateFileIfNotExist').mockImplementation();
-    console.log = jest.fn();
-    console.error = jest.fn();
+    vi.spyOn(helper, 'generateFileIfNotExist').mockReturnValue(undefined);
+    console.log = vi.fn();
+    console.error = vi.fn();
   });
 
   test('ディレクトリに対して generateFileIfNotExist を実行する', () => {

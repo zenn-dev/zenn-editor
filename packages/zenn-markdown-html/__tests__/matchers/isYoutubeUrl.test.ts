@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { isYoutubeUrl } from '../../src/utils/url-matcher';
 
 describe('isYoutubeUrlのテスト', () => {
