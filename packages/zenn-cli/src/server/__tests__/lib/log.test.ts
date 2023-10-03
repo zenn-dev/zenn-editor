@@ -1,20 +1,21 @@
+import { vi, describe, test, expect, beforeEach } from 'vitest';
 import * as Log from '../../lib/log';
 import colors from 'colors/safe';
 
-describe('log.error', () => {
+describe('Log のテスト', () => {
   beforeEach(() => {
     // mock
-    console.log = jest.fn();
-    console.warn = jest.fn();
-    console.error = jest.fn();
+    console.log = vi.fn();
+    console.warn = vi.fn();
+    console.error = vi.fn();
   });
 
-  test('should log error message', () => {
+  test('エラーメッセージを表示する', () => {
     Log.error('message');
     expect(console.error).toHaveBeenCalledWith(colors.red('error:'), 'message');
   });
 
-  test('should log warn message', () => {
+  test('警告メッセージを表示する', () => {
     Log.warn('message');
     expect(console.warn).toHaveBeenCalledWith(
       colors.yellow('warn:'),
@@ -22,7 +23,7 @@ describe('log.error', () => {
     );
   });
 
-  test('should log success message', () => {
+  test('成功メッセージを表示する', () => {
     Log.success('message');
     expect(console.log).toHaveBeenCalledWith(
       colors.green('success:'),
@@ -30,7 +31,7 @@ describe('log.error', () => {
     );
   });
 
-  test('should log created message', () => {
+  test('作成成功メッセージを表示する', () => {
     Log.created('filename');
     expect(console.log).toHaveBeenCalledWith(
       'created:',

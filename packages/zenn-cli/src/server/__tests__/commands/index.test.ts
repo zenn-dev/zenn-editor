@@ -1,16 +1,18 @@
+import { vi, describe, test, expect, beforeEach, SpyInstance } from 'vitest';
 import { exec } from '../../commands/index';
 import * as Log from '../../lib/log';
 import { commandListText } from '../../lib/messages';
 import * as notify from '../../lib/notify-update';
 
 describe('CLIのデフォルトの挙動のテスト', () => {
-  let notifyNeedUpdateCLIMock: jest.SpyInstance<Promise<void>>;
+  let notifyNeedUpdateCLIMock: SpyInstance<any[], Promise<void>>;
 
   beforeEach(() => {
     // mock
-    console.log = jest.fn();
-    jest.spyOn(Log, 'error').mockImplementation();
-    notifyNeedUpdateCLIMock = jest
+    console.log = vi.fn();
+    console.error = vi.fn();
+    vi.spyOn(Log, 'error');
+    notifyNeedUpdateCLIMock = vi
       .spyOn(notify, 'notifyNeedUpdateCLI')
       .mockResolvedValue();
   });

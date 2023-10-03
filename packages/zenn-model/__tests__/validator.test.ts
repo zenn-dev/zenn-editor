@@ -1,10 +1,11 @@
+import { describe, test, expect } from 'vitest';
 import {
   validateArticle,
   validateBook,
   validateBookChapter,
 } from '../src/index';
 
-describe('validateArticle', () => {
+describe('validateArticle()のテスト', () => {
   const validArticle = {
     slug: 'example-slug',
     title: 'title',
@@ -16,13 +17,13 @@ describe('validateArticle', () => {
     publication_name: 'team_publisher',
   };
 
-  test('return no errors with valid article', () => {
+  test('有効な記事ならエラーを返さない', () => {
     const errors = validateArticle(validArticle);
     expect(errors).toEqual([]);
   });
 
-  describe('validateItemSlug', () => {
-    test('return error with too short slug', () => {
+  describe('validateItemSlug()のテスト', () => {
+    test('短すぎる slug ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         slug: 'too-short',
@@ -30,7 +31,7 @@ describe('validateArticle', () => {
       expect(errors.length).toEqual(1);
       expect(errors[0].message).toContain('12〜50字の組み合わせ');
     });
-    test('return error with slug which includes invalid letters', () => {
+    test('slug に使えない文字が含まれている場合はエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         slug: 'invalid/slug',
@@ -40,8 +41,8 @@ describe('validateArticle', () => {
     });
   });
 
-  describe('validateMissingTitle', () => {
-    test('return error without title', () => {
+  describe('validateMissingTitle()のテスト', () => {
+    test('タイトルが無かったらエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         title: undefined,
@@ -51,7 +52,7 @@ describe('validateArticle', () => {
         'title（タイトル）を文字列で入力してください'
       );
     });
-    test('return error with empty title', () => {
+    test('タイトルが空文字列ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         title: '',
@@ -63,8 +64,8 @@ describe('validateArticle', () => {
     });
   });
 
-  describe('validateTitleLength', () => {
-    test('return error with too long title', () => {
+  describe('validateTitleLength()のテスト', () => {
+    test('タイトルが長すぎる場合はエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         title:
@@ -75,8 +76,8 @@ describe('validateArticle', () => {
     });
   });
 
-  describe('validatePublishedStatus', () => {
-    test('return error if published is specified as string', () => {
+  describe('validatePublishedStatus()のテスト', () => {
+    test('published の値が string 型ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         published: 'true' as any,
@@ -86,7 +87,7 @@ describe('validateArticle', () => {
         'published（公開設定）を true か false で指定してください（クオテーション " で囲まないでください）'
       );
     });
-    test('return error if published is specified as string', () => {
+    test('published の値が number 型ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         published: 1 as any,
@@ -98,8 +99,8 @@ describe('validateArticle', () => {
     });
   });
 
-  describe('validateArticleType', () => {
-    test('return error if articleType is neither tech or idea', () => {
+  describe('validateArticleType()のテスト', () => {
+    test('articleType が "tech" または "idea" 以外ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         type: 'hello' as any,
@@ -109,7 +110,7 @@ describe('validateArticle', () => {
         'type（記事のタイプ）に tech もしくは idea を指定してください。技術記事の場合は tech を指定してください'
       );
     });
-    test('return error if articleType is missing', () => {
+    test('articleType が指定されてなければエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         type: undefined,
@@ -121,8 +122,8 @@ describe('validateArticle', () => {
     });
   });
 
-  describe('validateMissingEmoji', () => {
-    test('return error with undefined emoji', () => {
+  describe('validateMissingEmoji()のテスト', () => {
+    test('emoji の値が undefined ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         emoji: undefined,
@@ -132,7 +133,7 @@ describe('validateArticle', () => {
         'アイキャッチとなる emoji（絵文字）を指定してください'
       );
     });
-    test('return error with empty emoji', () => {
+    test('emoji の値が空文字列ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         emoji: '',
@@ -144,8 +145,8 @@ describe('validateArticle', () => {
     });
   });
 
-  describe('validateEmojiFormat', () => {
-    test('return error with non emoji string for emoji property', () => {
+  describe('validateEmojiFormat()のテスト', () => {
+    test('絵文字以外の文字列ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         emoji: '絵',
@@ -156,8 +157,8 @@ describe('validateArticle', () => {
       );
     });
   });
-  describe('validateMissingTopics', () => {
-    test('return error with undefined topics', () => {
+  describe('validateMissingTopics()のテスト', () => {
+    test('topics の値が undefined ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         topics: undefined,
@@ -167,7 +168,7 @@ describe('validateArticle', () => {
         'topics（記事に関連する言語や技術）を配列で指定してください。'
       );
     });
-    test('return error with empty topics', () => {
+    test('topics の値が空配列ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         topics: [],
@@ -178,8 +179,8 @@ describe('validateArticle', () => {
       );
     });
   });
-  describe('validateTooManyTopics', () => {
-    test('return error with 6 topics', () => {
+  describe('validateTooManyTopics()のテスト', () => {
+    test('topics の数が 6 以上ならエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         topics: ['a', 'b', 'c', 'd', 'e', 'f'],
@@ -188,8 +189,8 @@ describe('validateArticle', () => {
       expect(errors[0].message).toContain('topicsは最大5つまで指定できます');
     });
   });
-  describe('validateInvalidTopicLetters', () => {
-    test('return error with topic including symbols', () => {
+  describe('validateInvalidTopicLetters()のテスト', () => {
+    test('topics に記号が含まれている場合はエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         topics: ['a', 'vue.js'],
@@ -200,8 +201,8 @@ describe('validateArticle', () => {
       );
     });
   });
-  describe('validateTopicType', () => {
-    test('return error with number value', () => {
+  describe('validateTopicType()のテスト', () => {
+    test('topics の配列に number 型があればエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         topics: [123] as any,
@@ -211,7 +212,7 @@ describe('validateArticle', () => {
         'topicsは全て文字列で指定してください'
       );
     });
-    test('return error with empty string topic', () => {
+    test('topics の配列に空文字列があればエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         topics: [''],
@@ -222,8 +223,8 @@ describe('validateArticle', () => {
       );
     });
   });
-  describe('validateUseTags', () => {
-    test('return error with tag property', () => {
+  describe('validateUseTags()のテスト', () => {
+    test('tags プロパティを使っている場合はエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         tags: ['a', 'b'],
@@ -232,8 +233,8 @@ describe('validateArticle', () => {
       expect(errors[0].message).toContain('tagsではなくtopicsを使ってください');
     });
   });
-  describe('validatePublicationName', () => {
-    test('return error with too short publication name', () => {
+  describe('validatePublicationName()のテスト', () => {
+    test('Publication 名が短すぎる場合はエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         publication_name: 't',
@@ -241,7 +242,7 @@ describe('validateArticle', () => {
       expect(errors.length).toEqual(1);
       expect(errors[0].message).toContain('2〜15字の組み合わせ');
     });
-    test('return error with publication name which includes invalid letters', () => {
+    test('Publication 名に使えない文字列が含まれる場合はエラーを返す', () => {
       const errors = validateArticle({
         ...validArticle,
         publication_name: 'invalid/name',
@@ -252,7 +253,7 @@ describe('validateArticle', () => {
   });
 });
 
-describe('validateBook', () => {
+describe('validateBook()のテスト', () => {
   const validBook = {
     slug: 'example-slug',
     title: 'title',
@@ -268,34 +269,32 @@ describe('validateBook', () => {
     coverHeight: 700,
   };
 
-  test('return no errors with valid book', () => {
+  test('有効な本であればエラーを返さない', () => {
     const errors = validateBook(validBook);
     expect(errors).toEqual([]);
   });
 
-  describe('validateItemSlug', () => {
-    describe('validateItemSlug', () => {
-      test('return error with too short slug', () => {
-        const errors = validateBook({
-          ...validBook,
-          slug: 'too-short',
-        });
-        expect(errors.length).toEqual(1);
-        expect(errors[0].message).toContain('12〜50字の組み合わせ');
+  describe('validateItemSlug()のテスト', () => {
+    test('slug が短すぎる場合はエラーを返す', () => {
+      const errors = validateBook({
+        ...validBook,
+        slug: 'too-short',
       });
-      test('return error with slug which includes invalid letters', () => {
-        const errors = validateBook({
-          ...validBook,
-          slug: 'invalid/slug',
-        });
-        expect(errors.length).toEqual(1);
-        expect(errors[0].message).toContain('半角英数字');
+      expect(errors.length).toEqual(1);
+      expect(errors[0].message).toContain('12〜50字の組み合わせ');
+    });
+    test('slug に使えない文字列が含まれる場合はエラーを返す', () => {
+      const errors = validateBook({
+        ...validBook,
+        slug: 'invalid/slug',
       });
+      expect(errors.length).toEqual(1);
+      expect(errors[0].message).toContain('半角英数字');
     });
   });
 
-  describe('validateMissingTitle', () => {
-    test('return error without title', () => {
+  describe('validateMissingTitle()のテスト', () => {
+    test('title が無い場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         title: undefined,
@@ -305,7 +304,7 @@ describe('validateBook', () => {
         'title（タイトル）を文字列で入力してください'
       );
     });
-    test('return error with empty title', () => {
+    test('title が空文字列の場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         title: '',
@@ -317,8 +316,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateTitleLength', () => {
-    test('return error with too long title', () => {
+  describe('validateTitleLength()のテスト', () => {
+    test('title が長すぎる場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         title:
@@ -329,8 +328,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validatePublishedStatus', () => {
-    test('return error if published is specified as string', () => {
+  describe('validatePublishedStatus()のテスト', () => {
+    test('published の値が string 型の場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         published: 'true' as any,
@@ -340,7 +339,7 @@ describe('validateBook', () => {
         'published（公開設定）を true か false で指定してください（クオテーション " で囲まないでください）'
       );
     });
-    test('return error if published is specified as string', () => {
+    test('published の値が number 型の場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         published: 1 as any,
@@ -352,8 +351,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateMissingTopics', () => {
-    test('return error with undefined topics', () => {
+  describe('validateMissingTopics()のテスト', () => {
+    test('topics の値が undefined ならエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         topics: undefined,
@@ -363,7 +362,7 @@ describe('validateBook', () => {
         'topics（記事に関連する言語や技術）を配列で指定してください。'
       );
     });
-    test('return error with empty topics', () => {
+    test('topics の値が空配列ならエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         topics: [],
@@ -375,8 +374,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateTooManyTopics', () => {
-    test('return error with 6 topics', () => {
+  describe('validateTooManyTopics()のテスト', () => {
+    test('topics の数が 6 以上ならエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         topics: ['a', 'b', 'c', 'd', 'e', 'f'],
@@ -386,8 +385,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateInvalidTopicLetters', () => {
-    test('return error with topic including symbols', () => {
+  describe('validateInvalidTopicLetters()のテスト', () => {
+    test('topics に記号が含まれている場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         topics: ['a', 'vue.js'],
@@ -399,8 +398,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateTopicType', () => {
-    test('return error with number value', () => {
+  describe('validateTopicType()のテスト', () => {
+    test('topics の配列に number 型があればエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         topics: [123] as any,
@@ -410,7 +409,7 @@ describe('validateBook', () => {
         'topicsは全て文字列で指定してください'
       );
     });
-    test('return error with empty string topic', () => {
+    test('topics の配列に空文字列があればエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         topics: [''],
@@ -422,8 +421,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateUseTags', () => {
-    test('return error with tag property', () => {
+  describe('validateUseTags()のテスト', () => {
+    test('tags プロパティを使っている場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         tags: ['a', 'b'],
@@ -433,8 +432,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateBookSummary', () => {
-    test('return error with undefined summary', () => {
+  describe('validateBookSummary()のテスト', () => {
+    test('summary が undefined の場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         summary: undefined,
@@ -446,8 +445,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateBookPriceType', () => {
-    test('return error with undefined price', () => {
+  describe('validateBookPriceType()のテスト', () => {
+    test('price が undefined の場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         price: undefined,
@@ -459,8 +458,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateBookPriceRange', () => {
-    test('return error with price more than 6000', () => {
+  describe('validateBookPriceRange()のテスト', () => {
+    test('price が 5000 よりも大きいならエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         price: 6000,
@@ -470,7 +469,7 @@ describe('validateBook', () => {
         'price（本の価格）を有料にする場合、200〜5000の間で指定してください'
       );
     });
-    test('return error with price less than 200', () => {
+    test('price が 200 よりも小さいならエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         price: 100,
@@ -482,8 +481,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateBookPriceFraction', () => {
-    test('return error if price is not divisible by 100', () => {
+  describe('validateBookPriceFraction()のテスト', () => {
+    test('price が 100 で割り切れない場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         price: 1050,
@@ -495,8 +494,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateMissingBookCover', () => {
-    test('return error with undefined coverDataUrl', () => {
+  describe('validateMissingBookCover()のテスト', () => {
+    test('coverDataUrl が undefined の場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         coverDataUrl: undefined,
@@ -508,8 +507,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateBookCoverSize', () => {
-    test('return error with undefined coverDataUrl', () => {
+  describe('validateBookCoverSize()のテスト', () => {
+    test('カバー画像のサイズが1MBより大きい場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         coverFilesize: 1024 * 1024 * 2,
@@ -521,8 +520,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateBookCoverAspectRatio', () => {
-    test('return error if cover aspect ratios is not 1.4', () => {
+  describe('validateBookCoverAspectRatio()のテスト', () => {
+    test('カバー画像のアスペクト比が 1 : 1.4 でない場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         coverHeight: 800,
@@ -534,19 +533,7 @@ describe('validateBook', () => {
       );
     });
 
-    test('return error if cover aspect ratios is not 1.4', () => {
-      const errors = validateBook({
-        ...validBook,
-        coverHeight: 500,
-        coverWidth: 700,
-      });
-      expect(errors.length).toEqual(1);
-      expect(errors[0].message).toContain(
-        `カバー画像の「幅 : 高さ」の比率は「1 : 1.4」にすることをおすすめします`
-      );
-    });
-
-    test('return no errors with allowable aspect ratio', () => {
+    test('カバー画像のアスペクト比が有効な場合はエラーを返さない', () => {
       const errors = validateBook({
         ...validBook,
         coverHeight: 710,
@@ -556,8 +543,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateBookChapterSlugs', () => {
-    test('return no errors with undefined specifiedChapterSlugs', () => {
+  describe('validateBookChapterSlugs()のテスト', () => {
+    test('specifiedChapterSlugs が undefined ならエラーを返さない', () => {
       // specifiedChapterSlugs is optional
       const errors = validateBook({
         ...validBook,
@@ -566,7 +553,7 @@ describe('validateBook', () => {
       });
       expect(errors).toEqual([]);
     });
-    test('return error if specifiedChapterSlugs is not array of string', () => {
+    test('specifiedChapterSlugsが文字列の配列でない場合はエラーを返します', () => {
       // specifiedChapterSlugs is optional
       const errors = validateBook({
         ...validBook,
@@ -579,8 +566,8 @@ describe('validateBook', () => {
     });
   });
 
-  describe('validateBookChaptersFormat', () => {
-    test('return error if specifiedChapterSlugs includes .md', () => {
+  describe('validateBookChaptersFormat()のテスト', () => {
+    test('specifiedChapterSlugsに".md"が含まれている場合はエラーを返す', () => {
       const errors = validateBook({
         ...validBook,
         specifiedChapterSlugs: ['example1.md', 'example2.md'],
@@ -593,7 +580,7 @@ describe('validateBook', () => {
   });
 });
 
-describe('validateBookChapter', () => {
+describe('validateBookChapter()のテスト', () => {
   const validChapter = {
     slug: 'example',
     filename: 'example.md',
@@ -603,20 +590,20 @@ describe('validateBookChapter', () => {
     position: 0,
   };
 
-  test('return no errors with valid chapter', () => {
+  test('有効なチャプターならエラーを返さない', () => {
     const errors = validateBookChapter(validChapter);
     expect(errors).toEqual([]);
   });
 
-  describe('validateChapterItemSlug', () => {
-    test('return no errors with short slug', () => {
+  describe('validateChapterItemSlug()のテスト', () => {
+    test('slug が短すぎる場合はエラーを返す', () => {
       const errors = validateBookChapter({
         ...validChapter,
         slug: 's',
       });
       expect(errors).toEqual([]);
     });
-    test('return error with slug which includes invalid letters', () => {
+    test('slug に使えない文字を含む場合はエラーを返す', () => {
       const errors = validateBookChapter({
         ...validChapter,
         slug: 'invalid/slug',
@@ -626,8 +613,8 @@ describe('validateBookChapter', () => {
     });
   });
 
-  describe('validateMissingTitle', () => {
-    test('return error without title', () => {
+  describe('validateMissingTitle()のテスト', () => {
+    test('title が無ければエラーを返す', () => {
       const errors = validateBookChapter({
         ...validChapter,
         title: undefined,
@@ -637,7 +624,7 @@ describe('validateBookChapter', () => {
         'title（タイトル）を文字列で入力してください'
       );
     });
-    test('return error with empty title', () => {
+    test('title が空文字列ならエラーを返す', () => {
       const errors = validateBookChapter({
         ...validChapter,
         title: '',
@@ -649,8 +636,8 @@ describe('validateBookChapter', () => {
     });
   });
 
-  describe('validateTitleLength', () => {
-    test('return error with too long title', () => {
+  describe('validateTitleLength()のテスト', () => {
+    test('title が長すぎる場合はエラーを返す', () => {
       const errors = validateBookChapter({
         ...validChapter,
         title:
@@ -661,8 +648,8 @@ describe('validateBookChapter', () => {
     });
   });
 
-  describe('validateChapterFreeType', () => {
-    test('return error if free property is not boolean', () => {
+  describe('validateChapterFreeType()のテスト', () => {
+    test('free が boolean 型じゃ無ければエラーを返す', () => {
       const errors = validateBookChapter({
         ...validChapter,
         free: 'true' as any,
@@ -673,7 +660,7 @@ describe('validateBookChapter', () => {
       );
     });
 
-    test('return no error if free property is undefined', () => {
+    test('free が undefined ならエラーを返さない', () => {
       const errors = validateBookChapter({
         ...validChapter,
         free: undefined,

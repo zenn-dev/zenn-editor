@@ -1,7 +1,13 @@
+import loadLanguages from 'prismjs/components/index';
+
+import { describe, test, expect } from 'vitest';
 import markdownToHtml from '../src/index';
 
-describe('Code highlight propley', () => {
-  test('should generate valid code format html', () => {
+// markdownToHtml で diff を使っているので、あらかじめ読み込んでおく
+loadLanguages('diff');
+
+describe('コードハイライトのテスト', () => {
+  test('コードブロックを正しい<code />に変換する', () => {
     const html = markdownToHtml(
       `\`\`\`js:foo.js\nconsole.log("hello")\n\`\`\``
     );
@@ -9,13 +15,13 @@ describe('Code highlight propley', () => {
     expect(html).toContain('<span class="code-block-filename">foo.js</span>');
   });
 
-  test('should highlight js syntax', () => {
+  test('js のコードブロックをハイライトする', () => {
     const jsString = ['```js', "console.log('foo')", '```'].join('\n');
     const html = markdownToHtml(jsString);
     expect(html).toContain('language-js');
   });
 
-  test('should ignore additonal langInfo separated with whitespace', () => {
+  test('スペースで区切られた追加の言語は無視する', () => {
     const jsString = ['```js some-info', "console.log('foo')", '```'].join(
       '\n'
     );
@@ -23,18 +29,18 @@ describe('Code highlight propley', () => {
     expect(html).toContain('language-js');
   });
 
-  test('should highlight html syntax', () => {
+  test('htmlのコードブロックをハイライトできる', () => {
     const jsString = ['```html', '<html></html>', '```'].join('\n');
     const html = markdownToHtml(jsString);
     expect(html).toContain('language-html');
   });
-  test('should highlight js syntax and show filename', () => {
+  test('js のコードブロックをハイライトしてファイル名を表示する', () => {
     const jsString = ['```js:index.js', "console.log('foo')", '```'].join('\n');
     const html = markdownToHtml(jsString);
     expect(html).toContain('<span class="code-block-filename">index.js</span>');
     expect(html).toContain('language-js');
   });
-  test('should highlight html syntax and show filename', () => {
+  test('html のコードブロックをハイライトしてファイル名を表示する', () => {
     const jsString = ['```html:index.html', '<html></html>', '```'].join('\n');
     const html = markdownToHtml(jsString);
     expect(html).toContain(
@@ -42,7 +48,7 @@ describe('Code highlight propley', () => {
     );
     expect(html).toContain('language-html');
   });
-  test('should highlight js syntax', () => {
+  test('js diff のコードブロックをハイライトする', () => {
     const jsString = [
       '```js diff',
       "-     console.log('foo')",
@@ -52,7 +58,7 @@ describe('Code highlight propley', () => {
     const html = markdownToHtml(jsString);
     expect(html).toContain('diff-highlight language-diff-js');
   });
-  test('should highlight html syntax', () => {
+  test('html diff のコードブロックをハイライトする', () => {
     const jsString = [
       '```html diff',
       '-     <html class="foo">',
@@ -62,7 +68,7 @@ describe('Code highlight propley', () => {
     const html = markdownToHtml(jsString);
     expect(html).toContain('diff-highlight language-diff-html');
   });
-  test('should highlight js syntax with diff js order', () => {
+  test('diff js の順番でハイライトする', () => {
     const jsString = [
       '```diff js',
       "-     console.log('foo')",
@@ -72,7 +78,7 @@ describe('Code highlight propley', () => {
     const html = markdownToHtml(jsString);
     expect(html).toContain('diff-highlight language-diff-js');
   });
-  test('should highlight html syntax with diff html order', () => {
+  test('diff html の順番でハイライトする', () => {
     const jsString = [
       '```diff html',
       '-     <html class="foo">',
@@ -82,7 +88,7 @@ describe('Code highlight propley', () => {
     const html = markdownToHtml(jsString);
     expect(html).toContain('diff-highlight language-diff-html');
   });
-  test('should highlight js syntax and show filename', () => {
+  test('js diff のコードブロックをハイライトしてファイル名を表示する', () => {
     const jsString = [
       '```js diff:index.js',
       "-     console.log('foo')",
@@ -93,7 +99,7 @@ describe('Code highlight propley', () => {
     expect(html).toContain('diff-highlight language-diff-js');
     expect(html).toContain('<span class="code-block-filename">index.js</span>');
   });
-  test('should highlight html syntax and show filename', () => {
+  test('html diff のコードブロックをハイライトしてファイル名を表示する', () => {
     const jsString = [
       '```html diff:index.html',
       '-     <html class="foo">',
@@ -106,7 +112,7 @@ describe('Code highlight propley', () => {
       '<span class="code-block-filename">index.html</span>'
     );
   });
-  test('should highlight js syntax and show filename even if space exists before :', () => {
+  test('":" の前にスペースが存在しても js をハイライトしてファイル名を表示する', () => {
     const jsString = [
       '```js diff :index.js',
       "-     console.log('foo')",
@@ -117,7 +123,7 @@ describe('Code highlight propley', () => {
     expect(html).toContain('diff-highlight language-diff-js');
     expect(html).toContain('<span class="code-block-filename">index.js</span>');
   });
-  test('should highlight html syntax and show filename even if space exists before :', () => {
+  test('":" の前にスペースが存在しても html をハイライトしてファイル名を表示する', () => {
     const jsString = [
       '```html diff :index.html',
       '-     <html class="foo">',

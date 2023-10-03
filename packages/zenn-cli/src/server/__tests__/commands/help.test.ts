@@ -1,12 +1,13 @@
+import { vi, describe, test, expect, beforeEach } from 'vitest';
 import { exec } from '../../commands/help';
 import { commandListText } from '../../lib/messages';
 
-describe('cli exec help', () => {
+describe('helpコマンドのテスト', () => {
   beforeEach(() => {
-    console.log = jest.fn();
+    console.log = vi.fn();
   });
 
-  test('should log help message', () => {
+  test('ヘルプメッセージを表示する', () => {
     exec([]);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(commandListText)

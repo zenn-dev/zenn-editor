@@ -1,7 +1,8 @@
+import { describe, test, expect } from 'vitest';
 import markdownToHtml from '../src/index';
 
-describe('Convert markdown to html properly', () => {
-  test('should convert markdown to html properly', () => {
+describe('MarkdownからHTMLへの変換テスト', () => {
+  test('markdownからhtmlへ変換する', () => {
     const html = markdownToHtml('Hello\n## hey\n\n- first\n- second\n');
     expect(html).toContain(`<p>Hello</p>`);
     expect(html).toContain(
@@ -10,12 +11,12 @@ describe('Convert markdown to html properly', () => {
     expect(html).toContain(`<ul>\n<li>first</li>\n<li>second</li>\n</ul>\n`);
   });
 
-  test('should allow inline comment', () => {
+  test('インラインコメントはhtmlに変換しない', () => {
     const html = markdownToHtml(`<!-- hey -->`);
     expect(html).not.toContain('hey');
   });
 
-  test('should append docId to footnote', () => {
+  test('脚注に docId を設定する', () => {
     const html = markdownToHtml(`Hello[^1]World!\n\n[^1]: hey`);
     // expect(html).toContain('<a href="#fn-27-1" id="fnref-27-1">[1]</a>');
     expect(html).toEqual(
@@ -25,7 +26,7 @@ describe('Convert markdown to html properly', () => {
     );
   });
 
-  test('should remove data scheme img tag', () => {
+  test('dataスキーマの画像は除外する', () => {
     const html = markdownToHtml(`![](data:image/png;base64,xxxx)`);
     expect(html).toContain('<img alt />');
   });
