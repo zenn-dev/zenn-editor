@@ -7,7 +7,7 @@ type Props = {
 };
 
 /**
- * Markdownプレビュー内のコードブロックにコピーボタンを追加するコンポーネント
+ * 見出しの横にアンカーリンクコピーボタンを追加するコンポーネント
  */
 export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -1,6 +1,6 @@
 {
   "name": "zenn-model",
-  "version": "0.1.147",
+  "version": "0.1.148-alpha.2",
   "license": "MIT",
   "description": "Model utils for Zenn contents",
   "main": "lib/index.js",
