@@ -29,7 +29,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "pnpm@7.19.0",
   "engines": {
     "npm": "use pnpm please!",
     "yarn": "use pnpm please!",
