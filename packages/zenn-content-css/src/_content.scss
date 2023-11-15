@@ -198,7 +198,6 @@ pre {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   border-radius: 0.7em;
-  box-shadow: 0 4px 6px -1px rgb(0, 14, 30, 0.15);
   word-break: normal; // iOSで折り返されるのを防ぐ
   word-wrap: normal; // iOSで折り返されるのを防ぐ
   /* flex + codeの隣に疑似要素を配置することで横スクロール時の右端の余白を作る */
@@ -286,7 +285,6 @@ summary {
   color: var(--c-contrast);
   font-size: 0.9em;
   border-radius: 9px;
-  box-shadow: 0 2px 4px -2px rgba(0, 0, 0, 0.15);
   background: #fff;
 
   &::-webkit-details-marker {
