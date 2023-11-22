@@ -77,9 +77,24 @@ https://gist.github.com/hofmannsven/9164408?file=my.cnf
 
 ## Twitter
 
+### `@[tweet]` 記法
+
 @[tweet](https://twitter.com/jack/status/20)
 
 @[tweet](https://twitter.com/steelydylan/status/1253567029010825216)
+
+### URL埋め込み（`twitter.com`）
+
+https://twitter.com/jack/status/20
+
+https://twitter.com/steelydylan/status/1253567029010825216
+
+### URL埋め込み（`x.com`）
+
+https://x.com/jack/status/20
+
+https://x.com/steelydylan/status/1253567029010825216
+
 
 ## 👇html tag cannot be embedded.
 

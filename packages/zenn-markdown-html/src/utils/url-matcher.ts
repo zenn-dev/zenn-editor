@@ -22,7 +22,7 @@ export function isGistUrl(url: string): boolean {
 }
 
 export function isTweetUrl(url: string): boolean {
-  return /^https:\/\/twitter\.com\/[a-zA-Z0-9_-]+\/status\/[a-zA-Z0-9?=&\-_]+$/.test(
+  return /^https:\/\/(twitter|x)\.com\/[a-zA-Z0-9_-]+\/status\/[a-zA-Z0-9?=&\-_]+$/.test(
     url
   );
 }
