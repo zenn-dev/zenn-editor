@@ -76,22 +76,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Notifiy releases to zenn-dev/zenn
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          repository: zenn-dev/zenn
-          token: ${{ secrets.PERSONAL_TOKEN }}
-          event-type: update-zenn-editor-packages # specify this on zenn workflows
-          client-payload: '{"commit_url": "https://github.com/zenn-dev/zenn-editor/commit/${{ github.sha }}"}'
-
-      - name: Notifiy releases to zenn-dev/api-markdown-html
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          repository: zenn-dev/api-markdown-html
-          token: ${{ secrets.PERSONAL_TOKEN }}
-          event-type: update-zenn-editor-packages # specify this on zenn workflows
-          client-payload: '{"commit_url": "https://github.com/zenn-dev/zenn-editor/commit/${{ github.sha }}"}'
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
