@@ -215,32 +215,64 @@ describe('Linkifyのテスト', () => {
     });
 
     describe('Tweet埋め込みのテスト', () => {
-      test('ツイートリンクを<iframe />に変換する', () => {
-        const url = 'https://twitter.com/jack/status/20';
-        const html = renderLink(`${url}`);
-        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
-        const pattern = new RegExp(`${options.embedOrigin}/tweet#.+`);
+      describe('twitter.com', () => {
+        test('ツイートリンクを<iframe />に変換する', () => {
+          const url = 'https://twitter.com/jack/status/20';
+          const html = renderLink(`${url}`);
+          const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+          const pattern = new RegExp(`${options.embedOrigin}/tweet#.+`);
 
-        expect(iframe?.attributes).toEqual(
-          expect.objectContaining({
-            src: expect.stringMatching(pattern),
-            'data-content': encodeURIComponent(url),
-          })
-        );
+          expect(iframe?.attributes).toEqual(
+            expect.objectContaining({
+              src: expect.stringMatching(pattern),
+              'data-content': encodeURIComponent(url),
+            })
+          );
+        });
+
+        test('クエリ文字列を含むツイートリンクを埋め込み<iframe />に変換する', () => {
+          const url = `https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef`;
+          const html = renderLink(url);
+          const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+          const pattern = new RegExp(`${options.embedOrigin}/tweet#.+`);
+
+          expect(iframe?.attributes).toEqual(
+            expect.objectContaining({
+              src: expect.stringMatching(pattern),
+              'data-content': encodeURIComponent(url),
+            })
+          );
+        });
       });
 
-      test('クエリ文字列を含むツイートリンクを埋め込み<iframe />に変換する', () => {
-        const url = `https://twitter.com/jack/status/20?foo=123456&t=ab-cd_ef`;
-        const html = renderLink(url);
-        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
-        const pattern = new RegExp(`${options.embedOrigin}/tweet#.+`);
+      describe('x.com', () => {
+        test('ツイートリンクを<iframe />に変換する', () => {
+          const url = 'https://x.com/jack/status/20';
+          const html = renderLink(`${url}`);
+          const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+          const pattern = new RegExp(`${options.embedOrigin}/tweet#.+`);
 
-        expect(iframe?.attributes).toEqual(
-          expect.objectContaining({
-            src: expect.stringMatching(pattern),
-            'data-content': encodeURIComponent(url),
-          })
-        );
+          expect(iframe?.attributes).toEqual(
+            expect.objectContaining({
+              src: expect.stringMatching(pattern),
+              'data-content': encodeURIComponent(url),
+            })
+          );
+        });
+
+        test('クエリ文字列を含むツイートリンクを埋め込み<iframe />に変換する', () => {
+          const url = `https://x.com/jack/status/20?foo=123456&t=ab-cd_ef`;
+          const html = renderLink(url);
+          const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+          const pattern = new RegExp(`${options.embedOrigin}/tweet#.+`);
+
+          expect(iframe?.attributes).toEqual(
+            expect.objectContaining({
+              src: expect.stringMatching(pattern),
+              'data-content': encodeURIComponent(url),
+            })
+          );
+        });
       });
     });
 
