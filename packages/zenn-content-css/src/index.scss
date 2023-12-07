@@ -23,8 +23,9 @@ $c-bg-warning-darker: #ffb84c;
 $c-bg-alert: #ffeff2;
 $c-bg-alert-darker: #ff7670;
 
-$c-border-gray: $c-gray-500;
-$c-border-gray-darker: $c-gray-800;
+$c-border-gray-lighter: $c-gray-200; // 対象の邪魔をしない、目立たないボーダー
+$c-border-gray: $c-gray-500; // 標準的なボーダー
+$c-border-gray-darker: $c-gray-800; // 目立たせたいボーダー
 
 $c-text-gray-darker: $c-gray-800;
 $c-text-link-primary: $c-blue-600;
