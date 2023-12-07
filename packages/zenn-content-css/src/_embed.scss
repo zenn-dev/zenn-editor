@@ -26,15 +26,15 @@ span.embed-block {
   }
 }
 .embed-slideshare iframe {
-  border: 1px solid $c-contrast;
+  border: 1px solid $c-border-gray;
 }
 
 .embed-jsfiddle iframe {
-  border: 1px solid $c-contrast;
+  border: 1px solid $c-border-gray;
 }
 
 .embed-figma {
-  border: solid 1px $c-gray-border;
+  border: 1px solid $c-border-gray;
 }
 
 .zenn-embedded {

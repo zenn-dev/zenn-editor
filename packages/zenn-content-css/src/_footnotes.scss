@@ -1,14 +1,14 @@
 .footnotes {
   margin-top: 3rem;
-  color: $c-gray-darker;
+  color: $c-text-gray-darker;
   font-size: 0.9em;
   li::marker {
-    color: $c-gray-darker;
+    color: $c-text-gray-darker;
   }
 }
 .footnotes-title {
   padding-bottom: 3px;
-  border-bottom: solid 1px $c-gray-border;
+  border-bottom: solid 1px $c-border-gray-darker;
   font-weight: 700;
   font-size: 15px;
 }
@@ -17,6 +17,5 @@
 }
 // フォーカスされている脚注の背景色を変える
 .footnote-item:target {
-  background: #e3eeff;
-  color: $c-contrast;
+  background: $c-bg-gray-lighter;
 }
