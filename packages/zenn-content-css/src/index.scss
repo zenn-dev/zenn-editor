@@ -1,13 +1,35 @@
-$c-primary: #3ea8ff;
-$c-primary-bg: #edf2f7;
-$c-primary-bg-darker: #c6d5e2;
-$c-primary-bg-lighter: #f1f5f9;
-$c-gray: #93a5b1;
-$c-gray-lighter: #b9c7d2;
-$c-gray-darker: #77838c;
-$c-gray-border: #cfdce6;
-$c-gray-border-lighter: rgba(92, 147, 187, 0.17);
-$c-contrast: #1a2638;
+/* Zenn本体のカラーパレット */
+$c-blue-100: #f0f7ff;
+$c-blue-200: #ecf5ff;
+$c-blue-300: #e0efff;
+$c-blue-400: #bfdcff;
+$c-blue-500: #3ea8ff;
+$c-blue-600: #0f83fd;
+$c-blue-700: #0868ce;
+$c-gray-100: #f5f9fc;
+$c-gray-200: #f1f5f9;
+$c-gray-300: #edf2f7;
+$c-gray-400: #e4edf4;
+$c-gray-500: #d6e3ed;
+$c-gray-600: #acbcc7;
+$c-gray-700: #8f9faa;
+$c-gray-800: #65717b;
+
+/* 目的別カラー変数 */
+$c-bg-gray: $c-gray-300;
+$c-bg-gray-lighter: $c-gray-200;
+$c-bg-warning: #fff6e4;
+$c-bg-warning-darker: #ffb84c;
+$c-bg-alert: #ffeff2;
+$c-bg-alert-darker: #ff7670;
+
+$c-border-gray-lighter: $c-gray-200; // 対象の邪魔をしない、目立たないボーダー
+$c-border-gray: $c-gray-500; // 標準的なボーダー
+$c-border-gray-darker: $c-gray-800; // 目立たせたいボーダー
+
+$c-text-gray-darker: $c-gray-800;
+$c-text-link-primary: $c-blue-600;
+$c-contrast: #1a2638; // 主にCodeBlockの背景色に使う
 
 $xs: 374px;
 $sm: 576px;

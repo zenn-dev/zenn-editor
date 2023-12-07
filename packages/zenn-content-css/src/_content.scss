@@ -7,7 +7,7 @@ strong {
   font-weight: 700;
 }
 a {
-  color: #0f83fd;
+  color: $c-text-link-primary;
 
   &:hover {
     text-decoration: underline;
@@ -38,7 +38,7 @@ ul {
     list-style: disc;
     &::marker {
       font-size: 1.1em;
-      color: rgb(94, 100, 120);
+      color: $c-gray-800;
     }
   }
 }
@@ -48,7 +48,7 @@ ol {
     list-style: decimal;
     padding-left: 0.2em;
     &::marker {
-      color: rgb(83, 88, 114);
+      color: $c-gray-800;
       font-weight: 600;
       letter-spacing: -0.05em;
     }
@@ -92,13 +92,13 @@ h1 {
   padding-bottom: 0.2em;
   margin-bottom: 1.1rem;
   font-size: 1.7em;
-  border-bottom: solid 1px $c-gray-border-lighter;
+  border-bottom: solid 1px $c-border-gray;
 }
 h2 {
   padding-bottom: 0.3em;
   margin-bottom: 1.1rem;
   font-size: 1.5em;
-  border-bottom: solid 1px $c-gray-border-lighter;
+  border-bottom: solid 1px $c-border-gray;
 }
 h3 {
   font-size: 1.3em;
@@ -135,15 +135,15 @@ h6 {
 }
 
 hr {
-  border-top: 2px solid $c-gray-border-lighter;
+  border-top: 2px solid $c-border-gray;
   margin: 2.5rem 0;
 }
 blockquote {
   font-size: 0.97em;
   margin: 1.4rem 0;
-  border-left: solid 3px #9dacb7;
+  border-left: solid 3px $c-gray-700;
   padding: 2px 0 2px 0.7em; /* 上下にpaddingをわずかでも設定しておくと、固定ヘッダー対策で見出しにネガティブマージンが指定されたときにも崩れない。ref: https://github.com/zenn-dev/zenn-roadmap/issues/191 */
-  color: #505c64;
+  color: $c-text-gray-darker;
   p {
     margin: 1rem 0;
   }
@@ -172,16 +172,16 @@ table {
 th,
 td {
   padding: 0.5rem;
-  border: solid 1px $c-gray-border;
+  border: solid 1px $c-border-gray;
   background: #fff;
 }
 th {
   font-weight: 700;
-  background: $c-primary-bg;
+  background: $c-bg-gray;
 }
 code {
   padding: 0.2em 0.4em;
-  background: rgba(33, 90, 160, 0.07);
+  background: rgba(33, 90, 160, 0.07); // $c-contrast と同じ色
   font-size: 0.85em;
   border-radius: 4px;
   vertical-align: 0.08em;
@@ -253,6 +253,7 @@ img:not(.emoji) {
   display: table;
   max-width: 100%;
   height: auto;
+  border: 1px solid $c-border-gray-lighter;
 }
 img + br {
   display: none;
@@ -264,7 +265,7 @@ img ~ em {
   margin: -1rem auto 0;
   line-height: 1.3;
   text-align: center;
-  color: $c-gray-darker;
+  color: $c-text-gray-darker;
   font-size: 0.92em;
 }
 // リンクの中に画像がある場合、リンクの範囲を画像の大きさと合わせる
@@ -281,25 +282,25 @@ summary {
   cursor: pointer;
   outline: 0;
   padding: 0.7em 0.7em 0.7em 0.9em;
-  border: solid 1px rgba(92, 147, 187, 0.19);
+  border: solid 1px $c-border-gray;
   color: var(--c-contrast);
   font-size: 0.9em;
   border-radius: 9px;
   background: #fff;
 
   &::-webkit-details-marker {
-    color: $c-gray-darker;
+    color: $c-text-gray-darker;
   }
 }
 details[open] summary {
   border-radius: 5px 5px 0 0;
   box-shadow: none;
-  background: $c-primary-bg-lighter;
+  background: $c-bg-gray-lighter;
   border-bottom: none;
 }
 .details-content {
   padding: 0.5em 0.9em;
-  border: solid 1px rgba(92, 147, 187, 0.2);
+  border: solid 1px $c-border-gray;
   border-radius: 0 0 5px 5px;
   background: #fff;
 
