@@ -31,6 +31,15 @@ $c-text-gray-darker: $c-gray-800;
 $c-text-link-primary: $c-blue-600;
 $c-contrast: #1a2638; // 主にCodeBlockの背景色に使う
 
+/* border-radius */
+$rounded-xs: 4px;
+$rounded-sm: 7px;
+$rounded-md: 10px;
+$rounded-lg: 14px;
+$rounded-xl: 20px;
+$rounded-full: 99rem;
+$rounded-publication: 25%;
+
 $xs: 374px;
 $sm: 576px;
 $md: 768px;
