@@ -1,6 +1,6 @@
 import { CliExecFn } from '../types';
 import * as Log from '../lib/log';
-import { getWorkingPath, generateFileIfNotExist } from '../lib/helper';
+import { detectPackageExecutor, getWorkingPath, generateFileIfNotExist } from '../lib/helper';
 import { initHelpText, invalidOptionText } from '../lib/messages';
 import arg from 'arg';
 
@@ -71,17 +71,18 @@ export const exec: CliExecFn = (argv) => {
     console.log(`Generating README.md skipped.`);
   }
 
+  const packageExecutor = detectPackageExecutor();
   console.log(`
   🎉  Done!
   早速コンテンツを作成しましょう
 
   👇  新しい記事を作成する
-  $ zenn new:article
+  $ ${packageExecutor} zenn new:article
 
   👇  新しい本を作成する
-  $ zenn new:book
+  $ ${packageExecutor} zenn new:book
 
   👇  投稿をプレビューする
-  $ zenn preview
+  $ ${packageExecutor} zenn preview
   `);
 };
