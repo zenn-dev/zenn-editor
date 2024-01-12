@@ -2,6 +2,7 @@ import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
 import path from 'path';
 import fs from 'fs-extra';
 import * as helper from '../../lib/helper';
+import { getWorkingPath } from '../../lib/helper';
 import * as Log from '../../lib/log';
 import { validateSlug } from '../../../common/helper';
 
@@ -185,5 +186,67 @@ describe('completeHtml() のテスト', () => {
   test('src の値が無効な拡張子なら "表示できません" を出力する', () => {
     const html = helper.completeHtml('<img src="/images/example.svg">');
     expect(html).toContain('表示できません');
+  });
+});
+
+describe('detectPackageExecutor() のテスト', () => {
+  beforeEach(async () => {
+    if (fs.existsSync(getWorkingPath('package-lock.json'))) {
+      await fs.promises.unlink(getWorkingPath('package-lock.json'));
+    }
+    if (fs.existsSync(getWorkingPath('yarn.lock'))) {
+      await fs.promises.unlink(getWorkingPath('yarn.lock'));
+    }
+    if (fs.existsSync(getWorkingPath('pnpm-lock.yaml'))) {
+      await fs.promises.unlink(getWorkingPath('pnpm-lock.yaml'));
+    }
+    if (fs.existsSync(getWorkingPath('bun.lockb'))) {
+      await fs.promises.unlink(getWorkingPath('bun.lockb'));
+    }
+  });
+
+  test('package-lock.json が存在する場合は `npx` を返す', async () => {
+    const tempFilePath = getWorkingPath('package-lock.json');
+    await fs.promises.writeFile(tempFilePath, '');
+
+    const result = helper.detectPackageExecutor();
+    expect(result).toEqual('npx');
+
+    await fs.promises.unlink(tempFilePath);
+  });
+
+  test('yarn.lock が存在する場合は `yarn` を返す', async () => {
+    const tempFilePath = getWorkingPath('yarn.lock');
+    await fs.promises.writeFile(tempFilePath, '');
+
+    const result = helper.detectPackageExecutor();
+    expect(result).toEqual('yarn');
+
+    await fs.promises.unlink(tempFilePath);
+  });
+
+  test('pnpm-lock.yaml が存在する場合は `pnpm` を返す', async () => {
+    const tempFilePath = getWorkingPath('pnpm-lock.yaml');
+    await fs.promises.writeFile(tempFilePath, '');
+
+    const result = helper.detectPackageExecutor();
+    expect(result).toEqual('pnpm');
+
+    await fs.promises.unlink(tempFilePath);
+  });
+
+  test('bun.lockb が存在する場合は `bun` を返す', async () => {
+    const tempFilePath = getWorkingPath('bun.lockb');
+    await fs.promises.writeFile(tempFilePath, '');
+
+    const result = helper.detectPackageExecutor();
+    expect(result).toEqual('bun');
+
+    await fs.promises.unlink(tempFilePath);
+  });
+
+  test('どのファイルも存在しない場合は `npx` を返す', () => {
+    const result = helper.detectPackageExecutor();
+    expect(result).toEqual('npx');
   });
 });
