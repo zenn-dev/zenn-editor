@@ -291,7 +291,7 @@ summary {
     color: $c-text-gray-darker;
   }
 }
-details[open] summary {
+details[open] > summary {
   border-radius: $rounded-lg $rounded-lg 0 0;
   box-shadow: none;
   background: $c-bg-gray-lighter;
