@@ -32,7 +32,7 @@ export function isStackblitzUrl(url: string): boolean {
 }
 
 export function isCodesandboxUrl(url: string): boolean {
-  return /^https:\/\/codesandbox\.io\/embed\/[a-zA-Z0-9\-_/.@?&=%,]+$/.test(
+  return /^https:\/\/codesandbox\.io\/embed\/[a-zA-Z0-9\-_/.@?&=%,+]+$/.test(
     url
   );
 }
