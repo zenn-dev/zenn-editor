@@ -252,3 +252,23 @@ export const resolveHostname = (
 
   return { name, host };
 };
+
+type PackageExecutorType = 'npx' | 'yarn' | 'pnpm' | 'bun';
+
+export const detectPackageExecutor = (): PackageExecutorType => {
+  const lockFileNames = [
+    ['npx', 'package-lock.json'],
+    ['yarn', 'yarn.lock'],
+    ['pnpm', 'pnpm-lock.yaml'],
+    ['bun', 'bun.lockb'],
+  ] as const;
+  let detectedPackageExecutor: PackageExecutorType = 'npx';
+  for (const [packageManager, lockFileName] of lockFileNames) {
+    const lockFilePath = getWorkingPath(`${lockFileName}`);
+    if (fs.existsSync(lockFilePath)) {
+      detectedPackageExecutor = packageManager;
+      break;
+    }
+  }
+  return detectedPackageExecutor;
+};
