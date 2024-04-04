@@ -7,20 +7,20 @@ enableDiffHighlight();
 
 function highlightContent({
   text,
-  prismGrammer,
+  prismGrammar,
   langName,
   hasDiff,
 }: {
   text: string;
-  prismGrammer?: Grammar;
+  prismGrammar?: Grammar;
   langName?: string;
   hasDiff: boolean;
 }): string {
-  if (prismGrammer && langName) {
+  if (prismGrammar && langName) {
     if (hasDiff)
       return Prism.highlight(text, Prism.languages.diff, `diff-${langName}`);
 
-    return Prism.highlight(text, prismGrammer, langName);
+    return Prism.highlight(text, prismGrammar, langName);
   }
 
   if (hasDiff) return Prism.highlight(text, Prism.languages.diff, 'diff');
@@ -32,6 +32,6 @@ export function highlight(
   langName: string,
   hasDiff: boolean
 ): string {
-  const prismGrammer = Prism.languages[langName];
-  return highlightContent({ text, prismGrammer, langName, hasDiff });
+  const prismGrammar = Prism.languages[langName];
+  return highlightContent({ text, prismGrammar, langName, hasDiff });
 }
