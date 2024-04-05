@@ -87,6 +87,6 @@ export default function App(props) {
 
 https://zenn-dev.github.io/zenn-docs-for-developers/
 
-## Licence
+## License
 
 [MIT](LICENSE)

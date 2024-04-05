@@ -14,6 +14,6 @@ Resolves #<issue-url>
 - [ ] 不要なコードが含まれていないか( コメントやログの消し忘れに注意 )
 - [ ] XSS になるようなコードが含まれていないか
 - [ ] モバイル端末での表示が考慮されているか
-- [ ] Pull Reuqest の内容は妥当か( 膨らみすぎてないか )
+- [ ] Pull Request の内容は妥当か( 膨らみすぎてないか )
 
 より詳しい内容は [Pull Request Policy](https://github.com/zenn-dev/zenn-editor/tree/canary/docs/pull_request_policy.md) を参照してください。
