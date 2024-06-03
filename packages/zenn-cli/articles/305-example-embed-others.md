@@ -1,9 +1,9 @@
 ---
-title: 'Embedのテスト'
+title: '埋め込みのテスト（その他）'
 type: 'tech' # or "idea"
-topics: [12]
+topics: ['embed', 'test']
 emoji: 🐲
-published: false
+published: true
 ---
 
 ## Figma
@@ -15,17 +15,6 @@ published: false
 
 @[blueprintue](https://blueprintue.com/render/xmdvzpam/)
 @[blueprintue](https://blueprintue.com/render/xmdvzpam/)
-
-## Gists
-
-https://gist.github.com/hofmannsven/9164408
-https://gist.github.com/lmars/8be1952a8d03f8a31b17
-
-@[gist](https://gist.github.com/mattpodwysocki/218388)
-
-### specific file
-
-https://gist.github.com/hofmannsven/9164408?file=my.cnf
 
 ## codesandbox
 
@@ -74,34 +63,3 @@ https://gist.github.com/hofmannsven/9164408?file=my.cnf
 ## codepen
 
 @[codepen](https://codepen.io/noeldelgado/pen/BaogqYy?default-tab=result)
-
-## Twitter
-
-### `@[tweet]` 記法（`twitter.com`）
-
-@[tweet](https://twitter.com/jack/status/20)
-
-@[tweet](https://twitter.com/steelydylan/status/1253567029010825216)
-
-### `@[tweet]` 記法（`x.com`）
-
-@[tweet](https://x.com/jack/status/20)
-
-@[tweet](https://x.com/steelydylan/status/1253567029010825216)
-
-### URL埋め込み（`twitter.com`）
-
-https://twitter.com/jack/status/20
-
-https://twitter.com/steelydylan/status/1253567029010825216
-
-### URL埋め込み（`x.com`）
-
-https://x.com/jack/status/20
-
-https://x.com/steelydylan/status/1253567029010825216
-
-
-## 👇html tag cannot be embedded.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ToLJE4YEQRI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allow="fullscreen"></iframe>

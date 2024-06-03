@@ -1,6 +1,6 @@
 ---
-title: 'mermaid'
-type: 'ida' # or "idea"
+title: '埋め込みのテスト（Mermaid）'
+type: 'idea' # or "idea"
 topics:
   - mermaid
 emoji: 👩‍💻
