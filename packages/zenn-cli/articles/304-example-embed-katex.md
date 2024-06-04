@@ -265,6 +265,18 @@ issue: https://github.com/zenn-dev/zenn-community/issues/337
 
 素数全体を2つのグループに分け、$p_1, …, p_k$ を「小さい」素数、$p_{k+1}$ 以降を「大きい」素数と呼ぶことにする。$N$ 以下の自然数で、「大きい」素数で割れる数と、「小さい」素数でしか割れない数に分け、前者の個数を $N_1$、後者の個数を $N_2$ とおく。当然 $N = N_1 + N_2$ である。
 
+## 数式番号を含む数式
+
+issue: https://github.com/zenn-dev/zenn-community/issues/608
+
+数式番号を含む数式に、スクロールバーが発生しないこと
+
+$$
+\begin{align}
+J_w \ddot{\theta}_w &= T - \frac{f}{r} \\
+\end{align}
+$$
+
 ## 折りたたみ
 
 :::details 詳細
