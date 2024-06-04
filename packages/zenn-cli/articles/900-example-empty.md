@@ -1,5 +1,5 @@
 ---
-title: 'example empty'
+title: 'Empty Articleのテスト'
 type: 'idea' # or "idea"
 topics:
   - React

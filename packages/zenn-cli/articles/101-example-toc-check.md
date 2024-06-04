@@ -1,11 +1,11 @@
 ---
-title: 'TOC'
+title: 'ToCのテスト'
 type: 'tech' # or "idea"
 topics:
   - React
   - Rust
 emoji: 👩‍💻
-published: false
+published: true
 ---
 
 # H1 はプレビュー対象

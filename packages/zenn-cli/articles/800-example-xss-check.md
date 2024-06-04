@@ -1,3 +1,14 @@
+---
+title: 'XSSのテスト'
+type: 'tech' # or "idea"
+topics:
+  - React
+  - Rust
+emoji: 👩‍💻
+published: true
+---
+
+
 $$
 "<img/src=./ onerror=alert(location)>
 e^{i\theta} = i\sin\thetae^{i\theta}

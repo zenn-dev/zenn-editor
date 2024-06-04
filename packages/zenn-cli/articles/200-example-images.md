@@ -1,10 +1,10 @@
 ---
-title: 'example images'
+title: '画像のテスト'
 type: 'idea'
 topics:
   - Zenn
 emoji: 🏙
-published: false
+published: true
 ---
 
 ## 正しい指定
