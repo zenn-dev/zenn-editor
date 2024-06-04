@@ -56,12 +56,23 @@ span.embed-block {
   margin: 1.5rem auto;
 }
 
+embed-katex {
+  // issue: https://github.com/zenn-dev/zenn-community/issues/327
+  // 横に長い要素がはみ出さないようにはスクロールバーを有効化する
+  overflow-x: auto;
+  // issue: https://github.com/zenn-dev/zenn-community/issues/608
+  // .katex .vlist-t2 に指定されているネガティブマージン（margin-right: -2px）により一部のブラウザでスクロールバーが表示されるため
+  // ネガティブマージンを相殺するパディングを親要素に設定する
+  padding-right: 2px;
+}
+
 // prevent katex overflow
 // for inline $foo$
 embed-katex:not([display-mode='1']) {
-  display: inline-flex; // Don't use inline-block here.
-  overflow-x: auto;
+  display: inline-flex;
   max-width: 100%;
+  // issue: https://github.com/zenn-dev/zenn-editor/pull/216
+  // インライン要素ではいかなる場合でもスクロールバーを表示しない
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -75,5 +86,4 @@ embed-katex:not([display-mode='1']) {
 embed-katex[display-mode='1'] {
   display: block;
   width: 100%;
-  overflow-x: auto;
 }

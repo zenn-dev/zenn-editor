@@ -242,7 +242,7 @@ export const Sidebar: React.FC = () => {
             </li>
             <li>
               <LinkGuide slug="deploy-github-images">
-                <ListItemInner title="画像管理ガイド" emoji="🏞" label="Beta" />
+                <ListItemInner title="画像管理ガイド" emoji="🏞" />
               </LinkGuide>
             </li>
             <li>

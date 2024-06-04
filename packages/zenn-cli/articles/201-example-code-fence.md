@@ -1,11 +1,11 @@
 ---
-title: 'Code Fence'
+title: 'Code Fenceのテスト'
 type: 'tech' # or "idea"
 topics:
   - React
   - Rust
 emoji: 👩‍💻
-published: false
+published: true
 ---
 
 ```"><img/onerror="alert(location)"src=.>
