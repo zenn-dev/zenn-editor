@@ -245,9 +245,11 @@ $1+1=
 
 [text$text](https://...$text)
 
-## スクロール
+## 横幅が大きい数式
 
-横幅が大きい数式はスクロールバーが表示される
+issue: https://github.com/zenn-dev/zenn-community/issues/327
+
+横幅が大きい数式は、幅をはみ出さずにスクロールバーが表示されること
 
 $aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$
 
@@ -255,12 +257,19 @@ $$
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 $$
 
+## 下添え字を含むインライン数式
+
+issue: https://github.com/zenn-dev/zenn-community/issues/337
+
+下添え字を含むインライン数式に、スクロールバーが発生しないこと
+
+素数全体を2つのグループに分け、$p_1, …, p_k$ を「小さい」素数、$p_{k+1}$ 以降を「大きい」素数と呼ぶことにする。$N$ 以下の自然数で、「大きい」素数で割れる数と、「小さい」素数でしか割れない数に分け、前者の個数を $N_1$、後者の個数を $N_2$ とおく。当然 $N = N_1 + N_2$ である。
+
 ## 折りたたみ
 
 :::details 詳細
 $a\ne0$
 :::
-
 
 ## XSS
 
