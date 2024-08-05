@@ -18,7 +18,9 @@
     "build:src": "esbuild ./src/*.ts --format=cjs --outdir=lib",
     "build:types": "tsc --project ./tsconfig.build.json",
     "lint": "eslint . --ext .ts,.tsx",
+    "lint:prettier": "prettier .",
     "fix": "eslint . --ext .ts,.tsx --fix",
+    "fix:prettier": "prettier -w .",
     "strict:lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "vitest run"
   },
