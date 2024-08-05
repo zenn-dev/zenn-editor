@@ -29,5 +29,7 @@ const StyledLoading = styled.div`
   border: 4px solid var(--c-primary);
   border-radius: 50%;
   border-top-color: var(--c-primary-bg);
-  animation: ${rotate} 0.8s linear infinite, ${fadein} 0.7s;
+  animation:
+    ${rotate} 0.8s linear infinite,
+    ${fadein} 0.7s;
 `;

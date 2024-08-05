@@ -4,8 +4,7 @@ import { isCodesandboxUrl } from '../../src/utils/url-matcher';
 describe('isCodesandboxUrlのテスト', () => {
   describe('Trueを返す場合', () => {
     test('Codesandboxの埋め込みURL', () => {
-      const url =
-        'https://codesandbox.io/embed/new?view=Editor+%2B+Preview';
+      const url = 'https://codesandbox.io/embed/new?view=Editor+%2B+Preview';
 
       expect(isCodesandboxUrl(url)).toBe(true);
     });
