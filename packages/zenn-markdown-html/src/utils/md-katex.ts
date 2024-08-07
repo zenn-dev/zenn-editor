@@ -58,13 +58,13 @@ const blockRules: HandlingRule[] = [
   {
     name: 'math_block_eqno',
     rex: /\${2}([^$]+?)\${2}\s*?\(([^)\s]+?)\)/gmy,
-    tmpl: `<section class="${katexClassName} eqno"><eqn><embed-katex display-mode="1">$1</embed-katex></eqn><span>($2)</span></section>`,
+    tmpl: `<section class="${katexClassName} eqno code-line" $3><eqn><embed-katex display-mode="1">$1</embed-katex></eqn><span>($2)</span></section>`,
     tag: '$$',
   },
   {
     name: 'math_block',
     rex: /\${2}([^$]+?)\${2}/gmy,
-    tmpl: `<section class="${katexClassName}"><eqn><embed-katex display-mode="1">$1</embed-katex></eqn></section>`,
+    tmpl: `<section class="${katexClassName} code-line" $3><eqn><embed-katex display-mode="1">$1</embed-katex></eqn></section>`,
     tag: '$$',
   },
 ];
@@ -161,6 +161,7 @@ export function mdKatex(md: MarkdownIt) {
     md.renderer.rules[rule.name] = (tokens, idx) =>
       rule.tmpl
         .replace(/\$2/, md.utils.escapeHtml(tokens[idx].info)) // equation number .. ?
-        .replace(/\$1/, md.utils.escapeHtml(tokens[idx].content));
+        .replace(/\$1/, md.utils.escapeHtml(tokens[idx].content))
+        .replace(/\$3/, 'data-line="' + tokens[idx].attrGet('data-line') + '"');
   }
 }
