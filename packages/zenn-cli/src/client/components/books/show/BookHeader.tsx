@@ -81,7 +81,8 @@ const StyledBookHeader = styled.header`
   .book-header__cover-img {
     background: #fff;
     object-fit: cover;
-    box-shadow: 0 9px 20px -9px rgba(0, 27, 68, 0.52),
+    box-shadow:
+      0 9px 20px -9px rgba(0, 27, 68, 0.52),
       0 0 3px rgba(0, 21, 60, 0.1);
     border-radius: 5px;
   }

@@ -17,7 +17,9 @@
     "build": "pnpm clean && run-p build:*",
     "build:tsc": "tsc -p .",
     "lint": "eslint . --ext .ts,.tsx",
+    "lint:prettier": "prettier .",
     "fix": "eslint . --ext .ts,.tsx --fix",
+    "fix:prettier": "prettier -w .",
     "strict:lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "echo 'no test yet'"
   },

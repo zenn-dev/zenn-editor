@@ -22,7 +22,9 @@
     "build:src": "babel ./src --extensions '.ts,.tsx' --ignore '**/*.d.ts' --out-dir ./lib",
     "build:types": "tsc --project ./tsconfig.build.json",
     "lint": "eslint . --ext .ts,.tsx",
+    "lint:prettier": "prettier .",
     "fix": "eslint . --ext .ts,.tsx --fix",
+    "fix:prettier": "prettier -w .",
     "strict:lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "vitest run"
   },

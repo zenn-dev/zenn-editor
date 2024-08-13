@@ -9,7 +9,9 @@ export function mdLinkAttributes(md: MarkdownIt) {
     // 内部リンク
     {
       matcher(href: string) {
-        return href.match(/^(?:https:\/\/zenn\.dev$)|(?:https:\/\/zenn\.dev\/.*$)/);
+        return href.match(
+          /^(?:https:\/\/zenn\.dev$)|(?:https:\/\/zenn\.dev\/.*$)/
+        );
       },
       attrs: {
         target: '_blank',
