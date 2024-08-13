@@ -32,6 +32,6 @@
   "engines": {
     "npm": "use pnpm please!",
     "yarn": "use pnpm please!",
-    "pnpm": ">=8"
+    "pnpm": ">=9 <10"
   }
 }
