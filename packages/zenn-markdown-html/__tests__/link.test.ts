@@ -65,22 +65,32 @@ describe('Linkifyのテスト', () => {
 
     test('<details />内のリンクはリンクカードに変換しない', () => {
       const html = renderLink(':::message alert\nhttps://example.com\n:::');
-      const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+      const iframe = parse(html).querySelector('aside iframe');
       expect(iframe).toBeNull();
+      expect(html).toContain(
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
+      );
     });
 
     test('<details />内の2段落空いたリンクをリンクカードに変換しない', () => {
       const html = renderLink(
         ':::message alert\nhello\n\nhttps://example.com\n:::'
       );
-      const iframes = parse(html).querySelectorAll('span.zenn-embedded iframe');
+      const iframes = parse(html).querySelectorAll('aside iframe');
       expect(iframes.length).toBe(0);
+      console.log(html);
+      expect(html).toContain(
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
+      );
     });
 
     test('リスト内のリンクをリンクカードに変換しない', () => {
       const html = renderLink('- https://example.com\n- second');
-      const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+      const iframe = parse(html).querySelector('aside iframe');
       expect(iframe).toBeNull();
+      expect(html).toContain(
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
+      );
     });
 
     test('URLにテキストが続く場合はリンクカードに変換しない', () => {
