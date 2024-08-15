@@ -11,6 +11,7 @@ import { mdBr } from './utils/md-br';
 import { mdKatex } from './utils/md-katex';
 import { mdCustomBlock } from './utils/md-custom-block';
 import { mdLinkAttributes } from './utils/md-link-attributes';
+import { mdSourceMap } from './utils/md-source-map';
 import { mdLinkifyToCard } from './utils/md-linkify-to-card';
 import { mdRendererFence } from './utils/md-renderer-fence';
 import {
@@ -58,7 +59,8 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
         symbol: '',
       }),
       tabIndex: false,
-    });
+    })
+    .use(mdSourceMap);
 
   // custom footnote
   md.renderer.rules.footnote_block_open = () =>

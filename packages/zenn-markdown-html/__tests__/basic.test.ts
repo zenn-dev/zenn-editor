@@ -1,14 +1,23 @@
 import { describe, test, expect } from 'vitest';
 import markdownToHtml from '../src/index';
+import { parse } from 'node-html-parser';
 
 describe('MarkdownからHTMLへの変換テスト', () => {
   test('markdownからhtmlへ変換する', () => {
     const html = markdownToHtml('Hello\n## hey\n\n- first\n- second\n');
-    expect(html).toContain(`<p>Hello</p>`);
-    expect(html).toContain(
-      `<h2 id="hey"><a class="header-anchor-link" href="#hey" aria-hidden="true"></a> hey</h2>`
+    const p = parse(html).querySelector('p');
+    const h2 = parse(html).querySelector('h2');
+    const ul = parse(html).querySelector('ul');
+    const liElms = parse(html).querySelectorAll('li');
+
+    expect(p?.innerHTML).toBe('Hello');
+    expect(h2?.innerHTML).toBe(
+      '<a class="header-anchor-link" href="#hey" aria-hidden="true"></a> hey'
     );
-    expect(html).toContain(`<ul>\n<li>first</li>\n<li>second</li>\n</ul>\n`);
+    expect(ul).not.toBeNull();
+    expect(liElms?.length).toBe(2);
+    expect(liElms[0].innerHTML).toBe('first');
+    expect(liElms[1].innerHTML).toBe('second');
   });
 
   test('インラインコメントはhtmlに変換しない', () => {
