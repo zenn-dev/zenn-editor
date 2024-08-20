@@ -8,7 +8,7 @@ Resolves #<issue-url>
 
 プルリクエストを作成いただく際、お手数ですが以下の内容についてご確認をお願いします。
 
-- [ ] :book: [Contribution Guide](https://github.com/zenn-dev/zenn-editor/blob/main/CONTRIBUTING.md) を読んだ
+- [ ] :book: [Contribution Guide](https://zenn-dev.github.io/zenn-docs-for-developers/contribution) を読んだ
 - [ ] :woman_technologist: `canary` ブランチに対するプルリクエストである
 - [ ] zenn-cli で実行して正しく動作しているか確認する
 - [ ] 不要なコードが含まれていないか( コメントやログの消し忘れに注意 )
