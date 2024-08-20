@@ -1,6 +1,6 @@
 {
   "name": "zenn-embed-elements",
-  "version": "0.1.154",
+  "version": "0.1.155-alpha.3",
   "license": "MIT",
   "description": "Web components for embedded contents.",
   "repository": {
@@ -17,7 +17,9 @@
     "build": "pnpm clean && run-p build:*",
     "build:tsc": "tsc -p .",
     "lint": "eslint . --ext .ts,.tsx",
+    "lint:prettier": "prettier .",
     "fix": "eslint . --ext .ts,.tsx --fix",
+    "fix:prettier": "prettier -w .",
     "strict:lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "echo 'no test yet'"
   },

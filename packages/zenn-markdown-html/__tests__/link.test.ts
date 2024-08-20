@@ -51,29 +51,24 @@ describe('Linkifyのテスト', () => {
 
     test('URLの前にテキストが存在する場合はリンクをリンクカードに変換しない', () => {
       const html = renderLink('foo https://example.com');
-      expect(html).toEqual(
-        '<p>foo <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
+      expect(html).toContain(
+        'foo <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
     });
 
     test('意図的にリンクしているURLはリンクカードに変換しない', () => {
       const html = renderLink('[https://example.com](https://example.com)');
-      expect(html).toEqual(
-        '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
-      );
-    });
-
-    test('リンク内のリンクを変換しない', () => {
-      const html = renderLink('- https://example.com\n- second');
-      expect(html).toEqual(
-        '<ul>\n<li><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></li>\n<li>second</li>\n</ul>\n'
+      expect(html).toContain(
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
     });
 
     test('<details />内のリンクはリンクカードに変換しない', () => {
       const html = renderLink(':::message alert\nhttps://example.com\n:::');
-      expect(html).toEqual(
-        '<aside class="msg alert"><span class="msg-symbol">!</span><div class="msg-content"><p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>\n'
+      const iframe = parse(html).querySelector('aside iframe');
+      expect(iframe).toBeNull();
+      expect(html).toContain(
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
     });
 
@@ -81,43 +76,48 @@ describe('Linkifyのテスト', () => {
       const html = renderLink(
         ':::message alert\nhello\n\nhttps://example.com\n:::'
       );
+      const iframes = parse(html).querySelectorAll('aside iframe');
+      expect(iframes.length).toBe(0);
+      console.log(html);
       expect(html).toContain(
-        '<aside class="msg alert"><span class="msg-symbol">!</span><div class="msg-content"><p>hello</p>\n<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n</div></aside>'
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
     });
 
     test('リスト内のリンクをリンクカードに変換しない', () => {
       const html = renderLink('- https://example.com\n- second');
-      expect(html).toEqual(
-        '<ul>\n<li><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></li>\n<li>second</li>\n</ul>\n'
+      const iframe = parse(html).querySelector('aside iframe');
+      expect(iframe).toBeNull();
+      expect(html).toContain(
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
     });
 
     test('URLにテキストが続く場合はリンクカードに変換しない', () => {
       const html = renderLink('https://example.com foo');
-      expect(html).toEqual(
-        '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a> foo</p>\n'
+      expect(html).toContain(
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a> foo'
       );
     });
 
     test('同じ段落内のテキストを含むリンクをリンクカードに変換しない', () => {
       const html = renderLink(`a: https://example.com\nb: https://example.com`);
-      expect(html).toEqual(
-        '<p>a: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a><br />\nb: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
+      expect(html).toContain(
+        'a: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a><br />\nb: <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
     });
 
     test('URLにテキストが続くならリンクが先頭であってもリンクカードに変換しない', () => {
       const html = renderLink('\n\nhttps://example.com text');
-      expect(html).toEqual(
-        '<p><a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a> text</p>\n'
+      expect(html).toContain(
+        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a> text'
       );
     });
 
     test('URLの前にテキストがあるならリンクが行末でもリンクカードに変換しない', () => {
       const html = renderLink('text https://example.com\n\n');
-      expect(html).toEqual(
-        '<p>text <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a></p>\n'
+      expect(html).toContain(
+        'text <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
     });
   });

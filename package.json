@@ -3,6 +3,7 @@
   "devDependencies": {
     "@lerna-lite/cli": "^1.15.1",
     "npm-run-all": "^4.1.5",
+    "prettier": "^3.3.3",
     "turbo": "^1.7.4"
   },
   "scripts": {
@@ -12,6 +13,7 @@
     "lint:lockfile": "npx lockfile-lint --path pnpm-lock.yaml --allowed-hosts npm yarn --validate-https",
     "strict:lint": "turbo strict:lint",
     "fix": "turbo fix",
+    "fix:prettier": "turbo fix:prettier",
     "publish:all": "pnpm test && pnpm build && lerna publish",
     "publish:canary": "pnpm build && lerna publish --pre-dist-tag canary",
     "test": "turbo test"
@@ -32,6 +34,6 @@
   "engines": {
     "npm": "use pnpm please!",
     "yarn": "use pnpm please!",
-    "pnpm": ">=8"
+    "pnpm": ">=9 <10"
   }
 }

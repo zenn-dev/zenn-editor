@@ -1,6 +1,6 @@
 {
   "name": "zenn-markdown-html",
-  "version": "0.1.154",
+  "version": "0.1.155-alpha.3",
   "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
   "main": "lib/index.js",
@@ -22,7 +22,9 @@
     "build:src": "babel ./src --extensions '.ts,.tsx' --ignore '**/*.d.ts' --out-dir ./lib",
     "build:types": "tsc --project ./tsconfig.build.json",
     "lint": "eslint . --ext .ts,.tsx",
+    "lint:prettier": "prettier .",
     "fix": "eslint . --ext .ts,.tsx --fix",
+    "fix:prettier": "prettier -w .",
     "strict:lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "vitest run"
   },

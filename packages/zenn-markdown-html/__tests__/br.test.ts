@@ -6,7 +6,7 @@ describe('<br /> のテスト', () => {
     const patterns = ['foo<br>bar', 'foo<br/>bar', 'foo<br />bar'];
     patterns.forEach((pattern) => {
       const html = markdownToHtml(pattern);
-      expect(html).toMatch(/<p>foo<br \/>bar<\/p>/);
+      expect(html).toContain('foo<br />bar');
     });
   });
   test('テーブル内の<br />は保持する', () => {
@@ -20,7 +20,7 @@ describe('<br /> のテスト', () => {
   });
   test('インラインコード内の<br />はエスケープする', () => {
     const html = markdownToHtml('foo`<br>`bar');
-    expect(html).toMatch(/<p>foo<code>&lt;br&gt;<\/code>bar<\/p>/);
+    expect(html).toContain('foo<code>&lt;br&gt;</code>bar');
   });
   test('コードブロック内の<br />はエスケープする', () => {
     const html = markdownToHtml('```\n<br>\n```');

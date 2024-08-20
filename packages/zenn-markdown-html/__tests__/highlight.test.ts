@@ -2,6 +2,7 @@ import loadLanguages from 'prismjs/components/index';
 
 import { describe, test, expect } from 'vitest';
 import markdownToHtml from '../src/index';
+import parse from 'node-html-parser';
 
 // markdownToHtml で diff を使っているので、あらかじめ読み込んでおく
 loadLanguages('diff');
@@ -11,7 +12,10 @@ describe('コードハイライトのテスト', () => {
     const html = markdownToHtml(
       `\`\`\`js:foo.js\nconsole.log("hello")\n\`\`\``
     );
-    expect(html).toContain('<code class="language-js">');
+    // <code />が取得できないので<pre />で取得する
+    const pre: any = parse(html).querySelector('pre');
+    const code = parse(pre?.innerHTML).querySelector('code.language-js');
+    expect(code).toBeTruthy();
     expect(html).toContain('<span class="code-block-filename">foo.js</span>');
   });
 

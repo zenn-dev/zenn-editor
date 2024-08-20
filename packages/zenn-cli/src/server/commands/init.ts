@@ -1,6 +1,10 @@
 import { CliExecFn } from '../types';
 import * as Log from '../lib/log';
-import { detectPackageExecutor, getWorkingPath, generateFileIfNotExist } from '../lib/helper';
+import {
+  detectPackageExecutor,
+  getWorkingPath,
+  generateFileIfNotExist,
+} from '../lib/helper';
 import { initHelpText, invalidOptionText } from '../lib/messages';
 import arg from 'arg';
 

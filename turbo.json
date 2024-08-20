@@ -16,6 +16,9 @@
     },
     "fix": {
       "outputs": ["src/**"]
+    },
+    "fix:prettier": {
+      "outputs": ["*/**"]
     }
   }
 }

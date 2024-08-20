@@ -7,10 +7,12 @@ function getHtml({
   content,
   className,
   fileName,
+  line,
 }: {
   content: string;
   className: string;
   fileName?: string;
+  line?: number;
 }) {
   const escapedClass = escapeHtml(className);
 
@@ -20,7 +22,11 @@ function getHtml({
           fileName
         )}</span></div>`
       : ''
-  }<pre class="${escapedClass}"><code class="${escapedClass}">${content}</code></pre></div>`;
+  }<pre class="${escapedClass}"><code class="${
+    escapedClass !== '' ? `${escapedClass} code-line` : 'code-line'
+  }" ${
+    line !== undefined ? `data-line="${line}"` : ''
+  }>${content}</code></pre></div>`;
 }
 
 function getClassName({
@@ -107,11 +113,13 @@ export function mdRendererFence(md: MarkdownIt, options?: MarkdownOptions) {
       hasDiff,
     });
     const highlightedContent = highlight(content, langName, hasDiff);
+    const fenceStart = tokens[idx].map?.[0];
 
     return getHtml({
       content: highlightedContent,
       className,
       fileName,
+      line: fenceStart,
     });
   };
 }

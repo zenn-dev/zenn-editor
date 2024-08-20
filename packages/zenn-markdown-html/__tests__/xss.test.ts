@@ -4,12 +4,12 @@ import markdownToHtml from '../src/index';
 describe('XSS脆弱性のテスト', () => {
   test('<script />はエスケープする', () => {
     const html = markdownToHtml('<script>alert("XSS!")</script>');
-    expect(html).toMatch('<p>&lt;script&gt;alert("XSS!")&lt;/script&gt;</p>');
+    expect(html).toMatch('&lt;script&gt;alert("XSS!")&lt;/script&gt;');
   });
 
   test('"javascript:"構文をリンクにせずにそのままにする', () => {
     const html = markdownToHtml('javascript:alert(1)');
-    expect(html).toMatch('<p>javascript:alert(1)</p>');
+    expect(html).toMatch('javascript:alert(1)');
   });
 
   test('katex内の<img />をエスケープする', () => {
@@ -30,8 +30,8 @@ describe('XSS脆弱性のテスト', () => {
     const html = markdownToHtml(
       `\`\`\`"><img/onerror="alert(location)"src=.>\nany\n\`\`\``
     );
-    expect(html).toContain(
-      '<div class="code-block-container"><pre><code>any\n</code></pre></div>'
+    expect(html).toBe(
+      '<div class="code-block-container"><pre><code class="code-line" data-line="0">any\n</code></pre></div>'
     );
   });
   test('コードブロックのファイル名に仕込まれた<script />をエスケープする', () => {
@@ -39,7 +39,7 @@ describe('XSS脆弱性のテスト', () => {
       `\`\`\`js:<script>alert("XSS")</script>\nany\n\`\`\``
     );
     expect(html).toContain(
-      '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename">&lt;script&gt;alert("XSS")&lt;/script&gt;</span></div><pre class="language-js"><code class="language-js">any\n</code></pre></div>'
+      '<span class="code-block-filename">&lt;script&gt;alert("XSS")&lt;/script&gt;</span>'
     );
   });
   test('コードブロック内の<script />をエスケープする', () => {
