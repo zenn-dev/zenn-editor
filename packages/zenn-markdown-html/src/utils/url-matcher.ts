@@ -47,6 +47,10 @@ export function isJsfiddleUrl(url: string): boolean {
   return /^(http|https):\/\/jsfiddle\.net\/[a-zA-Z0-9_,/-]+$/.test(url);
 }
 
+export function isDocswellUrl(url: string): boolean {
+  return /^https:\/\/www\.docswell\.com\/[a-zA-Z0-9_,/-]+\/embed$/.test(url);
+}
+
 export function isYoutubeUrl(url: string): boolean {
   return [
     /^https?:\/\/youtu\.be\/[\w-]+(?:\?[\w=&-]+)?$/,
