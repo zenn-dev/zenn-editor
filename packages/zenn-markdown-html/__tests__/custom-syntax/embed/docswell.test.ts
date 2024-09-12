@@ -7,7 +7,7 @@ describe('Docswell', () => {
       '@[docswell](https://www.docswell.com/slide/LK7J5V/embed)'
     );
     expect(html).toContain(
-      '<script async class="docswell-embed" src="https://www.docswell.com/assets/libs/docswell-embed/docswell-embed.min.js" data-src="https://www.docswell.com/slide/LK7J5V/embed" data-aspect="0.5625"></script><div class="docswell-link"></div>'
+      '<span class="embed-block embed-docswell"><iframe src="https://www.docswell.com/slide/LK7J5V/embed" allowfullscreen="true" width="620" style="border:1px solid #ccc;display:block;margin:0px auto;padding:0px;aspect-ratio:620/349"></iframe></span>'
     );
   });
 
@@ -15,6 +15,6 @@ describe('Docswell', () => {
     const html = markdownToHtml(
       '@[docswell](https://www.docswell.com/s/ku-suke/LK7J5V-hello-docswell)'
     );
-    expect(html).toContain('Doscwellのembed用のURLを指定してください');
+    expect(html).toContain('Docswellのembed用のURLを指定してください');
   });
 });
