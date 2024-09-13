@@ -2,10 +2,6 @@ import type { MarkdownOptions } from './types';
 
 import { escapeHtml } from 'markdown-it/lib/common/utils';
 import {
-  extractYoutubeVideoParameters,
-  isDocswellUrl,
-} from './utils/url-matcher';
-import {
   sanitizeEmbedToken,
   generateEmbedServerIframe,
 } from './utils/embed-helper';
@@ -20,6 +16,8 @@ import {
   isBlueprintUEUrl,
   isFigmaUrl,
   isValidHttpUrl,
+  isDocswellUrl,
+  extractYoutubeVideoParameters,
 } from './utils/url-matcher';
 
 /* 埋め込み要素の種別 */
