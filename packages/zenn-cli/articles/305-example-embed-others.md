@@ -60,8 +60,6 @@ published: true
 
 @[docswell](https://www.docswell.com/slide/LK7J5V/embed)
 
-### embed用でないdocswell URL
-
 @[docswell](https://www.docswell.com/s/ku-suke/LK7J5V-hello-docswell)
 
 ## jsfiddle
