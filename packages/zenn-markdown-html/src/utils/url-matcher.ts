@@ -101,7 +101,10 @@ export function extractDocswellEmbedUrl(url: string): string | null {
   if (!slideId) {
     return null;
   }
-  return `https://www.docswell.com/slide/${slideId}/embed`;
+  return new URL(
+    `/slide/${slideId}/embed`,
+    'https://www.docswell.com'
+  ).toString();
 }
 
 /**
