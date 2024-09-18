@@ -1,7 +1,6 @@
 import type { MarkdownOptions } from './types';
 
 import { escapeHtml } from 'markdown-it/lib/common/utils';
-import { extractYoutubeVideoParameters } from './utils/url-matcher';
 import {
   sanitizeEmbedToken,
   generateEmbedServerIframe,
@@ -17,6 +16,9 @@ import {
   isBlueprintUEUrl,
   isFigmaUrl,
   isValidHttpUrl,
+  isDocswellUrl,
+  extractYoutubeVideoParameters,
+  extractDocswellEmbedUrl,
 } from './utils/url-matcher';
 
 /* 埋め込み要素の種別 */
@@ -25,6 +27,7 @@ export type EmbedType =
   | 'slideshare'
   | 'speakerdeck'
   | 'jsfiddle'
+  | 'docswell'
   | 'codepen'
   | 'codesandbox'
   | 'stackblitz'
@@ -76,6 +79,17 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     return `<span class="embed-block embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
       key
     )}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></span>`;
+  },
+  docswell(str) {
+    const errorMessage = 'DocswellのスライドURLが不正です';
+    if (!isDocswellUrl(str)) {
+      return errorMessage;
+    }
+    const slideUrl = extractDocswellEmbedUrl(str);
+    if (!slideUrl) {
+      return errorMessage;
+    }
+    return `<span class="embed-block embed-docswell"><iframe src="${slideUrl}" allowfullscreen="true" class="docswell-iframe" width="620" height="349" style="border: 1px solid #ccc; display: block; margin: 0px auto; padding: 0px; aspect-ratio: 620/349;"></iframe></span>`;
   },
   jsfiddle(str) {
     if (!isJsfiddleUrl(str)) {

@@ -47,6 +47,17 @@ export function isJsfiddleUrl(url: string): boolean {
   return /^(http|https):\/\/jsfiddle\.net\/[a-zA-Z0-9_,/-]+$/.test(url);
 }
 
+const docswellNormalUrlRegex =
+  /^https:\/\/www\.docswell\.com\/s\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/;
+const docswellEmbedUrlRegex =
+  /^https:\/\/www\.docswell\.com\/slide\/[a-zA-Z0-9_-]+\/embed$/;
+
+export function isDocswellUrl(url: string): boolean {
+  return [docswellNormalUrlRegex, docswellEmbedUrlRegex].some((pattern) =>
+    pattern.test(url)
+  );
+}
+
 export function isYoutubeUrl(url: string): boolean {
   return [
     /^https?:\/\/youtu\.be\/[\w-]+(?:\?[\w=&-]+)?$/,
@@ -78,6 +89,22 @@ export function extractYoutubeVideoParameters(
   if (videoId?.length !== YOUTUBE_VIDEO_ID_LENGTH) return void 0;
 
   return { videoId, start };
+}
+
+export function extractDocswellEmbedUrl(url: string): string | null {
+  // Embed用URLの場合、そのまま返す
+  if (docswellEmbedUrlRegex.test(url)) {
+    return url;
+  }
+  // Embed用URLでない場合 https://www.docswell.com/s/:username/{slideId}-hello-docswell のslideIdを抽出する
+  const slideId = new URL(url).pathname.split('/').at(3)?.split('-').at(0);
+  if (!slideId) {
+    return null;
+  }
+  return new URL(
+    `/slide/${slideId}/embed`,
+    'https://www.docswell.com'
+  ).toString();
 }
 
 /**
