@@ -89,7 +89,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (!slideUrl) {
       return errorMessage;
     }
-    return `<span class="embed-block embed-docswell"><iframe src="${slideUrl}" allowfullscreen="true" class="docswell-iframe" width="620" height="349" style="border: 1px solid #ccc; display: block; margin: 0px auto; padding: 0px; aspect-ratio: 620/349;"></iframe></span>`;
+    return `<span class="embed-block embed-docswell"><iframe src="${slideUrl}" allowfullscreen="true" class="docswell-iframe" width="100%" style="border: 1px solid #ccc; display: block; margin: 0px auto; padding: 0px; aspect-ratio: 16/9"></iframe></span>`;
   },
   jsfiddle(str) {
     if (!isJsfiddleUrl(str)) {
