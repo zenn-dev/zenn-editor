@@ -28,6 +28,14 @@ describe('LinkCard埋め込み要素のテスト', () => {
         expect(html).toContain('URLが不正です');
       });
     });
+
+    describe('メールアドレス', () => {
+      test('メールアドレスのまま出力する', () => {
+        const html = markdownToHtml(`ec2-user@33.80.180.159`);
+        expect(html).toContain('ec2-user@33.80.180.159');
+        expect(html).not.toContain('URLが不正です');
+      });
+    });
   });
 
   describe('embedOriginを設定している場合', () => {
