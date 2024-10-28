@@ -38,6 +38,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   const md = markdownIt({ breaks: true, linkify: true });
 
   md.linkify.set({ fuzzyLink: false });
+  md.linkify.set({ fuzzyEmail: false }); // refs: https://github.com/markdown-it/linkify-it
 
   md.use(mdBr)
     .use(mdKatex)
