@@ -7,7 +7,7 @@ export const ErrorMessage: React.FC<Props> = (props) => {
     <StyledErrorMessage className="error-message">
       <div className="error-message__inner">
         <img
-          src="https://twemoji.maxcdn.com/2/svg/1f63f.svg"
+          src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f63f.svg"
           alt=""
           width={90}
           height={90}
