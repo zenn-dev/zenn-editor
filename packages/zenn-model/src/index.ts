@@ -11,6 +11,7 @@ import type {
 } from './types';
 import {
   validateArticleType,
+  validateBody,
   validateBookChaptersFormat,
   validateBookChapterSlugs,
   validateBookCoverAspectRatio,
@@ -61,6 +62,7 @@ function getValidationErrors(
  */
 export const validateArticle = (article: Dect): ValidationError[] => {
   const validators = [
+    validateBody,
     validateItemSlug,
     validateMissingTitle,
     validateTitleLength,
@@ -85,6 +87,7 @@ export const validateArticle = (article: Dect): ValidationError[] => {
  */
 export const validateBook = (book: Dect): ValidationError[] => {
   const validators = [
+    validateBody,
     validateItemSlug,
     validateMissingTitle,
     validateTitleLength,

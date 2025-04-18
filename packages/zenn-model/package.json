@@ -35,6 +35,7 @@
     "vitest": "^0.34.4"
   },
   "dependencies": {
-    "emoji-regex": "^10.2.1"
+    "emoji-regex": "^10.2.1",
+    "cheerio": "^1.0.0-rc.12"
   }
 }
