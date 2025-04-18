@@ -1,6 +1,6 @@
 {
   "name": "zenn-model",
-  "version": "0.1.159-alpha.0",
+  "version": "0.1.159-alpha.1",
   "license": "MIT",
   "description": "Model utils for Zenn contents",
   "main": "lib/index.js",
@@ -35,7 +35,7 @@
     "vitest": "^0.34.4"
   },
   "dependencies": {
-    "emoji-regex": "^10.2.1",
-    "cheerio": "^1.0.0-rc.12"
+    "cheerio": "^1.0.0-rc.12",
+    "emoji-regex": "^10.2.1"
   }
 }
