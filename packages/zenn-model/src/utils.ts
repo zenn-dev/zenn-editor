@@ -1,5 +1,6 @@
 import initEmojiRegex from 'emoji-regex';
 import { ItemValidator } from './types';
+import * as cheerio from 'cheerio';
 
 export function validateSlug(slug: string) {
   if (!slug) return false;
@@ -313,4 +314,17 @@ export const validateChapterFreeType: ItemValidator = {
   getMessage: () =>
     'free（無料公開設定）には true もしくは falseのみを指定してください',
   isValid: ({ free }) => free === undefined || typeof free === 'boolean',
+};
+
+export const validateBody: ItemValidator = {
+  type: 'body',
+  isCritical: true,
+  getMessage: () =>
+    `記事本文にエラーがあります。本文を確認してください。` ,
+  // data-body-error がある場合はエラー
+  isValid: ({ bodyHtml }) => {
+    if (!bodyHtml) return true;
+    const $ = cheerio.load(bodyHtml);
+    return !$('[data-body-error]').length;
+  }
 };

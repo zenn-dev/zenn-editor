@@ -1,6 +1,7 @@
 export type Dect = Record<string, any>;
 
 export type ValidationErrorType =
+  | 'body'
   | 'item-slug'
   | 'missing-title'
   | 'title-length'
