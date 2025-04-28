@@ -72,13 +72,17 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
       key
     )}" scrolling="no" allowfullscreen loading="lazy"></iframe></span>`;
   },
-  speakerdeck(key) {
-    if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
+  speakerdeck(str) {
+    if (!str?.match(/^[a-zA-Z0-9_-]+(?:\?slide=\d+)?$/)) {
       return 'Speaker Deckのkeyが不正です';
     }
+
+    const [key, slideParamStr] = str.split('?');
+    const slideQuery = slideParamStr ? `?${slideParamStr}` : '';
+
     return `<span class="embed-block embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
       key
-    )}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></span>`;
+    )}${slideQuery}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></span>`;
   },
   docswell(str) {
     const errorMessage = 'DocswellのスライドURLが不正です';
