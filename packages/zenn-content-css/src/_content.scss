@@ -177,7 +177,7 @@ td {
 }
 th {
   font-weight: 700;
-  background: $c-bg-gray;
+  background: var(--c-bg-dim);
 }
 code {
   padding: 0.2em 0.4em;
