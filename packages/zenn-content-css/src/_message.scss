@@ -27,12 +27,12 @@ aside.msg {
   width: 1.4rem;
   height: 1.4rem;
   border-radius: 99rem;
-  background-color: var(--c-bg-warning-darker);
+  background-color: var(--c-bg-warning-icon);
   color: #ffffff;
 }
 
 aside.msg.alert .msg-symbol {
-  background-color: var(--c-bg-alert-darker);
+  background-color: var(--c-bg-alert-icon);
 }
 
 .msg-content {

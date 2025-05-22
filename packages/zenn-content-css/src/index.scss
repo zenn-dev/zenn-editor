@@ -58,15 +58,13 @@ $breakpoints: (
   --c-dark-gray-1000: #2e445c;
   --c-dark-gray-1100: #1b324a;
 
-  // TODO: 透過にしてもいいかも
-
   /* 目的別カラー変数 */
   --c-bg-base: #fff;
   --c-bg-dim: var(--c-gray-300);
-  --c-bg-warning: rgba(255, 210, 120, 0.2); // #fff6e4;
-  --c-bg-warning-darker: #ffb84c;
-  --c-bg-alert: #ffeff2;
-  --c-bg-alert-darker: #ff7670;
+  --c-bg-warning: #fff6e4;
+  --c-bg-warning-icon: #ffa909;
+  --c-bg-alert: #fff0f0;
+  --c-bg-alert-icon: #ff6868;
 
   // 主にCodeBlockの背景色に使う
   --c-bg-code: var(--c-gray-300);
@@ -91,10 +89,10 @@ $breakpoints: (
   /* 目的別カラー変数 */
   --c-bg-base: var(--c-dark-blue-1100);
   --c-bg-dim: var(--c-dark-blue-900);
-  // --c-bg-warning: #39392c;
-  --c-bg-warning-darker: #ffb84c;
+  --c-bg-warning: #39352c;
+  --c-bg-warning-icon: #e5a21a;
   --c-bg-alert: #311818;
-  --c-bg-alert-darker: #e05252;
+  --c-bg-alert-icon: #c63939;
 
   // 主にCodeBlockの背景色に使う
   --c-bg-code: var(--c-dark-gray-1000);
@@ -106,4 +104,5 @@ $breakpoints: (
   --c-border-gray-darker: var(--c-dark-gray-900);
 
   --c-text-gray-darker: var(--c-gray-600);
+  --c-text-link-primary: var(--c-blue-600);
 }
