@@ -1,36 +1,3 @@
-/* Zenn本体のカラーパレット */
-$c-blue-100: #f0f7ff;
-$c-blue-200: #ecf5ff;
-$c-blue-300: #e0efff;
-$c-blue-400: #bfdcff;
-$c-blue-500: #3ea8ff;
-$c-blue-600: #0f83fd;
-$c-blue-700: #0868ce;
-$c-gray-100: #f5f9fc;
-$c-gray-200: #f1f5f9;
-$c-gray-300: #edf2f7;
-$c-gray-400: #e4edf4;
-$c-gray-500: #d6e3ed;
-$c-gray-600: #acbcc7;
-$c-gray-700: #8f9faa;
-$c-gray-800: #65717b;
-
-/* 目的別カラー変数 */
-$c-bg-gray: $c-gray-300;
-$c-bg-gray-lighter: $c-gray-200;
-$c-bg-warning: #fff6e4;
-$c-bg-warning-darker: #ffb84c;
-$c-bg-alert: #ffeff2;
-$c-bg-alert-darker: #ff7670;
-
-$c-border-gray-lighter: $c-gray-200; // 対象の邪魔をしない、目立たないボーダー
-$c-border-gray: $c-gray-500; // 標準的なボーダー
-$c-border-gray-darker: $c-gray-800; // 目立たせたいボーダー
-
-$c-text-gray-darker: $c-gray-800;
-$c-text-link-primary: $c-blue-600;
-$c-contrast: #1a2638; // 主にCodeBlockの背景色に使う
-
 /* border-radius */
 $rounded-xs: 4px;
 $rounded-sm: 7px;
@@ -63,9 +30,80 @@ $breakpoints: (
   }
   line-height: 1.9;
 
+  /* Zenn本体のカラーパレット */
+  --c-blue-100: #f0f7ff;
+  --c-blue-200: #ecf5ff;
+  --c-blue-300: #e0efff;
+  --c-blue-400: #bfdcff;
+  --c-blue-500: #3ea8ff;
+  --c-blue-600: #0f83fd;
+  --c-blue-700: #0868ce;
+  --c-blue-800: #0656ac;
+  --c-blue-900: #05458a;
+  --c-blue-1000: #043467;
+  --c-gray-100: #f5f9fc;
+  --c-gray-200: #f1f5f9;
+  --c-gray-300: #edf2f7;
+  --c-gray-400: #e4edf4;
+  --c-gray-500: #d6e3ed;
+  --c-gray-600: #acbcc7;
+  --c-gray-700: #8f9faa;
+  --c-gray-800: #65717b;
+  --c-dark-blue-800: #09376d;
+  --c-dark-blue-900: #0b2c53;
+  --c-dark-blue-1000: #162c49;
+  --c-dark-blue-1100: #0d223a;
+  --c-dark-blue-1200: #081d35;
+  --c-dark-gray-900: #344c69;
+  --c-dark-gray-1000: #2e445c;
+  --c-dark-gray-1100: #1b324a;
+
+  // TODO: 透過にしてもいいかも
+
+  /* 目的別カラー変数 */
+  --c-bg-base: #fff;
+  --c-bg-dim: var(--c-gray-300);
+  --c-bg-warning: rgba(255, 210, 120, 0.2); // #fff6e4;
+  --c-bg-warning-darker: #ffb84c;
+  --c-bg-alert: #ffeff2;
+  --c-bg-alert-darker: #ff7670;
+
+  // 主にCodeBlockの背景色に使う
+  --c-bg-code: var(--c-gray-300);
+  --c-bg-code-block: #1a2638;
+
+  // 標準的なボーダー
+  --c-border-gray: var(--c-gray-500);
+  // 目立たせたいボーダー
+  --c-border-gray-darker: var(--c-gray-800);
+
+  --c-text-gray-darker: var(--c-gray-800);
+  --c-text-link-primary: var(--c-blue-600);
+
   @import './_content.scss';
   @import './_embed.scss';
   @import './_prism.scss';
   @import './_message.scss';
   @import './_footnotes.scss';
+}
+
+[data-theme='dark-blue'] .znc {
+  /* 目的別カラー変数 */
+  --c-bg-base: var(--c-dark-blue-1100);
+  --c-bg-dim: var(--c-dark-blue-900);
+  // --c-bg-warning: #39392c;
+  --c-bg-warning-darker: #ffb84c;
+  --c-bg-alert: #311818;
+  --c-bg-alert-darker: #e05252;
+
+  // 主にCodeBlockの背景色に使う
+  --c-bg-code: var(--c-dark-gray-1000);
+  --c-bg-code-block: #1a2638;
+
+  // 標準的なボーダー
+  --c-border-gray: var(--c-dark-gray-1000);
+  // 目立たせたいボーダー
+  --c-border-gray-darker: var(--c-dark-gray-900);
+
+  --c-text-gray-darker: var(--c-gray-600);
 }

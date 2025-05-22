@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="dark-blue">
 
 <head>
   <meta charset="utf-8" />
@@ -8,6 +8,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
   <link rel="stylesheet" href="./lib/index.css" />
   <style>
+    [data-theme='dark-blue'] body {
+      background: #0d223a;
+      /* --c-dark-blue-1100 */
+      color: #ecf5ff;
+      /* --c-text-body */
+    }
+
     .container {
       max-width: 700px;
       margin: 1.5rem auto;
@@ -350,12 +357,12 @@
     <details open="">
       <summary>折りたたみ</summary>
       <div class="details-content">
-      <details>
-        <summary>折りたたみ</summary>
-        <div class="details-content">
-          <p>test</p>
-        </div>
-      </details>
+        <details>
+          <summary>折りたたみ</summary>
+          <div class="details-content">
+            <p>test</p>
+          </div>
+        </details>
       </div>
     </details>
     <h3 id="サニタイズ適用前のYouTube埋め込み">サニタイズ適用前のYouTube埋め込み</h3>
