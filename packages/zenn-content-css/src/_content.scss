@@ -135,7 +135,8 @@ h6 {
 }
 
 hr {
-  border-top: 2px solid var(--c-border-gray);
+  /* borderの上限あわせて2px */
+  border: 1px solid var(--c-border-gray);
   margin: 2.5rem 0;
 }
 blockquote {
