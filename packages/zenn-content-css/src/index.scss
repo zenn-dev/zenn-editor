@@ -59,10 +59,18 @@ $breakpoints: (
   --c-dark-gray-1100: #1b324a;
 
   /* 目的別カラー変数 */
+
+  // 主に背景色に使う
   --c-bg-base: #fff;
+
+  // メリハリをつけたいときに使う薄めの背景色
   --c-bg-dim: var(--c-gray-300);
+
+  // 警告の背景色
   --c-bg-warning: #fff6e4;
   --c-bg-warning-icon: #ffa909;
+
+  // エラーの背景色
   --c-bg-alert: #fff0f0;
   --c-bg-alert-icon: #ff6868;
 
@@ -71,12 +79,14 @@ $breakpoints: (
   --c-bg-code-block: #1a2638;
 
   // 標準的なボーダー
-  --c-border-gray: var(--c-gray-500);
+  --c-border: var(--c-gray-500);
   // 目立たせたいボーダー
-  --c-border-gray-darker: var(--c-gray-800);
+  --c-border-emphasis: var(--c-gray-800);
 
-  --c-text-gray-darker: var(--c-gray-800);
-  --c-text-link-primary: var(--c-blue-600);
+  // 控えめなテキスト
+  --c-text-subtle: var(--c-gray-800);
+  // リンクのテキスト
+  --c-text-link: var(--c-blue-600);
 
   @import './_content.scss';
   @import './_embed.scss';
@@ -87,10 +97,18 @@ $breakpoints: (
 
 [data-theme='dark-blue'] .znc {
   /* 目的別カラー変数 */
+
+  // 主に背景色に使う
   --c-bg-base: var(--c-dark-blue-1100);
+
+  // メリハリをつけたいときに使う薄めの背景色
   --c-bg-dim: var(--c-dark-blue-900);
+
+  // 警告の背景色
   --c-bg-warning: #39352c;
   --c-bg-warning-icon: #e5a21a;
+
+  // エラーの背景色
   --c-bg-alert: #311818;
   --c-bg-alert-icon: #c63939;
 
@@ -99,10 +117,12 @@ $breakpoints: (
   --c-bg-code-block: #1a2638;
 
   // 標準的なボーダー
-  --c-border-gray: var(--c-dark-gray-1000);
+  --c-border: var(--c-dark-gray-1000);
   // 目立たせたいボーダー
-  --c-border-gray-darker: var(--c-dark-gray-900);
+  --c-border-emphasis: var(--c-dark-gray-900);
 
-  --c-text-gray-darker: var(--c-gray-600);
-  --c-text-link-primary: var(--c-blue-600);
+  // 控えめなテキスト
+  --c-text-subtle: var(--c-gray-600);
+  // リンクのテキスト
+  --c-text-link: var(--c-blue-600);
 }
