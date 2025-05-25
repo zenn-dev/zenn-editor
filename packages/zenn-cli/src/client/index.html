@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja">
+<html data-theme="light" lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,6 +12,15 @@
 
     <!-- 埋め込み要素のイベントを処理するためのスクリプト -->
     <script src="%VITE_EMBED_SERVER_ORIGIN%/js/listen-embed-event.js"></script>
+    <style>
+      [data-theme='dark-blue'] body {
+        /* --c-dark-blue-1100 */
+        background: #0d223a;
+
+        /* --c-text-body */
+        color: #ecf5ff;
+      }
+    </style>
   </head>
 
   <body>
