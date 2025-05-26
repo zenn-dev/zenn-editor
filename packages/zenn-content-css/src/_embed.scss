@@ -42,6 +42,13 @@ span.embed-block {
   iframe {
     width: 100%;
     display: block;
+
+    /* 親windowのthemeによって、iframe内のcolor-schemeを指定する */
+    color-scheme: light;
+
+    [data-theme='dark-blue'] & {
+      color-scheme: dark;
+    }
   }
 }
 .zenn-embedded-link-card {
