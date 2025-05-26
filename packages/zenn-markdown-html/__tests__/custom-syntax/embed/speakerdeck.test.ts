@@ -22,6 +22,32 @@ describe('SpeakerDeck埋め込み要素のテスト', () => {
       });
     });
 
+    describe('スライド番号付きの場合', () => {
+      test('対応するクエリパラメータを含む<iframe />に変換する', () => {
+        const html = markdownToHtml(`@[speakerdeck](${validToken}?slide=2)`);
+        const iframe = parse(html).querySelector(
+          'span.embed-speakerdeck iframe'
+        );
+
+        expect(iframe?.attributes).toEqual(
+          expect.objectContaining({
+            src: `https://speakerdeck.com/player/${validToken}?slide=2`,
+          })
+        );
+      });
+
+      describe('XSSなどの悪意ある文字列がクエリに指定されている場合', () => {
+        test('エラーメッセージを出力する', () => {
+          const xssQuery = '?slide=1"><script>alert("XSS")</script>';
+          const html = markdownToHtml(
+            `@[speakerdeck](${validToken}${xssQuery})`
+          );
+
+          expect(html).toContain('Speaker Deckのkeyが不正です');
+        });
+      });
+    });
+
     describe('無効なURLの場合', () => {
       test('エラーメッセージを出力する', () => {
         const html = markdownToHtml(`@[speakerdeck](${invalidToken})`);
