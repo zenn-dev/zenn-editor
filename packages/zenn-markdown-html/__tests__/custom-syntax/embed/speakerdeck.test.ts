@@ -35,6 +35,17 @@ describe('SpeakerDeck埋め込み要素のテスト', () => {
           })
         );
       });
+
+      describe('XSSなどの悪意ある文字列がクエリに指定されている場合', () => {
+        test('エラーメッセージを出力する', () => {
+          const xssQuery = '?slide=1"><script>alert("XSS")</script>';
+          const html = markdownToHtml(
+            `@[speakerdeck](${validToken}${xssQuery})`
+          );
+
+          expect(html).toContain('Speaker Deckのkeyが不正です');
+        });
+      });
     });
 
     describe('無効なURLの場合', () => {
