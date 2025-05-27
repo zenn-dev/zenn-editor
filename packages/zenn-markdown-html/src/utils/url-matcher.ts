@@ -47,10 +47,16 @@ export function isJsfiddleUrl(url: string): boolean {
   return /^(http|https):\/\/jsfiddle\.net\/[a-zA-Z0-9_,/-]+$/.test(url);
 }
 
+// 例: https://www.docswell.com/s/ku-suke/LK7J5V-hello-docswell
+// 例: https://www.docswell.com/s/ku-suke/LK7J5V-hello-docswell#p13
+// 例: https://www.docswell.com/s/ku-suke/LK7J5V-hello-docswell/13
 const docswellNormalUrlRegex =
-  /^https:\/\/www\.docswell\.com\/s\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/;
+  /^https:\/\/www\.docswell\.com\/s\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(\/\d+)?(#p\d+)?$/;
+
+// 例: https://www.docswell.com/slide/LK7J5V/embed
+// 例: https://www.docswell.com/slide/LK7J5V/embed#p12
 const docswellEmbedUrlRegex =
-  /^https:\/\/www\.docswell\.com\/slide\/[a-zA-Z0-9_-]+\/embed$/;
+  /^https:\/\/www\.docswell\.com\/slide\/[a-zA-Z0-9_-]+\/embed(#p\d+)?$/;
 
 export function isDocswellUrl(url: string): boolean {
   return [docswellNormalUrlRegex, docswellEmbedUrlRegex].some((pattern) =>
@@ -97,12 +103,35 @@ export function extractDocswellEmbedUrl(url: string): string | null {
     return url;
   }
   // Embed用URLでない場合 https://www.docswell.com/s/:username/{slideId}-hello-docswell のslideIdを抽出する
-  const slideId = new URL(url).pathname.split('/').at(3)?.split('-').at(0);
+  const urlObj = new URL(url); // URLオブジェクトを作成
+  const pathSegments = urlObj.pathname.split('/');
+  // pathSegmentsの例: ["", "s", "ku-suke", "LK7J5V-hello-docswell", "10"]
+  // slideIdは pathSegments[3] の先頭部分
+  const slideIdPart = pathSegments.at(3);
+  const slideId = slideIdPart?.split('-').at(0);
+
   if (!slideId) {
     return null;
   }
+
+  let pageSuffix = '';
+  // #pXX 形式のページ番号を優先 (例: #p18)
+  if (urlObj.hash && /^#p\d+$/.test(urlObj.hash)) {
+    pageSuffix = urlObj.hash;
+  } else {
+    // /XX 形式のページ番号 (例: /28)
+    // 通常URLの形式: /s/{username}/{slideId-slug}/{optional_page_num}
+    // ページ番号がある場合、pathSegmentsの長さは5になる (e.g., ["", "s", "username", "slide-slug", "page"])
+    if (pathSegments.length === 5) {
+      const pageCandidate = pathSegments.at(4);
+      if (pageCandidate && /^\d+$/.test(pageCandidate)) {
+        pageSuffix = `#p${pageCandidate}`;
+      }
+    }
+  }
+
   return new URL(
-    `/slide/${slideId}/embed`,
+    `/slide/${slideId}/embed${pageSuffix}`, // pageSuffixを結合
     'https://www.docswell.com'
   ).toString();
 }
