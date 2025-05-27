@@ -46,7 +46,7 @@ span.embed-block {
     /* 親windowのthemeによって、iframe内のcolor-schemeを指定する */
     color-scheme: light;
 
-    [data-theme='dark-blue'] & {
+    [data-theme='dark'] & {
       color-scheme: dark;
     }
   }
