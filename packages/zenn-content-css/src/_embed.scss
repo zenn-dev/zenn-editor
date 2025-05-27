@@ -27,21 +27,28 @@ span.embed-block {
   }
 }
 .embed-slideshare iframe {
-  border: 1px solid $c-border-gray;
+  border: 1px solid var(--c-border);
 }
 
 .embed-jsfiddle iframe {
-  border: 1px solid $c-border-gray;
+  border: 1px solid var(--c-border);
 }
 
 .embed-figma {
-  border: 1px solid $c-border-gray;
+  border: 1px solid var(--c-border);
 }
 
 .zenn-embedded {
   iframe {
     width: 100%;
     display: block;
+
+    /* 親windowのthemeによって、iframe内のcolor-schemeを指定する */
+    color-scheme: light;
+
+    [data-theme='dark-blue'] & {
+      color-scheme: dark;
+    }
   }
 }
 .zenn-embedded-link-card {

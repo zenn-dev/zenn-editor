@@ -5,13 +5,12 @@ aside.msg {
   margin: 1.5rem 0;
   padding: 1.4em 1em;
   border-radius: $rounded-xs;
-  background: $c-bg-warning;
-  color: rgba(0, 0, 0, 0.7);
+  background: var(--c-bg-warning);
   font-size: 0.94em;
   line-height: 1.6;
 
   &.alert {
-    background: $c-bg-alert;
+    background: var(--c-bg-alert);
   }
 
   a {
@@ -28,12 +27,12 @@ aside.msg {
   width: 1.4rem;
   height: 1.4rem;
   border-radius: 99rem;
-  background-color: $c-bg-warning-darker;
+  background-color: var(--c-bg-warning-icon);
   color: #ffffff;
 }
 
 aside.msg.alert .msg-symbol {
-  background-color: $c-bg-alert-darker;
+  background-color: var(--c-bg-alert-icon);
 }
 
 .msg-content {
