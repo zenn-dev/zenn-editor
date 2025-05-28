@@ -82,7 +82,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
 
     return `<span class="embed-block embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
       key
-    )}${slideQuery}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></span>`;
+    )}${escapeHtml(slideQuery)}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></span>`;
   },
   docswell(str) {
     const errorMessage = 'DocswellのスライドURLが不正です';
