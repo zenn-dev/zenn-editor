@@ -16,7 +16,7 @@
   &[data-theme^='dark'] {
     /* --c-dark-blue-1100 */
     --c-base: #0d223a;
-  
+
     /* --c-text-body */
     --c-body: #ecf5ff;
   }

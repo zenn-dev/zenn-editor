@@ -16,8 +16,9 @@
     "dev": "sass ./src/index.scss ./lib/index.css --watch --no-source-map",
     "build": "sass ./src/index.scss ./lib/index.css --style compressed --no-source-map",
     "test": "echo 'no test yet'",
-    "lint:prettier": "prettier ./src",
-    "fix:prettier": "prettier -w ./src"
+    "lint": "prettier ./src",
+    "lint-strict": "prettier --check ./src",
+    "fix": "prettier -w ./src"
   },
   "devDependencies": {
     "sass": "^1.58.1"
