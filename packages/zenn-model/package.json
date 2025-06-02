@@ -17,11 +17,15 @@
     "build": "pnpm clean && run-p build:*",
     "build:src": "esbuild ./src/*.ts --format=cjs --outdir=lib",
     "build:types": "tsc --project ./tsconfig.build.json",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "run-s lint:*",
+    "lint:eslint": "eslint . --ext .ts,.tsx",
     "lint:prettier": "prettier .",
-    "fix": "eslint . --ext .ts,.tsx --fix",
+    "lint-strict": "run-s lint-strict:*",
+    "lint-strict:eslint": "eslint . --ext .ts,.tsx --max-warnings 0",
+    "lint-strict:prettier": "prettier --check .",
+    "fix": "run-s fix:*",
+    "fix:eslint": "eslint . --ext .ts,.tsx --fix",
     "fix:prettier": "prettier -w .",
-    "strict:lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "vitest run"
   },
   "devDependencies": {
