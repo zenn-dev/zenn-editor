@@ -1,4 +1,4 @@
-import MarkdownIt from "markdown-it";
+import MarkdownIt from 'markdown-it';
 
 /**
  * Adds begin line index to the output via the 'data-line' data attribute.
@@ -7,11 +7,11 @@ import MarkdownIt from "markdown-it";
  */
 export function mdSourceMap(md: MarkdownIt): void {
   // Set the attribute on every possible token.
-  md.core.ruler.push("source_map_data_attribute", (state): void => {
+  md.core.ruler.push('source_map_data_attribute', (state): void => {
     for (const token of state.tokens) {
-      if (token.map && token.type !== "inline") {
-        token.attrSet("data-line", String(token.map[0]));
-        token.attrJoin("class", "code-line");
+      if (token.map && token.type !== 'inline') {
+        token.attrSet('data-line', String(token.map[0]));
+        token.attrJoin('class', 'code-line');
       }
     }
   });
