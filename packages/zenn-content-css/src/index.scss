@@ -95,7 +95,7 @@ $breakpoints: (
   @import './_footnotes.scss';
 }
 
-[data-theme='dark-blue'] .znc {
+[data-theme^='dark'] .znc {
   /* 目的別カラー変数 */
 
   // 主に背景色に使う

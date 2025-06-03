@@ -361,6 +361,8 @@ https://twitter.com/jack/status/20
 https://x.com/jack/status/20
 ```
 
+https://twitter.com/jack/status/20
+
 以前は`@[tweet](ポストのURL)`の記法を採用していましたが、現在はポストのURLを貼り付けるだけで埋め込みが表示されます。
 
 :::details アンダースコア _ を含む URL が正しく認識されない場合

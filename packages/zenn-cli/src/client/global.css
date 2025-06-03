@@ -1,5 +1,6 @@
 :root {
   /* Colors */
+  --c-base: #fff;
   --c-primary: #0f93ff;
   --c-primary-darker: #0087f5;
   --c-primary-bg: #e3f2ff;
@@ -10,6 +11,16 @@
   --c-gray-bg: #edf2f7;
   --c-error: #fa5d5d;
   --c-error-bg: #fff0f0;
+
+  /* 動作確認のための暫定措置。zenn-cli をダークモード対応する場合は prefers-color-scheme を参照する */
+  &[data-theme^='dark'] {
+    /* --c-dark-blue-1100 */
+    --c-base: #0d223a;
+
+    /* --c-text-body */
+    --c-body: #ecf5ff;
+  }
+
   /* Font */
   --font-base: -apple-system, 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
     'Hiragino Sans', Meiryo, sans-serif, 'Segoe UI Emoji';
@@ -31,6 +42,7 @@ html {
 }
 body {
   margin: 0;
+  background: var(--c-base);
   color: var(--c-body);
   word-break: break-word;
   word-wrap: break-word;
