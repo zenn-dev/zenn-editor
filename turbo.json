@@ -11,14 +11,11 @@
     "lint": {
       "outputs": []
     },
-    "strict:lint": {
+    "lint-strict": {
       "outputs": []
     },
     "fix": {
       "outputs": ["src/**"]
-    },
-    "fix:prettier": {
-      "outputs": ["*/**"]
     }
   }
 }

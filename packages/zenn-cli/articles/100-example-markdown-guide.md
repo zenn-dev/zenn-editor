@@ -64,7 +64,7 @@ Markdownエディタでは、テキストを範囲選択した状態でURLをペ
 ![](https://画像のURL)
 ```
 
-![](https://storage.googleapis.com/zenn-user-upload/gxnwu3br83nsbqs873uibiy6fd43)
+![](https://storage.googleapis.com/zenn-user-upload-dev/05882bdcec20-20250626.webp)
 
 ### 画像の横幅を指定する
 
@@ -360,6 +360,8 @@ https://twitter.com/jack/status/20
 # x.comドメインの場合
 https://x.com/jack/status/20
 ```
+
+https://twitter.com/jack/status/20
 
 以前は`@[tweet](ポストのURL)`の記法を採用していましたが、現在はポストのURLを貼り付けるだけで埋め込みが表示されます。
 
