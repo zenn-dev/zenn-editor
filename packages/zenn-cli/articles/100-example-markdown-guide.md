@@ -64,7 +64,7 @@ Markdownエディタでは、テキストを範囲選択した状態でURLをペ
 ![](https://画像のURL)
 ```
 
-![](https://storage.googleapis.com/zenn-user-upload/gxnwu3br83nsbqs873uibiy6fd43)
+![](https://storage.googleapis.com/zenn-user-upload-dev/05882bdcec20-20250626.webp)
 
 ### 画像の横幅を指定する
 
