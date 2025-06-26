@@ -255,6 +255,7 @@ img:not(.emoji) {
   display: table;
   max-width: 100%;
   height: auto;
+  background: var(--c-bg-image);
 }
 img + br {
   display: none;

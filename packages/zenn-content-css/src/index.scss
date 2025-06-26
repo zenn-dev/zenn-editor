@@ -78,6 +78,9 @@ $breakpoints: (
   --c-bg-code: var(--c-gray-300);
   --c-bg-code-block: #1a2638;
 
+  // 画像の背景色
+  --c-bg-image: transparent;
+
   // 標準的なボーダー
   --c-border: var(--c-gray-500);
   // 目立たせたいボーダー
@@ -115,6 +118,9 @@ $breakpoints: (
   // 主にCodeBlockの背景色に使う
   --c-bg-code: var(--c-dark-gray-1000);
   --c-bg-code-block: #1a2638;
+
+  // 画像の背景色
+  --c-bg-image: #fff;
 
   // 標準的なボーダー
   --c-border: var(--c-dark-gray-1000);
