@@ -1,6 +1,7 @@
 name: Publish latest version
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
