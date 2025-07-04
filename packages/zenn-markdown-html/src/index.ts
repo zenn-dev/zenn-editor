@@ -14,6 +14,7 @@ import { mdLinkAttributes } from './utils/md-link-attributes';
 import { mdSourceMap } from './utils/md-source-map';
 import { mdLinkifyToCard } from './utils/md-linkify-to-card';
 import { mdRendererFence } from './utils/md-renderer-fence';
+import { mdImage } from './utils/md-image';
 import {
   containerDetailsOptions,
   containerMessageOptions,
@@ -61,7 +62,8 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
       }),
       tabIndex: false,
     })
-    .use(mdSourceMap);
+    .use(mdSourceMap)
+    .use(mdImage);
 
   // custom footnote
   md.renderer.rules.footnote_block_open = () =>

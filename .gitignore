@@ -6,3 +6,4 @@ lerna-debug.log
 .node-version
 .idea
 .turbo
+.claude/settings.local.json
