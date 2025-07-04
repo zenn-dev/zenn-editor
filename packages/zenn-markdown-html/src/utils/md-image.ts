@@ -7,7 +7,7 @@ export const mdImage = (md: MarkdownIt): void => {
   md.renderer.rules.image = (tokens, idx, options, env, slf) => {
     const token = tokens[idx];
 
-    token.attrSet('class', 'md-img');
+    token.attrJoin('class', 'md-img');
     token.attrSet('loading', 'lazy');
 
     return originalImageRenderRule(tokens, idx, options, env, slf);
