@@ -104,6 +104,8 @@ Markdownエディタでは、テキストを範囲選択した状態でURLをペ
 [![](画像のURL)](リンクのURL)
 ```
 
+[![](https://storage.googleapis.com/zenn-user-upload/gxnwu3br83nsbqs873uibiy6fd43 =250x)](https://zenn.dev)
+
 ## テーブル
 
 ```
