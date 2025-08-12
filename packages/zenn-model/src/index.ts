@@ -37,6 +37,7 @@ import {
   validateTooManyTopics,
   validateTopicType,
   validateUseTags,
+  validateTopicLength,
 } from './utils';
 
 function getValidationErrors(
@@ -74,6 +75,7 @@ export const validateArticle = (article: Dect): ValidationError[] => {
     validateMissingEmoji,
     validateMissingTopics,
     validateUseTags,
+    validateTopicLength,
     validateInvalidTopicLetters,
     validateTooManyTopics,
     validateTopicType,
@@ -94,6 +96,7 @@ export const validateBook = (book: Dect): ValidationError[] => {
     validatePublishedStatus,
     validateMissingTopics,
     validateUseTags,
+    validateTopicLength,
     validateInvalidTopicLetters,
     validateTooManyTopics,
     validateTopicType,

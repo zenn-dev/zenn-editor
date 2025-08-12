@@ -14,6 +14,7 @@ export type ValidationErrorType =
   | 'missing-topics'
   | 'too-many-topics'
   | 'topic-type'
+  | 'topic-length'
   | 'invalid-topic-letters'
   | 'use-tags'
   | 'publication-name'
