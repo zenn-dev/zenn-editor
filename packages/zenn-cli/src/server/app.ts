@@ -22,7 +22,9 @@ export function createApp() {
 
   app.get('/images/*', (req, res) => {
     // `zenn preview`を起動したディレクトリ直下にあるimagesディレクトリを参照する
-    res.sendFile(getWorkingPath(req.path));
+    // URLエンコードされた文字（%20など）をデコード
+    const decodedPath = decodeURIComponent(req.path);
+    res.sendFile(getWorkingPath(decodedPath));
   });
 
   // serve static files built by vite

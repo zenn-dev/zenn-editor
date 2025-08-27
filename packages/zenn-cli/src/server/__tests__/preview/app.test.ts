@@ -1,5 +1,6 @@
 import { vi, describe, test, expect } from 'vitest';
 import path from 'path';
+import fs from 'fs-extra';
 import supertest from 'supertest';
 import * as helper from '../../lib/helper';
 import { createApp } from '../../app';
@@ -290,5 +291,40 @@ describe('/api/local-info', () => {
     vi.spyOn(process, 'cwd').mockReturnValue(`${fixturesRootPath}/empty`);
     const res = await supertest(app).get('/api/local-info').expect(200);
     expect(res.body.hasInit).toBe(false);
+  });
+});
+
+describe('/images/*', () => {
+  test('should serve image files from images directory', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app).get('/images/test.jpg').expect(200);
+    expect(res.headers['content-type']).toMatch(/image/);
+  });
+
+  test('should handle URL encoded paths with %20 (spaces)', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const imagePathWithSpace = path.join(
+      fixturesRootPath,
+      'images',
+      'test image.jpg'
+    );
+    const originalImagePath = path.join(fixturesRootPath, 'images', 'test.jpg');
+
+    if (fs.existsSync(originalImagePath)) {
+      fs.copyFileSync(originalImagePath, imagePathWithSpace);
+
+      const res = await supertest(app)
+        .get('/images/test%20image.jpg')
+        .expect(200);
+      expect(res.headers['content-type']).toMatch(/image/);
+
+      // Clean up
+      fs.unlinkSync(imagePathWithSpace);
+    }
+  });
+
+  test('should return 404 for non-existent images', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    await supertest(app).get('/images/nonexistent.jpg').expect(404);
   });
 });
