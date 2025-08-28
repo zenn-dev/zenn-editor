@@ -173,6 +173,27 @@ describe('completeHtml() のテスト', () => {
     expect(html).not.toContain('表示できません');
   });
 
+  test('src に%20（スペースのURLエンコード）が含まれるパスでも正しく処理される', () => {
+    const imagePathWithSpace = path.join(
+      fixtureDirPath,
+      'images',
+      'test image.jpg'
+    );
+    const originalImagePath = path.join(fixtureDirPath, 'images', 'test.jpg');
+
+    if (fs.existsSync(originalImagePath)) {
+      fs.copyFileSync(originalImagePath, imagePathWithSpace);
+
+      const html = helper.completeHtml('<img src="/images/test%20image.jpg">');
+
+      expect(html).not.toContain('ファイルが存在しません');
+      expect(html).not.toContain('表示できません');
+
+      // clean up
+      fs.unlinkSync(imagePathWithSpace);
+    }
+  });
+
   test('src に指定された画像がなければ "ファイルが存在しません" を出力する', () => {
     const html = helper.completeHtml('<img src="/images/notexist.jpg">'); // fixtures/images/notexist.jpgを参照
     expect(html).toContain('ファイルが存在しません');

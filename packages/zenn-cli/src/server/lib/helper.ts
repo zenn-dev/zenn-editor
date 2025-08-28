@@ -193,7 +193,9 @@ export function completeHtml(html: string): string {
       return;
     }
 
-    const filepath = getWorkingPath(src);
+    // URLエンコードされた文字（%20など）をデコード
+    const decodedSrc = decodeURIComponent(src);
+    const filepath = getWorkingPath(decodedSrc);
 
     if (!fs.existsSync(filepath)) {
       $(el).before(
