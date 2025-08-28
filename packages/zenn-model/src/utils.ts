@@ -155,6 +155,17 @@ export const validateTopicType: ItemValidator = {
   },
 };
 
+export const validateTopicLength: ItemValidator = {
+  type: 'topic-length',
+  isCritical: true,
+  getMessage: () => 'topicsは18字以内にしてください',
+  isValid: ({ topics }) => {
+    if (!Array.isArray(topics)) return true; // skip as duplicate of validateMissingTopics
+    if (topics.some((t) => typeof t !== 'string')) return true; // skip as duplicate of validateTopicType
+    return topics.every((t) => typeof t === 'string' && t.length <= 18); // check `typeof t` again to tell TS it's a string
+  },
+};
+
 export const validateInvalidTopicLetters: ItemValidator = {
   type: 'invalid-topic-letters',
   getMessage: () =>

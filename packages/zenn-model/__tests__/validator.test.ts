@@ -189,6 +189,22 @@ describe('validateArticle()のテスト', () => {
       expect(errors[0].message).toContain('topicsは最大5つまで指定できます');
     });
   });
+  describe('validateTopicLength()のテスト', () => {
+    test('topics の文字数が長すぎる場合はエラーを返す', () => {
+      const errors = validateArticle({
+        ...validArticle,
+        topics: [
+          'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijklmnopqrstu',
+          'b',
+          'c',
+          'd',
+          'e',
+        ],
+      });
+      expect(errors.length).toEqual(1);
+      expect(errors[0].message).toContain('topicsは18字以内にしてください');
+    });
+  });
   describe('validateInvalidTopicLetters()のテスト', () => {
     test('topics に記号が含まれている場合はエラーを返す', () => {
       const errors = validateArticle({
@@ -382,6 +398,23 @@ describe('validateBook()のテスト', () => {
       });
       expect(errors.length).toEqual(1);
       expect(errors[0].message).toContain('topicsは最大5つまで指定できます');
+    });
+  });
+
+  describe('validateTopicLength()のテスト', () => {
+    test('topics の文字数が長すぎる場合はエラーを返す', () => {
+      const errors = validateBook({
+        ...validBook,
+        topics: [
+          'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxabcdefghijklmnopqrstu',
+          'b',
+          'c',
+          'd',
+          'e',
+        ],
+      });
+      expect(errors.length).toEqual(1);
+      expect(errors[0].message).toContain('topicsは18字以内にしてください');
     });
   });
 
