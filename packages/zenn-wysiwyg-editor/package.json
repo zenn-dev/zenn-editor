@@ -77,7 +77,8 @@
     "tsup": "^8.5.0",
     "vitest": "^3.2.4",
     "vitest-browser-react": "^1.0.1",
-    "zenn-content-css": "^0.2.1"
+    "zenn-content-css": "^0.2.1",
+    "typescript": "~5.8.3"
   },
   "peerDependencies": {
     "@tiptap/pm": "^3.0.0",

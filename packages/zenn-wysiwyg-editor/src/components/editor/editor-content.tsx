@@ -1,14 +1,21 @@
 import {
   type Editor,
   EditorContent as TiptapEditorContent,
-} from "@tiptap/react";
-import DragHandle from "src/extensions/functionality/drag-handle";
-import BubbleMenu from "./bubble-menu";
-import ImageBubbleMenu from "./image-bubble-menu";
+} from '@tiptap/react';
+import type { ComponentType } from 'react';
+import DragHandle from 'src/extensions/functionality/drag-handle';
+import BubbleMenu from './bubble-menu';
+import ImageBubbleMenu from './image-bubble-menu';
 
 type Props = {
   editor: Editor;
 };
+
+// 型アサーションでJSXコンポーネントとして使用できるようにする
+const EditorContentComponent = TiptapEditorContent as ComponentType<{
+  editor: Editor;
+  className?: string;
+}>;
 
 export default function EditorContent({ editor }: Props) {
   return (
@@ -16,7 +23,7 @@ export default function EditorContent({ editor }: Props) {
       <BubbleMenu editor={editor} />
       <ImageBubbleMenu editor={editor} />
       <DragHandle editor={editor} />
-      <TiptapEditorContent editor={editor} className="znc" />
+      <EditorContentComponent editor={editor} className="znc" />
     </>
   );
 }
