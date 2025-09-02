@@ -1,17 +1,17 @@
-import { DOMParser, Slice } from "@tiptap/pm/model";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { Extension } from "@tiptap/react";
-import { isProseMirrorPaste } from "../../../lib/clipboard";
-import { fromMarkdown } from "../../../lib/from-markdown";
+import { DOMParser, Slice } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Extension } from '@tiptap/react';
+import { isProseMirrorPaste } from '../../../lib/clipboard';
+import { convertMarkdownToEditable } from '../../../lib/from-markdown';
 
 export const PasteMarkdown = Extension.create({
-  name: "paste-markdown",
+  name: 'paste-markdown',
   priority: 1, // ペースト処理の一番最後に呼び出す
 
   addProseMirrorPlugins() {
     return [
       new Plugin({
-        key: new PluginKey("paste-markdown"),
+        key: new PluginKey('paste-markdown'),
         props: {
           handlePaste: (view, event) => {
             const clipboardData = event.clipboardData;
@@ -22,14 +22,14 @@ export const PasteMarkdown = Extension.create({
             event.preventDefault();
             event.stopPropagation();
 
-            const text = clipboardData.getData("text/plain");
+            const text = clipboardData.getData('text/plain');
             if (!text) {
               return true;
             }
 
-            const html = fromMarkdown(text);
+            const html = convertMarkdownToEditable(text);
             const parser = DOMParser.fromSchema(view.state.schema);
-            const dom = document.createElement("div");
+            const dom = document.createElement('div');
             dom.innerHTML = html;
             const node = parser.parse(dom);
             const slice = new Slice(node.content, 0, 0);

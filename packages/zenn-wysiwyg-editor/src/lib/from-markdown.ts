@@ -1,16 +1,16 @@
 import markdownToHtml from 'zenn-markdown-html';
 import { EMBED_ORIGIN } from './constants';
 
-export function fromMarkdown(text: string) {
+export function convertMarkdownToEditable(text: string) {
   const html = markdownToHtml(text, {
     embedOrigin: EMBED_ORIGIN,
   });
 
-  return convertHTMLtoEditableContent(html);
+  return convertHTMLtoEditable(html);
 }
 
 // 装飾付きの記事HTMLを編集可能コンテンツに変換
-export function convertHTMLtoEditableContent(html: string) {
+export function convertHTMLtoEditable(html: string) {
   const dom = document.createElement('div');
   dom.innerHTML = html;
 
