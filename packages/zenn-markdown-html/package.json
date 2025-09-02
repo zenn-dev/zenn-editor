@@ -3,7 +3,7 @@
   "version": "0.2.3",
   "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
-  "main": "lib/index.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/zenn-dev/zenn-editor.git",
@@ -13,8 +13,14 @@
     "lib"
   ],
   "exports": {
-    ".": "./lib/index.js",
-    "./lib/utils": "./lib/utils/index.js"
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./lib/utils": {
+      "import": "./lib/utils/index.js",
+      "types": "./lib/utils/index.d.ts"
+    }
   },
   "scripts": {
     "clean": "rimraf lib/*",

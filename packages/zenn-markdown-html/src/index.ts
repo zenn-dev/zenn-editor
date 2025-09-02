@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import markdownIt from 'markdown-it';
 import { sanitize } from './sanitizer';
 import { embedGenerators } from './embed';
@@ -20,10 +19,10 @@ import {
   containerMessageOptions,
 } from './utils/md-container';
 
-const mdContainer = require('markdown-it-container');
-const mdFootnote = require('markdown-it-footnote');
-const mdTaskLists = require('markdown-it-task-lists');
-const mdInlineComments = require('markdown-it-inline-comments');
+import mdContainer from 'markdown-it-container';
+import mdFootnote from 'markdown-it-footnote';
+import mdTaskLists from 'markdown-it-task-lists';
+import mdInlineComments from 'markdown-it-inline-comments';
 
 const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   if (!(text && text.length)) return '';
@@ -75,7 +74,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   // 1ページの中で重複しなければ問題ないため、ごく短いランダムな文字列とする
   // - https://github.com/zenn-dev/zenn-community/issues/356
   // - https://github.com/markdown-it/markdown-it-footnote/pull/8
-  const docId = crypto.randomBytes(2).toString('hex');
+  const docId = Math.random().toString(36).substring(2);
   return sanitize(md.render(text, { docId }));
 };
 
