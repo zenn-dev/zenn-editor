@@ -1,0 +1,88 @@
+{
+  "name": "zenn-wysiwyg-editor",
+  "version": "1.0.0",
+  "description": "Zenn WYSIWYG Editor",
+  "type": "module",
+  "keywords": [],
+  "author": "karintou8710",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup",
+    "check:lint": "biome lint ./src",
+    "check:format": "biome format ./src",
+    "lint": "run-s check:*",
+    "fix": "biome check --write ./src",
+    "test:node": "vitest run",
+    "test:browser-mode": "vitest run --config=vitest.browser.config.ts",
+    "test:browser": "playwright test"
+  },
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/index.d.ts",
+        "require": "./dist/index.d.cts"
+      },
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./dist/style.css": {
+      "default": "./dist/index.css"
+    }
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.7.4",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@tiptap/extension-blockquote": "^3.1.0",
+    "@tiptap/extension-bold": "^3.1.0",
+    "@tiptap/extension-bubble-menu": "^3.1.0",
+    "@tiptap/extension-code": "^3.1.0",
+    "@tiptap/extension-code-block": "^3.1.0",
+    "@tiptap/extension-document": "^3.1.0",
+    "@tiptap/extension-hard-break": "^3.1.0",
+    "@tiptap/extension-heading": "^3.1.0",
+    "@tiptap/extension-horizontal-rule": "^3.1.0",
+    "@tiptap/extension-image": "^3.1.0",
+    "@tiptap/extension-italic": "^3.1.0",
+    "@tiptap/extension-link": "^3.1.0",
+    "@tiptap/extension-list": "^3.1.0",
+    "@tiptap/extension-paragraph": "^3.1.0",
+    "@tiptap/extension-strike": "^3.1.0",
+    "@tiptap/extension-table": "^3.1.0",
+    "@tiptap/extension-text": "^3.1.0",
+    "@tiptap/extensions": "^3.1.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.539.0",
+    "prismjs": "^1.30.0",
+    "prosemirror-markdown": "^1.13.2",
+    "tailwind-merge": "^3.3.1",
+    "zenn-markdown-html": "workspace:zenn-markdown-html"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@tailwindcss/postcss": "^4.1.12",
+    "@tailwindcss/vite": "^4.1.11",
+    "@tiptap/pm": "^3.1.0",
+    "@tiptap/react": "^3.1.0",
+    "@types/node": "^24.2.1",
+    "@types/prismjs": "^1.26.5",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/browser": "^3.2.4",
+    "happy-dom": "^18.0.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "tsup": "^8.5.0",
+    "vitest": "^3.2.4",
+    "vitest-browser-react": "^1.0.1",
+    "zenn-content-css": "^0.2.1"
+  },
+  "peerDependencies": {
+    "@tiptap/pm": "^3.0.0",
+    "@tiptap/react": "^3.0.0",
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
+  }
+}
