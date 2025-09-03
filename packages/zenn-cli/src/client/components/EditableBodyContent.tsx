@@ -11,9 +11,7 @@ import 'zenn-wysiwyg-editor/dist/style.css';
 type Props = { markdown: string };
 
 export const EditableBodyContent: React.FC<Props> = (props) => {
-  const [content, setContent] = useState(() =>
-    convertMarkdownToEditable(props.markdown)
-  );
+  const [content, setContent] = useState('');
   const editor = useZennEditor({
     initialContent: content,
     onChange: (newContent) => {
