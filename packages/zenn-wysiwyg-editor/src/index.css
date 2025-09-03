@@ -1,16 +1,12 @@
 @layer theme, base, components, utilities;
 
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
 
-@import "zenn-content-css/lib/index.css";
+@import 'zenn-content-css/lib/index.css';
 
 .tiptap {
-  margin: 5rem 0 10rem;
-  padding: 40px 2rem;
-  border-radius: 10px;
   outline: none;
-  background: white;
   min-height: 600px;
 
   img.ProseMirror-separator {
@@ -159,7 +155,7 @@
 
     &::after {
       position: absolute;
-      content: "";
+      content: '';
       top: 0;
       left: 0;
       width: 100%;
@@ -214,7 +210,7 @@
   div.code-block-filename-container.is-empty {
     .code-block-filename::before {
       color: #adb5bd;
-      content: "ファイル名"; /* 親要素にdata-placeholderが設定されてしまうため、ハードコーディング */
+      content: 'ファイル名'; /* 親要素にdata-placeholderが設定されてしまうため、ハードコーディング */
       float: left;
       height: 0;
       pointer-events: none;

@@ -57,6 +57,7 @@ export type Article = {
   slug: string;
   title?: string;
   bodyHtml?: string;
+  editableBodyHtml?: string; // For Zenn WYSIWYG Editor
   toc?: TocNode[];
   emoji?: string;
   type?: 'tech' | 'idea';
