@@ -78,7 +78,10 @@ function readArticleFile(slug: string) {
   // https://github.com/jonschlinkert/gray-matter/issues/62#issuecomment-577628177
   const { data, content: bodyMarkdown } = matter(raw, {
     engines: {
-      yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+      yaml: {
+        parse: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+        stringify: (s) => yaml.dump(s, { schema: yaml.JSON_SCHEMA }),
+      },
     },
   });
   return {
@@ -104,15 +107,16 @@ export function stringifyArticleWithMetaData(article: Article): string {
   if (article.publication_name !== undefined)
     articleForMeta.publication_name = article.publication_name;
 
-  console.log(article.emoji);
-
   const contentWithMeta = matter.stringify(
     article.markdown ?? '',
     articleForMeta,
     // 絵文字が処理されるバージョンの js-yaml を使う
     {
       engines: {
-        yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+        yaml: {
+          parse: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+          stringify: (s) => yaml.dump(s, { schema: yaml.JSON_SCHEMA }),
+        },
       },
     }
   );

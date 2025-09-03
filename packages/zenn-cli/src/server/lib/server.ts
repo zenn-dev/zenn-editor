@@ -58,7 +58,6 @@ export async function startLocalChangesWatcher(
   const wss = new WebSocketServer({ server });
   const watcher = chokidar.watch(await Array.fromAsync(glob(watchPathGlob)));
   watcher.on('change', () => {
-    console.log('change');
     wss.clients.forEach((client) => client.send('Should refresh'));
   });
 
