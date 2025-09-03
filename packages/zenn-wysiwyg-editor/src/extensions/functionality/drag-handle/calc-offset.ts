@@ -39,7 +39,7 @@ export function calcOffset(dragTarget: DragTarget, editor: Editor) {
   }
 
   if (dragTarget.node.type === editor.schema.nodes.details) {
-    top += 4;
+    top += 8;
   }
 
   return { top, left };
