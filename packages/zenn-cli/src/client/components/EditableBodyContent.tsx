@@ -26,9 +26,3 @@ export const EditableBodyContent: React.FC<Props> = (props) => {
 
   return <EditorContent editor={editor} />;
 };
-
-const StyledMessage = styled.div`
-  text-align: center;
-  font-size: 1.1rem;
-  color: var(--c-gray);
-`;
