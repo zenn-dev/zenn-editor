@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { EditableBodyContent } from '../EditableBodyContent';
 import { ContentContainer } from '../ContentContainer';
 import { ArticleHeader } from './show/ArticleHeader';
 import { ErrorMessage } from '../ErrorMessage';
@@ -12,13 +11,18 @@ import {
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from 'zenn-model';
 import { Toc } from '../Toc';
-import { renderMarkdown } from 'zenn-wysiwyg-editor';
+import { EditableBodyContent } from '../EditableBodyContent';
+import { useState } from 'react';
+import { BodyContent } from '../BodyContent';
+import { Switch } from '../Switch';
 
 type ArticleShowProps = {
   slug: string;
 };
 
 export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
+  const [isEditable, setIsEditable] = useState(false);
+
   const ws = useWebSocket();
   const { data, error, isValidating, mutate } = useFetch<{ article: Article }>(
     `/api/articles/${slug}`,
@@ -52,18 +56,29 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
               <Toc maxDepth={2} toc={article.toc} />
             )}
 
-            <EditableBodyContent
-              key={article.markdown}
-              markdown={article.markdown || ''}
-              onChange={(markdown) => {
-                ws?.send(
-                  JSON.stringify({
-                    type: 'contentChanged',
-                    article: { ...article, markdown },
-                  })
-                );
-              }}
-            />
+            <StyledEditMode>
+              <StyledLabel>編集モード</StyledLabel>
+              <Switch
+                checked={isEditable}
+                onChange={(checked) => setIsEditable(checked)}
+              />
+            </StyledEditMode>
+
+            {isEditable ? (
+              <EditableBodyContent
+                markdown={article.markdown ?? ''}
+                onChange={(markdown) => {
+                  ws?.send(
+                    JSON.stringify({
+                      type: 'contentChanged',
+                      article: { ...article, markdown },
+                    })
+                  );
+                }}
+              />
+            ) : (
+              <BodyContent rawHtml={article.bodyHtml ?? ''} />
+            )}
           </div>
         </StyledArticleShow>
       </ContentContainer>
@@ -75,4 +90,17 @@ const StyledArticleShow = styled.div`
   .article-show__content {
     padding: 3rem 0 18rem;
   }
+`;
+
+const StyledEditMode = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0;
+`;
+
+const StyledLabel = styled.label`
+  cursor: pointer;
+  border-bottom: 1px dashed var(--c-gray-border);
 `;

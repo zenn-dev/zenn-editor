@@ -1,4 +1,5 @@
 import { defineConfig } from 'tsup';
+import dotenv from 'dotenv';
 
 export default defineConfig({
   entry: ['./src/server/zenn.ts'],
@@ -7,4 +8,5 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   format: ['cjs'],
+  env: dotenv.config().parsed,
 });
