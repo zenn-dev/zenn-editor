@@ -113,8 +113,8 @@ function removeEmbedDeco(dom: HTMLElement) {
     // 不要な親のpタグを削除し、埋め込み要素を親要素の位置に置換
     const notUsedP = embed.parentElement;
     if (notUsedP?.tagName !== 'P') {
-      console.error(embed);
-      throw new Error('should be embed with only url');
+      // ![tweet](url) の形式は span が最上位になる
+      return;
     }
 
     notUsedP.parentElement?.replaceChild(embed, notUsedP);
