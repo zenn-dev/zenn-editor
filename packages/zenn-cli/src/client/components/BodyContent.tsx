@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { PrintDetailsOpener } from './PrintDetailsOpener';
+import { EditorContent, useZennEditor } from 'zenn-wysiwyg-editor';
+import { useState } from 'react';
 
 type Props =
   | {
@@ -8,18 +10,21 @@ type Props =
   | { rawHtml: string };
 
 export const BodyContent: React.VFC<Props> = (props) => {
+  const [content, setContent] = useState('');
+  const editor = useZennEditor({
+    initialContent: content,
+    onChange: (newContent) => {
+      setContent(newContent);
+    },
+  });
+
   if ('rawHtml' in props) {
     if (!props.rawHtml?.length) {
       return <StyledMessage>本文を入力してください</StyledMessage>;
     }
     return (
       <PrintDetailsOpener bodyHtml={props.rawHtml}>
-        <div
-          className="znc"
-          dangerouslySetInnerHTML={{
-            __html: props.rawHtml,
-          }}
-        />
+        <EditorContent editor={editor} />
       </PrintDetailsOpener>
     );
   }

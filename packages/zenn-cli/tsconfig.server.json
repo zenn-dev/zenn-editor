@@ -2,11 +2,20 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "target": "es5",
-    "module": "commonjs",
-    "rootDir": ".",
-    "outDir": "./dist",
-    "esModuleInterop": true
+    "target": "esnext",
+    "module": "esnext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
-  "exclude": ["src/client", "node_modules", "**/__tests__"]
+  "include": ["src/server"],
+  "exclude": ["**/__tests__"]
 }

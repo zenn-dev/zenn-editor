@@ -37,6 +37,8 @@
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "devDependencies": {
+    "@tiptap/pm": "^3.1.0",
+    "@tiptap/react": "^3.1.0",
     "@types/configstore": "^6.0.0",
     "@types/connect-history-api-fallback": "^1.3.5",
     "@types/emoji-regex": "^9.2.0",
@@ -89,7 +91,7 @@
     "supertest": "^6.3.3",
     "swr": "^1.3.0",
     "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5",
+    "typescript": "^5.9.2",
     "vite": "^4.2.1",
     "vitest": "^0.34.4",
     "wait-on": "^7.0.1",
@@ -99,7 +101,8 @@
     "zenn-content-css": "workspace:*",
     "zenn-embed-elements": "workspace:*",
     "zenn-markdown-html": "workspace:*",
-    "zenn-model": "workspace:*"
+    "zenn-model": "workspace:*",
+    "zenn-wysiwyg-editor": "workspace:*"
   },
   "engines": {
     "node": ">=14.0.0"

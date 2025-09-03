@@ -1,16 +1,11 @@
 {
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.client.json" },
+    { "path": "./tsconfig.server.json" }
+  ],
   "compilerOptions": {
-    "strict": true,
-    "allowJs": false,
-    "skipLibCheck": false,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "jsx": "preserve",
-    "baseUrl": "./src",
-    "lib": ["ESNext", "dom"]
+    "baseUrl": "./src"
   },
-  "exclude": ["**/__tests__"],
-  "include": ["src"]
+  "exclude": ["**/__tests__"]
 }
