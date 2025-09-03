@@ -80,3 +80,4 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
 
 export default markdownToHtml;
 export { markdownToSimpleHtml } from './markdown-to-simple-html';
+export { parseToc } from './utils/toc';
