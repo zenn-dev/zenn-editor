@@ -101,23 +101,40 @@ function removeCodeBlockEndNewLine(dom: HTMLElement) {
   });
 }
 
+// 埋め込みの構造
+// 1. md-linkifyに対応している（URLで埋め込み）のは、pの子要素になる
+// 2. それ以外はトップレベルに配置
+
 // URL単体の埋め込み要素は、不要なリンクとパラグラフを持つので削除する
 function removeEmbedDeco(dom: HTMLElement) {
   const embeds = dom.querySelectorAll(
     '.zenn-embedded-github, .zenn-embedded-tweet, .zenn-embedded-card, .embed-youtube'
   );
   embeds.forEach((embed) => {
-    // 不要なリンクを削除
+    // 不要な<a />を削除
     embed.nextSibling?.remove();
 
-    // 不要な親のpタグを削除し、埋め込み要素を親要素の位置に置換
-    const notUsedP = embed.parentElement;
-    if (notUsedP?.tagName !== 'P') {
-      // ![tweet](url) の形式は span が最上位になる
-      return;
+    const p = embed.parentElement;
+    if (p?.tagName !== 'P') {
+      throw new Error("linkify embed's parent is not P tag");
     }
 
-    notUsedP.parentElement?.replaceChild(embed, notUsedP);
+    // 子要素の<br />を全て削除
+    p.childNodes.forEach((child) => {
+      if (child instanceof HTMLElement && child.tagName === 'BR') {
+        child.remove();
+      }
+    });
+
+    // 埋め込み要素を親要素の前に移動
+    p.parentElement?.insertBefore(embed.cloneNode(true), p);
+    embed.remove();
+
+    // もし中身が空なら削除（テキストノードが存在する可能性がある）
+    if (p.childElementCount === 0) {
+      p.remove();
+      return;
+    }
   });
 }
 
