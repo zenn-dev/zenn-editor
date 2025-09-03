@@ -1,8 +1,8 @@
-import type { Node, Slice } from "@tiptap/pm/model";
-import { NodeSelection } from "@tiptap/pm/state";
-import type { Editor } from "@tiptap/react";
-import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import type { Node, Slice } from '@tiptap/pm/model';
+import { NodeSelection } from '@tiptap/pm/state';
+import type { Editor } from '@tiptap/react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // ProseMirrorの内部実装がエクスポートされてないので、自前定義
 class Dragging {
@@ -12,7 +12,7 @@ class Dragging {
     // @ts-expect-error
     public move: boolean,
     // @ts-expect-error
-    public node?: NodeSelection,
+    public node?: NodeSelection
   ) {}
 }
 
@@ -43,7 +43,7 @@ export function useDragHandle(editor: Editor | null) {
         nodeSelection: NodeSelection.create(editor.state.doc, beforePos),
       });
     },
-    [editor],
+    [editor]
   );
 
   const handleDragStart = useCallback(
@@ -54,15 +54,15 @@ export function useDragHandle(editor: Editor | null) {
       if (!editor || dragTarget === null || !ev.dataTransfer) return;
 
       ev.dataTransfer.setDragImage(dragTarget.dom, 0, 0);
-      ev.dataTransfer.effectAllowed = "copyMove";
+      ev.dataTransfer.effectAllowed = 'copyMove';
 
       editor.view.dragging = new Dragging(
         dragTarget.nodeSelection.content(),
         true,
-        dragTarget.nodeSelection,
+        dragTarget.nodeSelection
       );
     },
-    [editor, dragTarget],
+    [editor, dragTarget]
   );
 
   const handleMouseMove = useCallback(
@@ -76,9 +76,12 @@ export function useDragHandle(editor: Editor | null) {
       if (!posWithInside) return;
 
       // カーソルが乗った位置で、深さ１ノードのbefore位置を取得
-      setTopBlockDragTarget(posWithInside.pos, ["footnotes"]);
+      setTopBlockDragTarget(
+        posWithInside.inside !== -1 ? posWithInside.inside : posWithInside.pos,
+        ['footnotes']
+      );
     },
-    [editor, setTopBlockDragTarget],
+    [editor, setTopBlockDragTarget]
   );
 
   const handleClick = useCallback(() => {
@@ -102,10 +105,10 @@ export function useDragHandle(editor: Editor | null) {
     if (!editor) return;
 
     const element = editor.$doc.element;
-    element.addEventListener("mousemove", handleMouseMove);
+    element.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      element.removeEventListener("mousemove", handleMouseMove);
+      element.removeEventListener('mousemove', handleMouseMove);
     };
   }, [editor, handleMouseMove]);
 
