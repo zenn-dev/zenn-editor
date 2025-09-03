@@ -89,3 +89,33 @@ function readArticleFile(slug: string) {
     bodyMarkdown,
   };
 }
+
+export function stringifyArticleWithMetaData(article: Article): string {
+  const articleForMeta: Partial<Article> = {}; // slugはファイル名なので除外
+
+  if (article.title) articleForMeta.title = article.title;
+  if (article.type) articleForMeta.type = article.type;
+  if (article.topics) articleForMeta.topics = article.topics;
+  if (article.emoji) articleForMeta.emoji = article.emoji;
+  if (typeof article.published === 'boolean')
+    articleForMeta.published = article.published;
+  if (article.published_at !== undefined)
+    articleForMeta.published_at = article.published_at;
+  if (article.publication_name !== undefined)
+    articleForMeta.publication_name = article.publication_name;
+
+  console.log(article.emoji);
+
+  const contentWithMeta = matter.stringify(
+    article.markdown ?? '',
+    articleForMeta,
+    // 絵文字が処理されるバージョンの js-yaml を使う
+    {
+      engines: {
+        yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+      },
+    }
+  );
+
+  return contentWithMeta;
+}

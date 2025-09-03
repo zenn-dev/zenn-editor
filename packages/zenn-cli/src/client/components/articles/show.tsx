@@ -5,16 +5,21 @@ import { ArticleHeader } from './show/ArticleHeader';
 import { ErrorMessage } from '../ErrorMessage';
 import { Loading } from '../Loading';
 import { useFetch } from '../../hooks/useFetch';
-import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
+import {
+  useLocalFileChangedEffect,
+  useWebSocket,
+} from '../../hooks/useLocalFileChangedEffect';
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from 'zenn-model';
 import { Toc } from '../Toc';
+import { renderMarkdown } from 'zenn-wysiwyg-editor';
 
 type ArticleShowProps = {
   slug: string;
 };
 
 export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
+  const ws = useWebSocket();
   const { data, error, isValidating, mutate } = useFetch<{ article: Article }>(
     `/api/articles/${slug}`,
     {
@@ -50,6 +55,14 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
             <EditableBodyContent
               key={article.markdown}
               markdown={article.markdown || ''}
+              onChange={(markdown) => {
+                ws?.send(
+                  JSON.stringify({
+                    type: 'contentChanged',
+                    article: { ...article, markdown },
+                  })
+                );
+              }}
             />
           </div>
         </StyledArticleShow>

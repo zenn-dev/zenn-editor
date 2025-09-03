@@ -1,17 +1,20 @@
-import { useEditor } from "@tiptap/react";
-import { extensions } from "./extensions";
+import { useEditor } from '@tiptap/react';
+import { extensions } from './extensions';
+import { renderMarkdown } from './lib/to-markdown';
 
 type Props = {
   initialContent?: string;
-  onChange?: (html: string) => void;
+  onChange?: (html: string, markdown: string) => void;
 };
 
 export function useZennEditor({ initialContent, onChange }: Props) {
   const editor = useEditor({
     extensions,
-    content: initialContent || "",
+    content: initialContent || '',
     onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML());
+      const html = editor.getHTML();
+      const markdown = renderMarkdown(editor.state.doc);
+      onChange?.(html, markdown);
     },
   });
 
