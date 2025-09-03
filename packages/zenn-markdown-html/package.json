@@ -13,9 +13,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./lib/index.mjs",
-      "require": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
     }
   },
   "scripts": {

@@ -13,7 +13,6 @@ import { Article, ArticleMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
 import { parseToc } from 'zenn-markdown-html';
-import { convertHTMLtoEditable } from 'zenn-wysiwyg-editor';
 
 export function getLocalArticle(slug: string): null | Article {
   const data = readArticleFile(slug);
@@ -23,12 +22,11 @@ export function getLocalArticle(slug: string): null | Article {
     embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
   });
   const bodyHtml = completeHtml(rawHtml);
-  const editableBodyHtml = convertHTMLtoEditable(rawHtml);
   const toc = parseToc(bodyHtml);
   return {
     ...meta,
+    markdown: bodyMarkdown,
     bodyHtml,
-    editableBodyHtml,
     toc,
   };
 }

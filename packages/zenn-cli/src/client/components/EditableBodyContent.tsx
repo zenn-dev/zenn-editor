@@ -1,13 +1,19 @@
 import styled from 'styled-components';
-import { EditorContent, useZennEditor } from 'zenn-wysiwyg-editor';
-import { useState } from 'react';
+import {
+  convertMarkdownToEditable,
+  EditorContent,
+  useZennEditor,
+} from 'zenn-wysiwyg-editor';
+import { useMemo, useState } from 'react';
 
 import 'zenn-wysiwyg-editor/dist/style.css';
 
-type Props = { editableHtml: string };
+type Props = { markdown: string };
 
 export const EditableBodyContent: React.FC<Props> = (props) => {
-  const [content, setContent] = useState(props.editableHtml);
+  const [content, setContent] = useState(() =>
+    convertMarkdownToEditable(props.markdown)
+  );
   const editor = useZennEditor({
     initialContent: content,
     onChange: (newContent) => {

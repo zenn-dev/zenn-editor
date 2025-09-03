@@ -44,7 +44,8 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
     .use(mdKatex)
     .use(mdFootnote)
     .use(mdInlineComments)
-    .use(markdownItImSize)
+    // @ts-ignore: zenn-cliのサーバー経由で呼び出すと {default: fn} の形になりエラーになる。CJSが関係していそう。
+    .use(markdownItImSize.default)
     .use(mdLinkAttributes)
     .use(mdCustomBlock, markdownOptions)
     .use(mdRendererFence, markdownOptions)

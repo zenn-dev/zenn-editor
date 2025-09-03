@@ -47,7 +47,7 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
               <Toc maxDepth={2} toc={article.toc} />
             )}
 
-            <EditableBodyContent editableHtml={article.bodyHtml || ''} />
+            <EditableBodyContent markdown={article.markdown || ''} />
           </div>
         </StyledArticleShow>
       </ContentContainer>
