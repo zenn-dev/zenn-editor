@@ -111,13 +111,14 @@ function removeEmbedDeco(dom: HTMLElement) {
     '.zenn-embedded-github, .zenn-embedded-tweet, .zenn-embedded-card, .embed-youtube'
   );
   embeds.forEach((embed) => {
-    // 不要な<a />を削除
-    embed.nextSibling?.remove();
-
     const p = embed.parentElement;
     if (p?.tagName !== 'P') {
-      throw new Error("linkify embed's parent is not P tag");
+      // .zenn-embedded-tweet は @[tweet](url) の構文もあり、linkifyではない
+      return;
     }
+
+    // 不要な<a />を削除
+    embed.nextSibling?.remove();
 
     // 子要素の<br />を全て削除
     p.childNodes.forEach((child) => {
