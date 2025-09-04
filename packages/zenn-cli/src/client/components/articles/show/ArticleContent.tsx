@@ -4,24 +4,23 @@ import { EditableBodyContent } from '../../EditableBodyContent';
 import { BodyContent } from '../../BodyContent';
 import { Switch } from '../../Switch';
 import { Article } from 'zenn-model';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import markdownToHtml, { parseToc } from 'zenn-markdown-html';
 import { useWebSocket } from '../../../hooks/useLocalFileChangedEffect';
 import { ContentContainer } from '../../ContentContainer';
 
 interface ArticleContentProps {
   article: Article;
-  isEditable: boolean;
-  handleContentChange: (article: Article) => void;
-  handleEditableSwitchChange: (checked: boolean) => void;
+  handleContentChange?: (article: Article) => void;
+  handleEditableSwitchChange?: (checked: boolean) => void;
 }
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({
   article,
-  isEditable,
   handleContentChange,
   handleEditableSwitchChange,
 }) => {
+  const [isEditable, setIsEditable] = useState(false);
   const ws = useWebSocket();
 
   const innerContentChange = useCallback(
@@ -39,12 +38,20 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
       const html = markdownToHtml(markdown);
 
       // HTMLはサーバーで出力されるCompleteHTMLで保存したいため、tocのみ更新する
-      handleContentChange({
+      handleContentChange?.({
         ...article,
         toc: parseToc(html),
       });
     },
     [article]
+  );
+
+  const innerEditableSwitchChange = useCallback(
+    (checked: boolean) => {
+      setIsEditable(checked);
+      handleEditableSwitchChange?.(checked);
+    },
+    [handleEditableSwitchChange]
   );
 
   return (
@@ -57,10 +64,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
 
           <StyledEditMode>
             <StyledLabel>編集モード</StyledLabel>
-            <Switch
-              checked={isEditable}
-              onChange={handleEditableSwitchChange}
-            />
+            <Switch checked={isEditable} onChange={innerEditableSwitchChange} />
           </StyledEditMode>
 
           {isEditable ? (

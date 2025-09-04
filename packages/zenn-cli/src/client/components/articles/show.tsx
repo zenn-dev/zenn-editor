@@ -13,8 +13,6 @@ type ArticleShowProps = {
 };
 
 export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
-  const [isEditable, setIsEditable] = useState(false);
-
   /* 
     WebSocketで編集をローカルのファイルに反映するが、更新されるで一定の時間がかかる。
     楽観的更新をしたいが、サーバーが返す描画用のCompleteHTMLはフロントエンドでレンダリングできない。
@@ -46,7 +44,6 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
 
   const handleEditableSwitchChange = useCallback(
     (checked: boolean) => {
-      setIsEditable(checked);
       // 編集 -> 閲覧モードのタイミングで、CompleteHTMLを取得するため再検証
       if (!checked) {
         mutate();
@@ -67,7 +64,6 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
         key={article.slug}
         article={article}
         handleContentChange={handleContentChange}
-        isEditable={isEditable}
         handleEditableSwitchChange={handleEditableSwitchChange}
       />
     </>
