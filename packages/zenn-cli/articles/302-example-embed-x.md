@@ -1,23 +1,12 @@
 ---
-title: '埋め込みのテスト（X）'
-type: 'tech' # or "idea"
-topics: ['embed', 'test']
+title: 埋め込みのテスト（X）
+type: tech
+topics:
+  - embed
+  - test
 emoji: 🐲
 published: true
 ---
-
-## `@[tweet]` 記法（`twitter.com`）
-
-@[tweet](https://twitter.com/jack/status/20)
-
-@[tweet](https://twitter.com/steelydylan/status/1253567029010825216)
-
-## `@[tweet]` 記法（`x.com`）
-
-@[tweet](https://x.com/jack/status/20)
-
-@[tweet](https://x.com/steelydylan/status/1253567029010825216)
-
 ## URL埋め込み（`twitter.com`）
 
 https://twitter.com/jack/status/20
