@@ -89,7 +89,6 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
           ? this.options.languageClassPrefix + node.attrs.language
           : ''
       );
-      code.textContent = node.textContent;
 
       pre.appendChild(code);
       dom.appendChild(pre);

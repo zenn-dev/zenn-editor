@@ -51,7 +51,7 @@ function adjustDiffCodeBlock(dom: HTMLElement) {
           });
           child.parentElement?.replaceChild(fragment, child);
         } else {
-          child.innerHTML = child.textContent || '';
+          child.textContent = child.textContent || '';
         }
       }
     });
