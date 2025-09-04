@@ -6,13 +6,20 @@ import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from 'zenn-model';
 import { ArticleContent } from './show/ArticleContent';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 type ArticleShowProps = {
   slug: string;
 };
 
 export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
+  const [isEditable, setIsEditable] = useState(false);
+
+  /* 
+    WebSocketで編集をローカルのファイルに反映するが、更新されるで一定の時間がかかる。
+    楽観的更新をしたいが、サーバーが返す描画用のCompleteHTMLはフロントエンドでレンダリングできない。
+    編集スイッチを切り替えたタイミングで再検証を行い、編集中は toc のみ更新する。
+  */
   const { data, error, isValidating, mutate } = useFetch<{ article: Article }>(
     `/api/articles/${slug}`,
     {
@@ -30,9 +37,20 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
     mutate();
   });
 
-  const handleChange = useCallback(
+  const handleContentChange = useCallback(
     (article: Article) => {
       mutate({ article }, false);
+    },
+    [mutate]
+  );
+
+  const handleEditableSwitchChange = useCallback(
+    (checked: boolean) => {
+      setIsEditable(checked);
+      // 編集 -> 閲覧モードのタイミングで、CompleteHTMLを取得するため再検証
+      if (!checked) {
+        mutate();
+      }
     },
     [mutate]
   );
@@ -48,7 +66,9 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
       <ArticleContent
         key={article.slug}
         article={article}
-        handleChange={handleChange}
+        handleContentChange={handleContentChange}
+        isEditable={isEditable}
+        handleEditableSwitchChange={handleEditableSwitchChange}
       />
     </>
   );

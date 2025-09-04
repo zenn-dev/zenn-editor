@@ -4,24 +4,27 @@ import { EditableBodyContent } from '../../EditableBodyContent';
 import { BodyContent } from '../../BodyContent';
 import { Switch } from '../../Switch';
 import { Article } from 'zenn-model';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import markdownToHtml, { parseToc } from 'zenn-markdown-html';
 import { useWebSocket } from '../../../hooks/useLocalFileChangedEffect';
 import { ContentContainer } from '../../ContentContainer';
 
 interface ArticleContentProps {
   article: Article;
-  handleChange: (article: Article) => void;
+  isEditable: boolean;
+  handleContentChange: (article: Article) => void;
+  handleEditableSwitchChange: (checked: boolean) => void;
 }
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({
   article,
-  handleChange,
+  isEditable,
+  handleContentChange,
+  handleEditableSwitchChange,
 }) => {
   const ws = useWebSocket();
-  const [isEditable, setIsEditable] = useState(false);
 
-  const handleContentChange = useCallback(
+  const innerContentChange = useCallback(
     (markdown: string) => {
       // 本番環境でのみWebSocket連携
       if (import.meta.env.MODE === 'production') {
@@ -35,10 +38,9 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
 
       const html = markdownToHtml(markdown);
 
-      handleChange({
+      // HTMLはサーバーで出力されるCompleteHTMLで保存したいため、tocのみ更新する
+      handleContentChange({
         ...article,
-        markdown,
-        bodyHtml: html,
         toc: parseToc(html),
       });
     },
@@ -57,14 +59,14 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
             <StyledLabel>編集モード</StyledLabel>
             <Switch
               checked={isEditable}
-              onChange={(checked) => setIsEditable(checked)}
+              onChange={handleEditableSwitchChange}
             />
           </StyledEditMode>
 
           {isEditable ? (
             <EditableBodyContent
               markdown={article.markdown ?? ''}
-              onChange={handleContentChange}
+              onChange={innerContentChange}
             />
           ) : (
             <BodyContent rawHtml={article.bodyHtml ?? ''} />
