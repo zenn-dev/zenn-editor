@@ -45,6 +45,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
     .use(mdFootnote)
     .use(mdInlineComments)
     .use(
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: zenn-cliのサーバー経由で呼び出すと {default: fn} の形になりエラーになる。CJSが関係していそう。
       'default' in markdownItImSize
         ? markdownItImSize.default

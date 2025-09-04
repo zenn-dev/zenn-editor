@@ -6,7 +6,7 @@ import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from 'zenn-model';
 import { ArticleContent } from './show/ArticleContent';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 type ArticleShowProps = {
   slug: string;
