@@ -37,9 +37,11 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
 
       const html = markdownToHtml(markdown);
 
-      // HTMLはサーバーで出力されるCompleteHTMLで保存したいため、tocのみ更新する
+      // htmlはCompleteHTMLではないが、Switch 切り替え時の描画チラつきを防ぐために更新
       handleContentChange?.({
         ...article,
+        markdown: markdown,
+        bodyHtml: html,
         toc: parseToc(html),
       });
     },
