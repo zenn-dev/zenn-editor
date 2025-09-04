@@ -15,6 +15,7 @@ import { EditableBodyContent } from '../EditableBodyContent';
 import { useState } from 'react';
 import { BodyContent } from '../BodyContent';
 import { Switch } from '../Switch';
+import markdownToHtml, { parseToc } from 'zenn-markdown-html';
 
 type ArticleShowProps = {
   slug: string;
@@ -68,11 +69,28 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
               <EditableBodyContent
                 markdown={article.markdown ?? ''}
                 onChange={(markdown) => {
-                  ws?.send(
-                    JSON.stringify({
-                      type: 'contentChanged',
-                      article: { ...article, markdown },
-                    })
+                  // 本番環境でのみWebSocket連携
+                  if (import.meta.env.MODE === 'production') {
+                    ws?.send(
+                      JSON.stringify({
+                        type: 'contentChanged',
+                        article: { ...article, markdown },
+                      })
+                    );
+                  }
+
+                  const html = markdownToHtml(markdown);
+
+                  mutate(
+                    {
+                      article: {
+                        ...article,
+                        markdown,
+                        bodyHtml: html,
+                        toc: parseToc(html),
+                      },
+                    },
+                    false // API反映まで時間がかかるため、ブラウザのデータを真にする
                   );
                 }}
               />

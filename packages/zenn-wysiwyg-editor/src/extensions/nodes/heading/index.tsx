@@ -1,7 +1,24 @@
-import { Heading as TiptapHeading } from "@tiptap/extension-heading";
-import { splitBlockAs } from "@tiptap/pm/commands";
+import { Heading as TiptapHeading } from '@tiptap/extension-heading';
+import { splitBlockAs } from '@tiptap/pm/commands';
+import { TocPlugin } from './toc-plugin';
 
 const Heading = TiptapHeading.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      id: {
+        default: null,
+        parseHTML: (element) => element.getAttribute('id'),
+        renderHTML: (attributes) => {
+          if (!attributes.id) {
+            return {};
+          }
+          return { id: attributes.id };
+        },
+      },
+    };
+  },
+
   addKeyboardShortcuts() {
     return {
       ...this.parent?.(),
@@ -26,6 +43,10 @@ const Heading = TiptapHeading.extend({
         }))(this.editor.state, this.editor.view.dispatch);
       },
     };
+  },
+
+  addProseMirrorPlugins() {
+    return [TocPlugin(this.name)];
   },
 });
 

@@ -1,7 +1,6 @@
 import {
   convertMarkdownToEditable,
   EditorContent,
-  renderMarkdown,
   useZennEditor,
 } from 'zenn-wysiwyg-editor';
 import { useMemo } from 'react';
