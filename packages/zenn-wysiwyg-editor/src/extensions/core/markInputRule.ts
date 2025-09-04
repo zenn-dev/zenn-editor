@@ -1,14 +1,14 @@
 // biome-ignore-all lint: fork from https://github.com/ueberdosis/tiptap/blob/develop/packages/core/src/inputRules/markInputRule.ts
 // マーク不可な親要素の場合は発火しないようにする
 
-import type { MarkType } from "@tiptap/pm/model";
+import type { MarkType } from '@tiptap/pm/model';
 import {
   callOrReturn,
   type ExtendedRegExpMatchArray,
   getMarksBetween,
   InputRule,
   type InputRuleFinder,
-} from "@tiptap/react";
+} from '@tiptap/react';
 
 /**
  * Build an input rule that adds a mark when the
@@ -52,7 +52,7 @@ export function markInputRule(config: {
             const excluded = item.mark.type.excluded as MarkType[];
 
             return excluded.find(
-              (type) => type === config.type && type !== item.mark.type,
+              (type) => type === config.type && type !== item.mark.type
             );
           })
           .filter((item) => item.to > textStart);
@@ -74,7 +74,7 @@ export function markInputRule(config: {
         tr.addMark(
           range.from + startSpaces,
           markEnd,
-          config.type.create(attributes || {}),
+          config.type.create(attributes || {})
         );
 
         tr.removeStoredMark(config.type);

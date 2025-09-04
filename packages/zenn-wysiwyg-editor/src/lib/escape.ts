@@ -3,10 +3,10 @@
 const HTML_ESCAPE_TEST_RE = /[&<>"]/;
 const HTML_ESCAPE_REPLACE_RE = /[&<>"]/g;
 const HTML_REPLACEMENTS = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
 };
 
 function replaceUnsafeChar(ch: string): string {

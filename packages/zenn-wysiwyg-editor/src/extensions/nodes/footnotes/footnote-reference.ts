@@ -1,9 +1,9 @@
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { AddMarkStep } from "@tiptap/pm/transform";
-import { Node } from "@tiptap/react";
-import { getRandomString } from "../../..//lib/random";
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { AddMarkStep } from '@tiptap/pm/transform';
+import { Node } from '@tiptap/react';
+import { getRandomString } from '../../..//lib/random';
 
-declare module "@tiptap/react" {
+declare module '@tiptap/react' {
   interface Commands<ReturnType> {
     footnoteReference: {
       setFootnote: () => ReturnType;
@@ -12,12 +12,12 @@ declare module "@tiptap/react" {
 }
 
 const FootnoteReference = Node.create({
-  name: "footnoteReference",
+  name: 'footnoteReference',
   inline: true,
-  group: "inline",
+  group: 'inline',
   atom: true,
   draggable: false,
-  marks: "",
+  marks: '',
 
   addAttributes() {
     return {
@@ -36,17 +36,17 @@ const FootnoteReference = Node.create({
   parseHTML() {
     return [
       {
-        tag: "sup.footnote-ref",
+        tag: 'sup.footnote-ref',
         getAttrs: (element) => {
-          const anchor = element.querySelector("a");
+          const anchor = element.querySelector('a');
           if (!anchor) {
             return false;
           }
 
-          const id = anchor.getAttribute("id");
-          const footnoteId = anchor.getAttribute("href")?.replace("#", "");
+          const id = anchor.getAttribute('id');
+          const footnoteId = anchor.getAttribute('href')?.replace('#', '');
           const referenceNumber = anchor.textContent
-            ? anchor.textContent.replace(/[[\]]/g, "")
+            ? anchor.textContent.replace(/[[\]]/g, '')
             : null;
 
           if (!id || !footnoteId || !referenceNumber) {
@@ -65,15 +65,15 @@ const FootnoteReference = Node.create({
 
   renderHTML({ node }) {
     return [
-      "sup",
-      { class: "footnote-ref" },
+      'sup',
+      { class: 'footnote-ref' },
       [
-        "a",
+        'a',
         {
           href: `#${node.attrs.footnoteId}`,
           id: node.attrs.id,
         },
-        `[${node.attrs.referenceNumber ?? "?"}]`,
+        `[${node.attrs.referenceNumber ?? '?'}]`,
       ],
     ];
   },
@@ -81,12 +81,12 @@ const FootnoteReference = Node.create({
   // スクロール周りはエディタで制御するため、DOMイベントは無視する
   addNodeView() {
     return ({ node }) => {
-      const dom = document.createElement("sup");
-      dom.className = "footnote-ref";
+      const dom = document.createElement('sup');
+      dom.className = 'footnote-ref';
 
-      const anchor = document.createElement("a");
-      anchor.setAttribute("id", node.attrs.id);
-      anchor.textContent = `[${node.attrs.referenceNumber ?? "?"}]`;
+      const anchor = document.createElement('a');
+      anchor.setAttribute('id', node.attrs.id);
+      anchor.textContent = `[${node.attrs.referenceNumber ?? '?'}]`;
 
       dom.appendChild(anchor);
 
@@ -108,7 +108,7 @@ const FootnoteReference = Node.create({
           const isReplaceable = $from.parent.canReplaceWith(
             $from.index(),
             $from.index(),
-            this.type,
+            this.type
           );
 
           if (!isReplaceable) {
@@ -151,7 +151,7 @@ const FootnoteReference = Node.create({
     const { editor } = this;
     return [
       new Plugin({
-        key: new PluginKey("footnoteRef"),
+        key: new PluginKey('footnoteRef'),
 
         props: {
           // 脚注にスクロール

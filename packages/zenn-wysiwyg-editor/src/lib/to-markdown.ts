@@ -1,11 +1,11 @@
-import type { Mark, Node } from "@tiptap/pm/model";
-import { MarkdownSerializer } from "prosemirror-markdown";
-import { getDiffCode } from "../extensions/nodes/code-block-container/utils";
-import type { EmbedType } from "../types";
-import { extractYoutubeVideoParameters } from "./url";
+import type { Mark, Node } from '@tiptap/pm/model';
+import { MarkdownSerializer } from 'prosemirror-markdown';
+import { getDiffCode } from '../extensions/nodes/code-block-container/utils';
+import type { EmbedType } from '../types';
+import { extractYoutubeVideoParameters } from './url';
 
 // MarkdownSerializerStateの型拡張
-declare module "prosemirror-markdown" {
+declare module 'prosemirror-markdown' {
   interface MarkdownSerializerState {
     inAutolink?: boolean;
     footnoteItem?: number;
@@ -26,42 +26,42 @@ const markdownSerializer = new MarkdownSerializer(
       state.closeBlock(node);
     },
     heading(state, node) {
-      state.write(`${state.repeat("#", node.attrs.level)} `);
+      state.write(`${state.repeat('#', node.attrs.level)} `);
       state.renderInline(node, false);
       state.closeBlock(node);
     },
     bulletList(state, node) {
-      state.renderList(node, "  ", () => "- ");
+      state.renderList(node, '  ', () => '- ');
     },
     orderedList(state, node) {
-      state.renderList(node, "  ", (i) => `${i + 1}. `);
+      state.renderList(node, '  ', (i) => `${i + 1}. `);
     },
     listItem(state, node) {
       state.renderContent(node);
     },
     text(state, node) {
-      state.text(node.text ?? "");
+      state.text(node.text ?? '');
     },
     blockquote(state, node) {
-      state.wrapBlock("> ", null, node, () => state.renderContent(node));
+      state.wrapBlock('> ', null, node, () => state.renderContent(node));
     },
     horizontalRule(state, node) {
-      state.write(node.attrs.markup || "---");
+      state.write(node.attrs.markup || '---');
       state.closeBlock(node);
     },
     message(state, node) {
-      const type = node.attrs.type === "message" ? "" : node.attrs.type;
+      const type = node.attrs.type === 'message' ? '' : node.attrs.type;
       const nestDepth = getZennNotationNestDepth(node);
 
       state.write(
-        `${":".repeat(nestDepth + 2)}message${type ? ` ${type}` : ""}\n`,
+        `${':'.repeat(nestDepth + 2)}message${type ? ` ${type}` : ''}\n`
       );
       state.renderContent(node);
 
       // HACK: 内部的に使われているclosedをnullにすることで、ブロックの改行をさせない
       state.closed = null;
-      state.write("\n");
-      state.write(":".repeat(nestDepth + 2));
+      state.write('\n');
+      state.write(':'.repeat(nestDepth + 2));
 
       state.closeBlock(node);
     },
@@ -69,42 +69,42 @@ const markdownSerializer = new MarkdownSerializer(
       state.renderInline(node);
     },
     hardBreak(state) {
-      state.write("\n");
+      state.write('\n');
     },
     codeBlockContainer(state, node) {
       if (!node.firstChild || !node.lastChild) {
-        throw new Error("Invalid code block container");
+        throw new Error('Invalid code block container');
       }
 
       const fileName = node.firstChild.textContent;
       const preContentNode = node.lastChild; // 通常 or 差分ブロック
 
       const backticks = preContentNode.textContent.match(/`{3,}/gm);
-      const fence = backticks ? `${backticks.sort().slice(-1)[0]}\`` : "```";
-      const isDiff = preContentNode.attrs.language?.startsWith("diff");
+      const fence = backticks ? `${backticks.sort().slice(-1)[0]}\`` : '```';
+      const isDiff = preContentNode.attrs.language?.startsWith('diff');
       const language =
-        preContentNode.attrs.language?.replace(/diff-?/, "") || "plaintext";
+        preContentNode.attrs.language?.replace(/diff-?/, '') || 'plaintext';
 
       state.write(
         fence +
-          (isDiff ? "diff " : "") +
+          (isDiff ? 'diff ' : '') +
           language +
-          (fileName ? `:${fileName}` : "") +
-          "\n",
+          (fileName ? `:${fileName}` : '') +
+          '\n'
       );
       const text = isDiff
         ? getDiffCode(preContentNode)
-        : preContentNode.textContent || "";
+        : preContentNode.textContent || '';
 
       state.text(text, false);
-      state.write("\n");
+      state.write('\n');
       state.write(fence);
       state.closeBlock(node);
     },
     figure(state, node) {
-      const src = node.firstChild?.attrs.src || "";
-      const alt = node.firstChild?.attrs.alt || "";
-      const caption = node.lastChild?.textContent || "";
+      const src = node.firstChild?.attrs.src || '';
+      const alt = node.firstChild?.attrs.alt || '';
+      const caption = node.lastChild?.textContent || '';
       state.write(`![${alt}](${src})`);
       if (caption) {
         state.write(`\n*${caption}*`);
@@ -113,24 +113,24 @@ const markdownSerializer = new MarkdownSerializer(
     },
     embed(state, node) {
       const type = node.attrs.type as EmbedType;
-      let urlBlock = "";
-      if (type === "card" || type === "tweet" || type === "github") {
+      let urlBlock = '';
+      if (type === 'card' || type === 'tweet' || type === 'github') {
         urlBlock = node.attrs.url;
-      } else if (type === "youtube") {
+      } else if (type === 'youtube') {
         // 埋め込みURLから通常の動画URLに変換
         const params = extractYoutubeVideoParameters(node.attrs.url);
         const videoId = params?.videoId;
-        if (!videoId) new Error("Invalid YouTube URL");
+        if (!videoId) new Error('Invalid YouTube URL');
 
         urlBlock = `https://www.youtube.com/watch?v=${videoId}`;
-      } else if (type === "figma") {
+      } else if (type === 'figma') {
         const query = new URL(node.attrs.url).searchParams;
-        const url = query.get("url");
-        if (!url) throw new Error("Invalid Figma URL");
+        const url = query.get('url');
+        if (!url) throw new Error('Invalid Figma URL');
 
         urlBlock = `@[figma](${url})`;
-      } else if (type === "codepen") {
-        const url = node.attrs.url.replace("/embed/", "/pen/");
+      } else if (type === 'codepen') {
+        const url = node.attrs.url.replace('/embed/', '/pen/');
 
         urlBlock = `@[codepen](${url})`;
       } else {
@@ -142,21 +142,21 @@ const markdownSerializer = new MarkdownSerializer(
     },
     details(state, node) {
       if (!node.firstChild || !node.lastChild) {
-        throw new Error("Invalid details");
+        throw new Error('Invalid details');
       }
 
       const summary = node.firstChild;
       const content = node.lastChild;
-      const title = summary.textContent || "emptyTitle"; // detailsはタイトルが必須
+      const title = summary.textContent || 'emptyTitle'; // detailsはタイトルが必須
       const nestDepth = getZennNotationNestDepth(node);
 
-      state.write(`${":".repeat(nestDepth + 2)}details ${title}\n`);
+      state.write(`${':'.repeat(nestDepth + 2)}details ${title}\n`);
       state.renderContent(content);
 
       // HACK: 内部的に使われているclosedをnullにすることで、ブロックの改行をさせない
       state.closed = null;
-      state.write("\n");
-      state.write(":".repeat(nestDepth + 2));
+      state.write('\n');
+      state.write(':'.repeat(nestDepth + 2));
 
       state.closeBlock(node);
     },
@@ -164,7 +164,7 @@ const markdownSerializer = new MarkdownSerializer(
       state.renderInline(node);
     },
     speakerDeckEmbed(state, node) {
-      const urlBlock = `@[speakerdeck](${node.attrs.embedId}${node.attrs.slideIndex ? `?slide=${node.attrs.slideIndex}` : ""})`;
+      const urlBlock = `@[speakerdeck](${node.attrs.embedId}${node.attrs.slideIndex ? `?slide=${node.attrs.slideIndex}` : ''})`;
       state.write(urlBlock);
       state.closeBlock(node);
     },
@@ -172,7 +172,7 @@ const markdownSerializer = new MarkdownSerializer(
       state.write(`[^${node.attrs.referenceNumber}]`);
     },
     footnotes(state, node) {
-      state.write("\n\n");
+      state.write('\n\n');
       state.renderContent(node);
     },
     footnotesList(state, node) {
@@ -191,82 +191,82 @@ const markdownSerializer = new MarkdownSerializer(
     tableRow(state, node) {
       state.tableRowIsFirst = true;
       state.renderContent(node);
-      state.write("\n");
+      state.write('\n');
 
-      if (node.firstChild?.type.name === "tableHeader") {
+      if (node.firstChild?.type.name === 'tableHeader') {
         // ヘッダー行の下に区切り行を追加
-        state.write("| ");
+        state.write('| ');
         for (let i = 0; i < node.childCount; i++) {
-          state.write("--- | ");
+          state.write('--- | ');
         }
-        state.write("\n");
+        state.write('\n');
       }
     },
     tableHeader(state, node) {
       if (state.tableRowIsFirst) {
         state.tableRowIsFirst = false;
-        state.write("| ");
+        state.write('| ');
       }
       state.renderInline(node);
-      state.write(" | ");
+      state.write(' | ');
     },
     tableCell(state, node) {
       if (state.tableRowIsFirst) {
         state.tableRowIsFirst = false;
-        state.write("| ");
+        state.write('| ');
       }
       state.renderInline(node);
-      state.write(" | ");
+      state.write(' | ');
     },
   },
   {
     link: {
       open(state, mark, parent, index) {
         state.inAutolink = isPlainURL(mark, parent, index);
-        if (state.inAutolink) return "";
-        return "[";
+        if (state.inAutolink) return '';
+        return '[';
       },
       close(state, mark) {
         const { inAutolink } = state;
         state.inAutolink = undefined;
 
-        if (inAutolink) return "";
+        if (inAutolink) return '';
 
         return (
-          "](" +
-          mark.attrs.href.replace(/[()"]/g, "\\$&") +
+          '](' +
+          mark.attrs.href.replace(/[()"]/g, '\\$&') +
           (mark.attrs.title
             ? ` "${mark.attrs.title.replace(/"/g, '\\"')}"`
-            : "") +
-          ")"
+            : '') +
+          ')'
         );
       },
       mixable: true,
     },
     bold: {
-      open: "**",
-      close: "**",
+      open: '**',
+      close: '**',
       mixable: true,
       expelEnclosingWhitespace: true,
     },
     code: {
-      open: "`",
-      close: "`",
+      open: '`',
+      close: '`',
       escape: false,
     },
     italic: {
-      open: "*",
-      close: "*",
+      open: '*',
+      close: '*',
       mixable: true,
       expelEnclosingWhitespace: true,
     },
     strike: {
-      open: "~~",
-      close: "~~",
+      open: '~~',
+      close: '~~',
       mixable: true,
       expelEnclosingWhitespace: true,
     },
-  },
+  }
 );
 
 function isPlainURL(link: Mark, parent: Node, index: number) {
@@ -292,7 +292,7 @@ function getZennNotationNestDepth(node: Node) {
     depth = Math.max(depth, getZennNotationNestDepth(child));
   }
 
-  if (node.type.name === "details" || node.type.name === "message") {
+  if (node.type.name === 'details' || node.type.name === 'message') {
     depth++;
   }
 

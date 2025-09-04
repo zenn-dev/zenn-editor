@@ -1,37 +1,37 @@
-import type { DOMOutputSpec } from "@tiptap/pm/model";
-import type { EmbedType } from "zenn-markdown-html/lib/embed";
-import { EMBED_ORIGIN } from "../../../lib/constants";
-import { sanitizeEmbedToken } from "../../../lib/embed";
-import { escapeHtml } from "../../../lib/escape";
+import type { DOMOutputSpec } from '@tiptap/pm/model';
+import type { EmbedType } from 'zenn-markdown-html/lib/embed';
+import { EMBED_ORIGIN } from '../../../lib/constants';
+import { sanitizeEmbedToken } from '../../../lib/embed';
+import { escapeHtml } from '../../../lib/escape';
 import {
   extractDocswellEmbedUrl,
   extractYoutubeVideoParameters,
-} from "../../../lib/url";
+} from '../../../lib/url';
 
 export function generateEmbedOutputSpec(
   type: EmbedType,
-  url: string,
+  url: string
 ): DOMOutputSpec {
   if (
-    type === "card" ||
-    type === "github" ||
-    type === "gist" ||
-    type === "tweet"
+    type === 'card' ||
+    type === 'github' ||
+    type === 'gist' ||
+    type === 'tweet'
   ) {
     return generateEmbedServerOutputSpec(type, url);
-  } else if (type === "stackblitz") {
+  } else if (type === 'stackblitz') {
     return generateEmbedStackblitzOutputSpec(url);
-  } else if (type === "jsfiddle") {
+  } else if (type === 'jsfiddle') {
     return generateEmbedJsfiddleOutputSpec(url);
-  } else if (type === "codesandbox") {
+  } else if (type === 'codesandbox') {
     return generateEmbedCodesandboxOutputSpec(url);
-  } else if (type === "codepen") {
+  } else if (type === 'codepen') {
     return generateEmbedCodepenOutputSpec(url);
-  } else if (type === "youtube") {
+  } else if (type === 'youtube') {
     return generateEmbedYoutubeOutputSpec(url);
-  } else if (type === "figma") {
+  } else if (type === 'figma') {
     return generateEmbedFigmaOutputSpec(url);
-  } else if (type === "docswell") {
+  } else if (type === 'docswell') {
     return generateEmbedDocswellOutputSpec(url);
   }
 
@@ -40,26 +40,26 @@ export function generateEmbedOutputSpec(
 
 function generateEmbedServerOutputSpec(
   type: string,
-  url: string,
+  url: string
 ): DOMOutputSpec {
   const id = `zenn-embedded__${Math.random().toString(16).slice(2)}`;
   const iframeSrc = `${EMBED_ORIGIN}/${type}#${id}`;
-  const encodedSrc = encodeURIComponent(url || "");
+  const encodedSrc = encodeURIComponent(url || '');
 
   return [
-    "span",
+    'span',
     {
       class: `embed-block zenn-embedded zenn-embedded-${type}`,
     },
     [
-      "iframe",
+      'iframe',
       {
         id: id,
         src: iframeSrc,
-        frameborder: "0",
-        scrolling: "no",
-        loading: "lazy",
-        "data-content": encodedSrc,
+        frameborder: '0',
+        scrolling: 'no',
+        loading: 'lazy',
+        'data-content': encodedSrc,
       },
     ],
   ];
@@ -67,39 +67,39 @@ function generateEmbedServerOutputSpec(
 
 function generateEmbedStackblitzOutputSpec(url: string): DOMOutputSpec {
   return [
-    "span",
+    'span',
     {
-      class: "embed-block embed-stackblitz",
+      class: 'embed-block embed-stackblitz',
     },
     [
-      "iframe",
+      'iframe',
       {
         src: sanitizeEmbedToken(url),
-        frameborder: "no",
-        scrolling: "no",
-        loading: "lazy",
+        frameborder: 'no',
+        scrolling: 'no',
+        loading: 'lazy',
       },
     ],
   ];
 }
 
 function generateEmbedJsfiddleOutputSpec(url: string): DOMOutputSpec {
-  if (!url.includes("embed")) {
-    url = url.endsWith("/") ? `${url}embedded/` : `${url}/embedded/`;
+  if (!url.includes('embed')) {
+    url = url.endsWith('/') ? `${url}embedded/` : `${url}/embedded/`;
   }
 
   return [
-    "span",
+    'span',
     {
-      class: "embed-block embed-jsfiddle",
+      class: 'embed-block embed-jsfiddle',
     },
     [
-      "iframe",
+      'iframe',
       {
         src: sanitizeEmbedToken(url),
-        frameborder: "no",
-        scrolling: "no",
-        loading: "lazy",
+        frameborder: 'no',
+        scrolling: 'no',
+        loading: 'lazy',
       },
     ],
   ];
@@ -107,43 +107,43 @@ function generateEmbedJsfiddleOutputSpec(url: string): DOMOutputSpec {
 
 function generateEmbedCodesandboxOutputSpec(url: string): DOMOutputSpec {
   return [
-    "span",
+    'span',
     {
-      class: "embed-block embed-codesandbox",
+      class: 'embed-block embed-codesandbox',
     },
     [
-      "iframe",
+      'iframe',
       {
         src: sanitizeEmbedToken(url),
-        frameborder: "no",
-        scrolling: "no",
-        loading: "lazy",
-        style: "width:100%;height:500px;border:none;overflow:hidden;",
+        frameborder: 'no',
+        scrolling: 'no',
+        loading: 'lazy',
+        style: 'width:100%;height:500px;border:none;overflow:hidden;',
         allow:
-          "accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking",
+          'accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking',
         sandbox:
-          "allow-modals allow-forms allow-popups allow-scripts allow-same-origin",
+          'allow-modals allow-forms allow-popups allow-scripts allow-same-origin',
       },
     ],
   ];
 }
 
 function generateEmbedCodepenOutputSpec(url: string): DOMOutputSpec {
-  const embedUrl = new URL(url.replace("/pen/", "/embed/"));
-  embedUrl.searchParams.set("embed-version", "2");
+  const embedUrl = new URL(url.replace('/pen/', '/embed/'));
+  embedUrl.searchParams.set('embed-version', '2');
 
   return [
-    "span",
+    'span',
     {
-      class: "embed-block embed-codepen",
+      class: 'embed-block embed-codepen',
     },
     [
-      "iframe",
+      'iframe',
       {
         src: sanitizeEmbedToken(embedUrl.toString()),
-        frameborder: "no",
-        scrolling: "no",
-        loading: "lazy",
+        frameborder: 'no',
+        scrolling: 'no',
+        loading: 'lazy',
       },
     ],
   ];
@@ -155,21 +155,21 @@ function generateEmbedYoutubeOutputSpec(url: string): DOMOutputSpec {
 
   const escapedVideoId = escapeHtml(params.videoId);
   const time = Math.min(Number(params.start || 0), 48 * 60 * 60); // 48時間以内
-  const startQuery = time ? `?start=${time}` : "";
+  const startQuery = time ? `?start=${time}` : '';
 
   return [
-    "span",
+    'span',
     {
-      class: "embed-block embed-youtube",
+      class: 'embed-block embed-youtube',
     },
     [
-      "iframe",
+      'iframe',
       {
         src: `https://www.youtube-nocookie.com/embed/${escapedVideoId}${startQuery}`,
         allow:
-          "accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+          'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
         allowfullscreen: true,
-        loading: "lazy",
+        loading: 'lazy',
       },
     ],
   ];
@@ -177,19 +177,19 @@ function generateEmbedYoutubeOutputSpec(url: string): DOMOutputSpec {
 
 function generateEmbedFigmaOutputSpec(url: string): DOMOutputSpec {
   return [
-    "span",
+    'span',
     {
-      class: "embed-block embed-figma",
+      class: 'embed-block embed-figma',
     },
     [
-      "iframe",
+      'iframe',
       {
         src: url, // node.attrs.urlの段階でembed用に変換済み
-        frameborder: "no",
-        scrolling: "no",
-        loading: "lazy",
-        style: "aspect-ratio: 16/9",
-        width: "100%",
+        frameborder: 'no',
+        scrolling: 'no',
+        loading: 'lazy',
+        style: 'aspect-ratio: 16/9',
+        width: '100%',
         allowfullscreen: true,
       },
     ],
@@ -203,19 +203,19 @@ function generateEmbedDocswellOutputSpec(url: string): DOMOutputSpec {
   }
 
   return [
-    "span",
+    'span',
     {
-      class: "embed-block embed-docswell",
+      class: 'embed-block embed-docswell',
     },
     [
-      "iframe",
+      'iframe',
       {
         src: slideUrl,
         allowfullscreen: true,
-        class: "docswell-iframe",
-        width: "100%",
+        class: 'docswell-iframe',
+        width: '100%',
         style:
-          "border: 1px solid #ccc; display: block; margin: 0px auto; padding: 0px; aspect-ratio: 16/9",
+          'border: 1px solid #ccc; display: block; margin: 0px auto; padding: 0px; aspect-ratio: 16/9',
       },
     ],
   ];

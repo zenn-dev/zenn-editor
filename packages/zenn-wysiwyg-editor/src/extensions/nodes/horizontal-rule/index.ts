@@ -1,5 +1,5 @@
-import HorizontalRuleTiptap from "@tiptap/extension-horizontal-rule";
-import { InputRule } from "@tiptap/react";
+import HorizontalRuleTiptap from '@tiptap/extension-horizontal-rule';
+import { InputRule } from '@tiptap/react';
 
 export const HorizontalRule = HorizontalRuleTiptap.extend({
   addCommands() {
@@ -15,7 +15,7 @@ export const HorizontalRule = HorizontalRuleTiptap.extend({
           }
 
           const isParentMatch = range.parent.type.contentMatch.matchType(
-            this.type,
+            this.type
           );
 
           if (!isParentMatch) {

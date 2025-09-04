@@ -1,16 +1,16 @@
-import Document from "@tiptap/extension-document";
-import HardBreak from "@tiptap/extension-hard-break";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { userEvent } from "@vitest/browser/context";
-import { describe, expect, it } from "vitest";
-import { waitSelectionChange } from "../../../../../tests/dom";
-import { renderTiptapEditor } from "../../../../../tests/editor";
-import { CodeBlock } from "../../code-block";
-import { CodeBlockFileName } from "../../code-block-file-name";
-import { CodeBlockContainer } from "../../index";
-import { DiffCodeBlock } from "..";
-import { DiffCodeLine } from "../diff-code-line";
+import Document from '@tiptap/extension-document';
+import HardBreak from '@tiptap/extension-hard-break';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { userEvent } from '@vitest/browser/context';
+import { describe, expect, it } from 'vitest';
+import { waitSelectionChange } from '../../../../../tests/dom';
+import { renderTiptapEditor } from '../../../../../tests/editor';
+import { CodeBlock } from '../../code-block';
+import { CodeBlockFileName } from '../../code-block-file-name';
+import { CodeBlockContainer } from '../../index';
+import { DiffCodeBlock } from '..';
+import { DiffCodeLine } from '../diff-code-line';
 
 const baseExtensions = [
   Document,
@@ -24,9 +24,9 @@ const baseExtensions = [
   HardBreak,
 ];
 
-describe("キーボードショートカット", () => {
-  describe("Backspace", () => {
-    it("差分コードブロックの先頭で Backspace を押すと解除", async () => {
+describe('キーボードショートカット', () => {
+  describe('Backspace', () => {
+    it('差分コードブロックの先頭で Backspace を押すと解除', async () => {
       const editor = renderTiptapEditor({
         content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
           <pre><code class="language-diff-javascript diff-highlight"><span>Text</span></code></pre></div>`,
@@ -36,14 +36,14 @@ describe("キーボードショートカット", () => {
       await waitSelectionChange(() => {
         editor.chain().focus().setTextSelection(5).run();
       });
-      await userEvent.keyboard("{Backspace}");
+      await userEvent.keyboard('{Backspace}');
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe('doc(paragraph("Text"))');
       expect(editor.state.selection.from).toBe(1);
     });
 
-    it("ファイル名の先頭で Backspace を押しても何も起こらない", async () => {
+    it('ファイル名の先頭で Backspace を押しても何も起こらない', async () => {
       const editor = renderTiptapEditor({
         content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
           <pre><code class="language-diff-javascript diff-highlight"><span>Text</span></code></pre></div>`,
@@ -53,18 +53,18 @@ describe("キーボードショートカット", () => {
       await waitSelectionChange(() => {
         editor.chain().focus().setTextSelection(2).run();
       });
-      await userEvent.keyboard("{Backspace}");
+      await userEvent.keyboard('{Backspace}');
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
-        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("Text"))))',
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("Text"))))'
       );
       expect(editor.state.selection.from).toBe(2);
     });
   });
 
-  describe("Enter", () => {
-    it("文末でEnterを三回押すと差分コードブロックを脱出する", async () => {
+  describe('Enter', () => {
+    it('文末でEnterを三回押すと差分コードブロックを脱出する', async () => {
       const editor = renderTiptapEditor({
         content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
           <pre><code class="language-diff-javascript diff-highlight"><span>Text</span></code></pre></div>`,
@@ -74,16 +74,16 @@ describe("キーボードショートカット", () => {
       await waitSelectionChange(() => {
         editor.chain().focus().setTextSelection(9).run();
       });
-      await userEvent.keyboard("{Enter}{Enter}{Enter}");
+      await userEvent.keyboard('{Enter}{Enter}{Enter}');
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
-        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("Text"))), paragraph)',
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("Text"))), paragraph)'
       );
       expect(editor.state.selection.from).toBe(13);
     });
 
-    it("ファイル名でEnterを押すと何も起こらない", async () => {
+    it('ファイル名でEnterを押すと何も起こらない', async () => {
       const editor = renderTiptapEditor({
         content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
           <pre><code class="language-diff-javascript diff-highlight"><span>Text</span></code></pre></div>`,
@@ -93,11 +93,11 @@ describe("キーボードショートカット", () => {
       await waitSelectionChange(() => {
         editor.chain().focus().setTextSelection(2).run();
       });
-      await userEvent.keyboard("{Enter}");
+      await userEvent.keyboard('{Enter}');
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
-        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("Text"))))',
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("Text"))))'
       );
       expect(editor.state.selection.from).toBe(2);
     });

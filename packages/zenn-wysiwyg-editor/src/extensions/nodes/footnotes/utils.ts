@@ -1,6 +1,6 @@
-import { Fragment, type Node } from "@tiptap/pm/model";
-import type { EditorState, Transaction } from "@tiptap/pm/state";
-import { ReplaceStep } from "@tiptap/pm/transform";
+import { Fragment, type Node } from '@tiptap/pm/model';
+import type { EditorState, Transaction } from '@tiptap/pm/state';
+import { ReplaceStep } from '@tiptap/pm/transform';
 
 // 脚注参照が追加・削除・移動されたか否か
 export function isFootnoteRefChanged(transactions: readonly Transaction[]) {
@@ -18,7 +18,7 @@ export function isFootnoteRefChanged(transactions: readonly Transaction[]) {
 
       if (isInsert) {
         step.slice.content.descendants((node) => {
-          if (node?.type.name === "footnoteReference") {
+          if (node?.type.name === 'footnoteReference') {
             refsChanged = true;
             return false;
           }
@@ -29,11 +29,11 @@ export function isFootnoteRefChanged(transactions: readonly Transaction[]) {
           step.from,
           Math.min(tr.before.content.size, step.to),
           (node) => {
-            if (node.type.name === "footnoteReference") {
+            if (node.type.name === 'footnoteReference') {
               refsChanged = true;
               return false;
             }
-          },
+          }
         );
       }
     }
@@ -48,8 +48,8 @@ export function updateFootnoteReferences(tr: Transaction) {
   const nodes: Node[] = [];
 
   tr.doc.descendants((node, pos) => {
-    if (node.type.name === "footnoteReference") {
-      tr.setNodeAttribute(pos, "referenceNumber", count);
+    if (node.type.name === 'footnoteReference') {
+      tr.setNodeAttribute(pos, 'referenceNumber', count);
 
       nodes.push(node);
       count += 1;
@@ -63,11 +63,11 @@ function getFootnotes(tr: Transaction) {
   let footnotesRange: { from: number; to: number } | undefined;
   const footnoteItems: Node[] = [];
   tr.doc.descendants((node, pos) => {
-    if (node.type.name === "footnoteItem") {
+    if (node.type.name === 'footnoteItem') {
       footnoteItems.push(node);
-    } else if (node.type.name === "footnotes") {
+    } else if (node.type.name === 'footnotes') {
       footnotesRange = { from: pos, to: pos + node.nodeSize };
-    } else if (node.type.name === "footnotesList") {
+    } else if (node.type.name === 'footnotesList') {
       // 子要素を探索する
     } else {
       return false;
@@ -90,7 +90,7 @@ export function updateFootnotes(tr: Transaction, state: EditorState) {
       obj[footnote.attrs.id] = footnote;
       return obj;
     },
-    {},
+    {}
   );
 
   const newFootnotes: Node[] = [];
@@ -102,10 +102,7 @@ export function updateFootnotes(tr: Transaction, state: EditorState) {
     if (footnoteId in mappingId2FootnoteItem) {
       const footnoteItem = mappingId2FootnoteItem[footnoteId];
       newFootnotes.push(
-        footnoteItemType.create(
-          { ...footnoteItem.attrs },
-          footnoteItem.content,
-        ),
+        footnoteItemType.create({ ...footnoteItem.attrs }, footnoteItem.content)
       );
     } else {
       const newNode = footnoteItemType.create(
@@ -113,7 +110,7 @@ export function updateFootnotes(tr: Transaction, state: EditorState) {
           id: footnoteId,
           referenceId: refId,
         },
-        [],
+        []
       );
       newFootnotes.push(newNode);
     }
@@ -130,14 +127,14 @@ export function updateFootnotes(tr: Transaction, state: EditorState) {
       tr.doc.content.size,
       footnotesType.create(
         null,
-        footnotesListType.create(null, Fragment.from(newFootnotes)),
-      ),
+        footnotesListType.create(null, Fragment.from(newFootnotes))
+      )
     );
   } else {
     tr.replaceWith(
       footnotesRange.from + 2, // footnotesList start
       footnotesRange.to - 2, // footnotesList end
-      Fragment.from(newFootnotes),
+      Fragment.from(newFootnotes)
     );
   }
 }

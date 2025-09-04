@@ -1,7 +1,7 @@
-import { userEvent } from "@vitest/browser/context";
+import { userEvent } from '@vitest/browser/context';
 
 export async function copyText(text: string) {
-  const input = document.createElement("input");
+  const input = document.createElement('input');
   input.value = text;
   document.body.appendChild(input);
 

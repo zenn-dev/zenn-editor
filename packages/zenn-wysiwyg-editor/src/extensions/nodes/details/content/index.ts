@@ -1,9 +1,9 @@
-import { mergeAttributes, Node } from "@tiptap/react";
+import { mergeAttributes, Node } from '@tiptap/react';
 
 export const DetailsContent = Node.create({
-  name: "detailsContent",
+  name: 'detailsContent',
 
-  content: "block+",
+  content: 'block+',
   defining: true,
   selectable: false,
 
@@ -17,9 +17,9 @@ export const DetailsContent = Node.create({
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "div",
+      'div',
       mergeAttributes(HTMLAttributes, {
-        class: "details-content",
+        class: 'details-content',
       }),
       0,
     ];

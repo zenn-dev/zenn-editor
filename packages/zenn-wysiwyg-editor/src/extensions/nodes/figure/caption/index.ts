@@ -1,28 +1,28 @@
-import { Node } from "@tiptap/react";
+import { Node } from '@tiptap/react';
 
 export const Caption = Node.create({
-  name: "caption",
-  group: "block",
-  content: "text*",
+  name: 'caption',
+  group: 'block',
+  content: 'text*',
   defining: true,
-  marks: "",
+  marks: '',
 
   parseHTML() {
     return [
       {
-        tag: "img + em",
+        tag: 'img + em',
         priority: 100,
       },
       // マークダウン入力経由だと、間にbrを持つ
       {
-        tag: "img + br + em",
+        tag: 'img + br + em',
         priority: 100,
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ["em", HTMLAttributes, 0];
+    return ['em', HTMLAttributes, 0];
   },
 
   addKeyboardShortcuts() {
@@ -46,7 +46,7 @@ export const Caption = Node.create({
         }
 
         return editor.commands.insertContentAt($from.after(-1), {
-          type: "paragraph",
+          type: 'paragraph',
         });
       },
     };

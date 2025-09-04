@@ -1,6 +1,6 @@
-import type { Node } from "@tiptap/pm/model";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { Decoration, DecorationSet } from "@tiptap/pm/view";
+import type { Node } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
 
 export function createMessageSymbolDecorationPlugin(nodeName: string) {
   function getDecorations(doc: Node): DecorationSet {
@@ -10,11 +10,11 @@ export function createMessageSymbolDecorationPlugin(nodeName: string) {
       if (node.type.name === nodeName) {
         decorations.push(
           Decoration.widget(pos + 1, () => {
-            const element = document.createElement("span");
-            element.className = "msg-symbol";
-            element.textContent = "!";
+            const element = document.createElement('span');
+            element.className = 'msg-symbol';
+            element.textContent = '!';
             return element;
-          }),
+          })
         );
       }
     });
@@ -23,7 +23,7 @@ export function createMessageSymbolDecorationPlugin(nodeName: string) {
   }
 
   return new Plugin({
-    key: new PluginKey("messageSymbolDecoration"),
+    key: new PluginKey('messageSymbolDecoration'),
     state: {
       init(_, { doc }) {
         return getDecorations(doc);

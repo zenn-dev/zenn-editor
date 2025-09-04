@@ -1,12 +1,12 @@
-import type { Node as ProsemirrorNode } from "@tiptap/pm/model";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { Decoration, DecorationSet } from "@tiptap/pm/view";
-import { findChildren } from "@tiptap/react";
-import { getHighlightNodes, highlightCode, parseNodes } from "../utils";
+import type { Node as ProsemirrorNode } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
+import { findChildren } from '@tiptap/react';
+import { getHighlightNodes, highlightCode, parseNodes } from '../utils';
 
 function createStandardDecorations(
   nodes: ChildNode[],
-  startPos: number,
+  startPos: number
 ): Decoration[] {
   const decorations: Decoration[] = [];
   let from = startPos;
@@ -16,7 +16,7 @@ function createStandardDecorations(
 
     if (node.classes.length) {
       const decoration = Decoration.inline(from, to, {
-        class: node.classes.join(" "),
+        class: node.classes.join(' '),
       });
       decorations.push(decoration);
     }
@@ -41,7 +41,7 @@ function getDecorations({
   findChildren(doc, (node) => node.type.name === name).forEach((block) => {
     const from = block.pos + 1;
     const language =
-      block.node.attrs.language !== "diff" // diffは単体では使えない
+      block.node.attrs.language !== 'diff' // diffは単体では使えない
         ? block.node.attrs.language
         : defaultLanguage;
 
@@ -64,7 +64,7 @@ export function PrismPlugin({
   defaultLanguage: string;
 }) {
   const prismjsPlugin: Plugin = new Plugin({
-    key: new PluginKey("prism"),
+    key: new PluginKey('prism'),
 
     state: {
       init: (_, { doc }) =>
@@ -78,11 +78,11 @@ export function PrismPlugin({
         const newNodeName = newState.selection.$head.parent.type.name;
         const oldNodes = findChildren(
           oldState.doc,
-          (node) => node.type.name === name,
+          (node) => node.type.name === name
         );
         const newNodes = findChildren(
           newState.doc,
-          (node) => node.type.name === name,
+          (node) => node.type.name === name
         );
 
         if (

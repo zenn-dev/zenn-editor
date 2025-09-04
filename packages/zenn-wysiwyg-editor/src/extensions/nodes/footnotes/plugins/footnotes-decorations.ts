@@ -1,15 +1,15 @@
-import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { Decoration, DecorationSet } from "@tiptap/pm/view";
+import type { Node as ProseMirrorNode } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
 
 const getDecorations = (doc: ProseMirrorNode) => {
   const decorations: Decoration[] = [];
 
   doc.descendants((node, pos) => {
-    if (node.type.name === "footnotes") {
-      const span = document.createElement("span");
-      span.className = "footnotes-title";
-      span.textContent = "脚注";
+    if (node.type.name === 'footnotes') {
+      const span = document.createElement('span');
+      span.className = 'footnotes-title';
+      span.textContent = '脚注';
 
       decorations.push(Decoration.widget(pos + 1, span));
     }
@@ -19,7 +19,7 @@ const getDecorations = (doc: ProseMirrorNode) => {
 };
 
 export const FootnotesDecorationsPlugin = new Plugin({
-  key: new PluginKey("footnotesDecorations"),
+  key: new PluginKey('footnotesDecorations'),
   state: {
     init(_, { doc }) {
       return getDecorations(doc);

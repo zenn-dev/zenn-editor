@@ -1,5 +1,5 @@
-import { Table as TiptapTable } from "@tiptap/extension-table";
-import { InputRule } from "@tiptap/react";
+import { Table as TiptapTable } from '@tiptap/extension-table';
+import { InputRule } from '@tiptap/react';
 
 export const Table = TiptapTable.extend({
   addInputRules() {
@@ -17,7 +17,7 @@ export const Table = TiptapTable.extend({
           const isReplaceable = state.selection.$from.parent.canReplaceWith(
             state.selection.$from.index(),
             state.selection.$to.index() + 1,
-            this.type,
+            this.type
           );
 
           if (!isReplaceable) {

@@ -1,5 +1,5 @@
-import CodeTiptap, { inputRegex } from "@tiptap/extension-code";
-import { markInputRule } from "../../core/markInputRule";
+import CodeTiptap, { inputRegex } from '@tiptap/extension-code';
+import { markInputRule } from '../../core/markInputRule';
 
 export const Code = CodeTiptap.extend({
   addInputRules() {

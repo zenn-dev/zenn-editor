@@ -1,11 +1,11 @@
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { describe, expect, it } from "vitest";
-import { renderTiptapEditor } from "../../../../tests/editor";
-import { Details } from "..";
-import { DetailsContent } from "../content";
-import { DetailsSummary } from "../summary";
+import Document from '@tiptap/extension-document';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { describe, expect, it } from 'vitest';
+import { renderTiptapEditor } from '../../../../tests/editor';
+import { Details } from '..';
+import { DetailsContent } from '../content';
+import { DetailsSummary } from '../summary';
 
 const basicExtension = [
   Document,
@@ -16,8 +16,8 @@ const basicExtension = [
   DetailsSummary,
 ];
 
-describe("HTMLのパース・レンダリング", () => {
-  it("アコーディオンのHTMLをパースできる", () => {
+describe('HTMLのパース・レンダリング', () => {
+  it('アコーディオンのHTMLをパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content:
@@ -27,7 +27,7 @@ describe("HTMLのパース・レンダリング", () => {
     const docString = editor.state.doc.toString();
 
     expect(docString).toBe(
-      'doc(details(detailsSummary, detailsContent(paragraph("テキスト"))))',
+      'doc(details(detailsSummary, detailsContent(paragraph("テキスト"))))'
     );
   });
 });

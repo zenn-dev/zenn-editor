@@ -1,23 +1,23 @@
-import { Fragment, Slice } from "@tiptap/pm/model";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { Node } from "@tiptap/react";
-import { isProseMirrorPaste } from "../../../../lib/clipboard";
+import { Fragment, Slice } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Node } from '@tiptap/react';
+import { isProseMirrorPaste } from '../../../../lib/clipboard';
 
 export const DiffCodeLine = Node.create({
-  name: "diffCodeLine",
-  content: "text*",
-  marks: "",
+  name: 'diffCodeLine',
+  content: 'text*',
+  marks: '',
 
   parseHTML() {
     return [
       {
-        tag: ".diff-highlight > span",
+        tag: '.diff-highlight > span',
       },
     ];
   },
 
   renderHTML() {
-    return ["span", 0];
+    return ['span', 0];
   },
 
   addKeyboardShortcuts() {
@@ -62,7 +62,7 @@ export const DiffCodeLine = Node.create({
 
             return chain()
               .insertContentAt($from.pos + 3, {
-                type: "paragraph",
+                type: 'paragraph',
               })
               .setTextSelection($from.pos + 3)
               .command(({ tr }) => {
@@ -92,7 +92,7 @@ export const DiffCodeLine = Node.create({
   addProseMirrorPlugins() {
     return [
       new Plugin({
-        key: new PluginKey("diffCodeLine"),
+        key: new PluginKey('diffCodeLine'),
         props: {
           handlePaste: (view, event) => {
             const { $from, $to } = view.state.selection;
@@ -110,17 +110,17 @@ export const DiffCodeLine = Node.create({
             }
 
             // それ以外はテキストとして扱う
-            const text = event.clipboardData?.getData("text/plain");
+            const text = event.clipboardData?.getData('text/plain');
             if (!text) return false;
 
             const tr = view.state.tr;
             const nodes = text
-              .split("\n")
+              .split('\n')
               .map((line) =>
                 this.type.create(
                   null,
-                  line ? [view.state.schema.text(line)] : [],
-                ),
+                  line ? [view.state.schema.text(line)] : []
+                )
               );
 
             const fragment = Fragment.fromArray(nodes);

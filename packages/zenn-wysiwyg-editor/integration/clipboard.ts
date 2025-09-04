@@ -1,25 +1,25 @@
-import type { Page } from "@playwright/test";
+import type { Page } from '@playwright/test';
 
 export async function setClipboardContent(
   page: Page,
-  text: string,
+  text: string
 ): Promise<void> {
   const browserName = page.context().browser()?.browserType().name();
-  if (browserName === "chromium") {
+  if (browserName === 'chromium') {
     await page.evaluate(
       (text: string) => navigator.clipboard.writeText(text),
-      text,
+      text
     );
   } else {
     // Firefox and WebKit
-    const tempSelector = "#__clipboard_temp__";
+    const tempSelector = '#__clipboard_temp__';
     await page.evaluate((text: string) => {
-      const temp = document.createElement("textarea");
-      temp.id = "__clipboard_temp__";
-      temp.style.position = "fixed";
-      temp.style.top = "0";
-      temp.style.left = "0";
-      temp.style.opacity = "0";
+      const temp = document.createElement('textarea');
+      temp.id = '__clipboard_temp__';
+      temp.style.position = 'fixed';
+      temp.style.top = '0';
+      temp.style.left = '0';
+      temp.style.opacity = '0';
       temp.value = text;
       document.body.appendChild(temp);
     }, text);
@@ -31,13 +31,13 @@ export async function setClipboardContent(
     await page.waitForTimeout(100);
 
     await page.evaluate(() => {
-      const temp = document.querySelector("#__clipboard_temp__");
+      const temp = document.querySelector('#__clipboard_temp__');
       if (temp) temp.remove();
     });
   }
 }
 
 export async function paste(page: Page): Promise<void> {
-  await page.keyboard.press("ControlOrMeta+V");
+  await page.keyboard.press('ControlOrMeta+V');
   await page.waitForTimeout(100);
 }

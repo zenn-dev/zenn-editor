@@ -23,7 +23,7 @@ export async function waitSelectionChange(fn: () => void | Promise<void>) {
     const timer = setInterval(() => {
       if (t > maxWait) {
         clearInterval(timer);
-        reject(new Error("Selection change wait timeout"));
+        reject(new Error('Selection change wait timeout'));
       }
 
       const selection = window.getSelection();
@@ -46,7 +46,7 @@ export async function waitSelectionChange(fn: () => void | Promise<void>) {
 // 2つのRangeが同じかどうかを比較する関数
 function rangesEqual(
   range1: Range | undefined,
-  range2: Range | undefined,
+  range2: Range | undefined
 ): boolean {
   return (
     range1?.startContainer === range2?.startContainer &&

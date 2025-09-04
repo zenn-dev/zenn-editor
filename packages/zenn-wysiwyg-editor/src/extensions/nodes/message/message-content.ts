@@ -1,13 +1,13 @@
-import { mergeAttributes, Node } from "@tiptap/react";
+import { mergeAttributes, Node } from '@tiptap/react';
 
 export const MessageContent = Node.create({
-  name: "messageContent",
-  content: "block+",
+  name: 'messageContent',
+  content: 'block+',
 
   parseHTML() {
     return [
       {
-        tag: "div.msg-content",
+        tag: 'div.msg-content',
         priority: 100, // paragraph よりも先に評価する
       },
     ];
@@ -15,9 +15,9 @@ export const MessageContent = Node.create({
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "div",
+      'div',
       mergeAttributes(HTMLAttributes, {
-        class: "msg-content",
+        class: 'msg-content',
       }),
       0,
     ];

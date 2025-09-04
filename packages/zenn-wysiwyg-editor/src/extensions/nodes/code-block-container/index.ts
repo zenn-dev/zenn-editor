@@ -1,4 +1,4 @@
-import type { EditorState } from "@tiptap/pm/state";
+import type { EditorState } from '@tiptap/pm/state';
 import {
   type CanCommands,
   type ChainedCommands,
@@ -11,20 +11,20 @@ import {
   InputRule,
   Node,
   type Range,
-} from "@tiptap/react";
-import { replaceNewlines } from "../../../lib/node";
+} from '@tiptap/react';
+import { replaceNewlines } from '../../../lib/node';
 
 type SetCodeBlockContainerOptions = {
   language?: string;
   filename?: string | null;
 };
 
-declare module "@tiptap/react" {
+declare module '@tiptap/react' {
   interface Commands<ReturnType> {
     codeBlockContainer: {
       setAllSelectionInCodeBlock: () => ReturnType;
       setCodeBlockContainer: (
-        attrs: SetCodeBlockContainerOptions,
+        attrs: SetCodeBlockContainerOptions
       ) => ReturnType;
       unsetCodeBlockContainer: () => ReturnType;
     };
@@ -48,10 +48,10 @@ const inputHandler = ({
 }) => {
   let language: string, filename: string | null;
 
-  if (match[1]?.includes(":")) {
-    [language, filename] = match[1].split(":");
+  if (match[1]?.includes(':')) {
+    [language, filename] = match[1].split(':');
   } else {
-    language = match[1] || "plaintext";
+    language = match[1] || 'plaintext';
     filename = null;
   }
 
@@ -66,20 +66,20 @@ const inputHandler = ({
 };
 
 export const CodeBlockContainer = Node.create({
-  name: "codeBlockContainer",
-  group: "block",
-  content: "codeBlockFileName (codeBlock | diffCodeBlock)",
+  name: 'codeBlockContainer',
+  group: 'block',
+  content: 'codeBlockFileName (codeBlock | diffCodeBlock)',
 
   parseHTML() {
     return [
       {
-        tag: "div.code-block-container",
+        tag: 'div.code-block-container',
       },
     ];
   },
 
   renderHTML() {
-    return ["div", { class: "code-block-container" }, 0];
+    return ['div', { class: 'code-block-container' }, 0];
   },
 
   addCommands() {
@@ -96,21 +96,21 @@ export const CodeBlockContainer = Node.create({
           }
 
           const isParentMatch = range.parent.type.contentMatch.matchType(
-            this.type,
+            this.type
           );
 
           if (!isParentMatch) {
             return false;
           }
 
-          const isDiff = language?.startsWith("diff");
+          const isDiff = language?.startsWith('diff');
           const text = getTextBetween(
             state.doc,
             { from: range.start, to: range.end },
             {
-              blockSeparator: "\n",
+              blockSeparator: '\n',
               textSerializers: getTextSerializersFromSchema(schema),
-            },
+            }
           );
 
           const codeFileNameNodeSize = (filename?.length ?? 0) + 2;
@@ -122,31 +122,31 @@ export const CodeBlockContainer = Node.create({
                 to: range.end,
               },
               {
-                type: "codeBlockContainer",
+                type: 'codeBlockContainer',
                 content: [
                   {
-                    type: "codeBlockFileName",
-                    content: filename ? [{ type: "text", text: filename }] : [],
+                    type: 'codeBlockFileName',
+                    content: filename ? [{ type: 'text', text: filename }] : [],
                   },
                   isDiff
                     ? {
-                        type: "diffCodeBlock",
+                        type: 'diffCodeBlock',
                         attrs: { language },
-                        content: text.split("\n").map((line) => ({
-                          type: "diffCodeLine",
-                          content: line ? [{ type: "text", text: line }] : [],
+                        content: text.split('\n').map((line) => ({
+                          type: 'diffCodeLine',
+                          content: line ? [{ type: 'text', text: line }] : [],
                         })),
                       }
                     : {
-                        type: "codeBlock",
+                        type: 'codeBlock',
                         attrs: { language },
-                        content: text ? [{ type: "text", text }] : [],
+                        content: text ? [{ type: 'text', text }] : [],
                       },
                 ],
-              },
+              }
             )
             .setTextSelection(
-              range.start + 1 + codeFileNameNodeSize + (isDiff ? 2 : 1),
+              range.start + 1 + codeFileNameNodeSize + (isDiff ? 2 : 1)
             ) //コンテンツの開始位置にカーソルを移動
             .run();
         },
@@ -156,11 +156,11 @@ export const CodeBlockContainer = Node.create({
           const { selection } = state;
 
           const codeBlock = findParentNode(
-            (node) => node.type === state.schema.nodes.codeBlock,
+            (node) => node.type === state.schema.nodes.codeBlock
           )(selection);
 
           const codeBlockDiff = findParentNode(
-            (node) => node.type === state.schema.nodes.diffCodeBlock,
+            (node) => node.type === state.schema.nodes.diffCodeBlock
           )(selection);
 
           if (codeBlock) {
@@ -184,7 +184,7 @@ export const CodeBlockContainer = Node.create({
         ({ chain, state }) => {
           const { selection, schema } = state;
           const codeBlockContainer = findParentNode(
-            (node) => node.type === this.type,
+            (node) => node.type === this.type
           )(selection);
 
           if (!codeBlockContainer) {
@@ -193,11 +193,11 @@ export const CodeBlockContainer = Node.create({
 
           const codeBlocks = findChildren(
             codeBlockContainer.node,
-            (node) => node.type === schema.nodes.codeBlock,
+            (node) => node.type === schema.nodes.codeBlock
           );
           const diffCodeBlocks = findChildren(
             codeBlockContainer.node,
-            (node) => node.type === schema.nodes.diffCodeBlock,
+            (node) => node.type === schema.nodes.diffCodeBlock
           );
 
           if (!codeBlocks.length && !diffCodeBlocks.length) return false;
@@ -209,7 +209,7 @@ export const CodeBlockContainer = Node.create({
           const to = from + codeBlockContainer.node.nodeSize;
           const range = { from, to };
           const code = getText(codeBlockNode.node, {
-            blockSeparator: "\n",
+            blockSeparator: '\n',
             textSerializers: getTextSerializersFromSchema(schema),
           });
           const defaultType = $from.parent.type.contentMatch.defaultType;
@@ -217,7 +217,7 @@ export const CodeBlockContainer = Node.create({
 
           const contentNode = defaultType?.create(
             null,
-            code ? schema.text(code) : null,
+            code ? schema.text(code) : null
           );
           const contentNodeWithNewLine = replaceNewlines(contentNode);
 
@@ -231,7 +231,7 @@ export const CodeBlockContainer = Node.create({
 
   addKeyboardShortcuts() {
     return {
-      "Mod-a": () => {
+      'Mod-a': () => {
         return this.editor.commands.setAllSelectionInCodeBlock();
       },
     };

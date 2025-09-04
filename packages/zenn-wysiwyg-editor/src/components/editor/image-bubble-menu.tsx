@@ -1,7 +1,7 @@
-import { NodeSelection } from "@tiptap/pm/state";
-import { type Editor, useEditorState } from "@tiptap/react";
-import { BubbleMenu as TiptapBubbleMenu } from "@tiptap/react/menus";
-import AltPopover from "./alt-popover";
+import { NodeSelection } from '@tiptap/pm/state';
+import { type Editor, useEditorState } from '@tiptap/react';
+import { BubbleMenu as TiptapBubbleMenu } from '@tiptap/react/menus';
+import AltPopover from './alt-popover';
 
 type Props = {
   editor: Editor;
@@ -20,7 +20,7 @@ export default function ImageBubbleMenu({ editor }: Props) {
         selection.node.type === editor.schema.nodes.figure
       ) {
         if (!selection.node.firstChild) {
-          throw new Error("figureノードの中にimageノードが存在しません");
+          throw new Error('figureノードの中にimageノードが存在しません');
         }
 
         imagePos = selection.from + 1; // 選択は親のfigureノードなので、子のimageノードは+1
@@ -38,14 +38,14 @@ export default function ImageBubbleMenu({ editor }: Props) {
 
     const { tr } = editor.state;
 
-    tr.setNodeAttribute(imagePos, "alt", alt);
+    tr.setNodeAttribute(imagePos, 'alt', alt);
     editor.view.dispatch(tr);
   };
 
   return (
     <TiptapBubbleMenu
       editor={editor}
-      options={{ placement: "top", offset: 12 }}
+      options={{ placement: 'top', offset: 12 }}
       shouldShow={({ editor }) => {
         const { selection } = editor.state;
 

@@ -1,16 +1,16 @@
-import Document from "@tiptap/extension-document";
-import HardBreak from "@tiptap/extension-hard-break";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { describe, expect, it } from "vitest";
-import { fromMarkdown } from "../../../../../lib/from-markdown";
-import { markdownSerializer } from "../../../../../lib/to-markdown";
-import { renderTiptapEditor } from "../../../../../tests/editor";
-import { CodeBlockFileName } from "../../code-block-file-name";
-import { DiffCodeBlock } from "../../diff-code-block";
-import { DiffCodeLine } from "../../diff-code-block/diff-code-line";
-import { CodeBlockContainer } from "../../index";
-import { CodeBlock } from "../index";
+import Document from '@tiptap/extension-document';
+import HardBreak from '@tiptap/extension-hard-break';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { describe, expect, it } from 'vitest';
+import { fromMarkdown } from '../../../../../lib/from-markdown';
+import { markdownSerializer } from '../../../../../lib/to-markdown';
+import { renderTiptapEditor } from '../../../../../tests/editor';
+import { CodeBlockFileName } from '../../code-block-file-name';
+import { DiffCodeBlock } from '../../diff-code-block';
+import { DiffCodeLine } from '../../diff-code-block/diff-code-line';
+import { CodeBlockContainer } from '../../index';
+import { CodeBlock } from '../index';
 
 const basicExtension = [
   Document,
@@ -24,8 +24,8 @@ const basicExtension = [
   HardBreak,
 ];
 
-describe("マークダウン", () => {
-  it("JavaScriptコードブロックをマークダウンに変換できる", () => {
+describe('マークダウン', () => {
+  it('JavaScriptコードブロックをマークダウンに変換できる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content:
@@ -36,7 +36,7 @@ describe("マークダウン", () => {
     expect(markdown).toBe('```javascript\nconsole.log("hello");\n```');
   });
 
-  it("言語名なしのコードブロックをマークダウンに変換できる", () => {
+  it('言語名なしのコードブロックをマークダウンに変換できる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content:
@@ -44,10 +44,10 @@ describe("マークダウン", () => {
     });
 
     const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe("```plaintext\nplaintext code\n```");
+    expect(markdown).toBe('```plaintext\nplaintext code\n```');
   });
 
-  it("複数行のコードブロックをマークダウンに変換できる", () => {
+  it('複数行のコードブロックをマークダウンに変換できる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content:
@@ -56,11 +56,11 @@ describe("マークダウン", () => {
 
     const markdown = markdownSerializer.serialize(editor.state.doc);
     expect(markdown).toBe(
-      '```python\ndef hello():\n    print("Hello, World!")\n    return True\n```',
+      '```python\ndef hello():\n    print("Hello, World!")\n    return True\n```'
     );
   });
 
-  it("マークダウンからコードブロックに変換", () => {
+  it('マークダウンからコードブロックに変換', () => {
     const markdown = '```javascript\nconsole.log("hello");\n```';
 
     const html = fromMarkdown(markdown);
@@ -71,11 +71,11 @@ describe("マークダウン", () => {
     const docString = editor.state.doc.toString();
 
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName, codeBlock("console.log(\\"hello\\");")))',
+      'doc(codeBlockContainer(codeBlockFileName, codeBlock("console.log(\\"hello\\");")))'
     );
   });
 
-  it("ファイル名付きマークダウンからコードブロックに変換", () => {
+  it('ファイル名付きマークダウンからコードブロックに変換', () => {
     const markdown = '```javascript:hello.js\nconsole.log("hello");\n```';
 
     const html = fromMarkdown(markdown);
@@ -86,7 +86,7 @@ describe("マークダウン", () => {
     const docString = editor.state.doc.toString();
 
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName("hello.js"), codeBlock("console.log(\\"hello\\");")))',
+      'doc(codeBlockContainer(codeBlockFileName("hello.js"), codeBlock("console.log(\\"hello\\");")))'
     );
   });
 });

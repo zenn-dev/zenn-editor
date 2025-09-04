@@ -1,8 +1,8 @@
-import type { Node as ProsemirrorNode } from "@tiptap/pm/model";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { Decoration, DecorationSet } from "@tiptap/pm/view";
-import type { Editor } from "@tiptap/react";
-import { Extension, isNodeEmpty } from "@tiptap/react";
+import type { Node as ProsemirrorNode } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
+import type { Editor } from '@tiptap/react';
+import { Extension, isNodeEmpty } from '@tiptap/react';
 
 export interface PlaceholderOptions {
   emptyEditorClass: string;
@@ -20,13 +20,13 @@ export interface PlaceholderOptions {
 }
 
 export const Placeholder = Extension.create<PlaceholderOptions>({
-  name: "placeholder",
+  name: 'placeholder',
 
   addOptions() {
     return {
-      emptyEditorClass: "is-editor-empty",
-      emptyNodeClass: "is-empty",
-      placeholder: "Write something …",
+      emptyEditorClass: 'is-editor-empty',
+      emptyNodeClass: 'is-empty',
+      placeholder: 'Write something …',
       showOnlyWhenEditable: true,
       includeChildren: true,
     };
@@ -46,7 +46,7 @@ export const Placeholder = Extension.create<PlaceholderOptions>({
 
     return [
       new Plugin({
-        key: new PluginKey("placeholder"),
+        key: new PluginKey('placeholder'),
         props: {
           decorations: ({ doc, selection }) => {
             const active =
@@ -72,9 +72,9 @@ export const Placeholder = Extension.create<PlaceholderOptions>({
                 }
 
                 const decoration = Decoration.node(pos, pos + node.nodeSize, {
-                  class: classes.join(" "),
-                  "data-placeholder":
-                    typeof this.options.placeholder === "function"
+                  class: classes.join(' '),
+                  'data-placeholder':
+                    typeof this.options.placeholder === 'function'
                       ? this.options.placeholder({
                           editor: this.editor,
                           node,

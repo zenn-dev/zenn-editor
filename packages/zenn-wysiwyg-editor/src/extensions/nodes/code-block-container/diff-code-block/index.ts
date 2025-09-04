@@ -1,6 +1,6 @@
-import { Node } from "@tiptap/react";
-import { cn } from "../../../../lib/utils";
-import { DiffPrismPlugin } from "./diff-prism-plugin";
+import { Node } from '@tiptap/react';
+import { cn } from '../../../../lib/utils';
+import { DiffPrismPlugin } from './diff-prism-plugin';
 
 export interface CodeBlockOptions {
   languageClassPrefix: string;
@@ -8,17 +8,17 @@ export interface CodeBlockOptions {
 }
 
 export const DiffCodeBlock = Node.create<CodeBlockOptions>({
-  name: "diffCodeBlock",
+  name: 'diffCodeBlock',
 
   addOptions() {
     return {
-      languageClassPrefix: "language-",
-      defaultLanguage: "plaintext",
+      languageClassPrefix: 'language-',
+      defaultLanguage: 'plaintext',
     };
   },
 
-  content: "diffCodeLine+",
-  marks: "",
+  content: 'diffCodeLine+',
+  marks: '',
   defining: true,
 
   addAttributes() {
@@ -30,7 +30,7 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
           const classNames = [...(element.firstElementChild?.classList || [])];
           const languages = classNames
             .filter((className) => className.startsWith(languageClassPrefix))
-            .map((className) => className.replace(languageClassPrefix, ""));
+            .map((className) => className.replace(languageClassPrefix, ''));
           const language = languages[0];
 
           if (!language) {
@@ -47,8 +47,8 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
   parseHTML() {
     return [
       {
-        tag: "pre:has(code.diff-highlight)",
-        preserveWhitespace: "full",
+        tag: 'pre:has(code.diff-highlight)',
+        preserveWhitespace: 'full',
         priority: 1000, // Codeよりも先に読み込む
       },
     ];
@@ -56,10 +56,10 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
 
   renderHTML({ node, HTMLAttributes }) {
     return [
-      "pre",
+      'pre',
       HTMLAttributes,
       [
-        "code",
+        'code',
         {
           class: `diff-highlight ${
             node.attrs.language
@@ -74,20 +74,20 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
 
   addNodeView() {
     return ({ node }) => {
-      const dom = document.createElement("div");
-      dom.className = "code-block-wrapper-for-langname"; // 言語名表示のポジションのため
+      const dom = document.createElement('div');
+      dom.className = 'code-block-wrapper-for-langname'; // 言語名表示のポジションのため
       dom.setAttribute(
-        "data-language",
-        node.attrs.language || this.options.defaultLanguage,
+        'data-language',
+        node.attrs.language || this.options.defaultLanguage
       );
-      const pre = document.createElement("pre");
+      const pre = document.createElement('pre');
 
-      const code = document.createElement("code");
+      const code = document.createElement('code');
       code.className = cn(
-        "diff-highlight",
+        'diff-highlight',
         node.attrs.language
           ? this.options.languageClassPrefix + node.attrs.language
-          : "",
+          : ''
       );
       code.textContent = node.textContent;
 

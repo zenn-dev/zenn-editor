@@ -1,8 +1,8 @@
-import { Node } from "@tiptap/react";
+import { Node } from '@tiptap/react';
 
 export const FootnotesList = Node.create({
-  name: "footnotesList",
-  content: "footnoteItem+",
+  name: 'footnotesList',
+  content: 'footnoteItem+',
   isolating: true,
   draggable: false,
   priority: 1000, // ol よりも優先度を高くする
@@ -10,12 +10,12 @@ export const FootnotesList = Node.create({
   parseHTML() {
     return [
       {
-        tag: "ol.footnotes-list",
+        tag: 'ol.footnotes-list',
       },
     ];
   },
 
   renderHTML() {
-    return ["ol", { class: "footnotes-list" }, 0];
+    return ['ol', { class: 'footnotes-list' }, 0];
   },
 });

@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import react from "@vitejs/plugin-react";
-import path from "path";
-import { defineConfig } from "vitest/config";
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { defineConfig } from 'vitest/config';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,10 +10,10 @@ export default defineConfig({
       babel: {
         plugins: [
           [
-            "prismjs",
+            'prismjs',
             {
-              languages: "all",
-              plugins: ["diff-highlight"],
+              languages: 'all',
+              plugins: ['diff-highlight'],
             },
           ],
         ],
@@ -22,12 +22,12 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   test: {
-    include: ["src/**/*.spec.ts", "src/**/*.spec.tsx"],
-    exclude: ["src/**/*.browser.spec.ts", "src/**/*.browser.spec.tsx"], // browser用テストを除外
-    environment: "happy-dom",
+    include: ['src/**/*.spec.ts', 'src/**/*.spec.tsx'],
+    exclude: ['src/**/*.browser.spec.ts', 'src/**/*.browser.spec.tsx'], // browser用テストを除外
+    environment: 'happy-dom',
   },
 });

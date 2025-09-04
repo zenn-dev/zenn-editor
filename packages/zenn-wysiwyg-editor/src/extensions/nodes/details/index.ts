@@ -1,4 +1,4 @@
-import { Plugin, PluginKey, TextSelection } from "@tiptap/pm/state";
+import { Plugin, PluginKey, TextSelection } from '@tiptap/pm/state';
 import {
   findChildren,
   findParentNode,
@@ -6,10 +6,10 @@ import {
   isActive,
   mergeAttributes,
   Node,
-} from "@tiptap/react";
-import { findClosestVisibleNode, isNodeVisible } from "../../../lib/node";
+} from '@tiptap/react';
+import { findClosestVisibleNode, isNodeVisible } from '../../../lib/node';
 
-declare module "@tiptap/react" {
+declare module '@tiptap/react' {
   interface Commands<ReturnType> {
     details: {
       setDetails: () => ReturnType;
@@ -19,10 +19,10 @@ declare module "@tiptap/react" {
 }
 
 export const Details = Node.create({
-  name: "details",
+  name: 'details',
 
-  content: "detailsSummary detailsContent",
-  group: "block",
+  content: 'detailsSummary detailsContent',
+  group: 'block',
   defining: true,
   isolating: true,
 
@@ -30,13 +30,13 @@ export const Details = Node.create({
     return {
       open: {
         default: false,
-        parseHTML: (element) => element.hasAttribute("open"),
+        parseHTML: (element) => element.hasAttribute('open'),
         renderHTML: ({ open }) => {
           if (!open) {
             return {};
           }
 
-          return { open: "" };
+          return { open: '' };
         },
       },
     };
@@ -45,14 +45,14 @@ export const Details = Node.create({
   parseHTML() {
     return [
       {
-        tag: "details",
+        tag: 'details',
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "details",
+      'details',
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
       0,
     ];
@@ -73,7 +73,7 @@ export const Details = Node.create({
 
           const slice = state.doc.slice(range.start, range.end);
           const match = schema.nodes.detailsContent.contentMatch.matchFragment(
-            slice.content,
+            slice.content
           );
 
           if (!match) {
@@ -81,7 +81,7 @@ export const Details = Node.create({
           }
 
           const isParentMatch = range.parent.type.contentMatch.matchType(
-            this.type,
+            this.type
           );
 
           if (!isParentMatch) {
@@ -98,14 +98,14 @@ export const Details = Node.create({
                 attrs: { open: true },
                 content: [
                   {
-                    type: "detailsSummary",
+                    type: 'detailsSummary',
                   },
                   {
-                    type: "detailsContent",
+                    type: 'detailsContent',
                     content,
                   },
                 ],
-              },
+              }
             )
             .setTextSelection(range.start + 2)
             .run();
@@ -116,7 +116,7 @@ export const Details = Node.create({
         ({ state, chain }) => {
           const { selection, schema } = state;
           const details = findParentNode((node) => node.type === this.type)(
-            selection,
+            selection
           );
 
           if (!details) {
@@ -125,11 +125,11 @@ export const Details = Node.create({
 
           const detailsSummaries = findChildren(
             details.node,
-            (node) => node.type === schema.nodes.detailsSummary,
+            (node) => node.type === schema.nodes.detailsSummary
           );
           const detailsContents = findChildren(
             details.node,
-            (node) => node.type === schema.nodes.detailsContent,
+            (node) => node.type === schema.nodes.detailsContent
           );
 
           if (!detailsSummaries.length || !detailsContents.length) {
@@ -161,11 +161,11 @@ export const Details = Node.create({
 
   addNodeView() {
     return ({ node }) => {
-      const dom = document.createElement("div");
-      dom.className = "details";
+      const dom = document.createElement('div');
+      dom.className = 'details';
 
       if (node.attrs.open) {
-        dom.setAttribute("data-open", "");
+        dom.setAttribute('data-open', '');
       }
 
       return {
@@ -194,11 +194,11 @@ export const Details = Node.create({
     return [
       // 閉じたコンテンツ内にカーソルを移動することを防ぐ
       new Plugin({
-        key: new PluginKey("detailsSelection"),
+        key: new PluginKey('detailsSelection'),
         appendTransaction: (transactions, oldState, newState) => {
           const { editor, type } = this;
           const selectionSet = transactions.some(
-            (transaction) => transaction.selectionSet,
+            (transaction) => transaction.selectionSet
           );
 
           if (
@@ -225,7 +225,7 @@ export const Details = Node.create({
           const details = findClosestVisibleNode(
             $from,
             (node) => node.type === type,
-            editor,
+            editor
           );
 
           if (!details) {
@@ -234,7 +234,7 @@ export const Details = Node.create({
 
           const detailsSummaries = findChildren(
             details.node,
-            (node) => node.type === newState.schema.nodes.detailsSummary,
+            (node) => node.type === newState.schema.nodes.detailsSummary
           );
 
           if (!detailsSummaries.length) {
@@ -244,15 +244,15 @@ export const Details = Node.create({
           const detailsSummary = detailsSummaries[0];
           const selectionDirection =
             oldState.selection.from < newState.selection.from
-              ? "forward"
-              : "backward";
+              ? 'forward'
+              : 'backward';
           const correctedPosition =
-            selectionDirection === "forward"
+            selectionDirection === 'forward'
               ? details.start + detailsSummary.pos
               : details.pos + detailsSummary.pos + detailsSummary.node.nodeSize;
           const selection = TextSelection.create(
             newState.doc,
-            correctedPosition,
+            correctedPosition
           );
           const transaction = newState.tr.setSelection(selection);
 

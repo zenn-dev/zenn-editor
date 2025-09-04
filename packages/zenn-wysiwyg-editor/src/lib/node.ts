@@ -3,11 +3,11 @@ import {
   type Node as ProseMirrorNode,
   type ResolvedPos,
   Slice,
-} from "@tiptap/pm/model";
-import type { Editor, Predicate } from "@tiptap/react";
+} from '@tiptap/pm/model';
+import type { Editor, Predicate } from '@tiptap/react';
 
 export function getSliceText(slice: Slice): string {
-  let textContent = "";
+  let textContent = '';
   slice.content.forEach((node) => {
     textContent += node.textContent;
   });
@@ -24,7 +24,7 @@ export const isNodeVisible = (position: number, editor: Editor): boolean => {
 export const findClosestVisibleNode = (
   $pos: ResolvedPos,
   predicate: Predicate,
-  editor: Editor,
+  editor: Editor
 ):
   | {
       pos: number;
@@ -52,7 +52,7 @@ export const findClosestVisibleNode = (
 export function replaceNewlines(node: ProseMirrorNode) {
   let result: ProseMirrorNode = node;
   if (!node.type.schema.linebreakReplacement) {
-    throw new Error("linebreakReplacement is not defined in the schema");
+    throw new Error('linebreakReplacement is not defined in the schema');
   }
   const lineBreakNode = node.type.schema.linebreakReplacement.create();
   const lineBreakSlice = new Slice(Fragment.from(lineBreakNode), 0, 0);

@@ -1,7 +1,7 @@
-import { type Editor, useEditorState } from "@tiptap/react";
-import { BubbleMenu as TiptapBubbleMenu } from "@tiptap/react/menus";
-import { Bold, Code, Italic, Strikethrough } from "lucide-react";
-import { cn } from "../..//lib/utils";
+import { type Editor, useEditorState } from '@tiptap/react';
+import { BubbleMenu as TiptapBubbleMenu } from '@tiptap/react/menus';
+import { Bold, Code, Italic, Strikethrough } from 'lucide-react';
+import { cn } from '../..//lib/utils';
 
 type Props = {
   editor: Editor;
@@ -11,16 +11,16 @@ export default function BubbleMenu({ editor }: Props) {
   const state = useEditorState({
     editor,
     selector: ({ editor }) => ({
-      isBold: editor.isActive("bold"),
-      isItalic: editor.isActive("italic"),
-      isStrike: editor.isActive("strike"),
-      isCode: editor.isActive("code"),
+      isBold: editor.isActive('bold'),
+      isItalic: editor.isActive('italic'),
+      isStrike: editor.isActive('strike'),
+      isCode: editor.isActive('code'),
     }),
   });
   return (
     <TiptapBubbleMenu
       editor={editor}
-      options={{ placement: "top", offset: 12 }}
+      options={{ placement: 'top', offset: 12 }}
       shouldShow={({ editor }) => {
         const { state } = editor;
         const { selection } = state;
@@ -57,8 +57,8 @@ export default function BubbleMenu({ editor }: Props) {
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={cn(
-            "size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100",
-            state.isBold && "bg-gray-200",
+            'size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100',
+            state.isBold && 'bg-gray-200'
           )}
           type="button"
         >
@@ -67,8 +67,8 @@ export default function BubbleMenu({ editor }: Props) {
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={cn(
-            "size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100",
-            state.isItalic && "bg-gray-200",
+            'size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100',
+            state.isItalic && 'bg-gray-200'
           )}
           type="button"
         >
@@ -77,8 +77,8 @@ export default function BubbleMenu({ editor }: Props) {
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           className={cn(
-            "size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100",
-            state.isStrike && "bg-gray-200",
+            'size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100',
+            state.isStrike && 'bg-gray-200'
           )}
           type="button"
         >
@@ -87,8 +87,8 @@ export default function BubbleMenu({ editor }: Props) {
         <button
           onClick={() => editor.chain().focus().toggleCode().run()}
           className={cn(
-            "size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100",
-            state.isCode && "bg-gray-200",
+            'size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100',
+            state.isCode && 'bg-gray-200'
           )}
           type="button"
         >

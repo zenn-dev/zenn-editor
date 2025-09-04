@@ -1,13 +1,13 @@
-import { Editor, type Extension, type Mark, type Node } from "@tiptap/react";
-import { afterEach, beforeEach } from "vitest";
+import { Editor, type Extension, type Mark, type Node } from '@tiptap/react';
+import { afterEach, beforeEach } from 'vitest';
 
 // テスト毎に描画するDOMをリセットする
 let ___global_container: HTMLElement | null = null;
 let ___global_rendered_editor: Editor | null = null;
 
 beforeEach(() => {
-  ___global_container = document.createElement("div");
-  ___global_container.setAttribute("class", "znc");
+  ___global_container = document.createElement('div');
+  ___global_container.setAttribute('class', 'znc');
   document.body.appendChild(___global_container);
   ___global_rendered_editor?.destroy();
 });

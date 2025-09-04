@@ -1,8 +1,8 @@
 import ItalicTiptap, {
   starInputRegex,
   underscoreInputRegex,
-} from "@tiptap/extension-italic";
-import { markInputRule } from "../../core/markInputRule";
+} from '@tiptap/extension-italic';
+import { markInputRule } from '../../core/markInputRule';
 
 export const Italic = ItalicTiptap.extend({
   addInputRules() {

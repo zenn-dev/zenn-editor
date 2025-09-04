@@ -1,5 +1,5 @@
-import StrikeTiptap, { inputRegex } from "@tiptap/extension-strike";
-import { markInputRule } from "../../core/markInputRule";
+import StrikeTiptap, { inputRegex } from '@tiptap/extension-strike';
+import { markInputRule } from '../../core/markInputRule';
 
 export const Strike = StrikeTiptap.extend({
   addInputRules() {

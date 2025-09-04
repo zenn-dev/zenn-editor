@@ -1,7 +1,7 @@
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { findParentNode, InputRule, Node } from "@tiptap/react";
-import { getSliceText } from "../../../lib/node";
-import { extractImageUrlAndAlt, isImageURL } from "../../../lib/url";
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { findParentNode, InputRule, Node } from '@tiptap/react';
+import { getSliceText } from '../../../lib/node';
+import { extractImageUrlAndAlt, isImageURL } from '../../../lib/url';
 
 export interface SetFigureOptions {
   src: string;
@@ -9,7 +9,7 @@ export interface SetFigureOptions {
   caption?: string;
 }
 
-declare module "@tiptap/react" {
+declare module '@tiptap/react' {
   interface Commands<ReturnType> {
     figure: {
       setFigure: (options: SetFigureOptions) => ReturnType;
@@ -23,10 +23,10 @@ export const inputRegex = /(?:^|\s)(!\[(.+|:?)]\((\S+)\))\s$/;
 
 // 埋め込みよりも優先度を高くする
 export const Figure = Node.create({
-  name: "figure",
+  name: 'figure',
 
-  group: "block",
-  content: "image caption",
+  group: 'block',
+  content: 'image caption',
   isolating: true,
   draggable: true,
   selectable: true,
@@ -34,14 +34,14 @@ export const Figure = Node.create({
   parseHTML() {
     return [
       {
-        tag: "p:has(img)", // Zennのレンダリングでは、キャプションなしがemを含まない
+        tag: 'p:has(img)', // Zennのレンダリングでは、キャプションなしがemを含まない
         priority: 200, // 段落よりも優先度を高くする
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ["p", HTMLAttributes, 0];
+    return ['p', HTMLAttributes, 0];
   },
 
   addCommands() {
@@ -57,7 +57,7 @@ export const Figure = Node.create({
           }
 
           const isParentMatch = range.parent.type.contentMatch.matchType(
-            this.type,
+            this.type
           );
 
           if (!isParentMatch) {
@@ -68,16 +68,16 @@ export const Figure = Node.create({
             type: this.name,
             content: [
               {
-                type: "image",
+                type: 'image',
                 attrs: {
                   src: options.src,
-                  alt: options.alt || "",
+                  alt: options.alt || '',
                 },
               },
               {
-                type: "caption",
+                type: 'caption',
                 content: options.caption
-                  ? [{ type: "text", text: options.caption }]
+                  ? [{ type: 'text', text: options.caption }]
                   : [],
               },
             ],
@@ -88,7 +88,7 @@ export const Figure = Node.create({
         ({ commands, state }) => {
           const { selection } = state;
           const parent = findParentNode((node) => node.type.name === this.name)(
-            selection,
+            selection
           );
 
           if (!parent) return false;
@@ -122,7 +122,7 @@ export const Figure = Node.create({
   addProseMirrorPlugins() {
     return [
       new Plugin({
-        key: new PluginKey("imageURLPasteHandler"),
+        key: new PluginKey('imageURLPasteHandler'),
         props: {
           handlePaste: (view, _, slice) => {
             const { state } = view;
@@ -143,7 +143,7 @@ export const Figure = Node.create({
               alt = params.alt;
             } else if (isImageURL(textContent)) {
               url = textContent;
-              alt = "";
+              alt = '';
             }
 
             if (!url) return false;

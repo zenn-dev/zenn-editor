@@ -1,13 +1,13 @@
-import { Node, ReactRenderer } from "@tiptap/react";
-import LoadingCard from "../../../components/editor/loading-card";
-import { escapeHtml } from "../../../lib/escape";
-import { extractSpeakerDeckEmbedParams } from "../../../lib/url";
+import { Node, ReactRenderer } from '@tiptap/react';
+import LoadingCard from '../../../components/editor/loading-card';
+import { escapeHtml } from '../../../lib/escape';
+import { extractSpeakerDeckEmbedParams } from '../../../lib/url';
 
 export const SpeakerDeckEmbed = Node.create({
-  name: "speakerDeckEmbed",
-  group: "block",
+  name: 'speakerDeckEmbed',
+  group: 'block',
   atom: true,
-  marks: "",
+  marks: '',
 
   addAttributes() {
     return {
@@ -29,12 +29,12 @@ export const SpeakerDeckEmbed = Node.create({
   parseHTML() {
     return [
       {
-        tag: "span.embed-block",
+        tag: 'span.embed-block',
         priority: 100,
         getAttrs: (element) => {
-          const iframe = element.querySelector("iframe");
+          const iframe = element.querySelector('iframe');
           if (!iframe) return false;
-          const src = iframe.getAttribute("src");
+          const src = iframe.getAttribute('src');
           if (!src) return false;
 
           const decodedUrl = decodeURIComponent(src);
@@ -53,18 +53,18 @@ export const SpeakerDeckEmbed = Node.create({
 
   renderHTML({ node }) {
     return [
-      "span",
+      'span',
       {
-        class: "embed-block embed-speakerdeck",
+        class: 'embed-block embed-speakerdeck',
       },
       [
-        "iframe",
+        'iframe',
         {
-          src: `https://speakerdeck.com/player/${escapeHtml(node.attrs.embedId)}?slide=${escapeHtml(node.attrs.slideIndex || "1")}`,
-          scrolling: "no",
+          src: `https://speakerdeck.com/player/${escapeHtml(node.attrs.embedId)}?slide=${escapeHtml(node.attrs.slideIndex || '1')}`,
+          scrolling: 'no',
           allowfullscreen: true,
-          loading: "lazy",
-          allow: "encrypted-media",
+          loading: 'lazy',
+          allow: 'encrypted-media',
         },
       ],
     ];
@@ -72,8 +72,8 @@ export const SpeakerDeckEmbed = Node.create({
 
   addNodeView() {
     return ({ node }) => {
-      const span = document.createElement("span");
-      span.setAttribute("class", "embed-block embed-speakerdeck");
+      const span = document.createElement('span');
+      span.setAttribute('class', 'embed-block embed-speakerdeck');
 
       if (node.attrs.tempId) {
         const component = new ReactRenderer(LoadingCard, {
@@ -82,15 +82,15 @@ export const SpeakerDeckEmbed = Node.create({
         return { dom: component.element };
       }
 
-      const iframe = document.createElement("iframe");
+      const iframe = document.createElement('iframe');
       iframe.setAttribute(
-        "src",
-        `https://speakerdeck.com/player/${escapeHtml(node.attrs.embedId)}?slide=${escapeHtml(node.attrs.slideIndex || "1")}`,
+        'src',
+        `https://speakerdeck.com/player/${escapeHtml(node.attrs.embedId)}?slide=${escapeHtml(node.attrs.slideIndex || '1')}`
       );
-      iframe.setAttribute("scrolling", "no");
-      iframe.setAttribute("allowfullscreen", "true");
-      iframe.setAttribute("loading", "lazy");
-      iframe.setAttribute("allow", "encrypted-media");
+      iframe.setAttribute('scrolling', 'no');
+      iframe.setAttribute('allowfullscreen', 'true');
+      iframe.setAttribute('loading', 'lazy');
+      iframe.setAttribute('allow', 'encrypted-media');
 
       span.appendChild(iframe);
 

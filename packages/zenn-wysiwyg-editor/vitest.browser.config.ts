@@ -1,6 +1,6 @@
-import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vitest/config";
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [
@@ -8,10 +8,10 @@ export default defineConfig({
       babel: {
         plugins: [
           [
-            "prismjs",
+            'prismjs',
             {
-              languages: "all",
-              plugins: ["diff-highlight"],
+              languages: 'all',
+              plugins: ['diff-highlight'],
             },
           ],
         ],
@@ -20,23 +20,23 @@ export default defineConfig({
     tailwindcss(),
   ],
   test: {
-    setupFiles: ["./setup-browser-test.ts"],
+    setupFiles: ['./setup-browser-test.ts'],
     browser: {
       enabled: true,
-      provider: "playwright",
+      provider: 'playwright',
       headless: true,
       instances: [
-        { browser: "chromium" },
-        { browser: "firefox" },
-        { browser: "webkit" },
+        { browser: 'chromium' },
+        { browser: 'firefox' },
+        { browser: 'webkit' },
       ],
     },
     // ブラウザ環境でのテスト（DOM操作、TiptapのEditor等）
-    include: ["src/**/*.browser.spec.ts", "src/**/*.browser.spec.tsx"],
+    include: ['src/**/*.browser.spec.ts', 'src/**/*.browser.spec.tsx'],
   },
   resolve: {
     alias: {
-      "@": new URL("./src", import.meta.url).pathname,
+      '@': new URL('./src', import.meta.url).pathname,
     },
   },
 });

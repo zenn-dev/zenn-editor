@@ -1,14 +1,14 @@
-declare module "zenn-content-css" {
+declare module 'zenn-content-css' {
   const content: string;
   export default content;
 }
 
-declare module "*.css" {
+declare module '*.css' {
   const content: string;
   export default content;
 }
 
-declare module "*.jpeg" {
+declare module '*.jpeg' {
   const value: string;
   export default value;
 }

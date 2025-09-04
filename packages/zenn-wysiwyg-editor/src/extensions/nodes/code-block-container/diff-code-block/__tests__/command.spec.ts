@@ -1,15 +1,15 @@
-import Document from "@tiptap/extension-document";
-import HardBreak from "@tiptap/extension-hard-break";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { describe, expect, it } from "vitest";
-import { renderTiptapEditor } from "../../../../../tests/editor";
+import Document from '@tiptap/extension-document';
+import HardBreak from '@tiptap/extension-hard-break';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { describe, expect, it } from 'vitest';
+import { renderTiptapEditor } from '../../../../../tests/editor';
 
-import { CodeBlock } from "../../code-block";
-import { CodeBlockFileName } from "../../code-block-file-name";
-import { CodeBlockContainer } from "../../index";
-import { DiffCodeBlock } from "..";
-import { DiffCodeLine } from "../diff-code-line";
+import { CodeBlock } from '../../code-block';
+import { CodeBlockFileName } from '../../code-block-file-name';
+import { CodeBlockContainer } from '../../index';
+import { DiffCodeBlock } from '..';
+import { DiffCodeLine } from '../diff-code-line';
 
 const baseExtensions = [
   Document,
@@ -24,9 +24,9 @@ const baseExtensions = [
 ];
 
 // 親要素におけるかのテストはcode-blockで対応する
-describe("コマンド", () => {
-  describe("setAllSelectionInCodeBlock", () => {
-    it("1行の差分コードブロック全体を選択できる", () => {
+describe('コマンド', () => {
+  describe('setAllSelectionInCodeBlock', () => {
+    it('1行の差分コードブロック全体を選択できる', () => {
       const editor = renderTiptapEditor({
         extensions: baseExtensions,
         content:
@@ -45,7 +45,7 @@ describe("コマンド", () => {
       expect(to).toBe(26);
     });
 
-    it("複数行の差分コードブロック全体を選択できる", () => {
+    it('複数行の差分コードブロック全体を選択できる', () => {
       const editor = renderTiptapEditor({
         extensions: baseExtensions,
         content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
@@ -65,8 +65,8 @@ describe("コマンド", () => {
     });
   });
 
-  describe("setCodeBlockContainer", () => {
-    it("段落を差分コードブロックに変換できる", () => {
+  describe('setCodeBlockContainer', () => {
+    it('段落を差分コードブロックに変換できる', () => {
       const editor = renderTiptapEditor({
         extensions: baseExtensions,
         content: '<p>console.log("hello");</p>',
@@ -76,53 +76,53 @@ describe("コマンド", () => {
       editor.commands.setTextSelection(1);
 
       // コードブロックに変換
-      editor.commands.setCodeBlockContainer({ language: "diff-javascript" });
+      editor.commands.setCodeBlockContainer({ language: 'diff-javascript' });
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
-        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))',
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))'
       );
     });
 
-    it("改行ありの段落を保持したまま変換できる", () => {
+    it('改行ありの段落を保持したまま変換できる', () => {
       const editor = renderTiptapEditor({
         extensions: baseExtensions,
-        content: "<p>const a = 1;<br><br>const a = 2;</p>",
+        content: '<p>const a = 1;<br><br>const a = 2;</p>',
       });
 
       // 段落を選択
       editor.commands.setTextSelection(1);
 
       // コードブロックに変換
-      editor.commands.setCodeBlockContainer({ language: "diff-javascript" });
+      editor.commands.setCodeBlockContainer({ language: 'diff-javascript' });
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
-        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("const a = 1;"), diffCodeLine, diffCodeLine("const a = 2;"))))',
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("const a = 1;"), diffCodeLine, diffCodeLine("const a = 2;"))))'
       );
     });
 
-    it("段落を跨ぐ範囲選択時に変換できる", () => {
+    it('段落を跨ぐ範囲選択時に変換できる', () => {
       const editor = renderTiptapEditor({
         extensions: baseExtensions,
-        content: "<p>const a = 1;</p><p>const a = 2;</p>",
+        content: '<p>const a = 1;</p><p>const a = 2;</p>',
       });
 
       // 段落を選択
       editor.commands.setTextSelection({ from: 1, to: 15 });
 
       // コードブロックに変換
-      editor.commands.setCodeBlockContainer({ language: "diff-javascript" });
+      editor.commands.setCodeBlockContainer({ language: 'diff-javascript' });
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
-        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("const a = 1;"), diffCodeLine("const a = 2;"))))',
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("const a = 1;"), diffCodeLine("const a = 2;"))))'
       );
     });
   });
 
-  describe("unsetCodeBlockContainer", () => {
-    it("差分コードブロックを段落に戻せる", () => {
+  describe('unsetCodeBlockContainer', () => {
+    it('差分コードブロックを段落に戻せる', () => {
       const editor = renderTiptapEditor({
         extensions: baseExtensions,
         content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
@@ -139,7 +139,7 @@ describe("コマンド", () => {
       expect(docString).toBe('doc(paragraph("const a= 1;"))');
     });
 
-    it("複数行持つ差分コードブロックを段落に戻せる", () => {
+    it('複数行持つ差分コードブロックを段落に戻せる', () => {
       const editor = renderTiptapEditor({
         extensions: baseExtensions,
         content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
@@ -154,7 +154,7 @@ describe("コマンド", () => {
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
-        'doc(paragraph("const a = 1;", hardBreak, "const a = 2;"))',
+        'doc(paragraph("const a = 1;", hardBreak, "const a = 2;"))'
       );
     });
   });

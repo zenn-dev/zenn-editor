@@ -1,10 +1,10 @@
-import { Node } from "@tiptap/react";
-import { FootnotesDecorationsPlugin } from "./plugins/footnotes-decorations";
-import { FootnotesRulesPlugin } from "./plugins/footnotes-rules";
+import { Node } from '@tiptap/react';
+import { FootnotesDecorationsPlugin } from './plugins/footnotes-decorations';
+import { FootnotesRulesPlugin } from './plugins/footnotes-rules';
 
 const Footnotes = Node.create({
-  name: "footnotes",
-  content: "footnotesList",
+  name: 'footnotes',
+  content: 'footnotesList',
   isolating: true,
   defining: true,
   draggable: false,
@@ -12,13 +12,13 @@ const Footnotes = Node.create({
   parseHTML() {
     return [
       {
-        tag: "section.footnotes",
+        tag: 'section.footnotes',
       },
     ];
   },
 
   renderHTML() {
-    return ["section", { class: "footnotes" }, 0];
+    return ['section', { class: 'footnotes' }, 0];
   },
 
   addProseMirrorPlugins() {

@@ -11,39 +11,39 @@ import {
   isTweetUrl,
   isValidHttpUrl,
   isYoutubeUrl,
-} from "../lib/url";
-import type { EmbedType } from "../types";
+} from '../lib/url';
+import type { EmbedType } from '../types';
 
 /** 渡された文字列をサニタイズする */
 export function sanitizeEmbedToken(str: string): string {
-  return str.replace(/"/g, "%22");
+  return str.replace(/"/g, '%22');
 }
 
 export function getEmbedTypeFromElement(
-  element: HTMLElement, // span要素であることを想定
+  element: HTMLElement // span要素であることを想定
 ): EmbedType | null {
-  if (element.classList.contains("zenn-embedded-card")) {
-    return "card";
-  } else if (element.classList.contains("zenn-embedded-github")) {
-    return "github";
-  } else if (element.classList.contains("zenn-embedded-tweet")) {
-    return "tweet";
-  } else if (element.classList.contains("zenn-embedded-gist")) {
-    return "gist";
-  } else if (element.classList.contains("embed-stackblitz")) {
-    return "stackblitz";
-  } else if (element.classList.contains("embed-codesandbox")) {
-    return "codesandbox";
-  } else if (element.classList.contains("embed-codepen")) {
-    return "codepen";
-  } else if (element.classList.contains("embed-jsfiddle")) {
-    return "jsfiddle";
-  } else if (element.classList.contains("embed-youtube")) {
-    return "youtube";
-  } else if (element.classList.contains("embed-figma")) {
-    return "figma";
-  } else if (element.classList.contains("embed-docswell")) {
-    return "docswell";
+  if (element.classList.contains('zenn-embedded-card')) {
+    return 'card';
+  } else if (element.classList.contains('zenn-embedded-github')) {
+    return 'github';
+  } else if (element.classList.contains('zenn-embedded-tweet')) {
+    return 'tweet';
+  } else if (element.classList.contains('zenn-embedded-gist')) {
+    return 'gist';
+  } else if (element.classList.contains('embed-stackblitz')) {
+    return 'stackblitz';
+  } else if (element.classList.contains('embed-codesandbox')) {
+    return 'codesandbox';
+  } else if (element.classList.contains('embed-codepen')) {
+    return 'codepen';
+  } else if (element.classList.contains('embed-jsfiddle')) {
+    return 'jsfiddle';
+  } else if (element.classList.contains('embed-youtube')) {
+    return 'youtube';
+  } else if (element.classList.contains('embed-figma')) {
+    return 'figma';
+  } else if (element.classList.contains('embed-docswell')) {
+    return 'docswell';
   }
 
   return null;
@@ -51,30 +51,30 @@ export function getEmbedTypeFromElement(
 
 export function getEmbedTypeFromUrl(url: string): EmbedType | null {
   if (isTweetUrl(url)) {
-    return "tweet";
+    return 'tweet';
   } else if (isGithubUrl(url)) {
-    return "github";
+    return 'github';
   } else if (isGistUrl(url)) {
-    return "gist";
+    return 'gist';
   } else if (isCodepenUrl(url)) {
-    return "codepen";
+    return 'codepen';
   } else if (isJsfiddleUrl(url)) {
-    return "jsfiddle";
+    return 'jsfiddle';
   } else if (isCodesandboxUrl(url)) {
-    return "codesandbox";
+    return 'codesandbox';
   } else if (isStackblitzUrl(url)) {
-    return "stackblitz";
+    return 'stackblitz';
   } else if (isYoutubeUrl(url)) {
-    return "youtube";
+    return 'youtube';
   } else if (isSpeakerDeckUrl(url)) {
-    return "speakerdeck";
+    return 'speakerdeck';
   } else if (isFigmaUrl(url)) {
-    return "figma";
+    return 'figma';
   } else if (isDocswellUrl(url)) {
-    return "docswell";
+    return 'docswell';
   } else if (isValidHttpUrl(url)) {
     // 一番最後にする
-    return "card";
+    return 'card';
   }
 
   return null;

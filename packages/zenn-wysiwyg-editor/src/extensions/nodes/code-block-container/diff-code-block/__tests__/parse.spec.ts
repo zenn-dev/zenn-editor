@@ -1,14 +1,14 @@
-import Document from "@tiptap/extension-document";
-import HardBreak from "@tiptap/extension-hard-break";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { describe, expect, it } from "vitest";
-import { renderTiptapEditor } from "../../../../../tests/editor";
-import { CodeBlock } from "../../code-block";
-import { CodeBlockFileName } from "../../code-block-file-name";
-import { CodeBlockContainer } from "../../index";
-import { DiffCodeBlock } from "..";
-import { DiffCodeLine } from "../diff-code-line";
+import Document from '@tiptap/extension-document';
+import HardBreak from '@tiptap/extension-hard-break';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { describe, expect, it } from 'vitest';
+import { renderTiptapEditor } from '../../../../../tests/editor';
+import { CodeBlock } from '../../code-block';
+import { CodeBlockFileName } from '../../code-block-file-name';
+import { CodeBlockContainer } from '../../index';
+import { DiffCodeBlock } from '..';
+import { DiffCodeLine } from '../diff-code-line';
 
 const baseExtensions = [
   Document,
@@ -22,8 +22,8 @@ const baseExtensions = [
   HardBreak,
 ];
 
-describe("HTMLのパース", () => {
-  it("preタグを差分コードブロックノードとしてパースできる", () => {
+describe('HTMLのパース', () => {
+  it('preタグを差分コードブロックノードとしてパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: baseExtensions,
       content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
@@ -31,17 +31,17 @@ describe("HTMLのパース", () => {
     });
 
     const docString = editor.state.doc.toString();
-    const $node = editor.$node("diffCodeBlock", {
-      language: "diff-javascript",
+    const $node = editor.$node('diffCodeBlock', {
+      language: 'diff-javascript',
     });
 
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))',
+      'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))'
     );
     expect($node).not.toBeNull();
   });
 
-  it("言語名とファイル名ありの差分preタグをパースできる", () => {
+  it('言語名とファイル名ありの差分preタグをパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: baseExtensions,
       content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename">example.ts</span></div>
@@ -49,17 +49,17 @@ describe("HTMLのパース", () => {
     });
 
     const docString = editor.state.doc.toString();
-    const $node = editor.$node("diffCodeBlock", {
-      language: "diff-python",
+    const $node = editor.$node('diffCodeBlock', {
+      language: 'diff-python',
     });
 
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName("example.ts"), diffCodeBlock(diffCodeLine("import os"))))',
+      'doc(codeBlockContainer(codeBlockFileName("example.ts"), diffCodeBlock(diffCodeLine("import os"))))'
     );
     expect($node).not.toBeNull();
   });
 
-  it("diff言語をパースできる", () => {
+  it('diff言語をパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: baseExtensions,
       content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename">example.ts</span></div>
@@ -67,17 +67,17 @@ describe("HTMLのパース", () => {
     });
 
     const docString = editor.state.doc.toString();
-    const $node = editor.$node("diffCodeBlock", {
-      language: "diff",
+    const $node = editor.$node('diffCodeBlock', {
+      language: 'diff',
     });
 
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName("example.ts"), diffCodeBlock(diffCodeLine("const a = 1;"))))',
+      'doc(codeBlockContainer(codeBlockFileName("example.ts"), diffCodeBlock(diffCodeLine("const a = 1;"))))'
     );
     expect($node).not.toBeNull();
   });
 
-  it("複数行でもパースできる", () => {
+  it('複数行でもパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: baseExtensions,
       content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename">example.ts</span></div>
@@ -85,12 +85,12 @@ describe("HTMLのパース", () => {
     });
 
     const docString = editor.state.doc.toString();
-    const $node = editor.$node("diffCodeBlock", {
-      language: "diff",
+    const $node = editor.$node('diffCodeBlock', {
+      language: 'diff',
     });
 
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName("example.ts"), diffCodeBlock(diffCodeLine("const a = 1;"), diffCodeLine("const b = 2;"))))',
+      'doc(codeBlockContainer(codeBlockFileName("example.ts"), diffCodeBlock(diffCodeLine("const a = 1;"), diffCodeLine("const b = 2;"))))'
     );
     expect($node).not.toBeNull();
   });

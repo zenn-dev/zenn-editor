@@ -1,14 +1,14 @@
-import Document from "@tiptap/extension-document";
-import HardBreak from "@tiptap/extension-hard-break";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { describe, expect, it } from "vitest";
-import { renderTiptapEditor } from "../../../../../tests/editor";
-import { CodeBlockFileName } from "../../code-block-file-name";
-import { DiffCodeBlock } from "../../diff-code-block";
-import { DiffCodeLine } from "../../diff-code-block/diff-code-line";
-import { CodeBlockContainer } from "../../index";
-import { CodeBlock } from "../index";
+import Document from '@tiptap/extension-document';
+import HardBreak from '@tiptap/extension-hard-break';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { describe, expect, it } from 'vitest';
+import { renderTiptapEditor } from '../../../../../tests/editor';
+import { CodeBlockFileName } from '../../code-block-file-name';
+import { DiffCodeBlock } from '../../diff-code-block';
+import { DiffCodeLine } from '../../diff-code-block/diff-code-line';
+import { CodeBlockContainer } from '../../index';
+import { CodeBlock } from '../index';
 
 const basicExtension = [
   Document,
@@ -22,8 +22,8 @@ const basicExtension = [
   HardBreak,
 ];
 
-describe("HTMLのパース", () => {
-  it("preタグをコードブロックノードとしてパースできる", () => {
+describe('HTMLのパース', () => {
+  it('preタグをコードブロックノードとしてパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content:
@@ -33,11 +33,11 @@ describe("HTMLのパース", () => {
     const docString = editor.state.doc.toString();
 
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName, codeBlock("console.log(\\"hello\\");")))',
+      'doc(codeBlockContainer(codeBlockFileName, codeBlock("console.log(\\"hello\\");")))'
     );
   });
 
-  it("言語名なしのpreタグをパースできる", () => {
+  it('言語名なしのpreタグをパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content:
@@ -46,11 +46,11 @@ describe("HTMLのパース", () => {
 
     const docString = editor.state.doc.toString();
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName, codeBlock("plaintext code")))',
+      'doc(codeBlockContainer(codeBlockFileName, codeBlock("plaintext code")))'
     );
   });
 
-  it("言語とファイル名ありのpreタグをパースできる", () => {
+  it('言語とファイル名ありのpreタグをパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content:
@@ -59,7 +59,7 @@ describe("HTMLのパース", () => {
 
     const docString = editor.state.doc.toString();
     expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName("example.ts"), codeBlock("const a = 1;")))',
+      'doc(codeBlockContainer(codeBlockFileName("example.ts"), codeBlock("const a = 1;")))'
     );
   });
 });

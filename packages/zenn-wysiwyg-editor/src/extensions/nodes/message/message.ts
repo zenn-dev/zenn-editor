@@ -4,17 +4,17 @@ import {
   InputRule,
   mergeAttributes,
   Node,
-} from "@tiptap/react";
-import { cn } from "../../../lib/utils";
-import { createMessageSymbolDecorationPlugin } from "./message-symbol-decoration-plugin";
+} from '@tiptap/react';
+import { cn } from '../../../lib/utils';
+import { createMessageSymbolDecorationPlugin } from './message-symbol-decoration-plugin';
 
-export type MessageType = "message" | "alert";
+export type MessageType = 'message' | 'alert';
 
 export interface MessageOptions {
   type?: MessageType;
 }
 
-declare module "@tiptap/react" {
+declare module '@tiptap/react' {
   interface Commands<ReturnType> {
     message: {
       setMessage: (attrs: { type: MessageType }) => ReturnType;
@@ -24,15 +24,15 @@ declare module "@tiptap/react" {
 }
 
 export const Message = Node.create({
-  name: "message",
-  group: "block",
-  content: "messageContent",
+  name: 'message',
+  group: 'block',
+  content: 'messageContent',
   isolating: true,
 
   addAttributes() {
     return {
       type: {
-        default: "message",
+        default: 'message',
         rendered: false,
       },
     };
@@ -41,10 +41,10 @@ export const Message = Node.create({
   parseHTML() {
     return [
       {
-        tag: "aside.msg",
+        tag: 'aside.msg',
         getAttrs: (element) => {
           return {
-            type: element.classList.contains("alert") ? "alert" : "message",
+            type: element.classList.contains('alert') ? 'alert' : 'message',
           };
         },
       },
@@ -53,10 +53,10 @@ export const Message = Node.create({
 
   renderHTML({ node, HTMLAttributes }) {
     return [
-      "aside",
+      'aside',
       mergeAttributes(HTMLAttributes, {
-        class: cn("msg", {
-          alert: node.attrs.type === "alert",
+        class: cn('msg', {
+          alert: node.attrs.type === 'alert',
         }),
       }),
       0,
@@ -79,7 +79,7 @@ export const Message = Node.create({
           const slice = state.doc.slice(range.start, range.end);
           const contentMatch =
             schema.nodes.messageContent.contentMatch.matchFragment(
-              slice.content,
+              slice.content
             );
 
           if (!contentMatch) {
@@ -87,7 +87,7 @@ export const Message = Node.create({
           }
 
           const isParentMatch = range.parent.type.contentMatch.matchType(
-            this.type,
+            this.type
           );
 
           if (!isParentMatch) {
@@ -104,11 +104,11 @@ export const Message = Node.create({
                 attrs: { type },
                 content: [
                   {
-                    type: "messageContent",
+                    type: 'messageContent',
                     content,
                   },
                 ],
-              },
+              }
             )
             .setTextSelection(range.start + 3) // paragraph の startに移動
             .run();
@@ -118,7 +118,7 @@ export const Message = Node.create({
         ({ state, chain }) => {
           const { selection, schema } = state;
           const message = findParentNode((node) => node.type === this.type)(
-            selection,
+            selection
           );
 
           if (!message) {
@@ -127,7 +127,7 @@ export const Message = Node.create({
 
           const messageContents = findChildren(
             message.node,
-            (node) => node.type === schema.nodes.messageContent,
+            (node) => node.type === schema.nodes.messageContent
           );
 
           if (!messageContents.length) {

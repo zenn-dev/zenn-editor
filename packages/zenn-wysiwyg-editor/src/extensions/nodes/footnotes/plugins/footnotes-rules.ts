@@ -1,8 +1,8 @@
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { isFootnoteRefChanged, updateFootnotes } from "../utils";
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { isFootnoteRefChanged, updateFootnotes } from '../utils';
 
 export const FootnotesRulesPlugin = new Plugin({
-  key: new PluginKey("footnoteRules"),
+  key: new PluginKey('footnoteRules'),
   filterTransaction(tr) {
     const { from, to } = tr.selection;
 
@@ -14,11 +14,11 @@ export const FootnotesRulesPlugin = new Plugin({
     let footnoteCount = 0;
 
     tr.doc.nodesBetween(from, to, (node, _, parent) => {
-      if (parent?.type.name === "doc" && node.type.name !== "footnotes") {
+      if (parent?.type.name === 'doc' && node.type.name !== 'footnotes') {
         selectedContent = true;
-      } else if (node.type.name === "footnoteItem") {
+      } else if (node.type.name === 'footnoteItem') {
         footnoteCount += 1;
-      } else if (node.type.name === "footnotes") {
+      } else if (node.type.name === 'footnotes') {
         selectedFootnotes = true;
       }
     });
@@ -53,7 +53,7 @@ export const FootnotesRulesPlugin = new Plugin({
       let inFootnotes = false;
 
       for (let i = $pos.depth; i > 0; i--) {
-        if ($pos.node(i).type.name === "footnotes") {
+        if ($pos.node(i).type.name === 'footnotes') {
           inFootnotes = true;
           break;
         }

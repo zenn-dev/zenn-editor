@@ -1,25 +1,25 @@
-import { Node } from "@tiptap/react";
+import { Node } from '@tiptap/react';
 
 export const CodeBlockFileName = Node.create({
-  name: "codeBlockFileName",
-  content: "text*",
-  marks: "",
+  name: 'codeBlockFileName',
+  content: 'text*',
+  marks: '',
 
   parseHTML() {
     return [
       {
-        tag: "div.code-block-filename-container",
+        tag: 'div.code-block-filename-container',
       },
     ];
   },
 
   renderHTML() {
     return [
-      "div",
+      'div',
       {
-        class: "code-block-filename-container",
+        class: 'code-block-filename-container',
       },
-      ["span", { class: "code-block-filename" }, 0],
+      ['span', { class: 'code-block-filename' }, 0],
     ];
   },
 

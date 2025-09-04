@@ -1,14 +1,14 @@
-import type { Node } from "@tiptap/pm/model";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import type { EditorView } from "@tiptap/pm/view";
-import { Extension } from "@tiptap/react";
-import { EMBED_BACKEND_ORIGIN } from "../../../lib/constants";
-import { getEmbedTypeFromUrl, sanitizeEmbedToken } from "../../../lib/embed";
-import { extractSpeakerDeckEmbedParams, isFigmaUrl } from "../../../lib/url";
-import type { SpeakerDeckEmbedResponse } from "../../../types";
+import type { Node } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import type { EditorView } from '@tiptap/pm/view';
+import { Extension } from '@tiptap/react';
+import { EMBED_BACKEND_ORIGIN } from '../../../lib/constants';
+import { getEmbedTypeFromUrl, sanitizeEmbedToken } from '../../../lib/embed';
+import { extractSpeakerDeckEmbedParams, isFigmaUrl } from '../../../lib/url';
+import type { SpeakerDeckEmbedResponse } from '../../../types';
 
 export const EmbedPasteHandler = Extension.create({
-  name: "embedPasteHandler",
+  name: 'embedPasteHandler',
   priority: 2, // マークダウンペーストより先に実行する
 
   addProseMirrorPlugins() {
@@ -18,7 +18,7 @@ export const EmbedPasteHandler = Extension.create({
 
 function pasteHandlerPlugin(): Plugin {
   return new Plugin({
-    key: new PluginKey("embedPasteHandler"),
+    key: new PluginKey('embedPasteHandler'),
     props: {
       handlePaste: (view, _, slice) => {
         const { state } = view;
@@ -31,7 +31,7 @@ function pasteHandlerPlugin(): Plugin {
           return false;
         }
 
-        let textContent = "";
+        let textContent = '';
 
         slice.content.forEach((node) => {
           textContent += node.textContent;
@@ -41,7 +41,7 @@ function pasteHandlerPlugin(): Plugin {
         if (!type) return false;
 
         let node: Node;
-        if (type === "speakerdeck") {
+        if (type === 'speakerdeck') {
           node = createSpeakerDeckNode(view, textContent);
         } else if (isFigmaUrl(textContent)) {
           node = state.schema.nodes.embed.create({
@@ -72,11 +72,11 @@ function createSpeakerDeckNode(view: EditorView, url: string) {
 
   const deleteTempNode = () => {
     view.state.doc.descendants((n, pos) => {
-      if (n.type.name === "speakerDeckEmbed" && n.attrs.tempId === tempId) {
+      if (n.type.name === 'speakerDeckEmbed' && n.attrs.tempId === tempId) {
         view.dispatch(
           view.state.tr
             .delete(pos, pos + n.nodeSize)
-            .setMeta("addToHistory", false),
+            .setMeta('addToHistory', false)
         );
         return true;
       }
@@ -84,21 +84,21 @@ function createSpeakerDeckNode(view: EditorView, url: string) {
   };
 
   fetch(
-    `${EMBED_BACKEND_ORIGIN}/api/speakerdeck/embed?url=${encodeURIComponent(url)}`,
+    `${EMBED_BACKEND_ORIGIN}/api/speakerdeck/embed?url=${encodeURIComponent(url)}`
   )
     .then((response) => {
       if (!response.ok) {
         if (response.status === 400) {
-          throw "URLの形式が異なります。";
+          throw 'URLの形式が異なります。';
         } else {
-          throw "サーバーエラーが発生しました。時間をおいてから再度お試しください。";
+          throw 'サーバーエラーが発生しました。時間をおいてから再度お試しください。';
         }
       }
       return response.json() as Promise<SpeakerDeckEmbedResponse>;
     })
     .then((data) => {
       view.state.doc.descendants((n, pos) => {
-        if (n.type.name === "speakerDeckEmbed" && n.attrs.tempId === tempId) {
+        if (n.type.name === 'speakerDeckEmbed' && n.attrs.tempId === tempId) {
           const node = view.state.schema.nodes.speakerDeckEmbed.create({
             embedId: data.embedId,
             slideIndex: data.slideIndex,
@@ -106,7 +106,7 @@ function createSpeakerDeckNode(view: EditorView, url: string) {
           view.dispatch(
             view.state.tr
               .replaceRangeWith(pos, pos + n.nodeSize, node)
-              .setMeta("addToHistory", false),
+              .setMeta('addToHistory', false)
           );
           return true;
         }
@@ -114,10 +114,10 @@ function createSpeakerDeckNode(view: EditorView, url: string) {
     })
     .catch((error) => {
       deleteTempNode();
-      if (typeof error === "string") {
-        console.warn("SpeakerDeck embed error:", error);
+      if (typeof error === 'string') {
+        console.warn('SpeakerDeck embed error:', error);
       } else {
-        console.error("Failed to fetch SpeakerDeck embed:", error);
+        console.error('Failed to fetch SpeakerDeck embed:', error);
       }
     });
 

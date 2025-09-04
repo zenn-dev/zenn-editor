@@ -8,10 +8,15 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup",
-    "check:lint": "biome lint ./src",
-    "check:format": "biome format ./src",
-    "lint": "run-s check:*",
-    "fix": "biome check --write ./src",
+    "lint": "run-s lint:*",
+    "lint:eslint": "eslint . --ext .ts,.tsx",
+    "lint:prettier": "prettier .",
+    "lint-strict": "run-s lint-strict:*",
+    "lint-strict:eslint": "eslint . --ext .ts,.tsx --max-warnings 0",
+    "lint-strict:prettier": "prettier --check .",
+    "fix": "run-s fix:*",
+    "fix:eslint": "eslint . --ext .ts,.tsx --fix",
+    "fix:prettier": "prettier -w .",
     "test:node": "vitest run",
     "test:browser-mode": "vitest run --config=vitest.browser.config.ts",
     "test:browser": "playwright test"
@@ -76,7 +81,11 @@
     "vitest": "^3.2.4",
     "vitest-browser-react": "^1.0.1",
     "zenn-content-css": "^0.2.1",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0"
   },
   "peerDependencies": {
     "@tiptap/pm": "^3.0.0",

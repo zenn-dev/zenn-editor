@@ -1,20 +1,20 @@
-import { computePosition, flip, shift } from "@floating-ui/dom";
-import TiptapLink from "@tiptap/extension-link";
-import type { Mark } from "@tiptap/pm/model";
-import type { EditorView } from "@tiptap/pm/view";
-import { ReactRenderer } from "@tiptap/react";
-import LinkEdit from "./link-edit";
+import { computePosition, flip, shift } from '@floating-ui/dom';
+import TiptapLink from '@tiptap/extension-link';
+import type { Mark } from '@tiptap/pm/model';
+import type { EditorView } from '@tiptap/pm/view';
+import { ReactRenderer } from '@tiptap/react';
+import LinkEdit from './link-edit';
 
 const updatePosition = (
   targetElement: HTMLElement,
-  popOverElement: HTMLElement,
+  popOverElement: HTMLElement
 ) => {
   computePosition(targetElement, popOverElement, {
-    placement: "bottom",
-    strategy: "absolute",
+    placement: 'bottom',
+    strategy: 'absolute',
     middleware: [shift(), flip()],
   }).then(({ x, y, strategy }) => {
-    popOverElement.style.width = "max-content";
+    popOverElement.style.width = 'max-content';
     popOverElement.style.position = strategy;
     popOverElement.style.left = `${x}px`;
     popOverElement.style.top = `${y}px`;
@@ -34,10 +34,10 @@ export const Link = TiptapLink.extend({
       updateAttributes: (attrs: Record<string, string>) => void;
       view: EditorView;
     }) => {
-      const a = document.createElement("a");
-      a.setAttribute("href", mark.attrs.href);
-      a.setAttribute("target", mark.attrs.target);
-      a.setAttribute("rel", mark.attrs.rel);
+      const a = document.createElement('a');
+      a.setAttribute('href', mark.attrs.href);
+      a.setAttribute('target', mark.attrs.target);
+      a.setAttribute('rel', mark.attrs.rel);
 
       let component: ReactRenderer | null = null;
       let hoverTimeout: NodeJS.Timeout | null = null;
@@ -77,7 +77,7 @@ export const Link = TiptapLink.extend({
       };
 
       // 0.5秒間ホバーし続けたらリンク編集UIを表示する
-      a.addEventListener("mouseenter", (e) => {
+      a.addEventListener('mouseenter', (e) => {
         hoverTimeout = setTimeout(() => {
           component = new ReactRenderer(LinkEdit, {
             props: {
@@ -109,13 +109,13 @@ export const Link = TiptapLink.extend({
           });
 
           const element = component.element as HTMLElement;
-          element.style.position = "absolute";
+          element.style.position = 'absolute';
           document.body.appendChild(element);
           updatePosition(e.target as HTMLElement, element);
         }, 500); // 0.5秒後に表示
       });
 
-      a.addEventListener("mouseleave", (e) => {
+      a.addEventListener('mouseleave', (e) => {
         // タイムアウトをクリアして、リンク編集UIの表示をキャンセル
         if (hoverTimeout) {
           clearTimeout(hoverTimeout);

@@ -1,11 +1,11 @@
-import { Selection } from "@tiptap/pm/state";
-import { defaultBlockAt, Node } from "@tiptap/react";
-import { isNodeVisible } from "../../../../lib/node";
+import { Selection } from '@tiptap/pm/state';
+import { defaultBlockAt, Node } from '@tiptap/react';
+import { isNodeVisible } from '../../../../lib/node';
 
 export const DetailsSummary = Node.create({
-  name: "detailsSummary",
+  name: 'detailsSummary',
 
-  content: "text*",
+  content: 'text*',
   defining: true,
   selectable: false,
   isolating: true,
@@ -13,31 +13,31 @@ export const DetailsSummary = Node.create({
   parseHTML() {
     return [
       {
-        tag: "summary",
+        tag: 'summary',
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ["summary", HTMLAttributes, 0];
+    return ['summary', HTMLAttributes, 0];
   },
 
   addNodeView() {
     return ({ getPos }) => {
-      const dom = document.createElement("summary");
+      const dom = document.createElement('summary');
 
-      const toggleButton = document.createElement("button");
-      toggleButton.type = "button";
-      toggleButton.contentEditable = "false";
-      const triangle = document.createElement("span");
-      triangle.className = "triangle";
+      const toggleButton = document.createElement('button');
+      toggleButton.type = 'button';
+      toggleButton.contentEditable = 'false';
+      const triangle = document.createElement('span');
+      triangle.className = 'triangle';
       toggleButton.appendChild(triangle);
 
-      const content = document.createElement("div");
+      const content = document.createElement('div');
       dom.appendChild(toggleButton);
       dom.appendChild(content);
 
-      toggleButton.addEventListener("click", (event) => {
+      toggleButton.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
 

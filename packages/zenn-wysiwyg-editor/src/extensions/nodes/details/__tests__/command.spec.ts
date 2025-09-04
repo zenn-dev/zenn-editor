@@ -1,19 +1,19 @@
-import Blockquote from "@tiptap/extension-blockquote";
-import Document from "@tiptap/extension-document";
-import { ListKit } from "@tiptap/extension-list";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { describe, expect, it } from "vitest";
-import { renderTiptapEditor } from "../../../../tests/editor";
-import { CodeBlockContainer } from "../../code-block-container";
-import { CodeBlock } from "../../code-block-container/code-block";
-import { CodeBlockFileName } from "../../code-block-container/code-block-file-name";
-import { DiffCodeBlock } from "../../code-block-container/diff-code-block";
-import { DiffCodeLine } from "../../code-block-container/diff-code-block/diff-code-line";
-import Heading from "../../heading";
-import { Details } from "..";
-import { DetailsContent } from "../content";
-import { DetailsSummary } from "../summary";
+import Blockquote from '@tiptap/extension-blockquote';
+import Document from '@tiptap/extension-document';
+import { ListKit } from '@tiptap/extension-list';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import { describe, expect, it } from 'vitest';
+import { renderTiptapEditor } from '../../../../tests/editor';
+import { CodeBlockContainer } from '../../code-block-container';
+import { CodeBlock } from '../../code-block-container/code-block';
+import { CodeBlockFileName } from '../../code-block-container/code-block-file-name';
+import { DiffCodeBlock } from '../../code-block-container/diff-code-block';
+import { DiffCodeLine } from '../../code-block-container/diff-code-block/diff-code-line';
+import Heading from '../../heading';
+import { Details } from '..';
+import { DetailsContent } from '../content';
+import { DetailsSummary } from '../summary';
 
 const basicExtension = [
   Document,
@@ -24,23 +24,23 @@ const basicExtension = [
   DetailsSummary,
 ];
 
-describe("コマンド", () => {
-  describe("setDetails", () => {
-    it("setDetailsコマンドでアコーディオンを挿入できる", () => {
+describe('コマンド', () => {
+  describe('setDetails', () => {
+    it('setDetailsコマンドでアコーディオンを挿入できる', () => {
       const editor = renderTiptapEditor({
         extensions: basicExtension,
-        content: "<p>テキスト</p>",
+        content: '<p>テキスト</p>',
       });
 
       editor.commands.setDetails();
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
-        'doc(details(detailsSummary, detailsContent(paragraph("テキスト"))))',
+        'doc(details(detailsSummary, detailsContent(paragraph("テキスト"))))'
       );
     });
 
-    it("setDetailsコマンドはアコーディオンタイトル内で実行できない", () => {
+    it('setDetailsコマンドはアコーディオンタイトル内で実行できない', () => {
       const editor = renderTiptapEditor({
         extensions: basicExtension,
         content:
@@ -52,10 +52,10 @@ describe("コマンド", () => {
       expect(editor.can().setDetails()).toBe(false);
     });
 
-    it("見出しの中で呼び出せる", () => {
+    it('見出しの中で呼び出せる', () => {
       const editor = renderTiptapEditor({
         extensions: [...basicExtension, Heading],
-        content: "<h1>見出しの中</h1>",
+        content: '<h1>見出しの中</h1>',
       });
 
       editor.commands.setTextSelection(1);
@@ -64,10 +64,10 @@ describe("コマンド", () => {
       expect(result).toBe(true);
     });
 
-    it("引用の中で呼び出せる", () => {
+    it('引用の中で呼び出せる', () => {
       const editor = renderTiptapEditor({
         extensions: [...basicExtension, Blockquote],
-        content: "<blockquote>引用の中</blockquote>",
+        content: '<blockquote>引用の中</blockquote>',
       });
 
       editor.commands.setTextSelection(1);
@@ -76,10 +76,10 @@ describe("コマンド", () => {
       expect(result).toBe(true);
     });
 
-    it("リストで呼び出せない", () => {
+    it('リストで呼び出せない', () => {
       const editor = renderTiptapEditor({
         extensions: [...basicExtension, ListKit],
-        content: "<ul><li><p>リストの中</p></li></ul>",
+        content: '<ul><li><p>リストの中</p></li></ul>',
       });
 
       editor.commands.setTextSelection(4);
@@ -88,7 +88,7 @@ describe("コマンド", () => {
       expect(result).toBe(false);
     });
 
-    it("メッセージの中で呼び出せる", () => {
+    it('メッセージの中で呼び出せる', () => {
       const editor = renderTiptapEditor({
         extensions: basicExtension,
         content:
@@ -101,7 +101,7 @@ describe("コマンド", () => {
       expect(result).toBe(true);
     });
 
-    it("コードブロックのファイル名とコンテンツの中で呼び出せない", () => {
+    it('コードブロックのファイル名とコンテンツの中で呼び出せない', () => {
       const editor = renderTiptapEditor({
         extensions: [
           ...basicExtension,
@@ -125,7 +125,7 @@ describe("コマンド", () => {
       expect(result2).toBe(false);
     });
 
-    it("差分コードブロックのファイル名とコンテンツの中で呼び出せない", () => {
+    it('差分コードブロックのファイル名とコンテンツの中で呼び出せない', () => {
       const editor = renderTiptapEditor({
         extensions: [
           ...basicExtension,
@@ -149,7 +149,7 @@ describe("コマンド", () => {
       expect(result2).toBe(false);
     });
 
-    it("アコーディオンのサマリーで呼べない。コンテンツで呼べる", () => {
+    it('アコーディオンのサマリーで呼べない。コンテンツで呼べる', () => {
       const editor = renderTiptapEditor({
         extensions: [
           ...basicExtension,
@@ -158,7 +158,7 @@ describe("コマンド", () => {
           DetailsContent,
         ],
         content:
-          "<details><summary>サマリー</summary><div>コンテンツ</div></details>",
+          '<details><summary>サマリー</summary><div>コンテンツ</div></details>',
       });
 
       editor.commands.setTextSelection(10);
@@ -172,8 +172,8 @@ describe("コマンド", () => {
     });
   });
 
-  describe("unsetDetails", () => {
-    it("unsetDetailsコマンドでアコーディオンを削除できる", () => {
+  describe('unsetDetails', () => {
+    it('unsetDetailsコマンドでアコーディオンを削除できる', () => {
       const editor = renderTiptapEditor({
         extensions: basicExtension,
         content:
@@ -186,7 +186,7 @@ describe("コマンド", () => {
       expect(docString).toBe('doc(paragraph, paragraph("テキスト"))');
     });
 
-    it("unsetDetailsコマンドはアコーディオン内にカーソルがある場合にのみ有効", () => {
+    it('unsetDetailsコマンドはアコーディオン内にカーソルがある場合にのみ有効', () => {
       const editor = renderTiptapEditor({
         extensions: basicExtension,
         content:

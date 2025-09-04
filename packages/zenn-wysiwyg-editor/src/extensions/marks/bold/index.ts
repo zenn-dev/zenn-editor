@@ -1,8 +1,8 @@
 import TiptapBold, {
   starInputRegex,
   underscoreInputRegex,
-} from "@tiptap/extension-bold";
-import { markInputRule } from "../../core/markInputRule";
+} from '@tiptap/extension-bold';
+import { markInputRule } from '../../core/markInputRule';
 
 export const Bold = TiptapBold.extend({
   addInputRules() {

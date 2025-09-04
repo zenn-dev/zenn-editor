@@ -1,17 +1,17 @@
-import type { Node as ProsemirrorNode } from "@tiptap/pm/model";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { Decoration, DecorationSet } from "@tiptap/pm/view";
-import { findChildren } from "@tiptap/react";
+import type { Node as ProsemirrorNode } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
+import { findChildren } from '@tiptap/react';
 import {
   getDiffCode,
   getDiffHighlightLineNodes,
   highlightCode,
   parseNodes,
-} from "../utils";
+} from '../utils';
 
 function createDiffDecorations(
   lineNodes: HTMLElement[],
-  preStart: number,
+  preStart: number
 ): Decoration[] {
   const decorations: Decoration[] = [];
 
@@ -26,7 +26,7 @@ function createDiffDecorations(
 
       if (node.classes.length) {
         const decoration = Decoration.inline(from, to, {
-          class: node.classes.join(" "),
+          class: node.classes.join(' '),
         });
         decorations.push(decoration);
       }
@@ -34,7 +34,7 @@ function createDiffDecorations(
       from = to;
     });
     decorations.push(
-      Decoration.node(lineStart - 1, to + 1, { class: lineNode.className }),
+      Decoration.node(lineStart - 1, to + 1, { class: lineNode.className })
     );
 
     to += 2; // lineのspanを跨ぐ
@@ -77,7 +77,7 @@ export function DiffPrismPlugin({
   defaultLanguage: string;
 }) {
   const prismjsPlugin: Plugin = new Plugin({
-    key: new PluginKey("diff-prism"),
+    key: new PluginKey('diff-prism'),
 
     state: {
       init: (_, { doc }) =>
@@ -96,11 +96,11 @@ export function DiffPrismPlugin({
 
         const oldNodes = findChildren(
           oldState.doc,
-          (node) => node.type.name === name,
+          (node) => node.type.name === name
         );
         const newNodes = findChildren(
           newState.doc,
-          (node) => node.type.name === name,
+          (node) => node.type.name === name
         );
 
         if (
