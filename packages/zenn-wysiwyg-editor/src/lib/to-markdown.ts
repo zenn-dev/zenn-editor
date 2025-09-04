@@ -2,7 +2,10 @@ import type { Mark, Node } from '@tiptap/pm/model';
 import { MarkdownSerializer } from 'prosemirror-markdown';
 import { getDiffCode } from '../extensions/nodes/code-block-container/utils';
 import type { EmbedType } from '../types';
-import { extractYoutubeVideoParameters } from './url';
+import {
+  extractSlideshareEmbedParams,
+  extractYoutubeVideoParameters,
+} from './url';
 
 // MarkdownSerializerStateの型拡張
 declare module 'prosemirror-markdown' {
@@ -133,6 +136,10 @@ const markdownSerializer = new MarkdownSerializer(
         const url = node.attrs.url.replace('/embed/', '/pen/');
 
         urlBlock = `@[codepen](${url})`;
+      } else if (type === 'slideshare') {
+        const params = extractSlideshareEmbedParams(node.attrs.url);
+
+        urlBlock = `@[slideshare](${params?.embedId})`;
       } else {
         urlBlock = `@[${type}](${node.attrs.url})`;
       }

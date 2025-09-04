@@ -44,6 +44,7 @@ function pasteHandlerPlugin(): Plugin {
         if (type === 'speakerdeck') {
           node = createSpeakerDeckNode(view, textContent);
         } else if (isFigmaUrl(textContent)) {
+          // URLを変えるため場合分けして処理
           node = state.schema.nodes.embed.create({
             url: `https://www.figma.com/embed?embed_host=zenn&url=${sanitizeEmbedToken(textContent)}`,
             type,

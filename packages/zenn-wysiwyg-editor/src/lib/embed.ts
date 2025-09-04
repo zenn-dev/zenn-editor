@@ -1,4 +1,5 @@
 import {
+  isBlueprintUEUrl,
   isCodepenUrl,
   isCodesandboxUrl,
   isDocswellUrl,
@@ -44,11 +45,18 @@ export function getEmbedTypeFromElement(
     return 'figma';
   } else if (element.classList.contains('embed-docswell')) {
     return 'docswell';
+  } else if (element.classList.contains('embed-slideshare')) {
+    return 'slideshare';
+  } else if (element.classList.contains('embed-blueprintue')) {
+    return 'blueprintue';
+  } else if (element.classList.contains('embed-speakerdeck')) {
+    return null; // SpeakerDeckは別のノードで定義するため、ここではnullを返す
   }
 
   return null;
 }
 
+// slideshareのURLの貼り付けは、oEmbedが未対応のため対応しない
 export function getEmbedTypeFromUrl(url: string): EmbedType | null {
   if (isTweetUrl(url)) {
     return 'tweet';
@@ -72,6 +80,8 @@ export function getEmbedTypeFromUrl(url: string): EmbedType | null {
     return 'figma';
   } else if (isDocswellUrl(url)) {
     return 'docswell';
+  } else if (isBlueprintUEUrl(url)) {
+    return 'blueprintue';
   } else if (isValidHttpUrl(url)) {
     // 一番最後にする
     return 'card';

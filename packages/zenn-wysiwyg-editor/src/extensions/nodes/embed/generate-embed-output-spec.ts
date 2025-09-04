@@ -1,5 +1,5 @@
 import type { DOMOutputSpec } from '@tiptap/pm/model';
-import type { EmbedType } from 'zenn-markdown-html/lib/embed';
+import type { EmbedType } from 'zenn-markdown-html';
 import { EMBED_ORIGIN } from '../../../lib/constants';
 import { sanitizeEmbedToken } from '../../../lib/embed';
 import { escapeHtml } from '../../../lib/escape';
@@ -33,6 +33,10 @@ export function generateEmbedOutputSpec(
     return generateEmbedFigmaOutputSpec(url);
   } else if (type === 'docswell') {
     return generateEmbedDocswellOutputSpec(url);
+  } else if (type === 'slideshare') {
+    return generateEmbedSlideShareOutputSpec(url);
+  } else if (type === 'blueprintue') {
+    return generateEmbedBlueprintueOutputSpec(url);
   }
 
   throw new Error(`Unsupported embed type: ${type}`);
@@ -216,6 +220,45 @@ function generateEmbedDocswellOutputSpec(url: string): DOMOutputSpec {
         width: '100%',
         style:
           'border: 1px solid #ccc; display: block; margin: 0px auto; padding: 0px; aspect-ratio: 16/9',
+      },
+    ],
+  ];
+}
+
+function generateEmbedSlideShareOutputSpec(url: string): DOMOutputSpec {
+  return [
+    'span',
+    {
+      class: 'embed-block embed-slideshare',
+    },
+    [
+      'iframe',
+      {
+        src: url,
+        scrolling: 'no',
+        loading: 'lazy',
+        allowfullscreen: true,
+      },
+    ],
+  ];
+}
+
+function generateEmbedBlueprintueOutputSpec(url: string): DOMOutputSpec {
+  return [
+    'span',
+    {
+      class: 'embed-block embed-blueprintue',
+    },
+    [
+      'iframe',
+      {
+        src: url,
+        width: '100%',
+        style: 'aspect-ratio: 16/9',
+        scrolling: 'no',
+        frameborder: 'no',
+        loading: 'lazy',
+        allowfullscreen: true,
       },
     ],
   ];

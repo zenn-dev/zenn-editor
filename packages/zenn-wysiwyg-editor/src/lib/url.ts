@@ -203,3 +203,17 @@ export function extractSpeakerDeckEmbedParams(
 
   return { embedId: match[1], slideIndex };
 }
+
+export function extractSlideshareEmbedParams(
+  url: string
+): { embedId: string } | null {
+  const match =
+    /^https:\/\/www\.slideshare\.net\/slideshow\/embed_code\/key\/([a-zA-Z0-9_-]+)/.exec(
+      url
+    );
+  if (!match) {
+    return null;
+  }
+
+  return { embedId: match[1] };
+}
