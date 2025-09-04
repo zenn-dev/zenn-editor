@@ -3,15 +3,24 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vite/client"],
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "isolatedModules": false,
+    "skipLibCheck": true,
+
+    // Bundler Mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "moduleDetection": "force",
     "noEmit": true,
-    "jsx": "preserve",
-    "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment"
+    "jsx": "react-jsx",
+
+    "strict": true,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    "types": ["vite/client"],
+    "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["src/server", "node_modules", "**/__tests__"]
+  "include": ["src/client"]
 }

@@ -12,7 +12,7 @@ import {
 import { Article, ArticleMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
-import { parseToc } from 'zenn-markdown-html/lib/utils';
+import { parseToc } from 'zenn-markdown-html';
 
 export function getLocalArticle(slug: string): null | Article {
   const data = readArticleFile(slug);
@@ -25,6 +25,7 @@ export function getLocalArticle(slug: string): null | Article {
   const toc = parseToc(bodyHtml);
   return {
     ...meta,
+    markdown: bodyMarkdown,
     bodyHtml,
     toc,
   };
@@ -77,7 +78,10 @@ function readArticleFile(slug: string) {
   // https://github.com/jonschlinkert/gray-matter/issues/62#issuecomment-577628177
   const { data, content: bodyMarkdown } = matter(raw, {
     engines: {
-      yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+      yaml: {
+        parse: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+        stringify: (s) => yaml.dump(s, { schema: yaml.JSON_SCHEMA }),
+      },
     },
   });
   return {
@@ -87,4 +91,35 @@ function readArticleFile(slug: string) {
     } as ArticleMeta,
     bodyMarkdown,
   };
+}
+
+export function stringifyArticleWithMetaData(article: Article): string {
+  const articleForMeta: Partial<Article> = {}; // slugはファイル名なので除外
+
+  if (article.title) articleForMeta.title = article.title;
+  if (article.type) articleForMeta.type = article.type;
+  if (article.topics) articleForMeta.topics = article.topics;
+  if (article.emoji) articleForMeta.emoji = article.emoji;
+  if (typeof article.published === 'boolean')
+    articleForMeta.published = article.published;
+  if (article.published_at !== undefined)
+    articleForMeta.published_at = article.published_at;
+  if (article.publication_name !== undefined)
+    articleForMeta.publication_name = article.publication_name;
+
+  const contentWithMeta = matter.stringify(
+    article.markdown ?? '',
+    articleForMeta,
+    // 絵文字が処理されるバージョンの js-yaml を使う
+    {
+      engines: {
+        yaml: {
+          parse: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as any,
+          stringify: (s) => yaml.dump(s, { schema: yaml.JSON_SCHEMA }),
+        },
+      },
+    }
+  );
+
+  return contentWithMeta;
 }

@@ -1,0 +1,230 @@
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@import 'zenn-content-css/lib/index.css';
+
+.tiptap {
+  outline: none;
+  min-height: 600px;
+
+  img.ProseMirror-separator {
+    display: inline !important;
+    border: none !important;
+    margin: 0 !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+  }
+
+  /* エラーメッセージの場合は pタグになるため、zenn-content-cssを上書きする */
+  .md-img ~ em {
+    display: block;
+    margin: -1rem auto 0;
+    line-height: 1.3;
+    text-align: center;
+    color: var(--c-text-subtle);
+    font-size: 0.92em;
+  }
+
+  div.code-block-filename-container {
+    span {
+      min-width: 85px;
+    }
+
+    .code-block-filename {
+      /* PC版Safariで display: table をspanにつけると、contenteditableでの編集がバグる */
+      display: inline-block;
+    }
+  }
+
+  .code-block-wrapper-for-langname {
+    position: relative;
+
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      content: attr(data-language);
+      display: block;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.3rem;
+      background-color: oklch(96.7% 0.003 264.542);
+    }
+  }
+
+  code.diff-highlight {
+    & > span {
+      display: block;
+    }
+  }
+
+  /* 
+    detailsタグとcontenteditableの併用が厳しいため、divにクラスをつける。 
+    zenn-content-css からスタイルはコピーする
+  */
+  .details {
+    font-size: 0.95em;
+    margin: 1rem 0;
+    line-height: 1.7;
+
+    summary {
+      cursor: default;
+      display: flex;
+      align-items: center;
+
+      button {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transform: rotate(90deg);
+
+        &:hover {
+          background: oklch(96.7% 0.003 264.542);
+        }
+
+        .triangle {
+          background: black;
+          height: calc(tan(60deg) * 10px / 2);
+          width: 10px;
+          clip-path: polygon(50% 0, 100% 100%, 0 100%);
+        }
+      }
+
+      div {
+        margin-left: 0.5rem;
+        flex: 1;
+      }
+    }
+
+    &[data-open] {
+      /*  ネストされる場合があるため、直下のみ反映 */
+      & > summary {
+        border-radius: 14px 14px 0 0;
+        box-shadow: none;
+        background: #edf2f7; /* var(--c-bg-dim); */
+        border-bottom: none;
+
+        button {
+          transform: rotate(180deg);
+
+          &:hover {
+            background: oklch(92.8% 0.006 264.531);
+          }
+        }
+      }
+    }
+
+    .details-content {
+      padding: 0.5em 0.9em;
+      border: 1px solid #d6e3ed; /* var(--c-border) */
+      border-radius: 0 0 14px 14px;
+      background: #fff /* var(--c-bg-base) */;
+    }
+
+    /*  ネストされる場合があるため、直下のみ反映 */
+    &:not([data-open]) > .details-content {
+      display: none;
+    }
+  }
+
+  sup.footnote-ref {
+    cursor: pointer;
+  }
+
+  table {
+    th,
+    td {
+      min-width: 80px;
+    }
+  }
+}
+
+/* Selection */
+.tiptap {
+  .ProseMirror-selectednode {
+    position: relative;
+
+    /* Chrome は子要素に適用するために & あり */
+    &::selection {
+      background-color: transparent !important;
+    }
+
+    /* Firefox Safariは子要素に適用するために & なし */
+    ::selection {
+      background-color: transparent !important;
+    }
+
+    &::after {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(35, 131, 226, 0.3);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+  }
+
+  hr {
+    &.ProseMirror-selectednode {
+      outline: 2px solid #9333ea;
+      outline-offset: 2px;
+    }
+  }
+}
+
+/* Placeholder */
+.tiptap {
+  p.is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+
+  p.is-empty::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+
+  h1.is-empty::before,
+  h2.is-empty::before,
+  h3.is-empty::before {
+    color: #6b7280;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+
+  /* エラーの場合は p.md-img になるため、img 要素をセレクタに使わない */
+  p > .md-img + em.is-empty::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+  }
+
+  div.code-block-filename-container.is-empty {
+    .code-block-filename::before {
+      color: #adb5bd;
+      content: 'ファイル名'; /* 親要素にdata-placeholderが設定されてしまうため、ハードコーディング */
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+  }
+}

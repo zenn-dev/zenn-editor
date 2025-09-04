@@ -4,7 +4,12 @@ import type { Server as HttpServer } from 'http';
 import { WebSocketServer } from 'ws';
 import chokidar from 'chokidar';
 import open from 'open';
-import { resolveHostname } from './helper';
+import { getWorkingPath, resolveHostname } from './helper';
+import fs from 'fs';
+import path from 'path';
+import { Article } from 'zenn-model';
+import { glob } from 'node:fs/promises';
+import { stringifyArticleWithMetaData } from './articles';
 
 type ServerOptions = {
   app: Express;
@@ -51,10 +56,31 @@ export async function startLocalChangesWatcher(
   watchPathGlob: string
 ) {
   const wss = new WebSocketServer({ server });
-  const watcher = await chokidar.watch(watchPathGlob);
+  const watcher = chokidar.watch(await Array.fromAsync(glob(watchPathGlob)));
   watcher.on('change', () => {
     wss.clients.forEach((client) => client.send('Should refresh'));
   });
+
+  wss.on('connection', (ws) => {
+    ws.on('message', async (message) => {
+      const msg = message.toString();
+
+      const data = JSON.parse(msg);
+      if (data.type === 'contentChanged') {
+        const article = data.article as Article;
+
+        const outputDir = `${getWorkingPath('')}/articles`;
+        const outputFile = path.join(outputDir, `${data.article.slug}.md`);
+
+        const contentWithMeta = stringifyArticleWithMetaData(article);
+
+        watcher.unwatch(await Array.fromAsync(glob(watchPathGlob)));
+        fs.writeFileSync(outputFile, contentWithMeta ?? '', 'utf-8');
+        watcher.add(await Array.fromAsync(glob(watchPathGlob)));
+      }
+    });
+  });
+
   process.on('SIGINT', () => {
     // close by `Ctrl-C`
     wss.close();
