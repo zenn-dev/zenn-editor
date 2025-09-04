@@ -16,6 +16,11 @@ export function useZennEditor({ initialContent, onChange }: Props) {
       const markdown = renderMarkdown(editor.state.doc);
       onChange?.(html, markdown);
     },
+    editorProps: {
+      attributes: {
+        class: 'znc',
+      },
+    },
   });
 
   return editor;

@@ -23,7 +23,7 @@ export default function EditorContent({ editor }: Props) {
       <BubbleMenu editor={editor} />
       <ImageBubbleMenu editor={editor} />
       <DragHandle editor={editor} />
-      <EditorContentComponent editor={editor} className="znc" />
+      <EditorContentComponent editor={editor} />
     </>
   );
 }
