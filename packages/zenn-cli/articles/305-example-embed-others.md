@@ -1,19 +1,22 @@
 ---
-title: '埋め込みのテスト（その他）'
-type: 'tech' # or "idea"
-topics: ['embed', 'test']
+title: 埋め込みのテスト（その他）
+type: tech
+topics:
+  - embed
+  - test
 emoji: 🐲
 published: true
 ---
-
 ## Figma
 
 @[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)
-@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File?node-id=0%3A1)
+
+@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File?node-id=0:1)
 
 ## Blueprint UE
 
 @[blueprintue](https://blueprintue.com/render/xmdvzpam/)
+
 @[blueprintue](https://blueprintue.com/render/xmdvzpam/)
 
 ## codesandbox
@@ -24,25 +27,13 @@ published: true
 
 @[codesandbox](https://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark&module=/src/App.js,/src/index.js)
 
-👇must raise error
-
-@[codesandbox](https://codesandbox.io/embed/a"a)
-
-@[codesandbox](http://codesandbox.io/embed/guess-movie-erpn1?fontsize=14&hidenavigation=1&theme=dark)
-
 ## stackblitz
 
 @[stackblitz](https://stackblitz.com/edit/angular-examples)
 
-👇must raise error
-
-@[stackblitz](https://stackblitz.com/edit/embed?embed=a"a)
-
-@[stackblitz](http://stackblitz.com/edit/embed?embed=1&file=app/app.component.ts)
-
 ## youtube
 
-@[youtube](X8NBvQDDXXc)
+https://www.youtube.com/watch?v=X8NBvQDDXXc
 
 ## slideshare
 
@@ -58,14 +49,13 @@ published: true
 
 @[speakerdeck](4f926da9cb4cd0001f00a1ff?slide=24)
 
-
 ## docswell
 
 @[docswell](https://www.docswell.com/slide/LK7J5V/embed)
 
-@[docswell](https://www.docswell.com/s/ku-suke/LK7J5V-hello-docswell)
+@[docswell](https://www.docswell.com/slide/LK7J5V/embed)
 
-@[docswell](https://www.docswell.com/s/ku-suke/LK7J5V-hello-docswell#p13)
+@[docswell](https://www.docswell.com/slide/LK7J5V/embed#p13)
 
 ## jsfiddle
 
@@ -73,4 +63,4 @@ published: true
 
 ## codepen
 
-@[codepen](https://codepen.io/noeldelgado/pen/BaogqYy?default-tab=result)
+@[codepen](https://codepen.io/noeldelgado/pen/BaogqYy?default-tab=result&embed-version=2)
