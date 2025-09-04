@@ -1,12 +1,11 @@
 ---
-title: '画像のテスト'
-type: 'idea'
+title: 画像のテスト
+type: idea
 topics:
   - Zenn
 emoji: 🏙
 published: true
 ---
-
 ## 正しい指定
 
 `![](/images/example-images/zenn-editor.png)`
