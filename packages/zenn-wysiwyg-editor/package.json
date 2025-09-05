@@ -82,7 +82,9 @@
     "vitest": "^3.2.4",
     "vitest-browser-react": "^1.0.1",
     "zenn-content-css": "^0.2.1",
-    "prismjs": "^1.30.0"
+    "prismjs": "^1.30.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "peerDependencies": {
     "@tiptap/pm": "^3.0.0",
