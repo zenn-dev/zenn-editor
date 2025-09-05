@@ -1,23 +1,26 @@
-.tiptap .loadingCard {
-  display: flex;
-  justify-content: center;
-  height: 10rem;
-  align-items: center;
-  border: 2px solid;
-  border-radius: 0.25rem;
-}
+.tiptap {
+  .loadingCard {
+    display: flex;
+    justify-content: center;
+    height: 10rem;
+    align-items: center;
+    border: 2px solid oklch(92.9% 0.013 255.508);
+    border-radius: 0.25rem;
+    margin: 1.5rem 0; /* 埋め込みのマージンと同じ */
 
-.tiptap .loadingCard .point {
-  animation: ping 1s infinite;
-  height: 0.5rem;
-  width: 0.5rem;
-  background-color: #2563eb;
-  border-radius: 9999px;
-}
+    .point {
+      animation: ping 1s infinite;
+      height: 0.5rem;
+      width: 0.5rem;
+      background-color: #2563eb;
+      border-radius: 9999px;
+    }
 
-.tiptap .loadingCard .point:nth-child(2) {
-  margin-left: 1rem;
-  margin-right: 1rem;
+    .point:nth-child(2) {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
 }
 
 @keyframes ping {
