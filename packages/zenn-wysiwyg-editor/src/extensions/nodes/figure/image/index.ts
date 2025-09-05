@@ -102,7 +102,7 @@ export const Image = Node.create({
       code.textContent = node.attrs.src || '画像';
       p.appendChild(code);
       p.appendChild(document.createTextNode('の読み込みに失敗しました'));
-      p.className = 'md-img text-center py-8 text-red-600 rounded';
+      p.className = 'md-img figure-error-msg';
 
       return {
         dom: node.attrs.isLoadingError ? p : img,

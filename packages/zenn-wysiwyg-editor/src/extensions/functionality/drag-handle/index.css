@@ -1,0 +1,12 @@
+.dragHandle {
+  position: absolute;
+  cursor: grab;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: oklch(70.7% 0.022 261.325);
+  transition: 0s;
+}
+
+.dragHandle:hover {
+  background-color: oklch(96.8% 0.007 247.896);
+}

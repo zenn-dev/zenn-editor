@@ -107,10 +107,6 @@ button {
   color: var(--c-body);
 }
 
-.drag-handle {
-  transition: 0s;
-}
-
 code {
   font-family: var(--font-code);
 }

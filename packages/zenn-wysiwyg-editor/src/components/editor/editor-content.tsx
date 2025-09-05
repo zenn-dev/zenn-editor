@@ -4,8 +4,6 @@ import {
 } from '@tiptap/react';
 import type { ComponentType } from 'react';
 import DragHandle from 'src/extensions/functionality/drag-handle';
-import BubbleMenu from './bubble-menu';
-import ImageBubbleMenu from './image-bubble-menu';
 
 type Props = {
   editor: Editor;
@@ -20,8 +18,6 @@ const EditorContentComponent = TiptapEditorContent as ComponentType<{
 export default function EditorContent({ editor }: Props) {
   return (
     <>
-      <BubbleMenu editor={editor} />
-      <ImageBubbleMenu editor={editor} />
       <DragHandle editor={editor} />
       <EditorContentComponent editor={editor} />
     </>

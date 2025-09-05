@@ -58,13 +58,10 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.539.0",
     "prosemirror-markdown": "^1.13.2",
-    "tailwind-merge": "^3.3.1",
     "zenn-markdown-html": "workspace:zenn-markdown-html"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
-    "@tailwindcss/postcss": "^4.1.12",
-    "@tailwindcss/vite": "^4.1.11",
     "@tiptap/pm": "^3.1.0",
     "@tiptap/react": "^3.1.0",
     "@types/node": "^24.2.1",
@@ -80,7 +77,6 @@
     "eslint-config-prettier": "^8.6.0",
     "happy-dom": "^18.0.1",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11",
     "tsup": "^8.5.0",
     "typescript": "~5.8.3",
     "vitest": "^3.2.4",
