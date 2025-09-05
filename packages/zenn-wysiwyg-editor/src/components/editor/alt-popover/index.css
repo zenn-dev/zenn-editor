@@ -1,0 +1,22 @@
+.altPopoverTriger {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  cursor: pointer;
+}
+
+.altPopoverTriger:hover {
+  background-color: #f3f4f6;
+}
+
+.altPopoverContent {
+  width: 20rem;
+  display: flex;
+  width: 100%;
+  max-width: 24rem;
+  align-items: center;
+  gap: 0.5rem;
+}

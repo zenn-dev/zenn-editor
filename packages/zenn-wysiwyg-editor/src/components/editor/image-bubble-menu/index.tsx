@@ -1,7 +1,7 @@
 import { NodeSelection } from '@tiptap/pm/state';
 import { type Editor, useEditorState } from '@tiptap/react';
 import { BubbleMenu as TiptapBubbleMenu } from '@tiptap/react/menus';
-import AltPopover from './alt-popover';
+import AltPopover from '../alt-popover';
 
 type Props = {
   editor: Editor;
@@ -56,7 +56,7 @@ export default function ImageBubbleMenu({ editor }: Props) {
         return selection.node.type === editor.schema.nodes.figure;
       }}
     >
-      <div className="flex bg-white border-gray-200 border rounded p-1 gap-x-1 shadow">
+      <div className="imageBubbleMenuContainer">
         <AltPopover
           initialAlt={state.alt}
           setAlt={handleSetAlt}
