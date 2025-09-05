@@ -3,6 +3,8 @@ import { type Editor, useEditorState } from '@tiptap/react';
 import { BubbleMenu as TiptapBubbleMenu } from '@tiptap/react/menus';
 import AltPopover from '../alt-popover';
 
+import './index.css';
+
 type Props = {
   editor: Editor;
 };

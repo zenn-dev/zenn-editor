@@ -1,0 +1,33 @@
+.tiptap .loadingCard {
+  display: flex;
+  justify-content: center;
+  height: 10rem;
+  align-items: center;
+  border: 2px solid;
+  border-radius: 0.25rem;
+}
+
+.tiptap .loadingCard .point {
+  animation: ping 1s infinite;
+  height: 0.5rem;
+  width: 0.5rem;
+  background-color: #2563eb;
+  border-radius: 9999px;
+}
+
+.tiptap .loadingCard .point:nth-child(2) {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
