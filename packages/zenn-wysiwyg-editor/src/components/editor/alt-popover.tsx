@@ -1,7 +1,7 @@
 import { PopoverClose } from '@radix-ui/react-popover';
 import { useRef } from 'react';
 import { Button } from '../ui/button';
-import { Input } from '..//ui/input';
+import { Input } from '../ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 type Props = {
