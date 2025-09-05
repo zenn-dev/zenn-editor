@@ -3,8 +3,8 @@ import {
   EditorContent as TiptapEditorContent,
 } from '@tiptap/react';
 import type { ComponentType } from 'react';
-import DragHandle from './drag-handle';
-import BubbleMenu from './bubble-menu';
+import DragHandle from '../drag-handle';
+import BubbleMenu from '../bubble-menu';
 
 type Props = {
   editor: Editor;

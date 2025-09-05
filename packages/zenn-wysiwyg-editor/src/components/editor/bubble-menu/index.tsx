@@ -1,9 +1,9 @@
 import { type Editor, useEditorState } from '@tiptap/react';
 import { BubbleMenu as TiptapBubbleMenu } from '@tiptap/react/menus';
 import { Bold, Code, Italic, Strikethrough } from 'lucide-react';
-import { cn } from '../..//lib/utils';
+import { cn } from '../../../lib/utils';
 
-import './bubble-menu.css';
+import './index.css';
 
 type Props = {
   editor: Editor;
