@@ -147,7 +147,7 @@ const markdownSerializer = new MarkdownSerializer(
 
         urlBlock = `@[slideshare](${params?.embedId})`;
       } else {
-        urlBlock = `@[${type}](${node.attrs.url})`;
+        urlBlock = `\`\`\`mermaid\n${node.attrs.url}\n\`\`\``;
       }
 
       state.write(urlBlock);

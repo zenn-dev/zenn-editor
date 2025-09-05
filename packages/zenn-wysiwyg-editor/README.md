@@ -60,7 +60,7 @@ Zenn 独自ノード
 - [x] Docswell
 - [x] SlideShare
 - [x] blueprintUE
-- [ ] Mermaid
+- [x] Mermaid
 
 機能
 

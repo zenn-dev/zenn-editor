@@ -16,7 +16,8 @@ export function generateEmbedOutputSpec(
     type === 'card' ||
     type === 'github' ||
     type === 'gist' ||
-    type === 'tweet'
+    type === 'tweet' ||
+    type === 'mermaid'
   ) {
     return generateEmbedServerOutputSpec(type, url);
   } else if (type === 'stackblitz') {

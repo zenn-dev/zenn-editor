@@ -49,6 +49,8 @@ export function getEmbedTypeFromElement(
     return 'slideshare';
   } else if (element.classList.contains('embed-blueprintue')) {
     return 'blueprintue';
+  } else if (element.classList.contains('zenn-embedded-mermaid')) {
+    return 'mermaid';
   } else if (element.classList.contains('embed-speakerdeck')) {
     return null; // SpeakerDeckは別のノードで定義するため、ここではnullを返す
   }

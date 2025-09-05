@@ -1,13 +1,12 @@
 ---
-title: '埋め込みのテスト（Mermaid）'
-type: 'idea' # or "idea"
+title: 埋め込みのテスト（Mermaid）
+type: idea
 topics:
   - mermaid
 emoji: 👩‍💻
 published: true
 ---
-
-From: https://mermaid-js.github.io/mermaid/#/
+From: [https://mermaid-js.github.io/mermaid/#/](https://mermaid-js.github.io/mermaid/#/e)
 
 ```mermaid
 graph TD;
@@ -89,7 +88,6 @@ sequenceDiagram
 ```
 
 :::details ダイアグラム
-
 ```mermaid
 sequenceDiagram
     actor Alice
@@ -97,5 +95,4 @@ sequenceDiagram
     Alice->>Bob: Hi Bob
     Bob->>Alice: Hi Alice
 ```
-
 :::
