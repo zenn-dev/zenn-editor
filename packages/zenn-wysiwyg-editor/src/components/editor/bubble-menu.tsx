@@ -3,6 +3,8 @@ import { BubbleMenu as TiptapBubbleMenu } from '@tiptap/react/menus';
 import { Bold, Code, Italic, Strikethrough } from 'lucide-react';
 import { cn } from '../..//lib/utils';
 
+import './bubble-menu.css';
+
 type Props = {
   editor: Editor;
 };
@@ -53,43 +55,31 @@ export default function BubbleMenu({ editor }: Props) {
         return isShow;
       }}
     >
-      <div className="flex bg-white border-gray-200 border rounded p-1 gap-x-1 shadow">
+      <div className="bubbleMenu">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={cn(
-            'size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100',
-            state.isBold && 'bg-gray-200'
-          )}
+          className={cn('', state.isBold && 'isActive')}
           type="button"
         >
           <Bold size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={cn(
-            'size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100',
-            state.isItalic && 'bg-gray-200'
-          )}
+          className={cn(state.isItalic && 'isActive')}
           type="button"
         >
           <Italic size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={cn(
-            'size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100',
-            state.isStrike && 'bg-gray-200'
-          )}
+          className={cn(state.isStrike && 'isActive')}
           type="button"
         >
           <Strikethrough size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleCode().run()}
-          className={cn(
-            'size-6 flex items-center justify-center bg-white cursor-pointer hover:bg-gray-100',
-            state.isCode && 'bg-gray-200'
-          )}
+          className={cn(state.isCode && 'isActive')}
           type="button"
         >
           <Code size={18} />

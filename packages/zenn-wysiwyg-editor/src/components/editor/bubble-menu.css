@@ -1,0 +1,27 @@
+.bubbleMenu {
+  display: flex;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  gap: 0.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.bubbleMenu button {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  cursor: pointer;
+}
+
+.bubbleMenu button:hover {
+  background-color: #f3f4f6;
+}
+
+.bubbleMenu .isActive {
+  background-color: #e5e7eb;
+}
