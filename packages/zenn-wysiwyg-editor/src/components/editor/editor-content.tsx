@@ -3,7 +3,7 @@ import {
   EditorContent as TiptapEditorContent,
 } from '@tiptap/react';
 import type { ComponentType } from 'react';
-import DragHandle from 'src/extensions/functionality/drag-handle';
+import DragHandle from './drag-handle';
 import BubbleMenu from './bubble-menu';
 
 type Props = {
