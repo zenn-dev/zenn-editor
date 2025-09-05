@@ -3,7 +3,7 @@ import TiptapLink from '@tiptap/extension-link';
 import type { Mark } from '@tiptap/pm/model';
 import type { EditorView } from '@tiptap/pm/view';
 import { ReactRenderer } from '@tiptap/react';
-import LinkEdit from './link-edit';
+import LinkEdit from '../../../components/editor/link-edit';
 
 const updatePosition = (
   targetElement: HTMLElement,
