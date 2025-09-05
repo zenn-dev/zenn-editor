@@ -17,15 +17,40 @@ export const Image = Node.create({
     return {
       src: {
         default: null,
+        parseHTML: (element) => element.getAttribute('src'),
+        renderHTML: (attributes) => {
+          if (!attributes.src) {
+            return null;
+          }
+          return { src: attributes.src };
+        },
       },
       alt: {
         default: null,
+        parseHTML: (element) => element.getAttribute('alt'),
+        renderHTML: (attributes) => {
+          if (!attributes.alt) {
+            return null;
+          }
+          return { alt: attributes.alt };
+        },
       },
       width: {
         default: null,
+        parseHTML: (element) => {
+          const width = element.getAttribute('width');
+          return width ? parseInt(width, 10) : null;
+        },
+        renderHTML: (attributes) => {
+          if (!attributes.width) {
+            return null;
+          }
+          return { width: attributes.width };
+        },
       },
       isLoadingError: {
         default: false,
+        rendered: false,
       },
     };
   },
@@ -53,6 +78,7 @@ export const Image = Node.create({
       img.className = 'md-img';
       img.src = node.attrs.src;
       img.alt = node.attrs.alt || '';
+      img.width = node.attrs.width || undefined;
       img.onerror = () => {
         this.editor.commands.command(({ tr }) => {
           const pos = getPos();

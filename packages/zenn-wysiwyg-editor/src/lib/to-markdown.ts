@@ -107,8 +107,14 @@ const markdownSerializer = new MarkdownSerializer(
     figure(state, node) {
       const src = node.firstChild?.attrs.src || '';
       const alt = node.firstChild?.attrs.alt || '';
+      const width = node.firstChild?.attrs.width;
       const caption = node.lastChild?.textContent || '';
-      state.write(`![${alt}](${src})`);
+      state.write(`![${alt}](${src}`);
+      if (width != null) {
+        state.write(` =${width}x`);
+      }
+      state.write(')');
+
       if (caption) {
         state.write(`\n*${caption}*`);
       }
