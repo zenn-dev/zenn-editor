@@ -2,6 +2,8 @@ import { Trash2 } from 'lucide-react';
 import type { MouseEvent } from 'react';
 import { useId, useState } from 'react';
 
+import './index.css';
+
 type Props = {
   href: string;
   handleDelete?: () => void;
@@ -23,13 +25,10 @@ export default ({
       role="dialog"
       aria-label="リンクの編集"
       onMouseLeave={handleMouseLeave}
-      className="bg-white border border-gray-200 rounded-lg p-4 shadow-lg"
+      className="linkEditPopoverContent"
     >
       <div>
-        <label
-          htmlFor={inputId}
-          className="block text-sm font-medium text-gray-500 mb-1"
-        >
+        <label htmlFor={inputId} className="">
           リンク
         </label>
         <input
@@ -37,17 +36,24 @@ export default ({
           type="text"
           name="href"
           placeholder="https://example.com"
-          className="w-[300px] text-xs"
           defaultValue={href}
           onChange={(e) => setLink(e.target.value)}
         />
       </div>
-      <div className="flex justify-between mt-4">
-        <button variant="ghost" size="icon" onClick={() => handleDelete?.()}>
-          <Trash2 className="text-red-500" />
+      <div className="linkEditPopoverContent_buttons">
+        <button
+          type="button"
+          className="linkEditPopoverContent_buttons_delete"
+          onClick={() => handleDelete?.()}
+        >
+          <Trash2 />
         </button>
 
-        <button size="sm" onClick={() => handleSave?.(link)}>
+        <button
+          type="button"
+          className="linkEditPopoverContent_buttons_save"
+          onClick={() => handleSave?.(link)}
+        >
           保存
         </button>
       </div>
