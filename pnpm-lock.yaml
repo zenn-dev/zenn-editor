@@ -107,15 +107,12 @@ importers:
       emoji-regex:
         specifier: ^10.2.1
         version: 10.2.1
-      esbuild:
-        specifier: ^0.17.8
-        version: 0.17.8
       esbuild-loader:
         specifier: ^3.0.1
         version: 3.0.1(webpack@5.75.0)
       esbuild-register:
         specifier: ^3.4.2
-        version: 3.4.2(esbuild@0.17.8)
+        version: 3.4.2(esbuild@0.25.9)
       eslint:
         specifier: ^8.34.0
         version: 8.34.0
@@ -202,7 +199,7 @@ importers:
         version: 7.0.1
       webpack:
         specifier: ^5.75.0
-        version: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+        version: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
       webpack-cli:
         specifier: ^5.0.1
         version: 5.0.1(webpack@5.75.0)
@@ -365,8 +362,8 @@ importers:
         specifier: ^5.52.0
         version: 5.52.0(eslint@8.34.0)(typescript@4.9.5)
       esbuild:
-        specifier: ^0.17.8
-        version: 0.17.8
+        specifier: ^0.25.9
+        version: 0.25.9
       eslint:
         specifier: ^8.34.0
         version: 8.34.0
@@ -8719,7 +8716,7 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.1
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
-      '@vitest/mocker': 3.2.4(vite@7.1.4(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3))
+      '@vitest/mocker': 3.2.4(vite@7.1.4(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.16.3))
       '@vitest/utils': 3.2.4
       magic-string: 0.30.18
       sirv: 3.0.1
@@ -8757,7 +8754,7 @@ snapshots:
       vite: 4.2.1(@types/node@22.18.0)(sass@1.58.1)(terser@5.16.3)
     optional: true
 
-  '@vitest/mocker@3.2.4(vite@7.1.4(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3))':
+  '@vitest/mocker@3.2.4(vite@7.1.4(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.16.3))':
     dependencies:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
@@ -8891,17 +8888,17 @@ snapshots:
 
   '@webpack-cli/configtest@2.0.1(webpack-cli@5.0.1)(webpack@5.75.0)':
     dependencies:
-      webpack: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+      webpack: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
       webpack-cli: 5.0.1(webpack@5.75.0)
 
   '@webpack-cli/info@2.0.1(webpack-cli@5.0.1)(webpack@5.75.0)':
     dependencies:
-      webpack: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+      webpack: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
       webpack-cli: 5.0.1(webpack@5.75.0)
 
   '@webpack-cli/serve@2.0.1(webpack-cli@5.0.1)(webpack@5.75.0)':
     dependencies:
-      webpack: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+      webpack: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
       webpack-cli: 5.0.1(webpack@5.75.0)
 
   '@xtuc/ieee754@1.2.0': {}
@@ -9794,17 +9791,17 @@ snapshots:
       esbuild: 0.17.8
       get-tsconfig: 4.4.0
       loader-utils: 2.0.4
-      webpack: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+      webpack: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
       webpack-sources: 1.4.3
 
   esbuild-plugin-prismjs@1.0.8:
     dependencies:
       prismjs: 1.30.0
 
-  esbuild-register@3.4.2(esbuild@0.17.8):
+  esbuild-register@3.4.2(esbuild@0.25.9):
     dependencies:
       debug: 4.4.1(supports-color@5.5.0)
-      esbuild: 0.17.8
+      esbuild: 0.25.9
     transitivePeerDependencies:
       - supports-color
 
@@ -11169,7 +11166,7 @@ snapshots:
   node-loader@2.0.0(webpack@5.75.0):
     dependencies:
       loader-utils: 2.0.4
-      webpack: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+      webpack: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
 
   node-releases@2.0.19: {}
 
@@ -12366,16 +12363,16 @@ snapshots:
 
   temp-dir@2.0.0: {}
 
-  terser-webpack-plugin@5.3.6(esbuild@0.17.8)(webpack@5.75.0):
+  terser-webpack-plugin@5.3.6(esbuild@0.25.9)(webpack@5.75.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.30
       jest-worker: 27.5.1
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.3
-      webpack: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+      webpack: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
     optionalDependencies:
-      esbuild: 0.17.8
+      esbuild: 0.25.9
 
   terser@5.16.3:
     dependencies:
@@ -12463,7 +12460,7 @@ snapshots:
       micromatch: 4.0.5
       semver: 7.3.8
       typescript: 5.9.2
-      webpack: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+      webpack: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
 
   tslib@1.14.1: {}
 
@@ -12891,7 +12888,7 @@ snapshots:
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
-      '@vitest/mocker': 3.2.4(vite@7.1.4(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3))
+      '@vitest/mocker': 3.2.4(vite@7.1.4(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.16.3))
       '@vitest/pretty-format': 3.2.4
       '@vitest/runner': 3.2.4
       '@vitest/snapshot': 3.2.4
@@ -12971,7 +12968,7 @@ snapshots:
       import-local: 3.1.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1)
+      webpack: 5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1)
       webpack-merge: 5.8.0
 
   webpack-merge@5.8.0:
@@ -12986,7 +12983,7 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.75.0(esbuild@0.17.8)(webpack-cli@5.0.1):
+  webpack@5.75.0(esbuild@0.25.9)(webpack-cli@5.0.1):
     dependencies:
       '@types/eslint-scope': 3.7.4
       '@types/estree': 0.0.51
@@ -13009,7 +13006,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.1.1
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.6(esbuild@0.17.8)(webpack@5.75.0)
+      terser-webpack-plugin: 5.3.6(esbuild@0.25.9)(webpack@5.75.0)
       watchpack: 2.4.0
       webpack-sources: 3.2.3
     optionalDependencies:

@@ -65,7 +65,6 @@
     "connect-history-api-fallback": "^2.0.0",
     "dotenv": "^16.0.3",
     "emoji-regex": "^10.2.1",
-    "esbuild": "^0.17.8",
     "esbuild-loader": "^3.0.1",
     "esbuild-register": "^3.4.2",
     "eslint": "^8.34.0",
