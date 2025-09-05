@@ -39,7 +39,8 @@ export const Image = Node.create({
         default: null,
         parseHTML: (element) => {
           const width = element.getAttribute('width');
-          return width ? parseInt(width, 10) : null;
+          if (!width) return null;
+          return parseInt(width, 10);
         },
         renderHTML: (attributes) => {
           if (!attributes.width) {
@@ -78,7 +79,10 @@ export const Image = Node.create({
       img.className = 'md-img';
       img.src = node.attrs.src;
       img.alt = node.attrs.alt || '';
-      img.width = node.attrs.width || undefined;
+      if (node.attrs.width) {
+        img.width = node.attrs.width;
+      }
+
       img.onerror = () => {
         this.editor.commands.command(({ tr }) => {
           const pos = getPos();
