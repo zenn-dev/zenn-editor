@@ -2,7 +2,7 @@ import Document from '@tiptap/extension-document';
 import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
 import { describe, expect, it } from 'vitest';
-import { fromMarkdown } from '../../../../lib/from-markdown';
+import { convertMarkdownToEditable } from '../../../../lib/from-markdown';
 import { markdownSerializer } from '../../../../lib/to-markdown';
 import LakeImage from '../../../../tests/assets/sikotuko.jpeg';
 import { renderTiptapEditor } from '../../../../tests/editor';
@@ -38,7 +38,7 @@ describe('マークダウン', () => {
   it('マークダウンからFigureノードに変換', () => {
     const markdown = `![支笏湖](${LakeImage})\n*支笏湖*`;
 
-    const html = fromMarkdown(markdown);
+    const html = convertMarkdownToEditable(markdown);
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content: html,
@@ -51,7 +51,7 @@ describe('マークダウン', () => {
   it('キャプションなしのマークダウンからFigureノードに変換', () => {
     const markdown = `![支笏湖](${LakeImage})`;
 
-    const html = fromMarkdown(markdown);
+    const html = convertMarkdownToEditable(markdown);
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content: html,

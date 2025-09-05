@@ -3,7 +3,7 @@ import HardBreak from '@tiptap/extension-hard-break';
 import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
 import { describe, expect, it } from 'vitest';
-import { fromMarkdown } from '../../../../../lib/from-markdown';
+import { convertMarkdownToEditable } from '../../../../../lib/from-markdown';
 import { markdownSerializer } from '../../../../../lib/to-markdown';
 import { renderTiptapEditor } from '../../../../../tests/editor';
 import { CodeBlock } from '../../code-block';
@@ -63,7 +63,7 @@ describe('マークダウン', () => {
   it('マークダウンからコードブロックに変換', () => {
     const markdown = '```diff javascript\nconsole.log("hello");\n```';
 
-    const html = fromMarkdown(markdown);
+    const html = convertMarkdownToEditable(markdown);
     const editor = renderTiptapEditor({
       extensions: baseExtensions,
       content: html,
@@ -78,7 +78,7 @@ describe('マークダウン', () => {
   it('ファイル名付きマークダウンからコードブロックに変換', () => {
     const markdown = '```diff javascript:hello.js\nconsole.log("hello");\n```';
 
-    const html = fromMarkdown(markdown);
+    const html = convertMarkdownToEditable(markdown);
     const editor = renderTiptapEditor({
       extensions: baseExtensions,
       content: html,

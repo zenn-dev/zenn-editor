@@ -7,7 +7,7 @@
   "author": "karintou8710",
   "license": "MIT",
   "scripts": {
-    "build": "tsup",
+    "build": "tsc && tsup",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext .ts,.tsx",
     "lint:prettier": "prettier .",

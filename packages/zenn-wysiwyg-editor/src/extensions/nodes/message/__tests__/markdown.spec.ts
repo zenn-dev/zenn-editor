@@ -2,7 +2,7 @@ import Document from '@tiptap/extension-document';
 import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
 import { describe, expect, it } from 'vitest';
-import { fromMarkdown } from '../../../../lib/from-markdown';
+import { convertMarkdownToEditable } from '../../../../lib/from-markdown';
 import { markdownSerializer } from '../../../../lib/to-markdown';
 import { renderTiptapEditor } from '../../../../tests/editor';
 import { Message } from '../message';
@@ -55,7 +55,7 @@ describe('マークダウン', () => {
   it('マークダウンからメッセージノードに変換', () => {
     const markdown = `:::message\nメッセージ\n:::`;
 
-    const html = fromMarkdown(markdown);
+    const html = convertMarkdownToEditable(markdown);
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content: html,
