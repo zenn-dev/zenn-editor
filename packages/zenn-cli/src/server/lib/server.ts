@@ -9,7 +9,12 @@ import fs from 'fs';
 import path from 'path';
 import { Article } from 'zenn-model';
 import { glob } from 'node:fs/promises';
-import { stringifyArticleWithMetaData } from './articles';
+import { getLocalArticle, stringifyArticleWithMetaData } from './articles';
+import {
+  WS_ArticleSavedMessage,
+  WS_ClientMessage,
+  WS_LocalArticleChangedMessage,
+} from 'common/types';
 
 type ServerOptions = {
   app: Express;
@@ -57,26 +62,53 @@ export async function startLocalChangesWatcher(
 ) {
   const wss = new WebSocketServer({ server });
   const watcher = chokidar.watch(await Array.fromAsync(glob(watchPathGlob)));
-  watcher.on('change', () => {
-    wss.clients.forEach((client) => client.send('Should refresh'));
+  watcher.on('change', (path) => {
+    if (path.includes('/articles/')) {
+      const slug = path.split('/articles/')[1].replace(/\.mdx?$/, '');
+      const article = getLocalArticle(slug);
+      if (!article) {
+        console.error(`記事の取得に失敗しました: ${slug}`);
+        return;
+      }
+
+      const req: WS_LocalArticleChangedMessage = {
+        type: 'localArticleFileChanged',
+        data: { article },
+      };
+
+      wss.clients.forEach((client) => client.send(JSON.stringify(req)));
+    }
   });
 
   wss.on('connection', (ws) => {
     ws.on('message', async (message) => {
       const msg = message.toString();
 
-      const data = JSON.parse(msg);
-      if (data.type === 'contentChanged') {
-        const article = data.article as Article;
+      const res: WS_ClientMessage = JSON.parse(msg);
+      if (res.type === 'contentChanged') {
+        const article = res.data.article;
 
         const outputDir = `${getWorkingPath('')}/articles`;
-        const outputFile = path.join(outputDir, `${data.article.slug}.md`);
+        const outputFile = path.join(outputDir, `${res.data.article.slug}.md`);
 
         const contentWithMeta = stringifyArticleWithMetaData(article);
 
         watcher.unwatch(await Array.fromAsync(glob(watchPathGlob)));
         fs.writeFileSync(outputFile, contentWithMeta ?? '', 'utf-8');
         watcher.add(await Array.fromAsync(glob(watchPathGlob)));
+
+        const updatedArticle = getLocalArticle(article.slug);
+        if (!updatedArticle) {
+          console.error(`記事の取得に失敗しました: ${article.slug}`);
+          return;
+        }
+
+        const req: WS_ArticleSavedMessage = {
+          type: 'articleSaved',
+          data: { article: updatedArticle },
+        };
+
+        ws.send(JSON.stringify(req));
       }
     });
   });

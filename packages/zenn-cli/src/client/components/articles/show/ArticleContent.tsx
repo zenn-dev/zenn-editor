@@ -5,55 +5,34 @@ import { BodyContent } from '../../BodyContent';
 import { Switch } from '../../Switch';
 import { Article } from 'zenn-model';
 import { useCallback, useState } from 'react';
-import markdownToHtml, { parseToc } from 'zenn-markdown-html';
 import { useWebSocket } from '../../../hooks/useLocalFileChangedEffect';
 import { ContentContainer } from '../../ContentContainer';
+import { WS_ArticlePostMessage } from 'common/types';
 
 interface ArticleContentProps {
   article: Article;
-  handleContentChange?: (article: Article) => void;
-  handleEditableSwitchChange?: (checked: boolean) => void;
+  localArticleChangedAt: number; // 直接ファイルが更新された時に、エディタを再レンダリングするためのキー
 }
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({
   article,
-  handleContentChange,
-  handleEditableSwitchChange,
+  localArticleChangedAt,
 }) => {
   const [isEditable, setIsEditable] = useState(false);
   const ws = useWebSocket();
 
-  const innerContentChange = useCallback(
+  const handleContentChange = useCallback(
     (markdown: string) => {
       // 本番環境でのみWebSocket連携
       if (import.meta.env.MODE === 'production') {
-        ws?.send(
-          JSON.stringify({
-            type: 'contentChanged',
-            article: { ...article, markdown },
-          })
-        );
+        const req: WS_ArticlePostMessage = {
+          type: 'contentChanged',
+          data: { article: { ...article, markdown } },
+        };
+        ws?.send(JSON.stringify(req));
       }
-
-      const html = markdownToHtml(markdown);
-
-      // htmlはCompleteHTMLではないが、Switch 切り替え時の描画チラつきを防ぐために更新
-      handleContentChange?.({
-        ...article,
-        markdown: markdown,
-        bodyHtml: html,
-        toc: parseToc(html),
-      });
     },
     [article]
-  );
-
-  const innerEditableSwitchChange = useCallback(
-    (checked: boolean) => {
-      setIsEditable(checked);
-      handleEditableSwitchChange?.(checked);
-    },
-    [handleEditableSwitchChange]
   );
 
   return (
@@ -66,13 +45,14 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
 
           <StyledEditMode>
             <StyledLabel>編集モード</StyledLabel>
-            <Switch checked={isEditable} onChange={innerEditableSwitchChange} />
+            <Switch checked={isEditable} onChange={setIsEditable} />
           </StyledEditMode>
 
           {isEditable ? (
             <EditableBodyContent
+              key={localArticleChangedAt}
               markdown={article.markdown ?? ''}
-              onChange={innerContentChange}
+              onChange={handleContentChange}
             />
           ) : (
             <BodyContent rawHtml={article.bodyHtml ?? ''} />
