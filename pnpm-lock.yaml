@@ -512,6 +512,9 @@ importers:
       happy-dom:
         specifier: ^18.0.1
         version: 18.0.1
+      npm-run-all:
+        specifier: ^4.1.5
+        version: 4.1.5
       postcss:
         specifier: ^8.5.6
         version: 8.5.6
