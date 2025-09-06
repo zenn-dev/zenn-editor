@@ -3,7 +3,7 @@ import { prismjsPlugin } from 'esbuild-plugin-prismjs';
 
 export default defineConfig({
   entry: ['src/index.ts'],
-  tsconfig: './tsconfig.build.json',
+  tsconfig: './tsconfig.json',
   outDir: 'lib',
   dts: true,
   clean: true,
