@@ -1,4 +1,4 @@
-import { useEditor } from '@tiptap/react';
+import { Editor, useEditor } from '@tiptap/react';
 import { extensions } from './extensions';
 import { renderMarkdown } from './lib/to-markdown';
 
@@ -7,7 +7,7 @@ type Props = {
   onChange?: (html: string, markdown: string) => void;
 };
 
-export function useZennEditor({ initialContent, onChange }: Props) {
+export function useZennEditor({ initialContent, onChange }: Props): Editor {
   const editor = useEditor({
     extensions,
     content: initialContent || '',

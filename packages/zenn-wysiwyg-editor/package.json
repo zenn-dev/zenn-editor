@@ -35,7 +35,6 @@
   "dependencies": {
     "@floating-ui/dom": "^1.7.4",
     "@radix-ui/react-popover": "^1.1.15",
-    "@radix-ui/react-slot": "^1.2.3",
     "@tiptap/extension-blockquote": "^3.1.0",
     "@tiptap/extension-bold": "^3.1.0",
     "@tiptap/extension-bubble-menu": "^3.1.0",
@@ -58,12 +57,11 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.539.0",
     "prosemirror-markdown": "^1.13.2",
-    "zenn-markdown-html": "workspace:zenn-markdown-html"
+    "zenn-markdown-html": "workspace:zenn-markdown-html",
+    "zenn-content-css": "^0.2.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
-    "@tiptap/pm": "^3.1.0",
-    "@tiptap/react": "^3.1.0",
     "@types/node": "^24.2.1",
     "@types/prismjs": "^1.26.5",
     "@types/react": "^18.0.0",
@@ -81,7 +79,6 @@
     "typescript": "~5.8.3",
     "vitest": "^3.2.4",
     "vitest-browser-react": "^1.0.1",
-    "zenn-content-css": "^0.2.1",
     "prismjs": "^1.30.0"
   },
   "peerDependencies": {
