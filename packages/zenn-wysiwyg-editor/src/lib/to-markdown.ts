@@ -84,17 +84,16 @@ const markdownSerializer = new MarkdownSerializer(
 
       const backticks = preContentNode.textContent.match(/`{3,}/gm);
       const fence = backticks ? `${backticks.sort().slice(-1)[0]}\`` : '```';
-      const isDiff = preContentNode.attrs.language?.startsWith('diff');
-      let language = preContentNode.attrs.language?.replace(/diff-?/, '') || '';
+      const isDiff = preContentNode.attrs.language.startsWith('diff');
+      let language = preContentNode.attrs.language.replace(/diff-?/, '') || '';
       language = language.replace(/^(plain|plaintext)$/, ''); // plain, plaintextは言語指定なしとみなす
 
-      state.write(
-        fence +
-          (isDiff ? 'diff ' : '') +
-          language +
-          (fileName ? `:${fileName}` : '') +
-          '\n'
-      );
+      state.write(fence);
+      state.write(isDiff ? 'diff' : '');
+      state.write(isDiff && language ? ` ${language}` : language);
+      state.write(fileName ? `:${fileName}` : '');
+      state.write('\n');
+
       const text = isDiff
         ? getDiffCode(preContentNode)
         : preContentNode.textContent || '';

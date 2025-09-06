@@ -45,6 +45,7 @@ describe('コマンド', () => {
         src: LakeImage,
         alt: '支笏湖',
         width: null,
+        isLoadingError: false,
       });
     });
 
@@ -67,6 +68,7 @@ describe('コマンド', () => {
         src: LakeImage,
         alt: '支笏湖',
         width: null,
+        isLoadingError: false,
       });
     });
 

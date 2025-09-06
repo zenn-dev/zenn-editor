@@ -24,6 +24,7 @@ describe('HTMLのパース', () => {
       src: LakeImage,
       alt: '支笏湖',
       width: null,
+      isLoadingError: false,
     });
   });
 
@@ -40,6 +41,7 @@ describe('HTMLのパース', () => {
       src: LakeImage,
       alt: '支笏湖',
       width: null,
+      isLoadingError: false,
     });
   });
 
@@ -56,6 +58,7 @@ describe('HTMLのパース', () => {
       src: LakeImage,
       alt: '支笏湖',
       width: null,
+      isLoadingError: false,
     });
   });
 });

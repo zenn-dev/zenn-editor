@@ -44,7 +44,7 @@ describe('マークダウン', () => {
     });
 
     const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe('```plaintext\nplaintext code\n```');
+    expect(markdown).toBe('```\nplaintext code\n```');
   });
 
   it('複数行のコードブロックをマークダウンに変換できる', () => {

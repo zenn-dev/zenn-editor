@@ -44,7 +44,7 @@ describe('マークダウン', () => {
     });
 
     const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe('```diff plaintext\nplaintext code\n```');
+    expect(markdown).toBe('```diff\nplaintext code\n```');
   });
 
   it('複数行のコードブロックをマークダウンに変換できる', () => {
@@ -55,9 +55,7 @@ describe('マークダウン', () => {
     });
 
     const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe(
-      '```diff plaintext\nplaintext code\n\nplaintext code\n```'
-    );
+    expect(markdown).toBe('```diff\nplaintext code\n\nplaintext code\n```');
   });
 
   it('マークダウンからコードブロックに変換', () => {
