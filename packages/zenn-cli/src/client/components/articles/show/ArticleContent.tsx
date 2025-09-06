@@ -39,10 +39,6 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
     <ContentContainer>
       <StyledArticleShow className="article-show">
         <div className="article-show__content">
-          {article.toc && article.toc.length > 0 && (
-            <Toc maxDepth={2} toc={article.toc} />
-          )}
-
           <StyledEditMode>
             <StyledLabel>編集モード</StyledLabel>
             <Switch checked={isEditable} onChange={setIsEditable} />
@@ -55,7 +51,12 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
               onChange={handleContentChange}
             />
           ) : (
-            <BodyContent rawHtml={article.bodyHtml ?? ''} />
+            <>
+              {article.toc && article.toc.length > 0 && (
+                <Toc maxDepth={2} toc={article.toc} />
+              )}
+              <BodyContent rawHtml={article.bodyHtml ?? ''} />
+            </>
           )}
         </div>
       </StyledArticleShow>
@@ -65,7 +66,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
 
 const StyledArticleShow = styled.div`
   .article-show__content {
-    padding: 3rem 0 18rem;
+    padding: 2rem 0 18rem;
   }
 `;
 
@@ -74,7 +75,7 @@ const StyledEditMode = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
-  margin: 3rem 0;
+  margin-bottom: 2rem;
 `;
 
 const StyledLabel = styled.label`

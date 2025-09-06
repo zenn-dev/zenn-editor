@@ -20,6 +20,7 @@ export function convertHTMLtoEditable(html: string) {
   removeCodeBlockEndNewLine(dom);
   adjustDiffCodeBlock(dom);
   adjustFootnotes(dom);
+  addHeadingRandomId(dom);
 
   return dom.innerHTML;
 }
@@ -151,5 +152,17 @@ function adjustFootnotes(dom: HTMLElement) {
 
     item.setAttribute('data-footnote-reference-id', id);
     backRefAnchor?.remove();
+  });
+}
+
+/*
+ * markdownToHtmlでToC用のスラッグがテキストから生成されるが、
+ * 編集で変わるため contenteditable では IME と相性が悪い。
+ * そこで編集中はランダムIDを振るようにする。
+ */
+function addHeadingRandomId(dom: HTMLElement) {
+  const headings = dom.querySelectorAll('h1, h2, h3');
+  headings.forEach((heading) => {
+    heading.id = crypto.randomUUID();
   });
 }

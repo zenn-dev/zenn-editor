@@ -3,9 +3,12 @@ import {
   EditorContent,
   useZennEditor,
 } from 'zenn-wysiwyg-editor';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { parseToc } from 'zenn-markdown-html';
 
 import 'zenn-wysiwyg-editor/dist/style.css';
+import { Toc } from './Toc';
+import { TocNode } from 'zenn-model/lib/types';
 
 type Props = {
   markdown: string;
@@ -18,12 +21,22 @@ export const EditableBodyContent: React.FC<Props> = (props) => {
     [props.markdown]
   );
 
+  const [tocByEditor, setTocByEditor] = useState<TocNode[]>(() => {
+    return parseToc(initialContent);
+  });
+
   const editor = useZennEditor({
     initialContent: initialContent,
     onChange: (_, markdown) => {
       props.onChange?.(markdown);
+      setTocByEditor(parseToc(editor.getHTML()));
     },
   });
 
-  return <EditorContent editor={editor} />;
+  return (
+    <>
+      <Toc maxDepth={2} toc={tocByEditor} />
+      <EditorContent editor={editor} />;
+    </>
+  );
 };

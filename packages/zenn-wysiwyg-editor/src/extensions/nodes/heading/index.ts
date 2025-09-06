@@ -8,13 +8,6 @@ const Heading = TiptapHeading.extend({
       ...this.parent?.(),
       id: {
         default: null,
-        parseHTML: (element) => element.getAttribute('id'),
-        renderHTML: (attributes) => {
-          if (!attributes.id) {
-            return {};
-          }
-          return { id: attributes.id };
-        },
       },
     };
   },

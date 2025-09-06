@@ -1,6 +1,4 @@
 import { Plugin, PluginKey } from '@tiptap/pm/state';
-import markdownToHtml, { parseHeadingIds } from 'zenn-markdown-html';
-import { renderMarkdown } from '@/lib/to-markdown';
 
 export function TocPlugin(name: string) {
   const tocPlugin: Plugin = new Plugin({
@@ -14,14 +12,6 @@ export function TocPlugin(name: string) {
       }
 
       const doc = newState.doc;
-
-      // NOTE: 現状は parseHeadingIds に渡す HTML が、ID付きにする必要がある。
-      //       ID付与のアルゴリズムが markdownToHtml に含まれるため、描画用 HTML にしてから IDを取得している。
-      const markdown = renderMarkdown(doc);
-      const html = markdownToHtml(markdown);
-      const headingIds = parseHeadingIds(html);
-
-      let count = 0;
       doc.descendants((node, pos) => {
         if (node.type.name === name) {
           // h1, h2, h3のみ対象
@@ -29,9 +19,15 @@ export function TocPlugin(name: string) {
             return;
           }
 
+          // idが設定されていない場合のみ
+          if (node.attrs.id != null) {
+            return;
+          }
+
+          const id = crypto.randomUUID();
           tr.setNodeMarkup(pos, undefined, {
             ...node.attrs,
-            id: headingIds[count++],
+            id: id,
           });
           modified = true;
         }
