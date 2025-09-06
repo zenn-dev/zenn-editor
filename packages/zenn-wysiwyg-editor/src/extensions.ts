@@ -12,7 +12,6 @@ import Text from '@tiptap/extension-text';
 import { Dropcursor, TrailingNode, UndoRedo } from '@tiptap/extensions';
 import { type Extensions, findParentNode } from '@tiptap/react';
 import { FileHandler } from './extensions/functionality/file-handler';
-import { PasteMarkdown } from './extensions/functionality/paste-markdown';
 import { Placeholder } from './extensions/functionality/placeholder';
 import { Bold } from './extensions/marks/bold';
 import { Code } from './extensions/marks/code';
@@ -119,5 +118,4 @@ export const extensions: Extensions = [
   Dropcursor,
   FileHandler,
   ListKeymap,
-  PasteMarkdown,
 ];
