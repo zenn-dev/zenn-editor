@@ -36,7 +36,7 @@ export const EditableBodyContent: React.FC<Props> = (props) => {
   return (
     <>
       <Toc maxDepth={2} toc={tocByEditor} />
-      <EditorContent editor={editor} />;
+      <EditorContent editor={editor} />
     </>
   );
 };

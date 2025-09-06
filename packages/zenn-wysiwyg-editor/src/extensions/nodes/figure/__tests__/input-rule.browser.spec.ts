@@ -34,6 +34,7 @@ describe('InputRule', () => {
       src: LakeImage,
       alt: '支笏湖',
       width: null,
+      isLoadingError: false,
     });
   });
 
