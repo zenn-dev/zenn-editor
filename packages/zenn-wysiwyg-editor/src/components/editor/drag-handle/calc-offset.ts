@@ -10,9 +10,9 @@ export function calcOffset(dragTarget: DragTarget, editor: Editor) {
 
   if (dragTarget.node.type === editor.schema.nodes.heading) {
     if (dragTarget.node.attrs.level === 1) {
-      top += 5;
+      top += 10;
     } else if (dragTarget.node.attrs.level === 2) {
-      top += 4;
+      top += 7;
     } else if (dragTarget.node.attrs.level === 3) {
       top += 3;
     }

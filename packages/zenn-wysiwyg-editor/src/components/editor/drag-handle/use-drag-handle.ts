@@ -101,16 +101,22 @@ export function useDragHandle(editor: Editor | null) {
     setDragTarget(null);
   }, [editor]);
 
+  const handleKeyDown = useCallback(() => {
+    setDragTarget(null);
+  }, []);
+
   useEffect(() => {
     if (!editor) return;
 
     const element = editor.$doc.element;
     element.addEventListener('mousemove', handleMouseMove);
+    element.addEventListener('keydown', handleKeyDown);
 
     return () => {
       element.removeEventListener('mousemove', handleMouseMove);
+      element.removeEventListener('keydown', handleKeyDown);
     };
-  }, [editor, handleMouseMove]);
+  }, [editor, handleMouseMove, handleKeyDown]);
 
   return {
     dragTarget,
