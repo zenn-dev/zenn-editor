@@ -27,10 +27,10 @@ describe('MarkdownからHTMLへの変換テスト', () => {
 
   test('脚注に docId を設定する', () => {
     const html = markdownToHtml(`Hello[^1]World!\n\n[^1]: hey`);
-    // expect(html).toContain('<a href="#fn-randomID-1" id="fnref-randomID-1">[1]</a>');
+    // expect(html).toContain('<a href="#fn-27-1" id="fnref-27-1">[1]</a>');
     expect(html).toEqual(
       expect.stringMatching(
-        /<a href="#fn-[0-9a-zA-Z]+-1" id="fnref-[0-9a-zA-Z]+-1">\[1\]<\/a>/
+        /<a href="#fn-[0-9a-f]{4}-1" id="fnref-[0-9a-f]{4}-1">\[1\]<\/a>/
       )
     );
   });

@@ -23,6 +23,7 @@ import mdContainer from 'markdown-it-container';
 import mdFootnote from 'markdown-it-footnote';
 import mdTaskLists from 'markdown-it-task-lists';
 import mdInlineComments from 'markdown-it-inline-comments';
+import cryptoRandomString from 'crypto-random-string';
 
 const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   if (!(text && text.length)) return '';
@@ -74,7 +75,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   // 1ページの中で重複しなければ問題ないため、ごく短いランダムな文字列とする
   // - https://github.com/zenn-dev/zenn-community/issues/356
   // - https://github.com/markdown-it/markdown-it-footnote/pull/8
-  const docId = Math.random().toString(36).substring(2);
+  const docId = cryptoRandomString({ length: 4, type: 'hex' });
   return sanitize(md.render(text, { docId }));
 };
 
