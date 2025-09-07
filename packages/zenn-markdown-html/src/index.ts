@@ -4,7 +4,7 @@ import { embedGenerators } from './embed';
 import { MarkdownOptions } from './types';
 
 // plugis
-import markdownItImSize from 'markdown-it-imsize';
+import { legacyImgSize } from '@mdit/plugin-img-size';
 import markdownItAnchor from 'markdown-it-anchor';
 import { mdBr } from './utils/md-br';
 import { mdKatex } from './utils/md-katex';
@@ -44,7 +44,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
     .use(mdKatex)
     .use(mdFootnote)
     .use(mdInlineComments)
-    .use(markdownItImSize)
+    .use(legacyImgSize)
     .use(mdLinkAttributes)
     .use(mdCustomBlock, markdownOptions)
     .use(mdRendererFence, markdownOptions)

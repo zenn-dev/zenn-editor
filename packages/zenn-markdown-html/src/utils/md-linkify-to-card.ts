@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it';
-import Token from 'markdown-it/lib/token.js'; // ファイル解決はESM読み込み時に拡張子が必要
+import Token from 'markdown-it/lib/token.mjs'; // ファイル解決はESM読み込み時に拡張子が必要
 import { MarkdownOptions } from '../types';
 import { generateLinkifyEmbedHTML } from './embed-helper';
 

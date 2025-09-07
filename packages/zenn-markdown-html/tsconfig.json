@@ -16,5 +16,5 @@
     "allowArbitraryExtensions": true,
     "isolatedModules": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/types/**/*.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

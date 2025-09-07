@@ -1,6 +1,6 @@
 import type { MarkdownOptions } from './types';
 
-import { escapeHtml } from 'markdown-it/lib/common/utils.js'; // ファイル解決はESM読み込み時に拡張子が必要
+import { escapeHtml } from 'markdown-it/lib/common/utils.mjs';
 import {
   sanitizeEmbedToken,
   generateEmbedServerIframe,
