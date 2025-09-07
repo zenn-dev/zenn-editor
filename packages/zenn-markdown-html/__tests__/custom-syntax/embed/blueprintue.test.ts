@@ -1,6 +1,6 @@
 import { vi, describe, test, expect } from 'vitest';
 import { parse } from 'node-html-parser';
-import markdownToHtml from '../../../src/index';
+import { markdownToHtml } from '../../../src/index';
 
 describe('Blueprintue埋め込み要素のテスト', () => {
   const validUrl = 'https://blueprintue.com/render/examples';

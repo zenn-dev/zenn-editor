@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { parse } from 'node-html-parser';
-import markdownToHtml from '../../src/index';
+import { markdownToHtml } from '../../src/index';
 
 describe('メッセージボックスのカスタム記法テスト', () => {
   describe('通常表示の場合', () => {

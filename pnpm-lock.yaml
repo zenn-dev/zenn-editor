@@ -254,9 +254,6 @@ importers:
 
   packages/zenn-markdown-html:
     dependencies:
-      '@steelydylan/markdown-it-imsize':
-        specifier: ^1.0.2
-        version: 1.0.2
       cheerio:
         specifier: 1.0.0-rc.12
         version: 1.0.0-rc.12
@@ -272,6 +269,9 @@ importers:
       markdown-it-footnote:
         specifier: ^3.0.3
         version: 3.0.3
+      markdown-it-imsize:
+        specifier: ^2.0.1
+        version: 2.0.1
       markdown-it-inline-comments:
         specifier: ^1.0.1
         version: 1.0.1
@@ -2018,9 +2018,6 @@ packages:
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
-
-  '@steelydylan/markdown-it-imsize@1.0.2':
-    resolution: {integrity: sha512-3tfhRLlv8w3GSNzjEx3y1JIyHpCuBhqXN6tILRTR4IhZcrJb6WJJo12jZ/lKiT9VITg9kHHHg6yVsDwO5nnZqw==}
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -4379,6 +4376,9 @@ packages:
 
   markdown-it-footnote@3.0.3:
     resolution: {integrity: sha512-YZMSuCGVZAjzKMn+xqIco9d1cLGxbELHZ9do/TSYVzraooV8ypsppKNmUJ0fVH5ljkCInQAtFpm8Rb3eXSrt5w==}
+
+  markdown-it-imsize@2.0.1:
+    resolution: {integrity: sha512-5SH90ademqcR8ifQCBXRCfIR4HGfZZOh5pO0j2TglulfSQH+SBXM4Iw/QlTUbSoUwVZArCYgECoMvktDS2kP3w==}
 
   markdown-it-inline-comments@1.0.1:
     resolution: {integrity: sha512-gObNM3NumcpsU66pO2LmV8MGBfdfFp7TcYME9iuUGs82+JYJWMmBQtAj6/qho4OhKqpR0UX2JTkuuA2HPgHUtQ==}
@@ -8056,8 +8056,6 @@ snapshots:
 
   '@sinclair/typebox@0.27.8': {}
 
-  '@steelydylan/markdown-it-imsize@1.0.2': {}
-
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -10905,6 +10903,8 @@ snapshots:
   markdown-it-container@2.0.0: {}
 
   markdown-it-footnote@3.0.3: {}
+
+  markdown-it-imsize@2.0.1: {}
 
   markdown-it-inline-comments@1.0.1: {}
 

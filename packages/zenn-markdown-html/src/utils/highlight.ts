@@ -1,5 +1,5 @@
 import Prism, { Grammar } from 'prismjs';
-import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { escapeHtml } from 'markdown-it/lib/common/utils.js'; // ファイル解決はESM読み込み時に拡張子が必要
 import { enableDiffHighlight } from '../prism-plugins/prism-diff-highlight';
 import './import-langs';
 

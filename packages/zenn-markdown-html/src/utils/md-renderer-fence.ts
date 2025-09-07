@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it';
-import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { escapeHtml } from 'markdown-it/lib/common/utils.js'; // ファイル解決はESM読み込み時に拡張子が必要
 import { MarkdownOptions } from '../types';
 import { highlight } from './highlight';
 

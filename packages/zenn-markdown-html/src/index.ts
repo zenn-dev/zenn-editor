@@ -4,7 +4,7 @@ import { embedGenerators } from './embed';
 import { MarkdownOptions } from './types';
 
 // plugis
-import markdownItImSize from '@steelydylan/markdown-it-imsize';
+import markdownItImSize from 'markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
 import { mdBr } from './utils/md-br';
 import { mdKatex } from './utils/md-katex';
@@ -44,13 +44,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
     .use(mdKatex)
     .use(mdFootnote)
     .use(mdInlineComments)
-    .use(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore: zenn-cliのサーバー経由で呼び出すと {default: fn} の形になりエラーになる。CJSが関係していそう。
-      'default' in markdownItImSize
-        ? markdownItImSize.default
-        : markdownItImSize
-    )
+    .use(markdownItImSize)
     .use(mdLinkAttributes)
     .use(mdCustomBlock, markdownOptions)
     .use(mdRendererFence, markdownOptions)
@@ -84,7 +78,10 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   return sanitize(md.render(text, { docId }));
 };
 
-export default markdownToHtml;
+// default exportはesbuildで環境依存のバグを起こす可能性が高いため、使用しない
+// 実際にCJSでrequireすると、{ default: fn } の形でエクスポートされた
+// - https://esbuild.github.io/content-types/#javascript-caveats
+export { markdownToHtml };
 export { markdownToSimpleHtml } from './markdown-to-simple-html';
 export { parseToc, parseHeadingIds } from './utils/toc';
 export * from './embed';

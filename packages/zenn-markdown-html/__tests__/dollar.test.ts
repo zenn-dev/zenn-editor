@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import markdownToHtml from '../src/index';
+import { markdownToHtml } from '../src/index';
 
 describe('$ マークのテスト', () => {
   test('リンクと同じ行にある $ は katex に変換される', () => {

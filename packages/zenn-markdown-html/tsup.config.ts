@@ -8,6 +8,6 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
-  format: ['esm'],
+  format: ['esm', 'cjs'],
   esbuildPlugins: [prismjsPlugin({ languages: 'all' })],
 });

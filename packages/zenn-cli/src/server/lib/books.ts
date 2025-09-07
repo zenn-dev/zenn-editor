@@ -2,7 +2,7 @@ import yaml from 'js-yaml';
 import path from 'path';
 import imageSizeOf from 'image-size';
 import matter from 'gray-matter';
-import markdownToHtml from 'zenn-markdown-html';
+import { markdownToHtml } from 'zenn-markdown-html';
 import * as Log from './log';
 import {
   listDirnames,

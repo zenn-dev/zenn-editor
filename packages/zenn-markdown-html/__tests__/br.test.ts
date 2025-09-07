@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import markdownToHtml from '../src/index';
+import { markdownToHtml } from '../src/index';
 
 describe('<br /> のテスト', () => {
   test('段落内の<br />は保持する', () => {

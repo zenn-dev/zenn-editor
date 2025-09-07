@@ -13,8 +13,14 @@
   ],
   "exports": {
     ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.mjs"
+      "import": {
+        "types": "./lib/index.d.mts",
+        "default": "./lib/index.mjs"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      }
     }
   },
   "scripts": {
@@ -54,7 +60,7 @@
     "vitest": "^0.34.4"
   },
   "dependencies": {
-    "@steelydylan/markdown-it-imsize": "^1.0.2",
+    "markdown-it-imsize": "^2.0.1",
     "cheerio": "1.0.0-rc.12",
     "markdown-it": "^12.3.2",
     "markdown-it-anchor": "^8.6.6",

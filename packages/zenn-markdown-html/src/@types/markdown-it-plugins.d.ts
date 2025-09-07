@@ -27,3 +27,9 @@ declare module 'markdown-it-link-attributes' {
   const plugin: PluginWithOptions<any>;
   export = plugin;
 }
+
+declare module 'markdown-it-imsize' {
+  import { PluginSimple } from 'markdown-it';
+  const plugin: PluginSimple;
+  export = plugin;
+}
