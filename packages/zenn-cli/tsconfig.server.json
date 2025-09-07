@@ -2,18 +2,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "target": "esnext",
-    "module": "esnext",
-    "skipLibCheck": false,
-
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": false,
-    "moduleDetection": "force",
+    "target": "es2020", // node14+
+    "module": "nodenext",
+    "skipLibCheck": true,
     "noEmit": true,
 
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": false,
     "resolveJsonModule": true
   },
   "include": ["src/server"],
