@@ -7,3 +7,4 @@ lerna-debug.log
 .idea
 .turbo
 .claude/settings.local.json
+.serena/
