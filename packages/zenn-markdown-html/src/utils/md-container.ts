@@ -1,5 +1,5 @@
-import { escapeHtml } from 'markdown-it/lib/common/utils.mjs'; // ファイル解決はESM読み込み時に拡張子が必要
-import type Token from 'markdown-it/lib/token.mjs'; // ファイル解決はESM読み込み時に拡張子が必要
+import { escapeHtml } from 'markdown-it/lib/common/utils.js'; // ファイル解決はESM読み込み時に拡張子が必要
+import type Token from 'markdown-it/lib/token.js'; // ファイル解決はESM読み込み時に拡張子が必要
 
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container

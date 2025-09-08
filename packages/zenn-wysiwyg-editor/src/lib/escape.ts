@@ -1,4 +1,4 @@
-// fork from https://github.com/markdown-it/markdown-it/blob/master/lib/common/utils.mjs
+// fork from https://github.com/markdown-it/markdown-it/blob/master/lib/common/utils.js
 
 const HTML_ESCAPE_TEST_RE = /[&<>"]/;
 const HTML_ESCAPE_REPLACE_RE = /[&<>"]/g;

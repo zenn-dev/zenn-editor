@@ -254,9 +254,9 @@ importers:
 
   packages/zenn-markdown-html:
     dependencies:
-      '@mdit/plugin-img-size':
-        specifier: ^0.22.2
-        version: 0.22.2(markdown-it@14.1.0)
+      '@steelydylan/markdown-it-imsize':
+        specifier: ^1.0.2
+        version: 1.0.2
       cheerio:
         specifier: 1.1.2
         version: 1.1.2
@@ -264,14 +264,14 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       markdown-it:
-        specifier: ^14.0.0
-        version: 14.1.0
+        specifier: ^12.3.2
+        version: 12.3.2
       markdown-it-anchor:
-        specifier: ^9.2.0
-        version: 9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.1.0)
+        specifier: ^8.6.6
+        version: 8.6.7(@types/markdown-it@12.2.3)(markdown-it@12.3.2)
       markdown-it-container:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^2.0.0
+        version: 2.0.0
       markdown-it-footnote:
         specifier: ^3.0.3
         version: 3.0.3
@@ -301,8 +301,8 @@ importers:
         specifier: ^7.18.6
         version: 7.18.6(@babel/core@7.28.3)
       '@types/markdown-it':
-        specifier: ^14.0.0
-        version: 14.1.2
+        specifier: ^12.2.3
+        version: 12.2.3
       '@types/markdown-it-container':
         specifier: ^2.0.10
         version: 2.0.10
@@ -1550,15 +1550,6 @@ packages:
     resolution: {integrity: sha512-jFrGdPEeqAILsqbSX7H96qP0XUBSdCgM6xDo4hj6dWSyMbm3ekhtkUOMrQpoEXSYRWylVQTzhXDJH46lTO/Ylw==}
     engines: {node: '>=14.17.0', npm: '>=8.0.0'}
 
-  '@mdit/plugin-img-size@0.22.2':
-    resolution: {integrity: sha512-+2+HpV5wZ3ZvFAs2alOiftDO635UbbOTr9uRQ0LZi/1lIZzKa0GE8sxYmtAZXRkdbGCj1uN6puoT7Bc7fdBs7Q==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      markdown-it: ^14.1.0
-    peerDependenciesMeta:
-      markdown-it:
-        optional: true
-
   '@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3':
     resolution: {integrity: sha512-s88O1aVtXftvp5bCPB7WnmXc5IwOZZ7YPuwNPt+GtOOXpPvad1LfbmjYv+qII7zP6RU2QGnqve27dnLycEnyEQ==}
 
@@ -2040,6 +2031,9 @@ packages:
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
 
+  '@steelydylan/markdown-it-imsize@1.0.2':
+    resolution: {integrity: sha512-3tfhRLlv8w3GSNzjEx3y1JIyHpCuBhqXN6tILRTR4IhZcrJb6WJJo12jZ/lKiT9VITg9kHHHg6yVsDwO5nnZqw==}
+
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
     engines: {node: '>=18'}
@@ -2264,6 +2258,9 @@ packages:
 
   '@types/markdown-it-link-attributes@3.0.5':
     resolution: {integrity: sha512-VZ2BGN3ywUg7mBD8W6PwR8ChpOxaQSBDbLqPgvNI+uIra3zY2af1eG/3XzWTKjEraTWskMKnZqZd6m1fDF67Bg==}
+
+  '@types/markdown-it@12.2.3':
+    resolution: {integrity: sha512-GKMHFfv3458yYy+v/N8gjufHO6MSZKCOXpZc5GXIWWy8uldwfmPn98vp81gZ5f9SVw8YYBctgfJ22a2d7AOMeQ==}
 
   '@types/markdown-it@14.1.2':
     resolution: {integrity: sha512-promo4eFwuiW+TfGxhi+0x3czqTYJkG8qB17ZUJiVF10Xm7NLVRSLUsfRTU/6h1e24VvRnXCx+hG7li58lkzog==}
@@ -3335,6 +3332,9 @@ packages:
     resolution: {integrity: sha512-QHTXI/sZQmko1cbDoNAa3mJ5qhWUUNAq3vR0/YiD379fWQrcfuoX1+HW2S0MTt7XmoPLapdaDKUtelUSPic7hQ==}
     engines: {node: '>=10.13.0'}
 
+  entities@2.1.0:
+    resolution: {integrity: sha512-hCx1oky9PFrJ611mf0ifBLBRW8lUUVRlFolb5gWRfIELabBlbp9xZvrqZLZAs+NxFnbfQoeGd8wDkygjg7U85w==}
+
   entities@4.4.0:
     resolution: {integrity: sha512-oYp7156SP8LkeGD0GF85ad1X9Ai79WtRsZ2gxJqtBuzH+98YUV6jkHEKlZkMbcrjJjIVJNIDP/3WL9wQkoPbWA==}
     engines: {node: '>=0.12'}
@@ -4281,6 +4281,9 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
+  linkify-it@3.0.3:
+    resolution: {integrity: sha512-ynTsyrFSdE5oZ/O9GEf00kPngmOfVwazR5GKDq6EYfhlpFug3J2zybX56a2PRRpc9P+FuSoGNAwjlbDs9jJBPQ==}
+
   linkify-it@5.0.0:
     resolution: {integrity: sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ==}
 
@@ -4407,14 +4410,14 @@ packages:
     resolution: {integrity: sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==}
     engines: {node: '>=8'}
 
-  markdown-it-anchor@9.2.0:
-    resolution: {integrity: sha512-sa2ErMQ6kKOA4l31gLGYliFQrMKkqSO0ZJgGhDHKijPf0pNFM9vghjAh3gn26pS4JDRs7Iwa9S36gxm3vgZTzg==}
+  markdown-it-anchor@8.6.7:
+    resolution: {integrity: sha512-FlCHFwNnutLgVTflOYHPW2pPcl2AACqVzExlkGQNsi4CJgqOHN7YTgDd4LuhgN1BFO3TS0vLAruV1Td6dwWPJA==}
     peerDependencies:
       '@types/markdown-it': '*'
       markdown-it: '*'
 
-  markdown-it-container@4.0.0:
-    resolution: {integrity: sha512-HaNccxUH0l7BNGYbFbjmGpf5aLHAMTinqRZQAEQbMr2cdD3z91Q6kIo1oUn1CQndkT03jat6ckrdRYuwwqLlQw==}
+  markdown-it-container@2.0.0:
+    resolution: {integrity: sha512-IxPOaq2LzrGuFGyYq80zaorXReh2ZHGFOB1/Hen429EJL1XkPI3FJTpx9TsJeua+j2qTru4h3W1TiCRdeivMmA==}
 
   markdown-it-footnote@3.0.3:
     resolution: {integrity: sha512-YZMSuCGVZAjzKMn+xqIco9d1cLGxbELHZ9do/TSYVzraooV8ypsppKNmUJ0fVH5ljkCInQAtFpm8Rb3eXSrt5w==}
@@ -4428,9 +4431,16 @@ packages:
   markdown-it-task-lists@2.1.1:
     resolution: {integrity: sha512-TxFAc76Jnhb2OUu+n3yz9RMu4CwGfaT788br6HhEDlvWfdeJcLUsxk1Hgw2yJio0OXsxv7pyIPmvECY7bMbluA==}
 
+  markdown-it@12.3.2:
+    resolution: {integrity: sha512-TchMembfxfNVpHkbtriWltGWc+m3xszaRD0CZup7GFFhzIgQqxIfn3eGj1yZpfuflzPvfkt611B2Q/Bsk1YnGg==}
+    hasBin: true
+
   markdown-it@14.1.0:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
     hasBin: true
+
+  mdurl@1.0.1:
+    resolution: {integrity: sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g==}
 
   mdurl@2.0.0:
     resolution: {integrity: sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w==}
@@ -5979,6 +5989,9 @@ packages:
     resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  uc.micro@1.0.6:
+    resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
 
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
@@ -7623,12 +7636,6 @@ snapshots:
       - encoding
       - supports-color
 
-  '@mdit/plugin-img-size@0.22.2(markdown-it@14.1.0)':
-    dependencies:
-      '@types/markdown-it': 14.1.2
-    optionalDependencies:
-      markdown-it: 14.1.0
-
   '@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3':
     optional: true
 
@@ -8112,6 +8119,8 @@ snapshots:
 
   '@sinclair/typebox@0.27.8': {}
 
+  '@steelydylan/markdown-it-imsize@1.0.2': {}
+
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -8363,15 +8372,20 @@ snapshots:
 
   '@types/markdown-it-container@2.0.10':
     dependencies:
-      '@types/markdown-it': 14.1.2
+      '@types/markdown-it': 12.2.3
 
   '@types/markdown-it-footnote@3.0.4':
     dependencies:
-      '@types/markdown-it': 14.1.2
+      '@types/markdown-it': 12.2.3
 
   '@types/markdown-it-link-attributes@3.0.5':
     dependencies:
-      '@types/markdown-it': 14.1.2
+      '@types/markdown-it': 12.2.3
+
+  '@types/markdown-it@12.2.3':
+    dependencies:
+      '@types/linkify-it': 5.0.0
+      '@types/mdurl': 2.0.0
 
   '@types/markdown-it@14.1.2':
     dependencies:
@@ -8710,11 +8724,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/browser@3.2.4(playwright@1.55.0)(vite@7.1.4(@types/node@18.13.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3))(vitest@0.34.4)':
+  '@vitest/browser@3.2.4(playwright@1.55.0)(vite@4.2.1(@types/node@22.18.0)(sass@1.58.1)(terser@5.16.3))(vitest@0.34.4)':
     dependencies:
       '@testing-library/dom': 10.4.1
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
-      '@vitest/mocker': 3.2.4(vite@7.1.4(@types/node@18.13.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3))
+      '@vitest/mocker': 3.2.4(vite@4.2.1(@types/node@22.18.0)(sass@1.58.1)(terser@5.16.3))
       '@vitest/utils': 3.2.4
       magic-string: 0.30.18
       sirv: 3.0.1
@@ -8763,13 +8777,13 @@ snapshots:
       chai: 5.3.3
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.2.4(vite@7.1.4(@types/node@18.13.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3))':
+  '@vitest/mocker@3.2.4(vite@4.2.1(@types/node@22.18.0)(sass@1.58.1)(terser@5.16.3))':
     dependencies:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.18
     optionalDependencies:
-      vite: 7.1.4(@types/node@18.13.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3)
+      vite: 4.2.1(@types/node@22.18.0)(sass@1.58.1)(terser@5.16.3)
     optional: true
 
   '@vitest/mocker@3.2.4(vite@7.1.4(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.16.3))':
@@ -9766,6 +9780,8 @@ snapshots:
     dependencies:
       graceful-fs: 4.2.10
       tapable: 2.2.1
+
+  entities@2.1.0: {}
 
   entities@4.4.0: {}
 
@@ -10837,6 +10853,10 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
+  linkify-it@3.0.3:
+    dependencies:
+      uc.micro: 1.0.6
+
   linkify-it@5.0.0:
     dependencies:
       uc.micro: 2.1.0
@@ -10989,12 +11009,12 @@ snapshots:
 
   map-obj@4.3.0: {}
 
-  markdown-it-anchor@9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.1.0):
+  markdown-it-anchor@8.6.7(@types/markdown-it@12.2.3)(markdown-it@12.3.2):
     dependencies:
-      '@types/markdown-it': 14.1.2
-      markdown-it: 14.1.0
+      '@types/markdown-it': 12.2.3
+      markdown-it: 12.3.2
 
-  markdown-it-container@4.0.0: {}
+  markdown-it-container@2.0.0: {}
 
   markdown-it-footnote@3.0.3: {}
 
@@ -11004,6 +11024,14 @@ snapshots:
 
   markdown-it-task-lists@2.1.1: {}
 
+  markdown-it@12.3.2:
+    dependencies:
+      argparse: 2.0.1
+      entities: 2.1.0
+      linkify-it: 3.0.3
+      mdurl: 1.0.1
+      uc.micro: 1.0.6
+
   markdown-it@14.1.0:
     dependencies:
       argparse: 2.0.1
@@ -11012,6 +11040,8 @@ snapshots:
       mdurl: 2.0.0
       punycode.js: 2.3.1
       uc.micro: 2.1.0
+
+  mdurl@1.0.1: {}
 
   mdurl@2.0.0: {}
 
@@ -12660,6 +12690,8 @@ snapshots:
 
   typescript@5.9.2: {}
 
+  uc.micro@1.0.6: {}
+
   uc.micro@2.1.0: {}
 
   ufo@1.6.1: {}
@@ -12831,23 +12863,6 @@ snapshots:
       sass: 1.58.1
       terser: 5.16.3
 
-  vite@7.1.4(@types/node@18.13.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3):
-    dependencies:
-      esbuild: 0.25.9
-      fdir: 6.5.0(picomatch@4.0.3)
-      picomatch: 4.0.3
-      postcss: 8.5.6
-      rollup: 4.50.0
-      tinyglobby: 0.2.14
-    optionalDependencies:
-      '@types/node': 18.13.0
-      fsevents: 2.3.3
-      jiti: 2.5.1
-      lightningcss: 1.30.1
-      sass: 1.58.1
-      terser: 5.16.3
-    optional: true
-
   vite@7.1.4(@types/node@24.3.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3):
     dependencies:
       esbuild: 0.25.9
@@ -12901,7 +12916,7 @@ snapshots:
       vite-node: 0.34.4(@types/node@24.3.0)(sass@1.58.1)(terser@5.16.3)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@vitest/browser': 3.2.4(playwright@1.55.0)(vite@7.1.4(@types/node@18.13.0)(jiti@2.5.1)(lightningcss@1.30.1)(sass@1.58.1)(terser@5.16.3))(vitest@0.34.4)
+      '@vitest/browser': 3.2.4(playwright@1.55.0)(vite@4.2.1(@types/node@22.18.0)(sass@1.58.1)(terser@5.16.3))(vitest@0.34.4)
       happy-dom: 18.0.1
       playwright: 1.55.0
     transitivePeerDependencies:
