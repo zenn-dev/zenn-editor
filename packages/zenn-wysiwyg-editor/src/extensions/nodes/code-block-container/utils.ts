@@ -1,5 +1,5 @@
 import type { Node as ProsemirrorNode } from '@tiptap/pm/model';
-import Prism from 'prismjs';
+import { Prism } from 'zenn-markdown-html';
 
 // NOTE: nodesが<span>とtextノードのみであり、ネストなしの必要がある
 export function parseNodes(

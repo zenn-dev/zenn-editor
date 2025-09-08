@@ -24,6 +24,7 @@ import mdFootnote from 'markdown-it-footnote';
 import mdTaskLists from 'markdown-it-task-lists';
 import mdInlineComments from 'markdown-it-inline-comments';
 import cryptoRandomString from 'crypto-random-string';
+import Prism from 'prismjs';
 
 const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   if (!(text && text.length)) return '';
@@ -88,3 +89,6 @@ export { parseToc } from './utils/toc';
 export * from './embed';
 export * from './utils/url-matcher';
 export * from './utils/embed-helper';
+
+// Prismjsに全言語とdiffプラグインを読み込んだ状態でエクスポートする
+export { Prism };

@@ -51,7 +51,6 @@
     "@types/sanitize-html": "^2.8.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
-    "babel-plugin-prismjs": "^2.1.0",
     "esbuild-plugin-prismjs": "^1.0.8",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
