@@ -10,7 +10,6 @@ export default defineConfig({
             'prismjs',
             {
               languages: 'all',
-              plugins: ['diff-highlight'],
             },
           ],
         ],

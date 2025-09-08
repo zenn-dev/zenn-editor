@@ -84,7 +84,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
 // - https://esbuild.github.io/content-types/#javascript-caveats
 export { markdownToHtml };
 export { markdownToSimpleHtml } from './markdown-to-simple-html';
-export { parseToc, parseHeadingIds } from './utils/toc';
+export { parseToc } from './utils/toc';
 export * from './embed';
 export * from './utils/url-matcher';
 export * from './utils/embed-helper';

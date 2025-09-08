@@ -22,21 +22,21 @@ const basicExtension = [
   HardBreak,
 ];
 
-describe('DiffPrismPlugin', () => {
-  const extractHighlightedToken = (codeBlockDom: Element) => {
-    const tokens = Array.from(codeBlockDom?.childNodes ?? []).map((node) => {
-      if (node.nodeType === Node.ELEMENT_NODE) {
-        const el = node as HTMLElement;
-        return { class: el.className, text: el.textContent };
-      } else if (node.nodeType === Node.TEXT_NODE) {
-        return { class: '', text: node.textContent };
-      }
-      return { class: '', text: '' };
-    });
-    return tokens;
-  };
+const extractHighlightedToken = (codeBlockDom: Element) => {
+  const tokens = Array.from(codeBlockDom?.childNodes ?? []).map((node) => {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const el = node as HTMLElement;
+      return { class: el.className, text: el.textContent };
+    } else if (node.nodeType === Node.TEXT_NODE) {
+      return { class: '', text: node.textContent };
+    }
+    return { class: '', text: '' };
+  });
+  return tokens;
+};
 
-  it('typescriptで+が挿入差分のハイライトがされる', () => {
+describe('DiffPrismPlugin - TypeScript', () => {
+  it('TypeScriptで+が挿入差分のハイライトがされる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content: `<div class="code-block-container"><div class="code-block-filename-container"></div>
@@ -132,6 +132,69 @@ describe('DiffPrismPlugin', () => {
     if (codeBlockDom == null) throw new Error('codeBlockDom is null');
 
     expect(codeBlockDom.childNodes.length).toBe(lineCount);
+
+    for (let i = 0; i < lineCount; i++) {
+      const lineNode = codeBlockDom.children[i];
+      expect(lineNode.className).toBe(expectedLines[i].class);
+      const actual = extractHighlightedToken(lineNode);
+      expect(actual).toEqual(expectedTokens[i]);
+    }
+  });
+});
+
+describe('DiffPrismPlugin - JSON', () => {
+  it('JSONで+が挿入差分のハイライトがされる', () => {
+    const editor = renderTiptapEditor({
+      extensions: basicExtension,
+      content: `<div class="code-block-container"><div class="code-block-filename-container"></div>
+        <pre><code class="language-diff-json diff-highlight"><span>+ {</span><span>+   "test": "value",</span><span>+   "number": 123</span><span>+ }</span></code></pre></div>`,
+    });
+
+    // codeBlockノードのDOMを取得
+    const view = editor.view;
+    const codeBlockDom = view.dom.querySelector('pre code.language-diff-json');
+    if (codeBlockDom == null) throw new Error('codeBlockDom is null');
+
+    const expectedLines = [
+      { class: 'token inserted-sign inserted language-json' },
+      { class: 'token inserted-sign inserted language-json' },
+      { class: 'token inserted-sign inserted language-json' },
+      { class: 'token inserted-sign inserted language-json' },
+    ];
+
+    const expectedTokens = [
+      [
+        { class: 'token prefix inserted', text: '+' },
+        { class: '', text: ' ' },
+        { class: 'token punctuation', text: '{' },
+      ],
+      [
+        { class: 'token prefix inserted', text: '+' },
+        { class: '', text: '   ' },
+        { class: 'token property', text: '"test"' },
+        { class: 'token operator', text: ':' },
+        { class: '', text: ' ' },
+        { class: 'token string', text: '"value"' },
+        { class: 'token punctuation', text: ',' },
+      ],
+      [
+        { class: 'token prefix inserted', text: '+' },
+        { class: '', text: '   ' },
+        { class: 'token property', text: '"number"' },
+        { class: 'token operator', text: ':' },
+        { class: '', text: ' ' },
+        { class: 'token number', text: '123' },
+      ],
+      [
+        { class: 'token prefix inserted', text: '+' },
+        { class: '', text: ' ' },
+        { class: 'token punctuation', text: '}' },
+      ],
+    ];
+
+    const lineCount = 4;
+
+    expect(codeBlockDom?.childNodes.length).toBe(lineCount);
 
     for (let i = 0; i < lineCount; i++) {
       const lineNode = codeBlockDom.children[i];

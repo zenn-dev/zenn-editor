@@ -56,7 +56,6 @@
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "node-html-parser": "^6.1.4",
-    "prismjs": "^1.29.0",
     "rimraf": "^3.0.2",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3",
@@ -73,7 +72,8 @@
     "markdown-it-inline-comments": "^1.0.1",
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-task-lists": "^2.1.1",
-    "sanitize-html": "^2.9.0"
+    "sanitize-html": "^2.9.0",
+    "prismjs": "^1.29.0"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {

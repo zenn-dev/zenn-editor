@@ -7,3 +7,5 @@ node_modules/
 /playwright/.cache/
 dist/
 __screenshots__/
+.claude/settings.local.json
+.selena/

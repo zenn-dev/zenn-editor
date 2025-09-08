@@ -10,4 +10,5 @@ export default defineConfig({
   sourcemap: true,
   format: ['esm', 'cjs'],
   esbuildPlugins: [prismjsPlugin({ languages: 'all' })],
+  noExternal: ['prismjs'], // プラグインを起動するためバンドルに含める
 });

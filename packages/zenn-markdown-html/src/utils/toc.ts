@@ -7,13 +7,6 @@ type Toc = {
   children: Toc[];
 };
 
-// WYSIWYG エディタに必要な見出しID一覧を取得
-export function parseHeadingIds(html: string): string[] {
-  const $ = cheerio.load(html);
-  const headings = $('body > h1, body > h2, body > h3').toArray();
-  return headings.map((heading) => heading.attribs.id);
-}
-
 export function parseToc(html: string): Toc[] {
   const $ = cheerio.load(html);
   const headings = $('body > h1, body > h2, body > h3').toArray();
