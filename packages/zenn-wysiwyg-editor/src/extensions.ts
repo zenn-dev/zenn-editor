@@ -44,6 +44,7 @@ import { MessageContent } from './extensions/nodes/message/message-content';
 import { TableCell } from './extensions/nodes/tables/cell';
 import { TableHeader } from './extensions/nodes/tables/header';
 import { Table } from './extensions/nodes/tables/table';
+import { Typography } from './extensions/functionality/typography';
 
 export const extensions: Extensions = [
   // === Core ===
@@ -118,4 +119,5 @@ export const extensions: Extensions = [
   Dropcursor,
   FileHandler,
   ListKeymap,
+  Typography,
 ];
