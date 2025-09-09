@@ -1,4 +1,4 @@
-# zenn-cli
+# zenn-cli-wysiwyg
 
 ローカルで Zenn の投稿コンテンツを管理/プレビューするための CLI です。
 

@@ -1,5 +1,5 @@
 {
-  "packages": ["packages/zenn-cli"],
+  "packages": ["packages/zenn-cli-wysiwyg"],
   "version": "1.0.0-alpha.1",
   "npmClient": "pnpm"
 }
