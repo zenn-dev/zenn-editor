@@ -1,7 +1,5 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "0.2.3",
+  "packages": ["packages/zenn-cli"],
+  "version": "1.0.0-alpha.1",
   "npmClient": "pnpm"
 }
