@@ -11,7 +11,7 @@ import {
 } from './helper';
 import { Article, ArticleMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
-import { markdownToHtml } from 'zenn-markdown-html';
+import markdownToHtml from 'zenn-markdown-html';
 import { parseToc } from 'zenn-markdown-html';
 
 export function getLocalArticle(slug: string): null | Article {

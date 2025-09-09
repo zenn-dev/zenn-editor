@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { markdownToHtml } from '../../../src/index';
+import markdownToHtml from '../../../src/index';
 
 describe('Docswell', () => {
   describe('Docswellの埋め込み用URLの場合', () => {

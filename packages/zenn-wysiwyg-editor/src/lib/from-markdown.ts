@@ -1,4 +1,4 @@
-import { markdownToHtml } from 'zenn-markdown-html';
+import markdownToHtml from 'zenn-markdown-html';
 import { EMBED_ORIGIN } from './constants';
 
 export function convertMarkdownToEditable(text: string) {

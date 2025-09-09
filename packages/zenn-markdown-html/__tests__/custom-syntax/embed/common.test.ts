@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { markdownToHtml } from '../../../src';
+import markdownToHtml from '../../../src';
 
 describe('埋め込み要素の共通テスト', () => {
   describe('埋め込み要素のバリデーションテスト', () => {

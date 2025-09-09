@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { markdownToHtml } from '../src/index';
+import markdownToHtml from '../src/index';
 import parse from 'node-html-parser';
 
 describe('ソースマップ(data-line属性)のテスト', () => {

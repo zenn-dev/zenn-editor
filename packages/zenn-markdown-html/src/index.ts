@@ -80,10 +80,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   return sanitize(md.render(text, { docId }));
 };
 
-// default exportはesbuildで環境依存のバグを起こす可能性が高いため、使用しない
-// 実際にCJSでrequireすると、{ default: fn } の形でエクスポートされた
-// - https://esbuild.github.io/content-types/#javascript-caveats
-export { markdownToHtml };
+export default markdownToHtml;
 export { markdownToSimpleHtml } from './markdown-to-simple-html';
 export { parseToc } from './utils/toc';
 export * from './embed';
