@@ -7,7 +7,6 @@ import open from 'open';
 import { getWorkingPath, resolveHostname } from './helper';
 import fs from 'fs';
 import path from 'path';
-import { Article } from 'zenn-model';
 import { glob } from 'node:fs/promises';
 import { getLocalArticle, stringifyArticleWithMetaData } from './articles';
 import {
