@@ -4,7 +4,6 @@ import { embedGenerators } from './embed';
 import { MarkdownOptions } from './types';
 
 // plugis
-import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
 import { mdBr } from './utils/md-br';
 import { mdKatex } from './utils/md-katex';
@@ -25,6 +24,17 @@ import mdTaskLists from 'markdown-it-task-lists';
 import mdInlineComments from 'markdown-it-inline-comments';
 import cryptoRandomString from 'crypto-random-string';
 import Prism from 'prismjs';
+
+/*
+ * @steelydylan/markdown-it-imsize は __esModule を指定した CJS しか配布していない。
+ * exports.default をしているため、Native ESM からインポートすると { default: fn } の形式になってしまう。
+ * CJS からは __toESM により default エクスポートが解決されるため問題ない。
+ */
+import markdownItImSizeCjs from '@steelydylan/markdown-it-imsize';
+import { esmInterop } from './utils/mod';
+
+// Native ESM からインポートされた場合に備えて、mod.default をインポートできるようにする
+const markdownItImSize = esmInterop(markdownItImSizeCjs);
 
 const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   if (!(text && text.length)) return '';
