@@ -1,11 +1,11 @@
 {
   "name": "zenn-cli-wysiwyg",
   "version": "0.0.3",
-  "description": "Preview Zenn content locally.",
+  "description": "Preview Zenn content locally with wysiwyg editor.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zenn-dev/zenn-editor.git",
-    "directory": "packages/zenn-cli"
+    "url": "https://github.com/karintou8710/zenn-editor-wysiwyg.git",
+    "directory": "packages/zenn-cli-wysiwyg"
   },
   "license": "MIT",
   "bin": {
