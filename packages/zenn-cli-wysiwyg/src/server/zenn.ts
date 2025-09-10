@@ -12,7 +12,5 @@ const args = arg(
 const execCommandName = args._[0] || 'preview';
 const execCommandArgs = args._.slice(1);
 
-console.log('test');
-
 // call command
 exec(execCommandName, execCommandArgs, { canNotifyUpdate: true });
