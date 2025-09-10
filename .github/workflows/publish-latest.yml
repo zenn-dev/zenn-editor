@@ -32,8 +32,8 @@ jobs:
 
       - name: ビルド時に使用する環境変数を設定
         run: |
-          touch ./packages/zenn-cli/.env
-          echo VITE_EMBED_SERVER_ORIGIN=${{ vars.VITE_EMBED_SERVER_ORIGIN }} >> ./packages/zenn-cli/.env
+          touch ./packages/zenn-cli-wysiwyg/.env
+          echo VITE_EMBED_SERVER_ORIGIN=${{ vars.VITE_EMBED_SERVER_ORIGIN }} >> ./packages/zenn-cli-wysiwyg/.env
 
       - name: パッケージをインストール
         run: pnpm install
