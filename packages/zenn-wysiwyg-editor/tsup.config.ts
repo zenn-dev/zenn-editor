@@ -8,5 +8,6 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   noExternal: ['zenn-markdown-html'],
+  platform: 'browser',
   format: ['esm'],
 });
