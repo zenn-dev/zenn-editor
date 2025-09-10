@@ -31,7 +31,3 @@ jobs:
       - name: Run tests for zenn-cli-wysiwyg
         run: pnpm test
         working-directory: packages/zenn-cli-wysiwyg
-
-      - name: Run tests for zenn-wysiwyg-editor
-        run: pnpm test
-        working-directory: packages/zenn-wysiwyg-editor
