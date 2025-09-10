@@ -3,6 +3,7 @@
   "version": "0.2.3",
   "license": "MIT",
   "description": "Model utils for Zenn contents",
+  "private": true,
   "main": "lib/index.js",
   "repository": {
     "type": "git",
