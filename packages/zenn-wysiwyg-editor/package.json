@@ -57,8 +57,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.539.0",
     "prosemirror-markdown": "^1.13.2",
-    "zenn-content-css": "^0.2.1",
-    "zenn-markdown-html": "workspace:zenn-markdown-html"
+    "zenn-content-css": "^0.2.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
@@ -77,7 +76,8 @@
     "tsup": "^8.5.0",
     "typescript": "~5.8.3",
     "vitest": "^3.2.4",
-    "vitest-browser-react": "^1.0.1"
+    "vitest-browser-react": "^1.0.1",
+    "zenn-markdown-html": "workspace:zenn-markdown-html"
   },
   "peerDependencies": {
     "@tiptap/pm": "^3.0.0",
