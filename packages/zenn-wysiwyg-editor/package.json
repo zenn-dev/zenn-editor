@@ -2,8 +2,17 @@
   "name": "zenn-wysiwyg-editor",
   "version": "0.0.4",
   "description": "Zenn WYSIWYG Editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karintou8710/zenn-editor-wysiwyg.git",
+    "directory": "packages/zenn-wysiwyg-editor"
+  },
   "type": "module",
-  "keywords": [],
+  "keywords": [
+    "tiptap",
+    "wysiwyg",
+    "zenn"
+  ],
   "author": "karintou8710",
   "license": "MIT",
   "scripts": {
@@ -23,9 +32,7 @@
   },
   "exports": {
     ".": {
-      "types": {
-        "import": "./dist/index.d.ts"
-      },
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./dist/style.css": {
