@@ -21,7 +21,7 @@ importers:
         specifier: ^1.7.4
         version: 1.7.4
 
-  packages/zenn-cli:
+  packages/zenn-cli-wysiwyg:
     dependencies:
       '@tiptap/pm':
         specifier: ^3.1.0

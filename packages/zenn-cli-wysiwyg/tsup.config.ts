@@ -9,6 +9,12 @@ export default defineConfig({
   sourcemap: true,
   format: ['cjs'],
   env: dotenv.config().parsed,
+  noExternal: [
+    'zenn-markdown-html',
+    'zenn-content-css',
+    'zenn-model',
+    'zenn-embed-elements',
+  ],
   esbuildPlugins: [
     {
       name: 'add-banner',

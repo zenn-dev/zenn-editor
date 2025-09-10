@@ -2,7 +2,6 @@ import yaml from 'js-yaml';
 import path from 'path';
 import imageSizeOf from 'image-size';
 import matter from 'gray-matter';
-import markdownToHtml from 'zenn-markdown-html';
 import * as Log from './log';
 import {
   listDirnames,
@@ -19,6 +18,9 @@ import {
 } from './helper';
 import { Book, BookMeta, Chapter, ChapterMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
+
+// import ... from の構文だとバンドルで .mjs として解決されるため、明示的に require を使用
+import zennMarkdownHtml = require('zenn-markdown-html');
 
 export function getLocalBook(slug: string): null | Book {
   const bookMeta = getLocalBookMeta(slug);
@@ -93,7 +95,7 @@ export function getLocalChapter(
   if (!data) return null;
 
   const { meta, bodyMarkdown } = data;
-  const rawHtml = markdownToHtml(bodyMarkdown, {
+  const rawHtml = zennMarkdownHtml.default(bodyMarkdown, {
     embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
   });
   const bodyHtml = completeHtml(rawHtml);
