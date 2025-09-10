@@ -5,7 +5,7 @@ import * as Log from '../lib/log';
 export const exec: CliExecFn = () => {
   const version = getCurrentCliVersion();
   if (!version) {
-    Log.error('zenn-cliのバージョンを取得できませんでした');
+    Log.error('zenn-cli-wysiwygのバージョンを取得できませんでした');
     return;
   }
   console.log(version);

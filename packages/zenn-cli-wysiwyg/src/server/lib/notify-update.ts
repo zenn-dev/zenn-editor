@@ -8,7 +8,9 @@ export const CLI_UPDATE_CHECK_INTERVAL = 1000 * 60 * 60 * 12;
 
 /** zenn-cli のアップデートが必要なら、アップデートを促すアラートを cli に表示する */
 export async function notifyNeedUpdateCLI() {
-  const config = new Configstore('zenn-cli', { lastUpdateCheck: Date.now() });
+  const config = new Configstore('zenn-cli-wysiwyg', {
+    lastUpdateCheck: Date.now(),
+  });
 
   // 一日前にチェックしていれば何も表示しない
   if (Date.now() - config.get('lastUpdateCheck') < CLI_UPDATE_CHECK_INTERVAL) {
@@ -25,7 +27,7 @@ export async function notifyNeedUpdateCLI() {
         [
           // prettier-ignore
           `新しいバージョンがリリースされています: ${colors.grey(currentVersion)} → ${colors.green(publishedVersion)}`,
-          `${colors.cyan('npm install zenn-cli@latest')} で更新してください`,
+          `${colors.cyan('npm install zenn-cli-wysiwyg@latest')} で更新してください`,
         ].join('\n'),
         {
           padding: 1,

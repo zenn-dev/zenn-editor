@@ -25,7 +25,7 @@ const UpdateNotificationBar: React.FC = () => {
           <div className="update-notification-bar__icon">!</div>
           <div className="update-notification-bar__text">
             新しいバージョンがリリースされています。
-            <code>npm install zenn-cli@latest</code>で更新してください
+            <code>npm install zenn-cli-wysiwyg@latest</code>で更新してください
           </div>
         </div>
       </ContentContainer>
