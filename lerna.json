@@ -1,5 +1,8 @@
 {
-  "packages": ["packages/zenn-cli-wysiwyg"],
-  "version": "1.0.0-alpha.1",
+  "packages": [
+    "packages/zenn-cli-wysiwyg",
+    "packages/zenn-wysiwyg-editor"
+  ],
+  "version": "0.0.4",
   "npmClient": "pnpm"
 }

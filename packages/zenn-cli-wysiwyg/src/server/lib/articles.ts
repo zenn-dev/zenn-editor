@@ -11,18 +11,19 @@ import {
 } from './helper';
 import { Article, ArticleMeta } from 'zenn-model';
 import { ItemSortType } from '../../common/types';
-import markdownToHtml from 'zenn-markdown-html';
-import { parseToc } from 'zenn-markdown-html';
+
+// import ... from の構文だとバンドルで .mjs として解決されるため、明示的に require を使用
+import zennMarkdownHtml = require('zenn-markdown-html');
 
 export function getLocalArticle(slug: string): null | Article {
   const data = readArticleFile(slug);
   if (!data) return null;
   const { meta, bodyMarkdown } = data;
-  const rawHtml = markdownToHtml(bodyMarkdown, {
+  const rawHtml = zennMarkdownHtml.default(bodyMarkdown, {
     embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
   });
   const bodyHtml = completeHtml(rawHtml);
-  const toc = parseToc(bodyHtml);
+  const toc = zennMarkdownHtml.parseToc(bodyHtml);
   return {
     ...meta,
     markdown: bodyMarkdown,

@@ -3,6 +3,7 @@
   "version": "0.2.3",
   "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/zenn-dev/zenn-editor.git",
@@ -74,8 +75,5 @@
     "sanitize-html": "^2.9.0",
     "prismjs": "^1.29.0"
   },
-  "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
-  "publishConfig": {
-    "access": "public"
-  }
+  "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318"
 }

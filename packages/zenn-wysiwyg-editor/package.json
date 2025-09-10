@@ -1,9 +1,18 @@
 {
   "name": "zenn-wysiwyg-editor",
-  "version": "1.0.0",
+  "version": "0.0.4",
   "description": "Zenn WYSIWYG Editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karintou8710/zenn-editor-wysiwyg.git",
+    "directory": "packages/zenn-wysiwyg-editor"
+  },
   "type": "module",
-  "keywords": [],
+  "keywords": [
+    "tiptap",
+    "wysiwyg",
+    "zenn"
+  ],
   "author": "karintou8710",
   "license": "MIT",
   "scripts": {
@@ -23,9 +32,7 @@
   },
   "exports": {
     ".": {
-      "types": {
-        "import": "./dist/index.d.ts"
-      },
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./dist/style.css": {
@@ -57,7 +64,6 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.539.0",
     "prosemirror-markdown": "^1.13.2",
-    "zenn-markdown-html": "workspace:zenn-markdown-html",
     "zenn-content-css": "^0.2.1"
   },
   "devDependencies": {
@@ -72,12 +78,13 @@
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "happy-dom": "^18.0.1",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.5.6",
     "tsup": "^8.5.0",
     "typescript": "~5.8.3",
     "vitest": "^3.2.4",
     "vitest-browser-react": "^1.0.1",
-    "npm-run-all": "^4.1.5"
+    "zenn-markdown-html": "workspace:zenn-markdown-html"
   },
   "peerDependencies": {
     "@tiptap/pm": "^3.0.0",

@@ -3,6 +3,7 @@
   "version": "0.2.3",
   "license": "MIT",
   "description": "Zenn flavor content style.",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/zenn-dev/zenn-editor.git",
@@ -23,8 +24,5 @@
   "devDependencies": {
     "sass": "^1.58.1"
   },
-  "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
-  "publishConfig": {
-    "access": "public"
-  }
+  "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458"
 }

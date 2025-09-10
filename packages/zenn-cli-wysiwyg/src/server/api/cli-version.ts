@@ -15,6 +15,8 @@ export async function getCliVersion(
   } catch (err) {
     res
       .status(500)
-      .json({ message: '最新のzenn-cliのバージョンを取得できませんでした' });
+      .json({
+        message: '最新のzenn-cli-wysiwygのバージョンを取得できませんでした',
+      });
   }
 }

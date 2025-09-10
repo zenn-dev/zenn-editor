@@ -1,6 +1,7 @@
 # zenn-cli-wysiwyg
 
-ローカルで Zenn の投稿コンテンツを管理/プレビューするための CLI です。
+WYSIWYG エディタの機能が備わった zenn-cli です。  
+[zenn-editor](https://github.com/zenn-dev/zenn-editor) をフォークして開発しています。
 
 ## ユーザー向けドキュメント
 
