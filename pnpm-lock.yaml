@@ -104,18 +104,6 @@ importers:
       ws:
         specifier: ^8.12.1
         version: 8.18.3
-      zenn-content-css:
-        specifier: workspace:*
-        version: link:../zenn-content-css
-      zenn-embed-elements:
-        specifier: workspace:*
-        version: link:../zenn-embed-elements
-      zenn-markdown-html:
-        specifier: workspace:*
-        version: link:../zenn-markdown-html
-      zenn-model:
-        specifier: workspace:*
-        version: link:../zenn-model
       zenn-wysiwyg-editor:
         specifier: workspace:*
         version: link:../zenn-wysiwyg-editor
@@ -210,6 +198,18 @@ importers:
       wait-on:
         specifier: ^7.0.1
         version: 7.0.1
+      zenn-content-css:
+        specifier: workspace:*
+        version: link:../zenn-content-css
+      zenn-embed-elements:
+        specifier: workspace:*
+        version: link:../zenn-embed-elements
+      zenn-markdown-html:
+        specifier: workspace:*
+        version: link:../zenn-markdown-html
+      zenn-model:
+        specifier: workspace:*
+        version: link:../zenn-model
 
   packages/zenn-content-css:
     devDependencies:
@@ -467,9 +467,6 @@ importers:
       zenn-content-css:
         specifier: ^0.2.1
         version: 0.2.3
-      zenn-markdown-html:
-        specifier: workspace:zenn-markdown-html
-        version: link:../zenn-markdown-html
     devDependencies:
       '@playwright/test':
         specifier: ^1.55.0
@@ -522,6 +519,9 @@ importers:
       vitest-browser-react:
         specifier: ^1.0.1
         version: 1.0.1(@types/react-dom@18.0.11)(@types/react@18.0.28)(@vitest/browser@3.2.4)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(vitest@3.2.4)
+      zenn-markdown-html:
+        specifier: workspace:zenn-markdown-html
+        version: link:../zenn-markdown-html
 
 packages:
 
