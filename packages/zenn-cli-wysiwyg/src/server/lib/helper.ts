@@ -6,13 +6,19 @@ import fetch from 'node-fetch';
 import * as cheerio from 'cheerio';
 import { networkInterfaces } from 'os';
 import * as Log from './log';
-import pkg from '../../../package.json';
 
 export function generateSlug(): string {
   return crypto.randomBytes(7).toString('hex');
 }
 
+function getPackageJson() {
+  const packagePath = path.join(__dirname, '../../package.json');
+  const packageContent = fs.readFileSync(packagePath, 'utf8');
+  return JSON.parse(packageContent);
+}
+
 export function getCurrentCliVersion() {
+  const pkg = getPackageJson();
   return pkg.version;
 }
 
