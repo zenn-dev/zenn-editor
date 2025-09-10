@@ -7,13 +7,13 @@
     "url": "https://github.com/karintou8710/zenn-editor-wysiwyg.git",
     "directory": "packages/zenn-cli-wysiwyg"
   },
-  "license": "MIT",
   "bin": {
     "zenn": "dist/server/zenn.js"
   },
   "files": [
     "dist"
   ],
+  "license": "MIT",
   "scripts": {
     "dev": "run-p dev:server dev:client",
     "dev:client": "wait-on http://localhost:8000 && vite",

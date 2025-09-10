@@ -4,9 +4,25 @@ Zenn の記事を WYSIWYG で編集可能なエディタです（非公式）
 
 ## 利用方法
 
-サービスの利用方法は以下の記事で紹介しています。
+```tsx
+import { useState } from 'react';
+import { EditorContent, useZennEditor } from 'zenn-wysiwyg-editor';
 
-https://zenn.dev/karintou/articles/eabe0354fcc947
+import 'zenn-wysiwyg-editor/dist/style.css';
+
+export const EditableBodyContent: React.FC = () => {
+  const [content, setContent] = useState('');
+
+  const editor = useZennEditor({
+    initialContent: content,
+    onChange: (html) => {
+      setContent(html);
+    },
+  });
+
+  return <EditorContent editor={editor} />;
+};
+```
 
 ## 機能
 
