@@ -12,7 +12,11 @@ export function generateSlug(): string {
 }
 
 function getPackageJson() {
-  const packagePath = path.join(__dirname, '../../package.json');
+  const packageJsonPath =
+    process.env.NODE_ENV === 'production'
+      ? '../../package.json'
+      : '../../../package.json';
+  const packagePath = path.join(__dirname, packageJsonPath);
   const packageContent = fs.readFileSync(packagePath, 'utf8');
   return JSON.parse(packageContent);
 }
