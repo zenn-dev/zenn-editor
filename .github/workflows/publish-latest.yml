@@ -80,9 +80,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: canary
+          ref: develop
 
-      - name: Reflect changes on main branch to canary branch.
+      - name: Reflect changes on main branch to develop branch.
         run: |
           git pull origin main
           git push origin HEAD

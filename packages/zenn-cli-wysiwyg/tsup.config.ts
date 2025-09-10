@@ -9,7 +9,7 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   format: ['cjs'],
-  env: dotenv.config().parsed,
+  env: { ...dotenv.config().parsed, NODE_ENV: 'production' },
   banner: {
     js: '#!/usr/bin/env node\n',
   },

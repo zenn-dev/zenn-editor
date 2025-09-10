@@ -13,10 +13,8 @@ export async function getCliVersion(
     const updateAvailable = latest !== current;
     res.json({ current, latest, updateAvailable });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        message: '最新のzenn-cli-wysiwygのバージョンを取得できませんでした',
-      });
+    res.status(500).json({
+      message: '最新のzenn-cli-wysiwygのバージョンを取得できませんでした',
+    });
   }
 }
