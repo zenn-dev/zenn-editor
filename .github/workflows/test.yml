@@ -28,6 +28,10 @@ jobs:
         run: pnpm test
         working-directory: packages/zenn-markdown-html
 
-      - name: Run tests for zenn-cli
+      - name: Run tests for zenn-cli-wysiwyg
         run: pnpm test
-        working-directory: packages/zenn-cli
+        working-directory: packages/zenn-cli-wysiwyg
+
+      - name: Run tests for zenn-wysiwyg-editor
+        run: pnpm test
+        working-directory: packages/zenn-wysiwyg-editor
