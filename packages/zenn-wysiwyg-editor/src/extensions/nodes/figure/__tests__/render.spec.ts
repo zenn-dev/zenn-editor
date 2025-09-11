@@ -7,8 +7,17 @@ import { renderTiptapEditor } from '../../../../tests/editor';
 import Figure from '..';
 import { Caption } from '../caption';
 import { Image } from '../image';
+import { Link } from '../../../marks/link';
 
-const basicExtension = [Document, Paragraph, Text, Figure, Image, Caption];
+const basicExtension = [
+  Document,
+  Paragraph,
+  Text,
+  Figure,
+  Image,
+  Caption,
+  Link,
+];
 
 describe('HTMLのパース・レンダリング', () => {
   it('Figureノードが正しいHTMLでレンダリングされる', () => {

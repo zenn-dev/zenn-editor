@@ -9,8 +9,17 @@ import { renderTiptapEditor } from '../../../../tests/editor';
 import { Caption } from '../caption';
 import { Image } from '../image';
 import Figure from '../index';
+import { Link } from '../../../marks/link';
 
-const basicExtension = [Document, Paragraph, Text, Figure, Image, Caption];
+const basicExtension = [
+  Document,
+  Paragraph,
+  Text,
+  Figure,
+  Image,
+  Caption,
+  Link,
+];
 
 describe('マークダウン', () => {
   it('Figureノードをマークダウンに変換できる', () => {

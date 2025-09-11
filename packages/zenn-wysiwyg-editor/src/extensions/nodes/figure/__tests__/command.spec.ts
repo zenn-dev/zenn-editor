@@ -18,10 +18,17 @@ import Heading from '../../heading';
 import Figure from '..';
 import { Caption } from '../caption';
 import { Image } from '../image';
+import { Link } from '../../../marks/link';
 
-const basicExtension = [Document, Paragraph, Text, Figure, Image, Caption];
-
-const baseExtensions = [Document, Paragraph, Text, Figure, Image, Caption];
+const basicExtension = [
+  Document,
+  Paragraph,
+  Text,
+  Figure,
+  Image,
+  Caption,
+  Link,
+];
 
 describe('コマンド', () => {
   describe('setFigure', () => {
@@ -51,7 +58,7 @@ describe('コマンド', () => {
 
     it('setFigureコマンドでキャプションなしのFigureノードを挿入できる', () => {
       const editor = renderTiptapEditor({
-        extensions: baseExtensions,
+        extensions: basicExtension,
         content: '<p></p>',
       });
 
@@ -74,7 +81,7 @@ describe('コマンド', () => {
 
     it('見出しの中で呼び出せる', () => {
       const editor = renderTiptapEditor({
-        extensions: [...baseExtensions, Heading],
+        extensions: [...basicExtension, Heading],
         content: '<h1>見出しの中</h1>',
       });
 
@@ -86,7 +93,7 @@ describe('コマンド', () => {
 
     it('引用の中で呼び出せる', () => {
       const editor = renderTiptapEditor({
-        extensions: [...baseExtensions, Blockquote],
+        extensions: [...basicExtension, Blockquote],
         content: '<blockquote>引用の中</blockquote>',
       });
 
@@ -98,7 +105,7 @@ describe('コマンド', () => {
 
     it('リストで呼び出せない', () => {
       const editor = renderTiptapEditor({
-        extensions: [...baseExtensions, ListKit],
+        extensions: [...basicExtension, ListKit],
         content: '<ul><li><p>リストの中</p></li></ul>',
       });
 
@@ -110,7 +117,7 @@ describe('コマンド', () => {
 
     it('メッセージの中で呼び出せる', () => {
       const editor = renderTiptapEditor({
-        extensions: baseExtensions,
+        extensions: basicExtension,
         content:
           '<aside class="msg"><div class="msg-content"><p>メッセージ</p></div></aside>',
       });
@@ -124,7 +131,7 @@ describe('コマンド', () => {
     it('コードブロックのファイル名とコンテンツの中で呼び出せない', () => {
       const editor = renderTiptapEditor({
         extensions: [
-          ...baseExtensions,
+          ...basicExtension,
           CodeBlock,
           CodeBlockContainer,
           CodeBlockFileName,
@@ -148,7 +155,7 @@ describe('コマンド', () => {
     it('差分コードブロックのファイル名とコンテンツの中で呼び出せない', () => {
       const editor = renderTiptapEditor({
         extensions: [
-          ...baseExtensions,
+          ...basicExtension,
           CodeBlock,
           CodeBlockContainer,
           CodeBlockFileName,
@@ -172,7 +179,7 @@ describe('コマンド', () => {
     it('アコーディオンのサマリーで呼べない。コンテンツで呼べる', () => {
       const editor = renderTiptapEditor({
         extensions: [
-          ...baseExtensions,
+          ...basicExtension,
           Details,
           DetailsSummary,
           DetailsContent,
@@ -195,7 +202,7 @@ describe('コマンド', () => {
   describe('clearFigure', () => {
     it('Figureノードを削除できる', () => {
       const editor = renderTiptapEditor({
-        extensions: [Document, Paragraph, Text, Figure, Image, Caption],
+        extensions: basicExtension,
         content: `<p><img src="${LakeImage}" alt="支笏湖"><em>支笏湖</em></p>`,
       });
 
@@ -208,7 +215,7 @@ describe('コマンド', () => {
 
     it('Figureノード外では動作しない', () => {
       const editor = renderTiptapEditor({
-        extensions: [Document, Paragraph, Text, Figure, Image, Caption],
+        extensions: basicExtension,
         content: `<p>普通の段落</p><p><img src="${LakeImage}" alt="支笏湖"><em>支笏湖</em></p>`,
       });
 
