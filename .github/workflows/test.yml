@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - canary
+      - develop
     types: [opened, synchronize]
 
 jobs:
@@ -31,3 +32,36 @@ jobs:
       - name: Run tests for zenn-cli-wysiwyg
         run: pnpm test
         working-directory: packages/zenn-cli-wysiwyg
+
+      - name: Run tests for zenn-wysiwyg-editor
+        run: pnpm test:node
+        working-directory: packages/zenn-wysiwyg-editor
+
+  test-browser:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Setup Playwright Browsers
+        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+        working-directory: packages/zenn-wysiwyg-editor
+
+      - name: Run vitest browser mode tests
+        run: pnpm test:browser-mode --project=${{ matrix.browser }}
+        working-directory: packages/zenn-wysiwyg-editor

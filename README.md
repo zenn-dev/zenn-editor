@@ -1,92 +1,31 @@
-![Zenn Editor](https://user-images.githubusercontent.com/34590683/91540859-60e06780-e956-11ea-9762-0acac2b7c4c5.png)
+# zenn-cli-wysiwyg
 
-このリポジトリは、主に Zenn の Markdown に関するパッケージをまとめて管理しています。
-これらのパッケージを利用することで、[Zenn CLI](https://zenn.dev/zenn/articles/install-zenn-cli) や Zenn の [VSCode 拡張](https://marketplace.visualstudio.com/items?itemName=zenn.zenn-preview) のような周辺システムを作ることができます。
+[zenn-editor](https://github.com/zenn-dev/zenn-editor) に WYSIWYG エディタの機能拡張をしています。
 
-## パッケージ一覧
+## zenn-cli-wysiwygのインストール
 
-| パッケージ名        | 説明                                                           |
-| ------------------- | -------------------------------------------------------------- |
-| zenn-cli            | ローカルの記事・本を表示するための CLI                         |
-| zenn-content-css    | Markdown のプレビュー時のスタイル                              |
-| zenn-embed-elements | ブラウザ上で動作してほしい埋め込み要素( Web Components で実装) |
-| zenn-markdown-html  | Markdown を HTML に変換する                                    |
-| zenn-model          | 記事や本のデータを扱う                                         |
+zenn-cli と同じように始められます。
 
-## Zenn と同じ Markdown スタイルを使用する
-
-Zenn と同じ Markdown を使用するには複数のパッケージを組み合わせる必要があります。
-
-### 1. `zenn-markdown-html` により Markdown を HTML に変換する
-
-```tsx
-import markdownHtml from 'zenn-markdown-html';
+```bash
+npm install -D zenn-cli-wysiwyg
+npx zenn preview
 ```
 
-以下のように Markdown を HTML に変換します。この処理は、Node.js でのみ実行できます。ブラウザで実行するとエラーになることにご注意ください。
+## 使い方
 
-```ts
-const html = markdownHtml(markdown);
-```
+![how to use](https://github.com/user-attachments/assets/b1724499-7191-4833-b6e3-445dea895d1d)
 
-取得した HTML を埋め込み親要素のクラス名には`znc`という文字列を指定する必要があります。これは後述の CSS を適用するために必要です。
+WYSIWYG モードで編集したい場合は、右上にあるスイッチで切り替えます。  
+それ以外は zenn-cli と同じです。
 
-```tsx
-// Reactの場合
-<div
-  // "znc"というクラス名を指定する
-  className="znc"
-  // htmlを渡す
-  dangerouslySetInnerHTML={{
-    __html: html,
-  }}
-/>
-```
+WYSIWYG モードの使い方は [Zenn の記事](https://zenn.dev/karintou/articles/eabe0354fcc947)を参考にしてください。
 
-### 2. CSS を読み込む
+## 主な機能
 
-```ts
-import 'zenn-content-css';
-```
+- WYSIWYG エディターによる直感的な記事編集
+- マークダウンとのリアルタイム連携
+- あくまで追加機能の扱いなため、zenn-cli と遜色ない使い心地
 
-### 3. 埋め込みコンテンツを有効にするため script を読み込む
+## ライセンス
 
-以下のスクリプトを読み込むことで、Tweet や Mermaid などの埋め込み記法が使用できるようになります。
-
-```html
-<script src="https://embed.zenn.studio/js/listen-embed-event.js"></script>
-```
-
-このスクリプトは`<head>`タグ内で読み込みます。また、defer 属性や async 属性を指定すると SPA 等でのページ遷移時に正しく埋め込みが行われない可能性があることにご注意ください。
-
-### 4. （KaTeX 記法を使う場合のみ）`zenn-embed-elements`を読み込む
-
-`zenn-embed-elements`は SSR に対応していないため、クライアント側で読み込む必要があります。
-
-```ts
-// React で使う場合の例
-import 'zenn-content-css';
-
-export default function App(props) {
-  useEffect(() => {
-    import('zenn-embed-elements');
-  }, []);
-
-  return (
-    <div
-      className="znc"
-      dangerouslySetInnerHTML={{
-        __html: props.html, // markdownから変換されたHTMLを渡す
-      }}
-    />
-  );
-}
-```
-
-## 開発者向けドキュメント
-
-https://zenn-dev.github.io/zenn-docs-for-developers/
-
-## License
-
-[MIT](LICENSE)
+MIT License

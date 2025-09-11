@@ -30,6 +30,7 @@ export const Figure = Node.create({
   isolating: true,
   draggable: true,
   selectable: true,
+  marks: 'link',
 
   parseHTML() {
     return [

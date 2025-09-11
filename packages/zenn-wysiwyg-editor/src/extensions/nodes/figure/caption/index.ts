@@ -1,4 +1,5 @@
 import { Node } from '@tiptap/react';
+import { captionLinkPlugin } from './caption-link-plugin';
 
 export const Caption = Node.create({
   name: 'caption',
@@ -11,12 +12,10 @@ export const Caption = Node.create({
     return [
       {
         tag: 'img + em',
-        priority: 100,
       },
       // マークダウン入力経由だと、間にbrを持つ
       {
         tag: 'img + br + em',
-        priority: 100,
       },
     ];
   },
@@ -50,5 +49,9 @@ export const Caption = Node.create({
         });
       },
     };
+  },
+
+  addProseMirrorPlugins() {
+    return [captionLinkPlugin];
   },
 });
