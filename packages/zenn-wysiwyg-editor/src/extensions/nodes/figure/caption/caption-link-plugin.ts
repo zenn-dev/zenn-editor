@@ -17,9 +17,7 @@ const getDecorations = (doc: Node): DecorationSet => {
     }
 
     // 画像にLinkマークがついているかチェック
-    const hasLinkMark = imgNode.marks.some(
-      (mark) => mark.type.name === 'link'
-    );
+    const hasLinkMark = imgNode.marks.some((mark) => mark.type.name === 'link');
 
     // リンク画像ならキャプションを非表示にするデコレーションを追加
     if (hasLinkMark) {
