@@ -90,20 +90,20 @@ describe('HTMLのパース', () => {
     expect(imageNode?.marks[0].type.name).toBe('link');
     expect(imageNode?.marks[0].attrs.href).toBe('https://example.com');
 
-    // キャプションのhidden属性がtrueであることを確認
-    const captionNode = editor.state.doc.firstChild?.lastChild;
-    expect(captionNode?.type.name).toBe('caption');
-    expect(captionNode?.attrs.hidden).toBe(true);
+    // キャプションがdiplay: noneになっていることを確認
+    const captionDom = editor.view.dom.querySelector('em');
+    expect(captionDom).not.toBeNull();
+    expect(captionDom?.style.display).toBe('none');
   });
-
-  it('通常の画像のキャプションはhidden属性がfalse', () => {
+  ``;
+  it('通常の画像のキャプションは表示されている', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content: `<p><img src="${LakeImage}" alt="支笏湖"><em>支笏湖</em></p>`,
     });
 
-    const captionNode = editor.state.doc.firstChild?.lastChild;
-    expect(captionNode?.type.name).toBe('caption');
-    expect(captionNode?.attrs.hidden).toBe(false);
+    // キャプションがdiplay: noneになっていることを確認
+    const captionDom = editor.view.dom.querySelector('em');
+    expect(captionDom?.style.display).not.toBe('none');
   });
 });

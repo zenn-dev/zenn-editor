@@ -69,4 +69,34 @@ describe('マークダウン', () => {
 
     expect(docString).toBe('doc(figure(image, caption))');
   });
+
+  it('リンク付き画像をマークダウンに変換できる', () => {
+    const editor = renderTiptapEditor({
+      extensions: basicExtension,
+      content: `<p><a href="https://example.com"><img src="${LakeImage}" alt="支笏湖"></a></p>`,
+    });
+
+    const markdown = markdownSerializer.serialize(editor.state.doc);
+
+    expect(markdown).toBe(`[![支笏湖](${LakeImage})](https://example.com)`);
+  });
+
+  it('リンク付き画像のマークダウンからFigureノードに変換', () => {
+    const markdown = `[![支笏湖](${LakeImage})](https://example.com)`;
+
+    const html = convertMarkdownToEditable(markdown);
+    const editor = renderTiptapEditor({
+      extensions: basicExtension,
+      content: html,
+    });
+    const docString = editor.state.doc.toString();
+
+    expect(docString).toBe('doc(figure(link(image), caption))');
+
+    // 画像にLinkマークが付いていることを確認
+    const imageNode = editor.state.doc.firstChild?.firstChild;
+    expect(imageNode?.marks).toHaveLength(1);
+    expect(imageNode?.marks[0].type.name).toBe('link');
+    expect(imageNode?.marks[0].attrs.href).toBe('https://example.com');
+  });
 });

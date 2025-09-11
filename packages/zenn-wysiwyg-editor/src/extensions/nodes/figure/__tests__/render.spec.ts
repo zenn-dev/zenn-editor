@@ -31,4 +31,16 @@ describe('HTMLのパース・レンダリング', () => {
       `<p><img src="${LakeImage}" alt="支笏湖" class="md-img"><em>支笏湖</em></p>`
     );
   });
+
+  it('リンク付き画像が正しいHTMLでレンダリングされる', () => {
+    const editor = renderTiptapEditor({
+      extensions: basicExtension,
+      content: `<p><a href="https://example.com"><img src="${LakeImage}" alt="支笏湖"></a><em></em></p>`,
+    });
+
+    const html = editor.getHTML();
+    expect(html).toBe(
+      `<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://example.com"><img src="${LakeImage}" alt="支笏湖" class="md-img"></a><em></em></p>`
+    );
+  });
 });
