@@ -108,15 +108,26 @@ const markdownSerializer = new MarkdownSerializer(
       const alt = node.firstChild?.attrs.alt || '';
       const width = node.firstChild?.attrs.width;
       const caption = node.lastChild?.textContent || '';
+      const link = node.firstChild?.marks.find((m) => m.type.name === 'link');
+
+      if (link) {
+        state.write('[');
+      }
+
       state.write(`![${alt}](${src}`);
       if (width != null) {
         state.write(` =${width}x`);
       }
       state.write(')');
 
+      if (link) {
+        state.write(`](${link.attrs.href})`);
+      }
+
       if (caption) {
         state.write(`\n*${caption}*`);
       }
+
       state.closeBlock(node);
     },
     embed(state, node) {

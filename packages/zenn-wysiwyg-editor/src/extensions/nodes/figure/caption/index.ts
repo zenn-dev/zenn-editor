@@ -11,18 +11,42 @@ export const Caption = Node.create({
     return [
       {
         tag: 'img + em',
-        priority: 100,
       },
       // マークダウン入力経由だと、間にbrを持つ
       {
         tag: 'img + br + em',
-        priority: 100,
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
     return ['em', HTMLAttributes, 0];
+  },
+
+  addNodeView() {
+    return ({ getPos, editor }) => {
+      const dom = document.createElement('em');
+      const pos = getPos();
+      if (typeof pos !== 'number') {
+        throw new Error('getPos is not number');
+      }
+
+      const $img = editor.state.doc.nodeAt(pos - 1);
+      if (!$img) {
+        throw new Error('No image node found before caption');
+      }
+
+      // 画像にLinkマークがついている場合、キャプションを非表示にする
+      const hasLinkMark = $img.marks.some((mark) => mark.type.name === 'link');
+      if (hasLinkMark) {
+        dom.style.display = 'none';
+      }
+
+      return {
+        dom,
+        contentDOM: dom,
+      };
+    };
   },
 
   addKeyboardShortcuts() {
