@@ -1,7 +1,7 @@
 import type { Editor } from '@tiptap/react';
 import type { DragTarget } from './use-drag-handle';
 
-const DRAG_HANDLE_X_OFFSET = 25;
+const DRAG_HANDLE_X_OFFSET = 30;
 
 export function calcOffset(dragTarget: DragTarget, editor: Editor) {
   const rect = dragTarget.dom.getBoundingClientRect();
@@ -31,7 +31,7 @@ export function calcOffset(dragTarget: DragTarget, editor: Editor) {
   }
 
   if (dragTarget.node.type === editor.schema.nodes.paragraph) {
-    top += 3;
+    top += 2;
   }
 
   if (dragTarget.node.type === editor.schema.nodes.horizontalRule) {
