@@ -41,8 +41,6 @@ export const captionLinkPlugin = new Plugin({
       return getDecorations(state.doc);
     },
     apply(tr, decorationSet, ___, newState) {
-      console.log('captionLinkPlugin#apply');
-
       if (tr.docChanged === false) {
         return decorationSet.map(tr.mapping, tr.doc);
       }
