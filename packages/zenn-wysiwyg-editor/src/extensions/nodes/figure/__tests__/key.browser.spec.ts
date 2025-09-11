@@ -9,8 +9,17 @@ import { renderTiptapEditor } from '../../../../tests/editor';
 import { Caption } from '../caption';
 import { Image } from '../image';
 import { Figure } from '../index';
+import { Link } from '../../../marks/link';
 
-const basicExtension = [Document, Paragraph, Text, Figure, Caption, Image];
+const basicExtension = [
+  Document,
+  Paragraph,
+  Text,
+  Figure,
+  Caption,
+  Image,
+  Link,
+];
 
 describe('キー入力', () => {
   describe('Backspace', () => {

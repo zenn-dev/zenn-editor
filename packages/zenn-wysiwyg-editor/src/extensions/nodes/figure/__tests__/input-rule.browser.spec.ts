@@ -11,9 +11,18 @@ import { DetailsContent } from '../../details/content';
 import { DetailsSummary } from '../../details/summary';
 import { Caption } from '../caption';
 import { Image } from '../image';
+import { Link } from '../../../marks/link';
 import { Figure } from '../index';
 
-const basicExtension = [Document, Paragraph, Text, Figure, Caption, Image];
+const basicExtension = [
+  Document,
+  Paragraph,
+  Text,
+  Figure,
+  Caption,
+  Image,
+  Link,
+];
 
 describe('InputRule', () => {
   it('![alt](src) で Figure ノードが作成される', async () => {

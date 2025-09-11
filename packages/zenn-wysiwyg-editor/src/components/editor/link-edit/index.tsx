@@ -34,6 +34,7 @@ export default ({
         <input
           id={inputId}
           type="text"
+          autoComplete="off"
           name="href"
           placeholder="https://example.com"
           defaultValue={href}
