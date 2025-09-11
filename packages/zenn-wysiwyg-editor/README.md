@@ -24,7 +24,7 @@ export const EditableBodyContent: React.FC = () => {
 };
 ```
 
-## 機能
+## 記法対応
 
 ノード
 
@@ -77,12 +77,6 @@ Zenn 独自ノード
 - [x] SlideShare
 - [x] blueprintUE
 - [x] Mermaid
-
-機能
-
-- [x] DragHandle
-- [x] マークダウン出力
-- [x] マークダウンのペースト対応
 
 ## 参考
 
