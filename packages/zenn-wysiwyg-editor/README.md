@@ -42,7 +42,7 @@ export const EditableBodyContent: React.FC = () => {
   - [x] alt
   - [x] キャプション
   - [x] 横幅設定
-  - [ ] リンク画像
+  - [x] リンク画像
 - [x] テキストリンク
 - [x] 脚注
 - [x] テーブル
