@@ -1,4 +1,5 @@
 import { Node } from '@tiptap/react';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
 
 export const Caption = Node.create({
   name: 'caption',
@@ -6,6 +7,15 @@ export const Caption = Node.create({
   content: 'text*',
   defining: true,
   marks: '',
+
+  addAttributes() {
+    return {
+      hidden: {
+        default: false,
+        rendered: false,
+      },
+    };
+  },
 
   parseHTML() {
     return [
@@ -24,21 +34,10 @@ export const Caption = Node.create({
   },
 
   addNodeView() {
-    return ({ getPos, editor }) => {
+    return ({ node }) => {
       const dom = document.createElement('em');
-      const pos = getPos();
-      if (typeof pos !== 'number') {
-        throw new Error('getPos is not number');
-      }
 
-      const $img = editor.state.doc.nodeAt(pos - 1);
-      if (!$img) {
-        throw new Error('No image node found before caption');
-      }
-
-      // 画像にLinkマークがついている場合、キャプションを非表示にする
-      const hasLinkMark = $img.marks.some((mark) => mark.type.name === 'link');
-      if (hasLinkMark) {
+      if (node.attrs.hidden) {
         dom.style.display = 'none';
       }
 
@@ -74,5 +73,44 @@ export const Caption = Node.create({
         });
       },
     };
+  },
+
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey('caption-link'),
+        appendTransaction(_, __, newState) {
+          const tr = newState.tr;
+          let modified = false;
+
+          newState.doc.descendants((node, pos) => {
+            if (node.type.name !== 'caption') {
+              return true;
+            }
+
+            // キャプションの前の要素（画像）を取得
+            const imgNode = newState.doc.nodeAt(pos - 1);
+            if (!imgNode || imgNode.type.name !== 'image') {
+              return true;
+            }
+
+            const hasLinkMark = imgNode.marks.some(
+              (mark) => mark.type.name === 'link'
+            );
+
+            // リンク画像ならキャプションを隠す
+            const currentHidden = node.attrs.hidden;
+            if (currentHidden !== hasLinkMark) {
+              tr.setNodeAttribute(pos, 'hidden', hasLinkMark);
+              modified = true;
+            }
+
+            return true;
+          });
+
+          return modified ? tr : null;
+        },
+      }),
+    ];
   },
 });
