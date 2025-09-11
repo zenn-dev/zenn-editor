@@ -7,7 +7,7 @@
 zenn-cli と同じように始められます。
 
 ```bash
-npm install -D zenn-cli-wysiwyg
+npm install zenn-cli-wysiwyg
 npx zenn preview
 ```
 
