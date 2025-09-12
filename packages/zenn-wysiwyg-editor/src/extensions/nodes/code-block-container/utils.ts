@@ -221,10 +221,11 @@ export function highlightCode(
   isDiff: boolean
 ): string {
   try {
+    const languageWithFallback = fallbackLanguages[language] ?? language;
     return Prism.highlight(
       code,
-      Prism.languages[isDiff ? 'diff' : language],
-      `${isDiff ? 'diff-' : ''}${language}`
+      Prism.languages[isDiff ? 'diff' : languageWithFallback],
+      `${isDiff ? 'diff-' : ''}${languageWithFallback}`
     );
   } catch {
     console.warn(
