@@ -58,7 +58,7 @@ function getDecorations({
     const preStart = preNode.pos + 1;
     const language = preNode.node.attrs.language || defaultLanguage;
 
-    const html = highlightCode(getDiffCode(preNode.node), language);
+    const html = highlightCode(getDiffCode(preNode.node), language, true);
     const nodes = getDiffHighlightLineNodes(html);
 
     const blockDecorations = createDiffDecorations(nodes, preStart);

@@ -1,7 +1,7 @@
 import { Node } from '@tiptap/react';
 import { cn } from '../../../../lib/utils';
 import { DiffPrismPlugin } from './diff-prism-plugin';
-import { normalizeLangName } from '../utils';
+import { normalizeLanguage } from '../utils';
 
 export interface CodeBlockOptions {
   languageClassPrefix: string;
@@ -24,6 +24,7 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
 
   addAttributes() {
     return {
+      // diff- の接頭辞持ち
       language: {
         default: this.options.defaultLanguage,
         parseHTML: (element) => {
@@ -38,7 +39,9 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
             return null;
           }
 
-          return normalizeLangName(language);
+          const languageWithoutDiffPrefix = language.replace(/^diff-/, '');
+
+          return 'diff-' + normalizeLanguage(languageWithoutDiffPrefix);
         },
         rendered: false,
       },
@@ -50,7 +53,7 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
       {
         tag: 'pre:has(code.diff-highlight)',
         preserveWhitespace: 'full',
-        priority: 1000, // Codeよりも先に読み込む
+        priority: 1000, // CodeBlockよりも先に読み込む
       },
     ];
   },

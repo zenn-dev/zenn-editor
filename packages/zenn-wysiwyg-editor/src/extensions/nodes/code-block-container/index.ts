@@ -13,11 +13,12 @@ import {
   type Range,
 } from '@tiptap/react';
 import { replaceNewlines } from '../../../lib/node';
-import { normalizeLangName } from './utils';
+import { normalizeLanguage, parseFilename } from './utils';
 
 type SetCodeBlockContainerOptions = {
-  language?: string;
+  language?: string; // diff- を含めない
   filename?: string | null;
+  isDiff?: boolean;
 };
 
 declare module '@tiptap/react' {
@@ -47,22 +48,15 @@ const inputHandler = ({
   can: () => CanCommands;
   chain: () => ChainedCommands;
 }) => {
-  let language: string, filename: string | null;
+  const { language, filename, isDiff } = parseFilename(match[1]);
 
-  if (match[1]?.includes(':')) {
-    [language, filename] = match[1].split(':');
-  } else {
-    language = match[1];
-    filename = null;
-  }
-
-  if (!can().setCodeBlockContainer({ language, filename })) {
+  if (!can().setCodeBlockContainer({ language, filename, isDiff })) {
     return;
   }
 
   chain()
     .deleteRange({ from: range.from, to: range.to })
-    .setCodeBlockContainer({ language, filename })
+    .setCodeBlockContainer({ language, filename, isDiff })
     .run();
 };
 
@@ -86,7 +80,7 @@ export const CodeBlockContainer = Node.create({
   addCommands() {
     return {
       setCodeBlockContainer:
-        ({ filename, language }) =>
+        ({ filename, language, isDiff }) =>
         ({ chain, state }) => {
           const { schema, selection } = state;
           const { $from, $to } = selection;
@@ -104,9 +98,7 @@ export const CodeBlockContainer = Node.create({
             return false;
           }
 
-          const isDiff = language?.startsWith('diff');
-          const normedLanguage = normalizeLangName(language);
-
+          const normedLanguage = normalizeLanguage(language);
           const text = getTextBetween(
             state.doc,
             { from: range.start, to: range.end },

@@ -12,19 +12,42 @@ const fallbackLanguages: {
   tf: 'hcl', // ref: https://github.com/PrismJS/prism/issues/1252
 };
 
-export function normalizeLangName(str?: string): string {
+/**
+ * diff- 接頭辞がないものを想定
+ */
+export function normalizeLanguage(str?: string): string {
   if (!str?.length) return 'plaintext';
 
   let langName = str.toLocaleLowerCase();
-  const langNameWithouDiff = langName.replace(/diff-/, '');
 
   // highlight可能な言語名か判定
   langName =
-    Prism.languages[langNameWithouDiff] ||
-    Object.keys(fallbackLanguages).includes(langNameWithouDiff)
+    Prism.languages[langName] ||
+    Object.keys(fallbackLanguages).includes(langName)
       ? langName
       : 'plaintext';
   return langName;
+}
+
+export function parseFilename(str: string | null): {
+  language?: string;
+  filename?: string;
+  isDiff?: boolean;
+} {
+  if (!str) return {};
+
+  let language: string, filename: string | undefined;
+
+  if (str?.includes(':')) {
+    [language, filename] = str.split(':');
+  } else {
+    language = str;
+  }
+
+  const isDiff = language.startsWith('diff');
+  const langNameWithoutDiff = language.replace(/^diff-?/, '');
+
+  return { language: langNameWithoutDiff, filename, isDiff };
 }
 
 // NOTE: nodesが<span>とtextノードのみであり、ネストなしの必要がある
@@ -192,12 +215,17 @@ export function getDiffHighlightLineNodes(html: string) {
   return lineNodes;
 }
 
-export function highlightCode(code: string, language: string): string {
+export function highlightCode(
+  code: string,
+  language: string,
+  isDiff: boolean
+): string {
   try {
-    const isDiff = language.startsWith('diff');
-    const targetLanguage = isDiff ? 'diff' : language;
-
-    return Prism.highlight(code, Prism.languages[targetLanguage], language);
+    return Prism.highlight(
+      code,
+      Prism.languages[isDiff ? 'diff' : language],
+      `${isDiff ? 'diff-' : ''}${language}`
+    );
   } catch {
     console.warn(
       `Language "${language}" not supported, falling back to plaintext`
