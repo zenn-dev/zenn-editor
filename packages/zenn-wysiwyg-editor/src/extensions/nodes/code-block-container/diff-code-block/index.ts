@@ -1,7 +1,9 @@
-import { Node } from '@tiptap/react';
+import { Node, ReactRenderer } from '@tiptap/react';
 import { cn } from '../../../../lib/utils';
 import { DiffPrismPlugin } from './diff-prism-plugin';
 import { normalizeLanguage } from '../utils';
+import Combobox from '../../../../components/ui/combobox';
+import { LANGUAGE_ALIAS_ITEMS, LANGUAGE_ITEMS } from '../lang';
 
 export interface CodeBlockOptions {
   languageClassPrefix: string;
@@ -24,7 +26,6 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
 
   addAttributes() {
     return {
-      // diff- の接頭辞持ち
       language: {
         default: this.options.defaultLanguage,
         parseHTML: (element) => {
@@ -33,15 +34,15 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
           const languages = classNames
             .filter((className) => className.startsWith(languageClassPrefix))
             .map((className) => className.replace(languageClassPrefix, ''));
-          const language = languages[0];
+          const languageWithDiffPrefix = languages[0];
 
-          if (!language) {
+          if (!languageWithDiffPrefix) {
             return null;
           }
 
-          const languageWithoutDiffPrefix = language.replace(/^diff-/, '');
+          const language = languageWithDiffPrefix.replace(/^diff-/, '');
 
-          return 'diff-' + normalizeLanguage(languageWithoutDiffPrefix);
+          return normalizeLanguage(language);
         },
         rendered: false,
       },
@@ -77,20 +78,39 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
   },
 
   addNodeView() {
-    return ({ node }) => {
+    return ({ node, editor, getPos }) => {
       const dom = document.createElement('div');
       dom.className = 'code-block-wrapper-for-langname'; // 言語名表示のポジションのため
-      dom.setAttribute(
-        'data-language',
-        node.attrs.language || this.options.defaultLanguage
-      );
-      const pre = document.createElement('pre');
 
+      const combobox = new ReactRenderer(Combobox, {
+        editor: editor,
+        props: {
+          items: LANGUAGE_ITEMS,
+          aliasItems: LANGUAGE_ALIAS_ITEMS,
+          value: node.attrs.language,
+          onSelect: (value: string) => {
+            editor.commands.command(({ tr }) => {
+              const pos = getPos();
+              if (typeof pos !== 'number') return false;
+
+              tr.setNodeMarkup(pos, undefined, {
+                ...node.attrs,
+                language: value,
+              });
+              return true;
+            });
+          },
+        },
+      });
+      combobox.element.classList.add('code-block-lang-combobox');
+      dom.appendChild(combobox.element);
+
+      const pre = document.createElement('pre');
       const code = document.createElement('code');
       code.className = cn(
         'diff-highlight',
         node.attrs.language
-          ? this.options.languageClassPrefix + node.attrs.language
+          ? this.options.languageClassPrefix + 'diff-' + node.attrs.language
           : ''
       );
 
@@ -100,6 +120,17 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
       return {
         dom,
         contentDOM: code,
+        destroy: () => {
+          combobox.destroy();
+        },
+        ignoreMutation(mutation) {
+          if (mutation.type === 'selection') {
+            return false;
+          }
+
+          // コンボボックス内の変更で再レンダリングをしない
+          return combobox.element.contains(mutation.target);
+        },
       };
     };
   },
