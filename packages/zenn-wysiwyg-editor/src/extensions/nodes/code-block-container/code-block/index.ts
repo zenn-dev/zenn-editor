@@ -1,7 +1,7 @@
 import { Node, ReactRenderer } from '@tiptap/react';
 import { PrismPlugin } from './prism-plugin';
 import Combobox from '../../../../components/ui/combobox';
-import { LANGUAGE_ITEMS } from './lang';
+import { LANGUAGE_ITEMS } from '../lang';
 
 // カスタマイズのため、TiptapのBlockquoteを直接編集する
 // https://github.com/ueberdosis/tiptap/blob/main/packages/extension-code-block/src/code-block.ts
