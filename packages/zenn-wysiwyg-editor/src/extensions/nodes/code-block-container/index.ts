@@ -13,6 +13,7 @@ import {
   type Range,
 } from '@tiptap/react';
 import { replaceNewlines } from '../../../lib/node';
+import { normalizeLangName } from './utils';
 
 type SetCodeBlockContainerOptions = {
   language?: string;
@@ -104,6 +105,8 @@ export const CodeBlockContainer = Node.create({
           }
 
           const isDiff = language?.startsWith('diff');
+          const normedLanguage = normalizeLangName(language);
+
           const text = getTextBetween(
             state.doc,
             { from: range.start, to: range.end },
@@ -131,7 +134,7 @@ export const CodeBlockContainer = Node.create({
                   isDiff
                     ? {
                         type: 'diffCodeBlock',
-                        attrs: { language },
+                        attrs: { language: normedLanguage },
                         content: text.split('\n').map((line) => ({
                           type: 'diffCodeLine',
                           content: line ? [{ type: 'text', text: line }] : [],
@@ -139,7 +142,7 @@ export const CodeBlockContainer = Node.create({
                       }
                     : {
                         type: 'codeBlock',
-                        attrs: { language },
+                        attrs: { language: normedLanguage },
                         content: text ? [{ type: 'text', text }] : [],
                       },
                 ],

@@ -25,11 +25,12 @@ export const LANGUAGE_ITEMS = [
   { value: 'markdown', label: 'Markdown' },
   { value: 'graphql', label: 'GraphQL' },
   { value: 'sql', label: 'SQL' },
-  { value: 'tf', label: 'Terraform' },
+  { value: 'docker', label: 'Dockerfile' },
   { value: 'bash', label: 'Bash' },
   { value: 'json', label: 'JSON' },
   { value: 'yaml', label: 'YAML' },
   { value: 'hcl', label: 'HCL' },
+  { value: 'tf', label: 'Terraform' },
 ];
 
 export const LANGUAGE_ALIAS_ITEMS = {

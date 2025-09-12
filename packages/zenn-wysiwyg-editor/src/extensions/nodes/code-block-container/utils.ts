@@ -1,6 +1,29 @@
 import type { Node as ProsemirrorNode } from '@tiptap/pm/model';
 import { Prism } from 'zenn-markdown-html';
 
+const fallbackLanguages: {
+  [key: string]: string;
+} = {
+  vue: 'html',
+  react: 'jsx',
+  fish: 'shell',
+  sh: 'shell',
+  cwl: 'yaml',
+  tf: 'hcl', // ref: https://github.com/PrismJS/prism/issues/1252
+};
+
+export function normalizeLangName(str?: string): string {
+  if (!str?.length) return 'plaintext';
+
+  console.log(Prism.languages, str);
+  let langName = str.toLocaleLowerCase();
+  langName = fallbackLanguages[langName] ?? langName;
+  langName = Prism.languages[langName?.replace(/diff-/, '')]
+    ? langName
+    : 'plaintext';
+  return langName;
+}
+
 // NOTE: nodesが<span>とtextノードのみであり、ネストなしの必要がある
 export function parseNodes(
   nodes: Node[],
