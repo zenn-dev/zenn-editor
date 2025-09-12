@@ -52,7 +52,7 @@ const inputHandler = ({
   if (match[1]?.includes(':')) {
     [language, filename] = match[1].split(':');
   } else {
-    language = match[1] || 'plaintext';
+    language = match[1];
     filename = null;
   }
 

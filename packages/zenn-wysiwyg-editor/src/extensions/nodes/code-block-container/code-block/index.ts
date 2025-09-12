@@ -2,6 +2,7 @@ import { Node, ReactRenderer } from '@tiptap/react';
 import { PrismPlugin } from './prism-plugin';
 import Combobox from '../../../../components/ui/combobox';
 import { LANGUAGE_ALIAS_ITEMS, LANGUAGE_ITEMS } from '../lang';
+import { normalizeLangName } from '../utils';
 
 // カスタマイズのため、TiptapのBlockquoteを直接編集する
 // https://github.com/ueberdosis/tiptap/blob/main/packages/extension-code-block/src/code-block.ts
@@ -42,7 +43,7 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
             return null;
           }
 
-          return language;
+          return normalizeLangName(language);
         },
         rendered: false,
       },

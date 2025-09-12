@@ -15,12 +15,15 @@ const fallbackLanguages: {
 export function normalizeLangName(str?: string): string {
   if (!str?.length) return 'plaintext';
 
-  console.log(Prism.languages, str);
   let langName = str.toLocaleLowerCase();
-  langName = fallbackLanguages[langName] ?? langName;
-  langName = Prism.languages[langName?.replace(/diff-/, '')]
-    ? langName
-    : 'plaintext';
+  const langNameWithouDiff = langName.replace(/diff-/, '');
+
+  // highlight可能な言語名か判定
+  langName =
+    Prism.languages[langNameWithouDiff] ||
+    Object.keys(fallbackLanguages).includes(langNameWithouDiff)
+      ? langName
+      : 'plaintext';
   return langName;
 }
 

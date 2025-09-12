@@ -1,6 +1,7 @@
 import { Node } from '@tiptap/react';
 import { cn } from '../../../../lib/utils';
 import { DiffPrismPlugin } from './diff-prism-plugin';
+import { normalizeLangName } from '../utils';
 
 export interface CodeBlockOptions {
   languageClassPrefix: string;
@@ -37,7 +38,7 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
             return null;
           }
 
-          return language;
+          return normalizeLangName(language);
         },
         rendered: false,
       },
