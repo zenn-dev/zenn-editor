@@ -20,7 +20,6 @@ export const LANGUAGE_ITEMS = [
   { value: 'kotlin', label: 'Kotlin' },
   { value: 'swift', label: 'Swift' },
   { value: 'dart', label: 'Dart' },
-  { value: 'hcl', label: 'HCL' },
 
   // その他
   { value: 'markdown', label: 'Markdown' },
@@ -30,4 +29,10 @@ export const LANGUAGE_ITEMS = [
   { value: 'bash', label: 'Bash' },
   { value: 'json', label: 'JSON' },
   { value: 'yaml', label: 'YAML' },
+  { value: 'hcl', label: 'HCL' },
 ];
+
+export const LANGUAGE_ALIAS_ITEMS = {
+  javascript: 'js',
+  typescript: 'ts',
+};

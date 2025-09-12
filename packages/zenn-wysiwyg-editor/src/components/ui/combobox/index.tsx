@@ -11,9 +11,14 @@ type ComboboxItem = {
   label: string;
 };
 
+type ComboboxItemAlias = {
+  [key: string]: string;
+};
+
 type ComboboxProps = {
   items: ComboboxItem[];
-  value?: string;
+  aliasItems?: ComboboxItemAlias;
+  value: string;
   onSelect: (value: string) => void;
   placeholder?: string;
   className?: string;
@@ -23,6 +28,7 @@ type ComboboxProps = {
 export default function Combobox({
   items,
   value,
+  aliasItems,
   onSelect,
   placeholder = 'Select an item...',
   className,
@@ -31,7 +37,11 @@ export default function Combobox({
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  const selectedItem = items.find((item) => item.value === value);
+  const valueNoDuplicateLabel = aliasItems?.[value] ?? value;
+
+  const selectedItem = items.find(
+    (item) => item.value === valueNoDuplicateLabel
+  );
 
   const filteredItems = items.filter((item) =>
     item.label.toLowerCase().includes(searchValue.toLowerCase())
@@ -86,7 +96,7 @@ export default function Combobox({
                 type="button"
                 className={cn(
                   styles.item,
-                  item.value === value && styles.itemSelected
+                  item.value === valueNoDuplicateLabel && styles.itemSelected
                 )}
                 onClick={() => handleSelect(item.value)}
               >

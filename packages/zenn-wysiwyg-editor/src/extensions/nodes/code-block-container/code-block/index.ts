@@ -1,7 +1,7 @@
 import { Node, ReactRenderer } from '@tiptap/react';
 import { PrismPlugin } from './prism-plugin';
 import Combobox from '../../../../components/ui/combobox';
-import { LANGUAGE_ITEMS } from '../lang';
+import { LANGUAGE_ALIAS_ITEMS, LANGUAGE_ITEMS } from '../lang';
 
 // カスタマイズのため、TiptapのBlockquoteを直接編集する
 // https://github.com/ueberdosis/tiptap/blob/main/packages/extension-code-block/src/code-block.ts
@@ -83,6 +83,7 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
         editor: editor,
         props: {
           items: LANGUAGE_ITEMS,
+          aliasItems: LANGUAGE_ALIAS_ITEMS,
           value: node.attrs.language,
           onSelect: (value: string) => {
             editor.commands.command(({ tr }) => {
