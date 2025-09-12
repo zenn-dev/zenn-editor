@@ -30,7 +30,6 @@ export default function Combobox({
   value,
   aliasItems,
   onSelect,
-  placeholder = 'Select an item...',
   className,
   disabled = false,
 }: ComboboxProps) {
@@ -70,7 +69,7 @@ export default function Combobox({
           onKeyDown={handleKeyDown}
         >
           <span className={styles.triggerText}>
-            {selectedItem ? selectedItem.label : placeholder}
+            {selectedItem ? selectedItem.label : value}
           </span>
           <ChevronDown className={cn(styles.icon, open && styles.iconOpen)} />
         </button>
