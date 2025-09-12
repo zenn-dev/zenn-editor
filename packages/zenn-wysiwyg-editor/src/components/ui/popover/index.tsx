@@ -2,7 +2,7 @@ import * as PopoverPrimitive from '@radix-ui/react-popover';
 import type * as React from 'react';
 import { cn } from '../../../lib/utils';
 
-import './index.css';
+import styles from './index.module.css';
 
 function Popover({
   ...props
@@ -28,7 +28,7 @@ function PopoverContent({
         data-slot="popover-content"
         align={align}
         sideOffset={sideOffset}
-        className={cn('popOver', className)}
+        className={cn(styles.popOver, className)}
         {...props}
       />
     </PopoverPrimitive.Portal>
