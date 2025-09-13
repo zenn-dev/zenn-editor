@@ -4,8 +4,8 @@ import { Editor, findChildren, ReactRenderer } from '@tiptap/react';
 import { Node as ProseMirrorNode } from '@tiptap/pm/model';
 
 import Combobox from '../../../components/ui/combobox';
-import Switch from '../../../components/ui/switch';
 import { LANGUAGE_ALIAS_ITEMS, LANGUAGE_ITEMS } from './lang';
+import DiffSwitch from '../../../components/editor/diff-switch';
 
 interface CodeBlockSettingsDecorationPluginOptions {
   names: string[];
@@ -44,7 +44,7 @@ const createDiffToggleSwitch = (
 ) => {
   const isDiff = node.type.name === 'diffCodeBlock';
 
-  const switchRenderer = new ReactRenderer(Switch, {
+  const switchRenderer = new ReactRenderer(DiffSwitch, {
     editor: editor,
     props: {
       checked: isDiff,
@@ -82,7 +82,7 @@ function getDecorations(
       pos,
       () => {
         const container = document.createElement('div');
-        container.className = 'code-block-wrapper-for-langname';
+        container.className = 'code-block-wrapper-for-settings';
 
         switchRenderer = createDiffToggleSwitch(editor, node, pos);
         comboboxRenderer = createCombobox(editor, node, pos);

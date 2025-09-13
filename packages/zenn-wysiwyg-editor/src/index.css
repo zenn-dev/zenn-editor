@@ -46,7 +46,7 @@
       }
     }
 
-    .code-block-wrapper-for-langname {
+    .code-block-wrapper-for-settings {
       position: relative;
 
       .code-block-lang-combobox {
@@ -58,8 +58,8 @@
 
       .code-block-diff-toggle {
         position: absolute;
-        top: -35px;
-        right: 200px;
+        top: -33px;
+        right: 170px;
         display: block;
       }
     }
