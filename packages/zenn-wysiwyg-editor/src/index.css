@@ -42,7 +42,7 @@
 
       .code-block-filename {
         /* PC版Safariで display: table をspanにつけると、contenteditableでの編集がバグる */
-        display: inline-block;
+        /* display: inline-block; */
       }
     }
 

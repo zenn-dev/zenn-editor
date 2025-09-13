@@ -1,7 +1,5 @@
-import { Node, ReactRenderer } from '@tiptap/react';
+import { Node } from '@tiptap/react';
 import { PrismPlugin } from './prism-plugin';
-import Combobox from '../../../../components/ui/combobox';
-import { LANGUAGE_ALIAS_ITEMS, LANGUAGE_ITEMS } from '../lang';
 import { normalizeLanguage } from '../utils';
 
 // カスタマイズのため、TiptapのBlockquoteを直接編集する
@@ -73,62 +71,6 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
         0,
       ],
     ];
-  },
-
-  addNodeView() {
-    return ({ node, editor, getPos }) => {
-      const dom = document.createElement('div');
-      dom.className = 'code-block-wrapper-for-langname'; // 言語名表示のポジションのため
-
-      const combobox = new ReactRenderer(Combobox, {
-        editor: editor,
-        props: {
-          items: LANGUAGE_ITEMS,
-          aliasItems: LANGUAGE_ALIAS_ITEMS,
-          value: node.attrs.language,
-          onSelect: (value: string) => {
-            editor.commands.command(({ tr }) => {
-              const pos = getPos();
-              if (typeof pos !== 'number') return false;
-
-              tr.setNodeMarkup(pos, undefined, {
-                ...node.attrs,
-                language: value,
-              });
-              return true;
-            });
-          },
-        },
-      });
-      combobox.element.classList.add('code-block-lang-combobox');
-      dom.appendChild(combobox.element);
-
-      const pre = document.createElement('pre');
-      const code = document.createElement('code');
-      code.className = node.attrs.language
-        ? this.options.languageClassPrefix + node.attrs.language
-        : '';
-      code.textContent = node.textContent;
-
-      pre.appendChild(code);
-      dom.appendChild(pre);
-
-      return {
-        dom,
-        contentDOM: code,
-        destroy: () => {
-          combobox.destroy();
-        },
-        ignoreMutation(mutation) {
-          if (mutation.type === 'selection') {
-            return false;
-          }
-
-          // コンボボックス内の変更で再レンダリングをしない
-          return combobox.element.contains(mutation.target);
-        },
-      };
-    };
   },
 
   addKeyboardShortcuts() {

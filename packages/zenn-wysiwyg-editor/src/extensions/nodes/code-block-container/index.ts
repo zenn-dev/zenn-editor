@@ -14,6 +14,7 @@ import {
 } from '@tiptap/react';
 import { replaceNewlines } from '../../../lib/node';
 import { normalizeLanguage, parseFilename } from './utils';
+import { CodeBlockComboboxDecorationPlugin } from './code-block-combobox-decoration-plugin';
 
 type SetCodeBlockContainerOptions = {
   language?: string; // diff- を含めない
@@ -241,6 +242,15 @@ export const CodeBlockContainer = Node.create({
       new InputRule({
         find: tildeInputRegex,
         handler: inputHandler,
+      }),
+    ];
+  },
+
+  addProseMirrorPlugins() {
+    return [
+      CodeBlockComboboxDecorationPlugin({
+        names: ['codeBlock', 'diffCodeBlock'],
+        editor: this.editor,
       }),
     ];
   },
