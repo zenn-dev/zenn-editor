@@ -55,6 +55,13 @@
         right: 0;
         display: block;
       }
+
+      .code-block-diff-toggle {
+        position: absolute;
+        top: -35px;
+        right: 200px;
+        display: block;
+      }
     }
 
     code.diff-highlight {

@@ -4,6 +4,7 @@ import { Editor, findChildren, ReactRenderer } from '@tiptap/react';
 import { Node as ProseMirrorNode } from '@tiptap/pm/model';
 
 import Combobox from '../../../components/ui/combobox';
+import Switch from '../../../components/ui/switch';
 import { LANGUAGE_ALIAS_ITEMS, LANGUAGE_ITEMS } from './lang';
 
 interface CodeBlockComboboxOptions {
@@ -12,8 +13,6 @@ interface CodeBlockComboboxOptions {
 }
 
 const createCombobox = (editor: Editor, node: ProseMirrorNode, pos: number) => {
-  // ReactRendererのeditorプロパティには、実際のEditorインスタンスを渡す必要がある
-  // viewからエディターを取得する適切な方法を使用
   const comboboxRenderer = new ReactRenderer(Combobox, {
     editor: editor,
     props: {
@@ -38,6 +37,31 @@ const createCombobox = (editor: Editor, node: ProseMirrorNode, pos: number) => {
   return comboboxRenderer;
 };
 
+const createDiffToggleSwitch = (
+  editor: Editor,
+  node: ProseMirrorNode,
+  pos: number
+) => {
+  const isDiff = node.type.name === 'diffCodeBlock';
+
+  const switchRenderer = new ReactRenderer(Switch, {
+    editor: editor,
+    props: {
+      checked: isDiff,
+      onChange: (newIsDiff: boolean) => {
+        editor
+          .chain()
+          .setTextSelection(pos + 1) // +1 to be inside the code block node
+          .changeDiffMode(newIsDiff)
+          .run();
+      },
+    },
+  });
+
+  switchRenderer.element.classList.add('code-block-diff-toggle');
+  return switchRenderer;
+};
+
 function getDecorations(
   doc: ProseMirrorNode,
   names: string[],
@@ -51,16 +75,19 @@ function getDecorations(
     }
 
     let comboboxRenderer: ReactRenderer | null = null;
+    let switchRenderer: ReactRenderer | null = null;
 
-    // コンボボックスをファイル名とコードブロックの中間に配置するs
+    // コンボボックスとdiff切り替えスイッチをファイル名とコードブロックの中間に配置
     const decoration = Decoration.widget(
       pos,
       () => {
         const container = document.createElement('div');
         container.className = 'code-block-wrapper-for-langname';
 
+        switchRenderer = createDiffToggleSwitch(editor, node, pos);
         comboboxRenderer = createCombobox(editor, node, pos);
 
+        container.appendChild(switchRenderer.element);
         container.appendChild(comboboxRenderer.element);
 
         return container;
@@ -70,6 +97,8 @@ function getDecorations(
         destroy: () => {
           comboboxRenderer?.destroy();
           comboboxRenderer = null;
+          switchRenderer?.destroy();
+          switchRenderer = null;
         },
       }
     );

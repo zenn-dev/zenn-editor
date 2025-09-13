@@ -30,6 +30,7 @@ declare module '@tiptap/react' {
         attrs: SetCodeBlockContainerOptions
       ) => ReturnType;
       unsetCodeBlockContainer: () => ReturnType;
+      changeDiffMode: (isDiff: boolean) => ReturnType;
     };
   }
 }
@@ -65,6 +66,7 @@ export const CodeBlockContainer = Node.create({
   name: 'codeBlockContainer',
   group: 'block',
   content: 'codeBlockFileName (codeBlock | diffCodeBlock)',
+  selectable: false,
 
   parseHTML() {
     return [
@@ -220,6 +222,103 @@ export const CodeBlockContainer = Node.create({
           return chain()
             .insertContentAt(range, contentNodeWithNewLine)
             .setTextSelection(from + 1)
+            .run();
+        },
+      changeDiffMode:
+        (isDiff) =>
+        ({ chain, editor }) => {
+          const { state, schema } = editor;
+
+          const codeBlockContainerWithPos = findParentNode(
+            (node) => node.type.name === 'codeBlockContainer'
+          )(editor.state.selection);
+
+          if (!codeBlockContainerWithPos) {
+            return false;
+          }
+
+          const filenameNodeWithPos = findChildren(
+            state.doc,
+            (node) => node.type.name === 'codeBlockFileName'
+          )[0];
+
+          const codeBlockNodeWithPos = findChildren(state.doc, (node) =>
+            ['codeBlock', 'diffCodeBlock'].includes(node.type.name)
+          )[0];
+
+          if (!filenameNodeWithPos || !codeBlockNodeWithPos) {
+            throw new Error('Invalid code block container structure');
+          }
+
+          if (
+            (codeBlockNodeWithPos.node.type.name === 'codeBlock' && !isDiff) ||
+            (codeBlockNodeWithPos.node.type.name === 'diffCodeBlock' && isDiff)
+          ) {
+            // モードと表示が一致している場合は何もしない
+            return false;
+          }
+
+          const isCurrentCodeBlock = isDiff;
+          const range = {
+            start: codeBlockContainerWithPos.pos,
+            end:
+              codeBlockContainerWithPos.pos +
+              codeBlockContainerWithPos.node.nodeSize,
+          };
+          const filename = filenameNodeWithPos.node.textContent;
+          const language = codeBlockNodeWithPos.node.attrs.language;
+          const text = getTextBetween(
+            state.doc,
+            {
+              // 差分ブロックは diffCodeLine の中に入る
+              from: codeBlockNodeWithPos.pos + (isCurrentCodeBlock ? 1 : 2),
+              to:
+                codeBlockNodeWithPos.pos +
+                codeBlockNodeWithPos.node.nodeSize -
+                (isCurrentCodeBlock ? 1 : 2),
+            },
+            {
+              blockSeparator: '\n',
+              textSerializers: getTextSerializersFromSchema(schema),
+            }
+          );
+
+          return chain()
+            .insertContentAt(
+              {
+                from: range.start,
+                to: range.end,
+              },
+              {
+                type: 'codeBlockContainer',
+                content: [
+                  {
+                    type: 'codeBlockFileName',
+                    content: filename ? [{ type: 'text', text: filename }] : [],
+                  },
+                  isDiff
+                    ? {
+                        type: 'diffCodeBlock',
+                        attrs: { language: language },
+                        content: text.split('\n').map((line) => ({
+                          type: 'diffCodeLine',
+                          content: line ? [{ type: 'text', text: line }] : [],
+                        })),
+                      }
+                    : {
+                        type: 'codeBlock',
+                        attrs: { language: language },
+                        content: text ? [{ type: 'text', text }] : [],
+                      },
+                ],
+              }
+            )
+            .setTextSelection(
+              range.start +
+                1 +
+                filenameNodeWithPos.node.nodeSize +
+                (isDiff ? 2 : 1)
+            ) //コンテンツの開始位置にカーソルを移動
             .run();
         },
     };
