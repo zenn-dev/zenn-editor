@@ -7,7 +7,7 @@ import Combobox from '../../../components/ui/combobox';
 import Switch from '../../../components/ui/switch';
 import { LANGUAGE_ALIAS_ITEMS, LANGUAGE_ITEMS } from './lang';
 
-interface CodeBlockComboboxOptions {
+interface CodeBlockSettingsDecorationPluginOptions {
   names: string[];
   editor: Editor;
 }
@@ -109,11 +109,11 @@ function getDecorations(
   return DecorationSet.create(doc, decorations);
 }
 
-export function CodeBlockComboboxDecorationPlugin({
+export function CodeBlockSettingsDecorationPlugin({
   names,
   editor,
-}: CodeBlockComboboxOptions) {
-  const pluginKey = new PluginKey('codeBlockCombobox');
+}: CodeBlockSettingsDecorationPluginOptions) {
+  const pluginKey = new PluginKey('codeBlockSettings');
 
   const plugin: Plugin = new Plugin({
     key: pluginKey,
