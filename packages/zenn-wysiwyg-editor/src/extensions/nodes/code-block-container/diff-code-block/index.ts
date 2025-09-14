@@ -1,6 +1,6 @@
 import { Node } from '@tiptap/react';
-import { cn } from '../../../../lib/utils';
 import { DiffPrismPlugin } from './diff-prism-plugin';
+import { normalizeLanguage } from '../utils';
 
 export interface CodeBlockOptions {
   languageClassPrefix: string;
@@ -23,6 +23,7 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
 
   addAttributes() {
     return {
+      // diff 言語は plaintext に変換する
       language: {
         default: this.options.defaultLanguage,
         parseHTML: (element) => {
@@ -31,13 +32,15 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
           const languages = classNames
             .filter((className) => className.startsWith(languageClassPrefix))
             .map((className) => className.replace(languageClassPrefix, ''));
-          const language = languages[0];
+          const languageWithDiffPrefix = languages[0];
 
-          if (!language) {
+          if (!languageWithDiffPrefix) {
             return null;
           }
 
-          return language;
+          const language = languageWithDiffPrefix.replace(/^diff-/, '');
+
+          return normalizeLanguage(language);
         },
         rendered: false,
       },
@@ -49,12 +52,16 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
       {
         tag: 'pre:has(code.diff-highlight)',
         preserveWhitespace: 'full',
-        priority: 1000, // Codeよりも先に読み込む
+        priority: 1000, // CodeBlockよりも先に読み込む
       },
     ];
   },
 
   renderHTML({ node, HTMLAttributes }) {
+    const language =
+      node.attrs.language !== 'plaintext'
+        ? `diff-${node.attrs.language}`
+        : 'diff';
     return [
       'pre',
       HTMLAttributes,
@@ -63,41 +70,13 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
         {
           class: `diff-highlight ${
             node.attrs.language
-              ? this.options.languageClassPrefix + node.attrs.language
+              ? this.options.languageClassPrefix + language
               : null
           }`,
         },
         0,
       ],
     ];
-  },
-
-  addNodeView() {
-    return ({ node }) => {
-      const dom = document.createElement('div');
-      dom.className = 'code-block-wrapper-for-langname'; // 言語名表示のポジションのため
-      dom.setAttribute(
-        'data-language',
-        node.attrs.language || this.options.defaultLanguage
-      );
-      const pre = document.createElement('pre');
-
-      const code = document.createElement('code');
-      code.className = cn(
-        'diff-highlight',
-        node.attrs.language
-          ? this.options.languageClassPrefix + node.attrs.language
-          : ''
-      );
-
-      pre.appendChild(code);
-      dom.appendChild(pre);
-
-      return {
-        dom,
-        contentDOM: code,
-      };
-    };
   },
 
   addProseMirrorPlugins() {

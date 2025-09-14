@@ -3,7 +3,7 @@ import { BubbleMenu as TiptapBubbleMenu } from '@tiptap/react/menus';
 import { Bold, Code, Italic, Strikethrough } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 
-import './index.css';
+import styles from './index.module.css';
 
 type Props = {
   editor: Editor;
@@ -55,31 +55,31 @@ export default function BubbleMenu({ editor }: Props) {
         return isShow;
       }}
     >
-      <div className="bubbleMenu">
+      <div className={styles.bubbleMenu}>
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={cn('', state.isBold && 'isActive')}
+          className={cn(styles.button, state.isBold && styles.isActive)}
           type="button"
         >
           <Bold size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={cn(state.isItalic && 'isActive')}
+          className={cn(styles.button, state.isItalic && styles.isActive)}
           type="button"
         >
           <Italic size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={cn(state.isStrike && 'isActive')}
+          className={cn(styles.button, state.isStrike && styles.isActive)}
           type="button"
         >
           <Strikethrough size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleCode().run()}
-          className={cn(state.isCode && 'isActive')}
+          className={cn(styles.button, state.isCode && styles.isActive)}
           type="button"
         >
           <Code size={18} />

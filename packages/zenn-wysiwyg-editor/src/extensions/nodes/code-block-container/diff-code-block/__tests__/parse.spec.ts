@@ -32,7 +32,7 @@ describe('HTMLのパース', () => {
 
     const docString = editor.state.doc.toString();
     const $node = editor.$node('diffCodeBlock', {
-      language: 'diff-javascript',
+      language: 'javascript',
     });
 
     expect(docString).toBe(
@@ -50,7 +50,7 @@ describe('HTMLのパース', () => {
 
     const docString = editor.state.doc.toString();
     const $node = editor.$node('diffCodeBlock', {
-      language: 'diff-python',
+      language: 'python',
     });
 
     expect(docString).toBe(
@@ -68,7 +68,7 @@ describe('HTMLのパース', () => {
 
     const docString = editor.state.doc.toString();
     const $node = editor.$node('diffCodeBlock', {
-      language: 'diff',
+      language: 'plaintext',
     });
 
     expect(docString).toBe(
@@ -86,7 +86,7 @@ describe('HTMLのパース', () => {
 
     const docString = editor.state.doc.toString();
     const $node = editor.$node('diffCodeBlock', {
-      language: 'diff',
+      language: 'plaintext',
     });
 
     expect(docString).toBe(

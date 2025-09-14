@@ -8,7 +8,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.bubbleMenu button {
+.button {
   width: 1.5rem;
   height: 1.5rem;
   display: flex;
@@ -18,10 +18,10 @@
   cursor: pointer;
 }
 
-.bubbleMenu button:hover {
+.button:hover {
   background-color: #f3f4f6;
 }
 
-.bubbleMenu .isActive {
+.isActive {
   background-color: #e5e7eb;
 }

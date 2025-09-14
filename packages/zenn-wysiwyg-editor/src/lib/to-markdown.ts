@@ -84,7 +84,7 @@ const markdownSerializer = new MarkdownSerializer(
 
       const backticks = preContentNode.textContent.match(/`{3,}/gm);
       const fence = backticks ? `${backticks.sort().slice(-1)[0]}\`` : '```';
-      const isDiff = preContentNode.attrs.language.startsWith('diff');
+      const isDiff = preContentNode.type.name === 'diffCodeBlock';
       let language = preContentNode.attrs.language.replace(/diff-?/, '') || '';
       language = language.replace(/^(plain|plaintext)$/, ''); // plain, plaintextは言語指定なしとみなす
 

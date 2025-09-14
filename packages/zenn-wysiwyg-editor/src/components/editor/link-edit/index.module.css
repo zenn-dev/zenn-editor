@@ -1,0 +1,46 @@
+.linkEditPopoverContent {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow:
+    0 10px 15px rgba(0, 0, 0, 0.1),
+    0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.input {
+  width: 300px;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ef4444;
+  font-size: 1.25rem;
+}
+
+.saveButton {
+  background-color: #0f93ff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}

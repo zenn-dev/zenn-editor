@@ -3,7 +3,7 @@ import { type Editor, useEditorState } from '@tiptap/react';
 import { BubbleMenu as TiptapBubbleMenu } from '@tiptap/react/menus';
 import AltPopover from '../alt-popover';
 
-import './index.css';
+import styles from './index.module.css';
 
 type Props = {
   editor: Editor;
@@ -58,7 +58,7 @@ export default function ImageBubbleMenu({ editor }: Props) {
         return selection.node.type === editor.schema.nodes.figure;
       }}
     >
-      <div className="imageBubbleMenuContainer">
+      <div className={styles.imageBubbleMenuContainer}>
         <AltPopover
           initialAlt={state.alt}
           setAlt={handleSetAlt}

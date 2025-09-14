@@ -3,7 +3,7 @@ import { calcOffset } from './calc-offset';
 import { DragIcon } from './drag-icon';
 import { useDragHandle } from './use-drag-handle';
 
-import './index.css';
+import styles from './index.module.css';
 
 interface DragHandleProps {
   editor: Editor | null;
@@ -21,7 +21,7 @@ export default function DragHandle({ editor }: DragHandleProps) {
     <button
       type="button"
       draggable="true"
-      className="dragHandle"
+      className={styles.dragHandle}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onClick={handleClick}

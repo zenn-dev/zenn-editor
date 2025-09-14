@@ -45,7 +45,7 @@ function getDecorations({
         ? block.node.attrs.language
         : defaultLanguage;
 
-    const html = highlightCode(block.node.textContent, language);
+    const html = highlightCode(block.node.textContent, language, false);
     const nodes = getHighlightNodes(html);
 
     const blockDecorations = createStandardDecorations(nodes, from);

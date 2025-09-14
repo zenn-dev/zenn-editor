@@ -13,10 +13,13 @@ import {
   type Range,
 } from '@tiptap/react';
 import { replaceNewlines } from '../../../lib/node';
+import { normalizeLanguage, parseFilename } from './utils';
+import { CodeBlockSettingsDecorationPlugin } from './code-block-settings-decoration-plugin';
 
 type SetCodeBlockContainerOptions = {
-  language?: string;
+  language?: string; // diff- を含めない
   filename?: string | null;
+  isDiff?: boolean;
 };
 
 declare module '@tiptap/react' {
@@ -27,6 +30,7 @@ declare module '@tiptap/react' {
         attrs: SetCodeBlockContainerOptions
       ) => ReturnType;
       unsetCodeBlockContainer: () => ReturnType;
+      changeDiffMode: (containerPos: number, isDiff: boolean) => ReturnType;
     };
   }
 }
@@ -46,22 +50,15 @@ const inputHandler = ({
   can: () => CanCommands;
   chain: () => ChainedCommands;
 }) => {
-  let language: string, filename: string | null;
+  const { language, filename, isDiff } = parseFilename(match[1]);
 
-  if (match[1]?.includes(':')) {
-    [language, filename] = match[1].split(':');
-  } else {
-    language = match[1] || 'plaintext';
-    filename = null;
-  }
-
-  if (!can().setCodeBlockContainer({ language, filename })) {
+  if (!can().setCodeBlockContainer({ language, filename, isDiff })) {
     return;
   }
 
   chain()
     .deleteRange({ from: range.from, to: range.to })
-    .setCodeBlockContainer({ language, filename })
+    .setCodeBlockContainer({ language, filename, isDiff })
     .run();
 };
 
@@ -69,6 +66,7 @@ export const CodeBlockContainer = Node.create({
   name: 'codeBlockContainer',
   group: 'block',
   content: 'codeBlockFileName (codeBlock | diffCodeBlock)',
+  selectable: false,
 
   parseHTML() {
     return [
@@ -85,7 +83,7 @@ export const CodeBlockContainer = Node.create({
   addCommands() {
     return {
       setCodeBlockContainer:
-        ({ filename, language }) =>
+        ({ filename, language, isDiff }) =>
         ({ chain, state }) => {
           const { schema, selection } = state;
           const { $from, $to } = selection;
@@ -103,7 +101,7 @@ export const CodeBlockContainer = Node.create({
             return false;
           }
 
-          const isDiff = language?.startsWith('diff');
+          const normedLanguage = normalizeLanguage(language);
           const text = getTextBetween(
             state.doc,
             { from: range.start, to: range.end },
@@ -131,7 +129,7 @@ export const CodeBlockContainer = Node.create({
                   isDiff
                     ? {
                         type: 'diffCodeBlock',
-                        attrs: { language },
+                        attrs: { language: normedLanguage },
                         content: text.split('\n').map((line) => ({
                           type: 'diffCodeLine',
                           content: line ? [{ type: 'text', text: line }] : [],
@@ -139,7 +137,7 @@ export const CodeBlockContainer = Node.create({
                       }
                     : {
                         type: 'codeBlock',
-                        attrs: { language },
+                        attrs: { language: normedLanguage },
                         content: text ? [{ type: 'text', text }] : [],
                       },
                 ],
@@ -226,6 +224,106 @@ export const CodeBlockContainer = Node.create({
             .setTextSelection(from + 1)
             .run();
         },
+      changeDiffMode:
+        (containerPos, isDiff) =>
+        ({ chain, editor }) => {
+          const { schema } = editor;
+
+          const codeBlockContainer = editor.state.doc.resolve(containerPos);
+
+          if (codeBlockContainer.node().type.name !== 'codeBlockContainer') {
+            console.warn('changeDiffMode: codeBlockContainer not found');
+            return false;
+          }
+
+          const filenameNodeWithPos = findChildren(
+            codeBlockContainer.node(),
+            (node) => node.type.name === 'codeBlockFileName'
+          )[0];
+
+          const codeBlockNodeWithPos = findChildren(
+            codeBlockContainer.node(),
+            (node) => ['codeBlock', 'diffCodeBlock'].includes(node.type.name)
+          )[0];
+
+          if (!filenameNodeWithPos || !codeBlockNodeWithPos) {
+            throw new Error('Invalid code block container structure');
+          }
+
+          if (
+            (codeBlockNodeWithPos.node.type.name === 'codeBlock' && !isDiff) ||
+            (codeBlockNodeWithPos.node.type.name === 'diffCodeBlock' && isDiff)
+          ) {
+            // モードと表示が一致している場合は何もしない
+            return false;
+          }
+
+          const isCurrentCodeBlock = isDiff;
+          const range = {
+            start: codeBlockContainer.before(),
+            end: codeBlockContainer.after(),
+          };
+          const filename = filenameNodeWithPos.node.textContent;
+          const language = codeBlockNodeWithPos.node.attrs.language;
+          const text = getTextBetween(
+            codeBlockContainer.node(),
+            {
+              // 差分ブロックは diffCodeLine の中に入る
+              from: codeBlockNodeWithPos.pos + (isCurrentCodeBlock ? 1 : 2),
+              to:
+                codeBlockNodeWithPos.pos +
+                codeBlockNodeWithPos.node.nodeSize -
+                (isCurrentCodeBlock ? 1 : 2),
+            },
+            {
+              blockSeparator: '\n',
+              textSerializers: getTextSerializersFromSchema(schema),
+            }
+          );
+
+          return (
+            chain()
+              // insertContentAt は選択位置によって前の要素と結合してしまうため、replaceWith を使う
+              // https://github.com/ueberdosis/tiptap/blob/develop/packages/core/src/commands/insertContentAt.ts#L183
+              .command(({ tr, state }) => {
+                const fragment = state.schema.nodeFromJSON({
+                  type: 'codeBlockContainer',
+                  content: [
+                    {
+                      type: 'codeBlockFileName',
+                      content: filename
+                        ? [{ type: 'text', text: filename }]
+                        : [],
+                    },
+                    isDiff
+                      ? {
+                          type: 'diffCodeBlock',
+                          attrs: { language: language },
+                          content: text.split('\n').map((line) => ({
+                            type: 'diffCodeLine',
+                            content: line ? [{ type: 'text', text: line }] : [],
+                          })),
+                        }
+                      : {
+                          type: 'codeBlock',
+                          attrs: { language: language },
+                          content: text ? [{ type: 'text', text }] : [],
+                        },
+                  ],
+                });
+
+                tr.replaceWith(range.start, range.end, fragment);
+                return true;
+              })
+              .setTextSelection(
+                range.start +
+                  1 +
+                  filenameNodeWithPos.node.nodeSize +
+                  (isDiff ? 2 : 1)
+              ) //コンテンツの開始位置にカーソルを移動
+              .run()
+          );
+        },
     };
   },
 
@@ -246,6 +344,15 @@ export const CodeBlockContainer = Node.create({
       new InputRule({
         find: tildeInputRegex,
         handler: inputHandler,
+      }),
+    ];
+  },
+
+  addProseMirrorPlugins() {
+    return [
+      CodeBlockSettingsDecorationPlugin({
+        names: ['codeBlock', 'diffCodeBlock'],
+        editor: this.editor,
       }),
     ];
   },
