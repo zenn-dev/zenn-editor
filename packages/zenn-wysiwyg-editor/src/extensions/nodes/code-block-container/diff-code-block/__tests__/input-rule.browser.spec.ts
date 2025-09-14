@@ -41,7 +41,7 @@ describe('InputRule', () => {
       'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("Text"))))'
     );
     const $node = editor.$node('diffCodeBlock', {
-      language: 'diff',
+      language: 'plaintext',
     });
     expect($node).not.toBeNull();
     expect(editor.state.selection.from).toBe(5);
@@ -60,7 +60,7 @@ describe('InputRule', () => {
 
     const docString = editor.state.doc.toString();
     const $node = editor.$node('diffCodeBlock', {
-      language: 'diff-typescript',
+      language: 'typescript',
     });
 
     expect(docString).toBe(
@@ -83,7 +83,7 @@ describe('InputRule', () => {
 
     const docString = editor.state.doc.toString();
     const $node = editor.$node('diffCodeBlock', {
-      language: 'diff-typescript',
+      language: 'typescript',
     });
 
     expect(docString).toBe(

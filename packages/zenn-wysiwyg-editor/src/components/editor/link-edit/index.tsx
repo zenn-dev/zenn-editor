@@ -2,7 +2,7 @@ import { Trash2 } from 'lucide-react';
 import type { MouseEvent } from 'react';
 import { useId, useState } from 'react';
 
-import './index.css';
+import styles from './index.module.css';
 
 type Props = {
   href: string;
@@ -25,10 +25,10 @@ export default ({
       role="dialog"
       aria-label="リンクの編集"
       onMouseLeave={handleMouseLeave}
-      className="linkEditPopoverContent"
+      className={styles.linkEditPopoverContent}
     >
       <div>
-        <label htmlFor={inputId} className="">
+        <label htmlFor={inputId} className={styles.label}>
           リンク
         </label>
         <input
@@ -39,12 +39,13 @@ export default ({
           placeholder="https://example.com"
           defaultValue={href}
           onChange={(e) => setLink(e.target.value)}
+          className={styles.input}
         />
       </div>
-      <div className="linkEditPopoverContent_buttons">
+      <div className={styles.buttons}>
         <button
           type="button"
-          className="linkEditPopoverContent_buttons_delete"
+          className={styles.deleteButton}
           onClick={() => handleDelete?.()}
         >
           <Trash2 />
@@ -52,7 +53,7 @@ export default ({
 
         <button
           type="button"
-          className="linkEditPopoverContent_buttons_save"
+          className={styles.saveButton}
           onClick={() => handleSave?.(link)}
         >
           保存

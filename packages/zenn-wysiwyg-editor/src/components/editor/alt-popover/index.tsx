@@ -2,7 +2,7 @@ import { PopoverClose } from '@radix-ui/react-popover';
 import { useRef } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 
-import './index.css';
+import styles from './index.module.css';
 
 type Props = {
   initialAlt?: string;
@@ -20,9 +20,9 @@ export default function AltPopover({ initialAlt, setAlt }: Props) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="altPopoverTrigger">Alt</button>
+        <button className={styles.altPopoverTrigger}>Alt</button>
       </PopoverTrigger>
-      <PopoverContent className="altPopoverContent" sideOffset={10}>
+      <PopoverContent className={styles.altPopoverContent} sideOffset={10}>
         <input defaultValue={initialAlt} placeholder="alt" ref={altRef} />
         <PopoverClose asChild>
           <button onClick={handleApply}>適用</button>

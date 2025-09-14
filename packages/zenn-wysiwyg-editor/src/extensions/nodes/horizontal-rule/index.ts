@@ -23,10 +23,14 @@ export const HorizontalRule = HorizontalRuleTiptap.extend({
           }
 
           return chain()
-            .insertContent({
-              type: this.name,
-            })
-            .setTextSelection(selection.from + 2)
+            .insertContentAt(
+              {
+                from: range.start,
+                to: range.end,
+              },
+              [{ type: this.name }]
+            )
+            .setTextSelection(range.start + 2)
             .run();
         },
     };

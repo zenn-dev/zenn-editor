@@ -41,22 +41,25 @@
 
     .code-block-filename {
       /* PC版Safariで display: table をspanにつけると、contenteditableでの編集がバグる */
-      display: inline-block;
+      /* display: inline-block; */
     }
   }
 
-  .code-block-wrapper-for-langname {
+  .code-block-wrapper-for-settings {
     position: relative;
 
-    &:after {
+    .code-block-lang-combobox {
       position: absolute;
-      top: 0;
+      top: -35px;
       right: 0;
-      content: attr(data-language);
       display: block;
-      font-size: 0.7rem;
-      padding: 0.1rem 0.3rem;
-      background-color: oklch(96.7% 0.003 264.542);
+    }
+
+    .code-block-diff-toggle {
+      position: absolute;
+      top: -33px;
+      right: 170px;
+      display: block;
     }
   }
 

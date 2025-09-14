@@ -1,11 +1,11 @@
-import './index.css';
+import styles from './index.module.css';
 
 export default () => {
   return (
-    <div className="loadingCard">
-      <div className="point"></div>
-      <div className="point"></div>
-      <div className="point"></div>
+    <div className={styles.loadingCard}>
+      <div className={styles.point}></div>
+      <div className={styles.point}></div>
+      <div className={styles.point}></div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { Node } from '@tiptap/react';
 import { PrismPlugin } from './prism-plugin';
+import { normalizeLanguage } from '../utils';
 
 // カスタマイズのため、TiptapのBlockquoteを直接編集する
 // https://github.com/ueberdosis/tiptap/blob/main/packages/extension-code-block/src/code-block.ts
@@ -40,7 +41,7 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
             return null;
           }
 
-          return language;
+          return normalizeLanguage(language);
         },
         rendered: false,
       },
@@ -70,32 +71,6 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
         0,
       ],
     ];
-  },
-
-  addNodeView() {
-    return ({ node }) => {
-      const dom = document.createElement('div');
-      dom.className = 'code-block-wrapper-for-langname'; // 言語名表示のポジションのため
-      dom.setAttribute(
-        'data-language',
-        node.attrs.language || this.options.defaultLanguage
-      );
-      const pre = document.createElement('pre');
-
-      const code = document.createElement('code');
-      code.className = node.attrs.language
-        ? this.options.languageClassPrefix + node.attrs.language
-        : '';
-      code.textContent = node.textContent;
-
-      pre.appendChild(code);
-      dom.appendChild(pre);
-
-      return {
-        dom,
-        contentDOM: code,
-      };
-    };
   },
 
   addKeyboardShortcuts() {

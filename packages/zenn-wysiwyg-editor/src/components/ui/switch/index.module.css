@@ -1,0 +1,42 @@
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+  cursor: pointer;
+  background-color: #acbcc7;
+  border-radius: 99rem;
+  padding: 2px;
+  transition: 0.4s;
+  border: none;
+  outline: none;
+}
+
+.switch::after {
+  position: relative;
+  content: '';
+  left: 1px;
+  display: block;
+  height: 14px;
+  width: 14px;
+  background-color: white;
+  border-radius: 50%;
+  transition: left 0.4s;
+}
+
+.switch[aria-checked='true'] {
+  background-color: var(--c-primary, #3b82f6);
+}
+
+.switch[aria-checked='true']::after {
+  left: calc(100% - 15px);
+}
+
+.switch:focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -5,6 +5,9 @@
   height: 1.5rem;
   color: oklch(70.7% 0.022 261.325);
   transition: 0s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dragHandle:hover {

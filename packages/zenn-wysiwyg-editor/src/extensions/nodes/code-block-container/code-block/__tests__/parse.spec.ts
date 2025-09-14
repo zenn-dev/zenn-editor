@@ -62,4 +62,20 @@ describe('HTMLのパース', () => {
       'doc(codeBlockContainer(codeBlockFileName("example.ts"), codeBlock("const a = 1;")))'
     );
   });
+
+  it('サポートされていない言語はplaintextにフォールバックされる', () => {
+    const editor = renderTiptapEditor({
+      extensions: basicExtension,
+      content:
+        '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-unknown-language">some code content</code></pre></div>',
+    });
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe(
+      'doc(codeBlockContainer(codeBlockFileName, codeBlock("some code content")))'
+    );
+
+    const $codeBlockNode = editor.$node('codeBlock');
+    expect($codeBlockNode?.node.attrs.language).toBe('plaintext');
+  });
 });
