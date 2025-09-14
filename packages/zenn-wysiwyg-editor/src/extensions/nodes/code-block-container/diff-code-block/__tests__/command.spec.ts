@@ -167,4 +167,50 @@ describe('コマンド', () => {
       );
     });
   });
+
+  describe('changeDiffMode', () => {
+    it('差分モードに変更できる', () => {
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content:
+          '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-javascript">console.log("hello");</code></pre></div>',
+      });
+
+      // 差分モードに変更
+      const res = editor.commands.changeDiffMode(1, true);
+      expect(res).toBe(true);
+
+      const docString = editor.state.doc.toString();
+      expect(docString).toBe(
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))'
+      );
+    });
+
+    it('差分モードを解除できる', () => {
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content:
+          '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-diff diff-highlight"><span>console.log("hello");</span></code></pre></div>',
+      });
+
+      // 差分モードを解除
+      const res = editor.commands.changeDiffMode(1, false);
+      expect(res).toBe(true);
+
+      const docString = editor.state.doc.toString();
+      expect(docString).toBe(
+        'doc(codeBlockContainer(codeBlockFileName, codeBlock("console.log(\\"hello\\");")))'
+      );
+    });
+
+    it('コードブロック以外では呼び出せない', () => {
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content: '<p>console.log("hello");</p>',
+      });
+
+      const res = editor.commands.changeDiffMode(1, true);
+      expect(res).toBe(false);
+    });
+  });
 });
