@@ -5,12 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { renderTiptapEditor } from '../../../../tests/editor';
 import Heading from '..';
 
-const basicExtension = [
-  Document,
-  Paragraph,
-  Text,
-  Heading,
-];
+const basicExtension = [Document, Paragraph, Text, Heading];
 
 describe('TocPlugin', () => {
   it('h1-h3見出しノードにidが自動付与される', () => {
