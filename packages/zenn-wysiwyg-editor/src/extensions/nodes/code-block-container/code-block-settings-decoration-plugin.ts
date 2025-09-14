@@ -49,11 +49,7 @@ const createDiffToggleSwitch = (
     props: {
       checked: isDiff,
       onChange: (newIsDiff: boolean) => {
-        editor
-          .chain()
-          .setTextSelection(pos + 1) // +1 to be inside the code block node
-          .changeDiffMode(newIsDiff)
-          .run();
+        editor.chain().changeDiffMode(pos, newIsDiff).run();
       },
     },
   });
@@ -80,9 +76,14 @@ function getDecorations(
     // コンボボックスとdiff切り替えスイッチをファイル名とコードブロックの中間に配置
     const decoration = Decoration.widget(
       pos,
-      () => {
+      (_, getPos) => {
         const container = document.createElement('div');
         container.className = 'code-block-wrapper-for-settings';
+
+        const pos = getPos();
+        if (pos === undefined) {
+          throw new Error('getPos() returned undefined');
+        }
 
         switchRenderer = createDiffToggleSwitch(editor, node, pos);
         comboboxRenderer = createCombobox(editor, node, pos);

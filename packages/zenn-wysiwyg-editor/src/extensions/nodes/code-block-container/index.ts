@@ -30,7 +30,7 @@ declare module '@tiptap/react' {
         attrs: SetCodeBlockContainerOptions
       ) => ReturnType;
       unsetCodeBlockContainer: () => ReturnType;
-      changeDiffMode: (isDiff: boolean) => ReturnType;
+      changeDiffMode: (containerPos: number, isDiff: boolean) => ReturnType;
     };
   }
 }
@@ -225,25 +225,25 @@ export const CodeBlockContainer = Node.create({
             .run();
         },
       changeDiffMode:
-        (isDiff) =>
+        (containerPos, isDiff) =>
         ({ chain, editor }) => {
-          const { state, schema } = editor;
+          const { schema } = editor;
 
-          const codeBlockContainerWithPos = findParentNode(
-            (node) => node.type.name === 'codeBlockContainer'
-          )(editor.state.selection);
+          const codeBlockContainer = editor.state.doc.resolve(containerPos);
 
-          if (!codeBlockContainerWithPos) {
+          if (codeBlockContainer.node().type.name !== 'codeBlockContainer') {
+            console.warn('changeDiffMode: codeBlockContainer not found');
             return false;
           }
 
           const filenameNodeWithPos = findChildren(
-            state.doc,
+            codeBlockContainer.node(),
             (node) => node.type.name === 'codeBlockFileName'
           )[0];
 
-          const codeBlockNodeWithPos = findChildren(state.doc, (node) =>
-            ['codeBlock', 'diffCodeBlock'].includes(node.type.name)
+          const codeBlockNodeWithPos = findChildren(
+            codeBlockContainer.node(),
+            (node) => ['codeBlock', 'diffCodeBlock'].includes(node.type.name)
           )[0];
 
           if (!filenameNodeWithPos || !codeBlockNodeWithPos) {
@@ -260,15 +260,13 @@ export const CodeBlockContainer = Node.create({
 
           const isCurrentCodeBlock = isDiff;
           const range = {
-            start: codeBlockContainerWithPos.pos,
-            end:
-              codeBlockContainerWithPos.pos +
-              codeBlockContainerWithPos.node.nodeSize,
+            start: codeBlockContainer.before(),
+            end: codeBlockContainer.after(),
           };
           const filename = filenameNodeWithPos.node.textContent;
           const language = codeBlockNodeWithPos.node.attrs.language;
           const text = getTextBetween(
-            state.doc,
+            codeBlockContainer.node(),
             {
               // 差分ブロックは diffCodeLine の中に入る
               from: codeBlockNodeWithPos.pos + (isCurrentCodeBlock ? 1 : 2),
@@ -283,43 +281,48 @@ export const CodeBlockContainer = Node.create({
             }
           );
 
-          return chain()
-            .insertContentAt(
-              {
-                from: range.start,
-                to: range.end,
-              },
-              {
-                type: 'codeBlockContainer',
-                content: [
-                  {
-                    type: 'codeBlockFileName',
-                    content: filename ? [{ type: 'text', text: filename }] : [],
-                  },
-                  isDiff
-                    ? {
-                        type: 'diffCodeBlock',
-                        attrs: { language: language },
-                        content: text.split('\n').map((line) => ({
-                          type: 'diffCodeLine',
-                          content: line ? [{ type: 'text', text: line }] : [],
-                        })),
-                      }
-                    : {
-                        type: 'codeBlock',
-                        attrs: { language: language },
-                        content: text ? [{ type: 'text', text }] : [],
-                      },
-                ],
-              }
-            )
-            .setTextSelection(
-              range.start +
-                1 +
-                filenameNodeWithPos.node.nodeSize +
-                (isDiff ? 2 : 1)
-            ) //コンテンツの開始位置にカーソルを移動
-            .run();
+          return (
+            chain()
+              // insertContentAt は選択位置によって前の要素と結合してしまうため、replaceWith を使う
+              // https://github.com/ueberdosis/tiptap/blob/develop/packages/core/src/commands/insertContentAt.ts#L183
+              .command(({ tr, state }) => {
+                const fragment = state.schema.nodeFromJSON({
+                  type: 'codeBlockContainer',
+                  content: [
+                    {
+                      type: 'codeBlockFileName',
+                      content: filename
+                        ? [{ type: 'text', text: filename }]
+                        : [],
+                    },
+                    isDiff
+                      ? {
+                          type: 'diffCodeBlock',
+                          attrs: { language: language },
+                          content: text.split('\n').map((line) => ({
+                            type: 'diffCodeLine',
+                            content: line ? [{ type: 'text', text: line }] : [],
+                          })),
+                        }
+                      : {
+                          type: 'codeBlock',
+                          attrs: { language: language },
+                          content: text ? [{ type: 'text', text }] : [],
+                        },
+                  ],
+                });
+
+                tr.replaceWith(range.start, range.end, fragment);
+                return true;
+              })
+              .setTextSelection(
+                range.start +
+                  1 +
+                  filenameNodeWithPos.node.nodeSize +
+                  (isDiff ? 2 : 1)
+              ) //コンテンツの開始位置にカーソルを移動
+              .run()
+          );
         },
     };
   },
