@@ -23,6 +23,7 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
 
   addAttributes() {
     return {
+      // diff 言語は plaintext に変換する
       language: {
         default: this.options.defaultLanguage,
         parseHTML: (element) => {
@@ -57,6 +58,10 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
   },
 
   renderHTML({ node, HTMLAttributes }) {
+    const language =
+      node.attrs.language !== 'plaintext'
+        ? `diff-${node.attrs.language}`
+        : 'diff';
     return [
       'pre',
       HTMLAttributes,
@@ -65,7 +70,7 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
         {
           class: `diff-highlight ${
             node.attrs.language
-              ? this.options.languageClassPrefix + node.attrs.language
+              ? this.options.languageClassPrefix + language
               : null
           }`,
         },

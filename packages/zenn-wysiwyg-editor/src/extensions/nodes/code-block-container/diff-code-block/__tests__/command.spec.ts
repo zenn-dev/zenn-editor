@@ -76,7 +76,10 @@ describe('コマンド', () => {
       editor.commands.setTextSelection(1);
 
       // コードブロックに変換
-      editor.commands.setCodeBlockContainer({ language: 'diff-javascript' });
+      editor.commands.setCodeBlockContainer({
+        language: 'javascript',
+        isDiff: true,
+      });
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
@@ -94,7 +97,10 @@ describe('コマンド', () => {
       editor.commands.setTextSelection(1);
 
       // コードブロックに変換
-      editor.commands.setCodeBlockContainer({ language: 'diff-javascript' });
+      editor.commands.setCodeBlockContainer({
+        language: 'javascript',
+        isDiff: true,
+      });
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(
@@ -112,7 +118,10 @@ describe('コマンド', () => {
       editor.commands.setTextSelection({ from: 1, to: 15 });
 
       // コードブロックに変換
-      editor.commands.setCodeBlockContainer({ language: 'diff-javascript' });
+      editor.commands.setCodeBlockContainer({
+        language: 'javascript',
+        isDiff: true,
+      });
 
       const docString = editor.state.doc.toString();
       expect(docString).toBe(

@@ -19,13 +19,13 @@ export function normalizeLanguage(str?: string): string {
   if (!str?.length) return 'plaintext';
 
   let langName = str.toLocaleLowerCase();
+  const isDiff = str === 'diff';
+  const isSupportedLang =
+    Object.keys(Prism.languages).includes(langName) ||
+    Object.keys(fallbackLanguages).includes(langName);
 
-  // highlight可能な言語名か判定
-  langName =
-    Prism.languages[langName] ||
-    Object.keys(fallbackLanguages).includes(langName)
-      ? langName
-      : 'plaintext';
+  // highlight可能な言語名か判定。diff言語は plaintext にフォールバック
+  langName = isSupportedLang && !isDiff ? langName : 'plaintext';
   return langName;
 }
 
