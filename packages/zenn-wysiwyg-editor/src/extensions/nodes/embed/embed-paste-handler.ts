@@ -31,6 +31,19 @@ function pasteHandlerPlugin(): Plugin {
           return false;
         }
 
+        // トップレベルとアコーディオン内にある段落のみ処理する
+        const isTopLevelParagraph =
+          selection.$from.depth === 1 &&
+          selection.$from.node().type.name === 'paragraph';
+
+        const isDetailsContentParagraph =
+          selection.$from.node().type.name === 'paragraph' &&
+          selection.$from.node(-1).type.name === 'detailsContent';
+
+        if (!isTopLevelParagraph && !isDetailsContentParagraph) {
+          return false;
+        }
+
         let textContent = '';
 
         slice.content.forEach((node) => {
