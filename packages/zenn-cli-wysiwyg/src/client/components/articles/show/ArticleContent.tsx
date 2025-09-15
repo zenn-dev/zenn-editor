@@ -36,10 +36,13 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
     [article]
   );
 
-  const handleImageUpload = useCallback(async (file: File) => {
-    const url = await uploadImage(file);
-    return url;
-  }, []);
+  const handleImageUpload = useCallback(
+    async (file: File) => {
+      const url = await uploadImage(file, article.slug);
+      return url;
+    },
+    [article.slug]
+  );
 
   return (
     <ContentContainer>

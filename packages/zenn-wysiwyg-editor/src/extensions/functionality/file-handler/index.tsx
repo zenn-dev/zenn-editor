@@ -169,7 +169,7 @@ function createImageNode(
     .catch((error: unknown) => {
       // エラー時は一時ノードを削除
       editor.state.doc.descendants((node, nodePos) => {
-        if (node.type.name === 'loading' && node.attrs.tempId === tempId) {
+        if (node.type.name === 'loading' && node.attrs.id === tempId) {
           editor.view.dispatch(
             editor.state.tr
               .delete(nodePos, nodePos + node.nodeSize)
@@ -178,6 +178,6 @@ function createImageNode(
           return true;
         }
       });
-      console.error('Image upload failed:', error);
+      console.error('zenn-wysiwyg-editor(fileUpload):', error);
     });
 }

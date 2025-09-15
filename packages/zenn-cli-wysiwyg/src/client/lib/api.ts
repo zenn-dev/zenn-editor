@@ -1,16 +1,16 @@
-export function uploadImage(file: File): Promise<string> {
+export async function uploadImage(file: File, slug: string): Promise<string> {
   const formData = new FormData();
   formData.append('image', file);
 
-  return fetch('/api/images', {
+  const res = await fetch(`/api/images/${slug}`, {
     method: 'POST',
     body: formData,
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Image upload failed');
-      }
-      return res.json();
-    })
-    .then((data) => data.url as string);
+  });
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.message);
+  }
+
+  const data = await res.json();
+  return data.url as string;
 }
