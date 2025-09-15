@@ -8,6 +8,7 @@ import { useCallback, useState } from 'react';
 import { useWebSocket } from '../../../hooks/useLocalFileChangedEffect';
 import { ContentContainer } from '../../ContentContainer';
 import { WS_ArticlePostMessage } from 'common/types';
+import { uploadImage } from '../../../lib/api';
 
 interface ArticleContentProps {
   article: Article;
@@ -35,6 +36,14 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
     [article]
   );
 
+  const handleImageUpload = useCallback(
+    async (file: File) => {
+      const url = await uploadImage(file, article.slug);
+      return url;
+    },
+    [article.slug]
+  );
+
   return (
     <ContentContainer>
       <StyledArticleShow className="article-show">
@@ -49,6 +58,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
               key={localArticleChangedAt}
               markdown={article.markdown ?? ''}
               onChange={handleContentChange}
+              onImageUpload={handleImageUpload}
             />
           ) : (
             <>

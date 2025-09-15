@@ -7,6 +7,7 @@ export const Table = TiptapTable.extend({
       new InputRule({
         find: /^:::table(\d{1,2})-(\d{1,2})\s$/,
         handler: ({ match, range, chain, state }) => {
+          const { selection } = state;
           const rows = parseInt(match[1], 10);
           const cols = parseInt(match[2], 10);
 
@@ -14,13 +15,12 @@ export const Table = TiptapTable.extend({
             return;
           }
 
-          const isReplaceable = state.selection.$from.parent.canReplaceWith(
-            state.selection.$from.index(),
-            state.selection.$to.index() + 1,
-            this.type
-          );
+          // テキストノードの祖先ノードがtableノードを許可しているか確認
+          const isParentMatch = selection.$from
+            .node(-1)
+            .type.contentMatch.matchType(this.type);
 
-          if (!isReplaceable) {
+          if (!isParentMatch) {
             return null;
           }
 

@@ -12,6 +12,7 @@ import { TocNode } from 'zenn-model/lib/types';
 
 type Props = {
   markdown: string;
+  onImageUpload?: (file: File) => Promise<string>;
   onChange?: (markdown: string) => void;
 };
 
@@ -31,6 +32,7 @@ export const EditableBodyContent: React.FC<Props> = (props) => {
       props.onChange?.(markdown);
       setTocByEditor(parseToc(editor.getHTML()));
     },
+    onImageUpload: props.onImageUpload,
   });
 
   return (
