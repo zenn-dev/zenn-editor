@@ -43,7 +43,7 @@ export const FileHandlePlugin = ({
     key: new PluginKey('fileHandler'),
 
     props: {
-      handleDrop(_view, event) {
+      handleDrop(view, event) {
         if (!event.dataTransfer?.files.length) {
           return false;
         }
@@ -55,7 +55,7 @@ export const FileHandlePlugin = ({
           return true;
         }
 
-        const dropPos = _view.posAtCoords({
+        const dropPos = view.posAtCoords({
           left: event.clientX,
           top: event.clientY,
         });
@@ -77,7 +77,7 @@ export const FileHandlePlugin = ({
         return true;
       },
 
-      handlePaste(_view, event) {
+      handlePaste(view, event) {
         if (!event.clipboardData?.files.length) {
           return false;
         }
@@ -89,14 +89,10 @@ export const FileHandlePlugin = ({
           return true;
         }
 
-        let filesArray = Array.from(event.clipboardData.files);
+        const file = event.clipboardData.files[0];
         const htmlContent = event.clipboardData.getData('text/html');
 
-        filesArray = filesArray.filter((file) =>
-          ALLOWED_MIME_TYPES.includes(file.type)
-        );
-
-        if (filesArray.length === 0) {
+        if (!file || !ALLOWED_MIME_TYPES.includes(file.type)) {
           return false;
         }
 
@@ -111,6 +107,8 @@ export const FileHandlePlugin = ({
         if (htmlContent.length > 0) {
           return false;
         }
+
+        createImageNode(editor, file, view.state.selection.$from.pos, onUpload);
 
         return true;
       },
