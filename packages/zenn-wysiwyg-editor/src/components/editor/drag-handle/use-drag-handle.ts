@@ -99,6 +99,18 @@ export function useDragHandle(editor: Editor | null) {
 
     editor.view.dragging = null;
     setDragTarget(null);
+
+    // Firefoxではドラッグ終了後にキャレットが表示されなくなるバグがある。
+    // 別の要素にフォーカスを当てると回避できるため、ダミーボタンを作ってフォーカスを当てる。
+    const button = document.createElement('button');
+    button.style.position = 'absolute';
+    button.style.left = '-9999px';
+    document.body.appendChild(button);
+    button.focus({
+      preventScroll: true,
+    });
+    document.body.removeChild(button);
+    editor.chain().focus().run();
   }, [editor]);
 
   const handleKeyDown = useCallback(() => {
