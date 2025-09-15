@@ -90,7 +90,6 @@ export const FileHandlePlugin = ({
         }
 
         const file = event.clipboardData.files[0];
-        const htmlContent = event.clipboardData.getData('text/html');
 
         if (!file || !ALLOWED_MIME_TYPES.includes(file.type)) {
           return false;
@@ -98,15 +97,6 @@ export const FileHandlePlugin = ({
 
         event.preventDefault();
         event.stopPropagation();
-
-        // if there is also file data inside the clipboard html,
-        // we won't use the files array and instead get the file url from the html
-        // this mostly happens for gifs or webms as they are not copied correctly as a file
-        // and will always be transformed into a PNG
-        // in this case we will let other extensions handle the incoming html via their inputRules
-        if (htmlContent.length > 0) {
-          return false;
-        }
 
         createImageNode(editor, file, view.state.selection.$from.pos, onUpload);
 
