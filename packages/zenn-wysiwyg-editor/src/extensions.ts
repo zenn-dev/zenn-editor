@@ -11,7 +11,6 @@ import { TableRow } from '@tiptap/extension-table';
 import Text from '@tiptap/extension-text';
 import { Dropcursor, TrailingNode, UndoRedo } from '@tiptap/extensions';
 import { type Extensions, findParentNode } from '@tiptap/react';
-import { FileHandler } from './extensions/functionality/file-handler';
 import { Placeholder } from './extensions/functionality/placeholder';
 import { Bold } from './extensions/marks/bold';
 import { Code } from './extensions/marks/code';
@@ -45,6 +44,7 @@ import { TableCell } from './extensions/nodes/tables/cell';
 import { TableHeader } from './extensions/nodes/tables/header';
 import { Table } from './extensions/nodes/tables/table';
 import { Typography } from './extensions/functionality/typography';
+import { Loading } from './extensions/nodes/loading';
 
 export const extensions: Extensions = [
   // === Core ===
@@ -87,6 +87,7 @@ export const extensions: Extensions = [
   TableCell,
   TableHeader,
   TableRow,
+  Loading,
 
   // === Marks ===
   Bold,
@@ -117,7 +118,6 @@ export const extensions: Extensions = [
   }),
   EmbedPasteHandler,
   Dropcursor,
-  FileHandler,
   ListKeymap,
   Typography,
 ];

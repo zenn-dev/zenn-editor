@@ -6,7 +6,9 @@ import { getBook, getBooks, getChapter, getChapters } from './api/books';
 import { getCliGuide } from './api/cli-guide';
 import { getLocalInfo } from './api/local-info';
 import { getCliVersion } from './api/cli-version';
+import { postImage } from './api/images';
 import { getWorkingPath } from './lib/helper';
+import { uploadImageMiddleware } from './lib/images';
 
 export function createApp() {
   const app = express();
@@ -19,6 +21,7 @@ export function createApp() {
   app.get(`/api/cli-guide/:slug`, getCliGuide);
   app.get(`/api/cli-version`, getCliVersion);
   app.get(`/api/local-info`, getLocalInfo);
+  app.post(`/api/images/:slug`, uploadImageMiddleware, postImage);
 
   app.get('/images/*', (req, res) => {
     // `zenn preview`を起動したディレクトリ直下にあるimagesディレクトリを参照する

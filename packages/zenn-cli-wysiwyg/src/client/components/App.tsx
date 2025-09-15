@@ -4,6 +4,7 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { Layout } from './Layout';
 import { Routes } from './Routes';
 import { HotReloadRoot } from '../hooks/useLocalFileChangedEffect';
+import { Toaster } from 'sonner';
 import '../global.css';
 import 'zenn-content-css';
 
@@ -30,6 +31,7 @@ export const App: React.VFC = () => {
           <ScrollAdjuster />
           <Layout>
             <Routes />
+            <Toaster />
           </Layout>
         </RoconRoot>
       </HotReloadRoot>
