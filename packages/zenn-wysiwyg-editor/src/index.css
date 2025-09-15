@@ -15,6 +15,7 @@
   h3,
   h4 {
     font-weight: 700;
+    line-height: 1.4;
   }
 
   /* エラーメッセージの場合は pタグになるため、zenn-content-cssを上書きする */
