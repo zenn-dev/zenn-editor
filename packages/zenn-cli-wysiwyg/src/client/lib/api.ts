@@ -1,3 +1,5 @@
+import { showToast } from './toast';
+
 export async function uploadImage(file: File, slug: string): Promise<string> {
   const formData = new FormData();
   formData.append('image', file);
@@ -8,6 +10,7 @@ export async function uploadImage(file: File, slug: string): Promise<string> {
   });
   if (!res.ok) {
     const data = await res.json();
+    showToast(data.message, 'error');
     throw new Error(data.message);
   }
 

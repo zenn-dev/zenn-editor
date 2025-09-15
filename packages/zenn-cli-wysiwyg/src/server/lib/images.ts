@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     if (!validateSlug(req.params.slug)) {
       return cb(
         new Error(
-          `slugの値（${req.params.slug}）が不正です。画像を保存するには、小文字の半角英数字（a-z0-9）、ハイフン（-）、アンダースコア（_）の12〜50字の組み合わせにしてください`
+          `slugの値（${req.params.slug}）が不正です。マークダウンのファイル名を修正して、再度アップロードしてください。`
         ),
         ''
       );
