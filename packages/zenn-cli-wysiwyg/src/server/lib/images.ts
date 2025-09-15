@@ -1,7 +1,7 @@
 import * as Express from 'express';
 
 import multer from 'multer';
-import { validateSlug } from 'common/helper';
+import { validateSlug } from '../../common/helper';
 import fs from 'fs-extra';
 import { getWorkingPath } from './helper';
 
