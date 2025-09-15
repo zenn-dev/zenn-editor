@@ -129,6 +129,7 @@ function createImageNode(
       // アップロード完了後、一時ノードを正式なImageノードに置き換え
       editor.state.doc.descendants((node, nodePos) => {
         if (node.type.name === 'loading' && node.attrs.id === tempId) {
+          const filename = file.name.split('.')[0];
           const finalNode = editor.schema.nodeFromJSON({
             type: 'figure',
             content: [
@@ -136,7 +137,7 @@ function createImageNode(
                 type: 'image',
                 attrs: {
                   src: uploadedUrl,
-                  alt: file.name,
+                  alt: filename,
                 },
               },
               {
