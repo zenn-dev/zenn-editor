@@ -14,6 +14,6 @@ export async function uploadImage(file: File, slug: string): Promise<string> {
     throw new Error(data.message);
   }
 
-  const data = await res.json();
-  return data.url as string;
+  const data = (await res.json()) as { url: string };
+  return data.url;
 }
