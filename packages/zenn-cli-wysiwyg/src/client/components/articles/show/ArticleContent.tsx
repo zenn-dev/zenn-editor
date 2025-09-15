@@ -9,6 +9,7 @@ import { useWebSocket } from '../../../hooks/useLocalFileChangedEffect';
 import { ContentContainer } from '../../ContentContainer';
 import { WS_ArticlePostMessage } from 'common/types';
 import { uploadImage } from '../../../lib/api';
+import { showToast } from '../../../lib/toast';
 
 interface ArticleContentProps {
   article: Article;
@@ -30,6 +31,16 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
           type: 'contentChanged',
           data: { article: { ...article, markdown } },
         };
+
+        if (ws?.readyState !== WebSocket.OPEN) {
+          showToast(
+            '記事の保存に失敗しました。ページをリロードしてください。',
+            'error'
+          );
+          console.error('WebSocket is not open. readyState=' + ws?.readyState);
+          return;
+        }
+
         ws?.send(JSON.stringify(req));
       }
     },
