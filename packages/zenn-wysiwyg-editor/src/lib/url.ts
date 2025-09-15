@@ -30,7 +30,7 @@ export function extractImageUrlAndAlt(text: string) {
 
 export function isImageURL(url: string): boolean {
   const path = getUrlPath(url);
-  const imageExtensions = /\.(png|jpe?g|gif|svg)$/i;
+  const imageExtensions = /\.(png|jpe?g|gif|webp)$/i;
   return isValidHttpUrl(url) && imageExtensions.test(path);
 }
 
