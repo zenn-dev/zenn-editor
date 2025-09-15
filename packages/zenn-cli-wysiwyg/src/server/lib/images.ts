@@ -29,6 +29,9 @@ const storage = multer.diskStorage({
 
 const uploadImageMulter = multer({
   storage,
+  limits: {
+    fileSize: 3 * 1024 * 1024, // 3MB
+  },
   fileFilter: (_, file, cb) => {
     if (!file.mimetype.startsWith('image/')) {
       return cb(new Error('Only image files are allowed!'));

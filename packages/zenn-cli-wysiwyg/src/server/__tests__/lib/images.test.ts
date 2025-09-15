@@ -1,4 +1,4 @@
-import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
+import { describe, test, expect, beforeEach, afterEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import path from 'path';
@@ -90,5 +90,22 @@ describe('uploadImageMiddleware のテスト', () => {
 
     expect(response.body).toHaveProperty('message');
     expect(response.body.message).toBe('No file uploaded');
+  });
+
+  test('3MBを超えるファイルの場合は413エラーを返す', async () => {
+    const slug = 'test-article';
+    const largePath = path.join(tempDir, 'large.jpg');
+
+    // 3MBを超えるダミーファイルを作成
+    const largeBuffer = Buffer.alloc(3 * 1024 * 1024 + 1); // 3MB + 1バイト
+    fs.writeFileSync(largePath, largeBuffer);
+
+    const response = await request(app)
+      .post(`/api/images/${slug}`)
+      .attach('image', largePath)
+      .expect(400);
+
+    expect(response.body).toHaveProperty('message');
+    expect(response.body.message).toBe('File too large');
   });
 });
