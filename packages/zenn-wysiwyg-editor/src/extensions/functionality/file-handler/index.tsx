@@ -8,7 +8,13 @@ export type FileHandlePluginOptions = {
 };
 export type FileHandlerOptions = Omit<FileHandlePluginOptions, 'editor'>;
 
-const ALLOWED_MIME_TYPES = ['png', 'jpeg', 'jpg', 'gif', 'webp'];
+const ALLOWED_MIME_TYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/gif',
+  'image/webp',
+];
 
 export const FileHandler = Extension.create<FileHandlerOptions>({
   name: 'fileHandler',

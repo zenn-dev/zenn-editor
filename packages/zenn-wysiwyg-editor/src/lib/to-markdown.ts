@@ -241,6 +241,9 @@ const markdownSerializer = new MarkdownSerializer(
       state.renderInline(node);
       state.write(' | ');
     },
+    loading() {
+      // loadingノードはMarkdownに変換しない
+    },
   },
   {
     link: {
