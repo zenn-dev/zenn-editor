@@ -1,4 +1,4 @@
-import { Editor, type Extension, type Mark, type Node } from '@tiptap/react';
+import { Editor, type Extensions } from '@tiptap/react';
 import { afterEach, beforeEach } from 'vitest';
 
 // テスト毎に描画するDOMをリセットする
@@ -21,7 +21,7 @@ afterEach(async () => {
 
 type RenderTiptapEditor = {
   content: string;
-  extensions: (Extension | Node | Mark)[];
+  extensions: Extensions;
 };
 
 export function renderTiptapEditor({
