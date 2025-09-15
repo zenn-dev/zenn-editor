@@ -57,21 +57,21 @@ export const DiffCodeBlock = Node.create<CodeBlockOptions>({
     ];
   },
 
-  renderHTML({ node, HTMLAttributes }) {
+  renderHTML({ node }) {
     const language =
       node.attrs.language !== 'plaintext'
         ? `diff-${node.attrs.language}`
         : 'diff';
     return [
       'pre',
-      HTMLAttributes,
+      {
+        class: `diff-highlight ${this.options.languageClassPrefix + language}`,
+      },
       [
         'code',
         {
           class: `diff-highlight ${
-            node.attrs.language
-              ? this.options.languageClassPrefix + language
-              : null
+            this.options.languageClassPrefix + language
           }`,
         },
         0,

@@ -57,16 +57,16 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
     ];
   },
 
-  renderHTML({ node, HTMLAttributes }) {
+  renderHTML({ node }) {
     return [
       'pre',
-      HTMLAttributes,
+      {
+        class: this.options.languageClassPrefix + node.attrs.language,
+      },
       [
         'code',
         {
-          class: node.attrs.language
-            ? this.options.languageClassPrefix + node.attrs.language
-            : null,
+          class: this.options.languageClassPrefix + node.attrs.language,
         },
         0,
       ],
