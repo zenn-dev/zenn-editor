@@ -30,17 +30,7 @@ describe('キーボードショートカット', () => {
       const editor = renderTiptapEditor({
         content:
           '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-javascript">Text</code></pre></div>',
-        extensions: [
-          Document,
-          Paragraph,
-          Text,
-          CodeBlockContainer,
-          CodeBlock,
-          CodeBlockFileName,
-          DiffCodeBlock,
-          DiffCodeLine,
-          HardBreak,
-        ],
+        extensions: basicExtension,
       });
 
       await waitSelectionChange(() => {

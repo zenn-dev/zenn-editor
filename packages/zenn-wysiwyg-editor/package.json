@@ -69,7 +69,6 @@
     "zenn-content-css": "^0.2.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0",
     "@storybook/addon-docs": "^9.1.6",
     "@storybook/addon-onboarding": "^9.1.6",
     "@storybook/react-vite": "^9.1.6",
