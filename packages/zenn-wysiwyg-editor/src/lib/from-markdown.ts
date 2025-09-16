@@ -33,28 +33,14 @@ function adjustDiffCodeBlock(dom: HTMLElement) {
     const children = Array.from(code.childNodes);
 
     children.forEach((child) => {
-      if (child.nodeType === Node.TEXT_NODE) {
-        // トップレベルのテキストノードは行なのでspanで囲む
-        const span = document.createElement('span');
-        span.appendChild(child.cloneNode());
-
-        child.parentElement?.replaceChild(span, child);
-      } else if (child instanceof HTMLElement) {
-        // spanの装飾はDecorationでするため削除。削除しないとパースでエラーになる
-        // 繋がった挿入・削除ブロックは改行コードを含むので分割する
-        if (child.textContent?.includes('\n')) {
-          const lines = child.textContent.split('\n');
-          const fragment = document.createDocumentFragment();
-          lines.forEach((line) => {
-            const lineSpan = document.createElement('span');
-            lineSpan.textContent = line;
-            fragment.appendChild(lineSpan);
-          });
-          child.parentElement?.replaceChild(fragment, child);
-        } else {
-          child.textContent = child.textContent || '';
-        }
-      }
+      const lines = child.textContent?.split('\n') || [];
+      const fragment = document.createDocumentFragment();
+      lines.forEach((line) => {
+        const lineSpan = document.createElement('span');
+        lineSpan.textContent = line;
+        fragment.appendChild(lineSpan);
+      });
+      child.parentElement?.replaceChild(fragment, child);
     });
   });
 }
