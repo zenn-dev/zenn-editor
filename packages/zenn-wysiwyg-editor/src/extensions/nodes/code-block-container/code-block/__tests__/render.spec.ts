@@ -50,4 +50,18 @@ describe('HTMLのレンダリング', () => {
       '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre class="language-plaintext"><code class="language-plaintext">plaintext code</code></pre></div>'
     );
   });
+
+  it('ファイル名ありのコードブロックが正しいHTMLでレンダリングされる', () => {
+    const content =
+      '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename">example.js</span></div><pre><code class="language-javascript">console.log("hello");</code></pre></div>';
+    const editor = renderTiptapEditor({
+      extensions: basicExtension,
+      content,
+    });
+
+    const html = editor.getHTML();
+    expect(html).toBe(
+      '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename">example.js</span></div><pre class="language-javascript"><code class="language-javascript">console.log("hello");</code></pre></div>'
+    );
+  });
 });

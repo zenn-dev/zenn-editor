@@ -28,7 +28,8 @@
     "fix:prettier": "prettier -w .",
     "test": "run-s test:*",
     "test:node": "vitest run",
-    "test:browser-mode": "vitest run --config=vitest.browser.config.ts",
+    "test:browser": "vitest run --config=vitest.browser.config.ts",
+    "test-debug": "vitest --config=vitest.browser.config.ts --project=chromium --browser.headless=false",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

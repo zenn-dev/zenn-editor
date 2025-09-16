@@ -63,5 +63,5 @@ jobs:
         working-directory: packages/zenn-wysiwyg-editor
 
       - name: Run vitest browser mode tests
-        run: pnpm test:browser-mode --project=${{ matrix.browser }}
+        run: pnpm test:browser --project=${{ matrix.browser }}
         working-directory: packages/zenn-wysiwyg-editor

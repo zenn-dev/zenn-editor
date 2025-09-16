@@ -225,6 +225,24 @@ describe('コマンド', () => {
       expect(result).toBe(true);
       expect(result2).toBe(false);
     });
+
+    it('存在しない言語を指定するとplaintextになる', () => {
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content: '<p>console.log("hello");</p>',
+      });
+
+      // 段落を選択
+      editor.commands.setTextSelection(1);
+
+      // 存在しない言語でコードブロックに変換
+      editor.commands.setCodeBlockContainer({
+        language: 'nonexistent-language',
+      });
+
+      const codeBlock = editor.$node('codeBlock');
+      expect(codeBlock?.node.attrs.language).toBe('plaintext');
+    });
   });
 
   describe('unsetCodeBlockContainer', () => {

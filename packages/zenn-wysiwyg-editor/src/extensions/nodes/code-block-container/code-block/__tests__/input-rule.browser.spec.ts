@@ -128,4 +128,27 @@ describe('InputRule', () => {
       'doc(details(detailsSummary("``` "), detailsContent(paragraph("Text"))))'
     );
   });
+
+  it('```nonexistent で存在しない言語を指定するとplaintextになる', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p>Text</p>',
+      extensions: basicExtension,
+    });
+
+    await waitSelectionChange(() => {
+      editor.chain().focus().run();
+    });
+    await userEvent.keyboard('```nonexistent ');
+
+    const docString = editor.state.doc.toString();
+    const $node = editor.$node('codeBlock', {
+      language: 'plaintext',
+    });
+
+    expect(docString).toBe(
+      'doc(codeBlockContainer(codeBlockFileName, codeBlock("Text")))'
+    );
+    expect($node).not.toBeNull();
+    expect(editor.state.selection.from).toBe(4);
+  });
 });

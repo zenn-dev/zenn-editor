@@ -18,9 +18,4 @@ export default defineConfig({
     // ブラウザ環境でのテスト（DOM操作、TiptapのEditor等）
     include: ['src/**/*.browser.spec.ts', 'src/**/*.browser.spec.tsx'],
   },
-  resolve: {
-    alias: {
-      '@': new URL('./src', import.meta.url).pathname,
-    },
-  },
 });

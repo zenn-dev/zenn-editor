@@ -2,7 +2,7 @@ import { it, describe, expect } from 'vitest';
 import { waitSelectionChange } from '../../tests/dom';
 import { renderTiptapEditor } from '../../tests/editor';
 import { paste, setClipboardContent } from '../../tests/clipboard';
-import { TEST_ALL_EXTENSIONS } from '@/tests/test-extensions';
+import { TEST_ALL_EXTENSIONS } from '../../tests/test-extensions';
 
 describe('paste (codeBlock)', () => {
   it('テキストの貼り付け', async () => {
