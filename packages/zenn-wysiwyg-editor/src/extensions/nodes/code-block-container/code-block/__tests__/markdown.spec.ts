@@ -25,68 +25,87 @@ const basicExtension = [
 ];
 
 describe('マークダウン', () => {
-  it('JavaScriptコードブロックをマークダウンに変換できる', () => {
-    const editor = renderTiptapEditor({
-      extensions: basicExtension,
-      content:
-        '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-javascript">console.log("hello");</code></pre></div>',
+  describe('出力', () => {
+    it('JavaScriptコードブロックをマークダウンに変換できる', () => {
+      const editor = renderTiptapEditor({
+        extensions: basicExtension,
+        content:
+          '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-javascript">console.log("hello");</code></pre></div>',
+      });
+
+      const markdown = markdownSerializer.serialize(editor.state.doc);
+      expect(markdown).toBe('```javascript\nconsole.log("hello");\n```');
     });
 
-    const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe('```javascript\nconsole.log("hello");\n```');
+    it('言語名なしのコードブロックをマークダウンに変換できる', () => {
+      const editor = renderTiptapEditor({
+        extensions: basicExtension,
+        content:
+          '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-plaintext">plaintext code</code></pre></div>',
+      });
+
+      const markdown = markdownSerializer.serialize(editor.state.doc);
+      expect(markdown).toBe('```\nplaintext code\n```');
+    });
+
+    it('複数行のコードブロックをマークダウンに変換できる', () => {
+      const editor = renderTiptapEditor({
+        extensions: basicExtension,
+        content:
+          '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-python">def hello():\n    print("Hello, World!")\n    return True</code></pre></div>',
+      });
+
+      const markdown = markdownSerializer.serialize(editor.state.doc);
+      expect(markdown).toBe(
+        '```python\ndef hello():\n    print("Hello, World!")\n    return True\n```'
+      );
+    });
   });
 
-  it('言語名なしのコードブロックをマークダウンに変換できる', () => {
-    const editor = renderTiptapEditor({
-      extensions: basicExtension,
-      content:
-        '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-plaintext">plaintext code</code></pre></div>',
+  describe('入力', () => {
+    it('マークダウンからコードブロックに変換', () => {
+      const markdown = '```javascript\nconsole.log("hello");\n```';
+
+      const html = convertMarkdownToEditable(markdown);
+      const editor = renderTiptapEditor({
+        extensions: basicExtension,
+        content: html,
+      });
+      const docString = editor.state.doc.toString();
+
+      expect(docString).toBe(
+        'doc(codeBlockContainer(codeBlockFileName, codeBlock("console.log(\\"hello\\");")))'
+      );
     });
 
-    const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe('```\nplaintext code\n```');
-  });
+    it('ファイル名付きマークダウンからコードブロックに変換', () => {
+      const markdown = '```javascript:hello.js\nconsole.log("hello");\n```';
 
-  it('複数行のコードブロックをマークダウンに変換できる', () => {
-    const editor = renderTiptapEditor({
-      extensions: basicExtension,
-      content:
-        '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-python">def hello():\n    print("Hello, World!")\n    return True</code></pre></div>',
+      const html = convertMarkdownToEditable(markdown);
+      const editor = renderTiptapEditor({
+        extensions: basicExtension,
+        content: html,
+      });
+      const docString = editor.state.doc.toString();
+
+      expect(docString).toBe(
+        'doc(codeBlockContainer(codeBlockFileName("hello.js"), codeBlock("console.log(\\"hello\\");")))'
+      );
     });
 
-    const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe(
-      '```python\ndef hello():\n    print("Hello, World!")\n    return True\n```'
-    );
-  });
+    it('言語名なしのマークダウンからコードブロックに変換', () => {
+      const markdown = '```\nplain text code\n```';
 
-  it('マークダウンからコードブロックに変換', () => {
-    const markdown = '```javascript\nconsole.log("hello");\n```';
+      const html = convertMarkdownToEditable(markdown);
+      const editor = renderTiptapEditor({
+        extensions: basicExtension,
+        content: html,
+      });
+      const docString = editor.state.doc.toString();
 
-    const html = convertMarkdownToEditable(markdown);
-    const editor = renderTiptapEditor({
-      extensions: basicExtension,
-      content: html,
+      expect(docString).toBe(
+        'doc(codeBlockContainer(codeBlockFileName, codeBlock("plain text code")))'
+      );
     });
-    const docString = editor.state.doc.toString();
-
-    expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName, codeBlock("console.log(\\"hello\\");")))'
-    );
-  });
-
-  it('ファイル名付きマークダウンからコードブロックに変換', () => {
-    const markdown = '```javascript:hello.js\nconsole.log("hello");\n```';
-
-    const html = convertMarkdownToEditable(markdown);
-    const editor = renderTiptapEditor({
-      extensions: basicExtension,
-      content: html,
-    });
-    const docString = editor.state.doc.toString();
-
-    expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName("hello.js"), codeBlock("console.log(\\"hello\\");")))'
-    );
   });
 });

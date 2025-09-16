@@ -59,9 +59,9 @@ jobs:
         run: pnpm build
 
       - name: Setup Playwright Browsers
-        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+        run: pnpm dlx playwright install --with-deps ${{ matrix.browser }}
         working-directory: packages/zenn-wysiwyg-editor
 
       - name: Run vitest browser mode tests
-        run: pnpm test:browser-mode --project=${{ matrix.browser }}
+        run: pnpm test:browser --project=${{ matrix.browser }}
         working-directory: packages/zenn-wysiwyg-editor
