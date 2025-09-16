@@ -140,4 +140,16 @@ describe('コードハイライトのテスト', () => {
       '<span class="code-block-filename">index.html</span>'
     );
   });
+  test('":" が含まれるファイル名が表示される', () => {
+    const jsString = [
+      '```js:index:withcolons.js',
+      "console.log('foo')",
+      '```',
+    ].join('\n');
+    const html = markdownToHtml(jsString);
+    expect(html).toContain(
+      '<span class="code-block-filename">index:withcolons.js</span>'
+    );
+    expect(html).toContain('language-js');
+  });
 });

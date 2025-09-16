@@ -79,7 +79,11 @@ export function parseInfo(str: string): {
 
   // e.g. foo:filename => ["foo", "filename"]
   // e.g. foo diff:filename => ["foo diff", "filename"]
-  const [langInfo, fileName] = str.split(':');
+  // e.g. foo:filename:bar => ["foo", "filename:bar"]
+  const separatorIndex = str.indexOf(':');
+  const langInfo = separatorIndex > -1 ? str.substring(0, separatorIndex) : str;
+  const fileName =
+    separatorIndex > -1 ? str.substring(separatorIndex + 1) : undefined;
 
   const langNames = langInfo.split(' ');
   const hasDiff = langNames.some((name) => name === 'diff');
