@@ -23,7 +23,7 @@ const basicExtension = [
 ];
 
 describe('HTMLのパース', () => {
-  it('preタグをコードブロックノードとしてパースできる', () => {
+  it('言語名ありのpreタグをコードブロックノードとしてパースできる', () => {
     const editor = renderTiptapEditor({
       extensions: basicExtension,
       content:

@@ -32,7 +32,9 @@ describe('HTMLのレンダリング', () => {
     });
 
     const html = editor.getHTML();
-    expect(html).toBe(content);
+    expect(html).toBe(
+      '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre class="diff-highlight language-diff-javascript"><code class="diff-highlight language-diff-javascript"><span>console.log("hello");</span></code></pre></div>'
+    );
   });
 
   it('diff言語の差分コードブロックが正しいHTMLでレンダリングされる', () => {
@@ -44,6 +46,8 @@ describe('HTMLのレンダリング', () => {
     });
 
     const html = editor.getHTML();
-    expect(html).toBe(content);
+    expect(html).toBe(
+      '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre class="diff-highlight language-diff"><code class="diff-highlight language-diff"><span>plaintext code</span></code></pre></div>'
+    );
   });
 });

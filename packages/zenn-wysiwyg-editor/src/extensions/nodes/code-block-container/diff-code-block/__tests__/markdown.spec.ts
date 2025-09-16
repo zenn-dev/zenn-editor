@@ -25,66 +25,86 @@ const baseExtensions = [
 ];
 
 describe('マークダウン', () => {
-  it('diff-javascriptコードブロックをマークダウンに変換できる', () => {
-    const editor = renderTiptapEditor({
-      extensions: baseExtensions,
-      content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
-        <pre><code class="language-diff-javascript diff-highlight"><span>console.log("hello");</span></code></pre></div>`,
+  describe('マークダウン出力', () => {
+    it('diff-javascriptコードブロックをマークダウンに変換できる', () => {
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
+          <pre><code class="language-diff-javascript diff-highlight"><span>console.log("hello");</span></code></pre></div>`,
+      });
+
+      const markdown = markdownSerializer.serialize(editor.state.doc);
+      expect(markdown).toBe('```diff javascript\nconsole.log("hello");\n```');
     });
 
-    const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe('```diff javascript\nconsole.log("hello");\n```');
+    it('diffコードブロックをマークダウンに変換できる', () => {
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
+          <pre><code class="language-diff diff-highlight"><span>plaintext code</span></code></pre></div>`,
+      });
+
+      const markdown = markdownSerializer.serialize(editor.state.doc);
+      expect(markdown).toBe('```diff\nplaintext code\n```');
+    });
+
+    it('複数行のコードブロックをマークダウンに変換できる', () => {
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
+          <pre><code class="language-diff diff-highlight"><span>plaintext code</span><span></span><span>plaintext code</span></code></pre></div>`,
+      });
+
+      const markdown = markdownSerializer.serialize(editor.state.doc);
+      expect(markdown).toBe('```diff\nplaintext code\n\nplaintext code\n```');
+    });
   });
 
-  it('diffコードブロックをマークダウンに変換できる', () => {
-    const editor = renderTiptapEditor({
-      extensions: baseExtensions,
-      content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
-        <pre><code class="language-diff diff-highlight"><span>plaintext code</span></code></pre></div>`,
+  describe('マークダウン入力', () => {
+    it('マークダウンからコードブロックに変換', () => {
+      const markdown = '```diff javascript\nconsole.log("hello");\n```';
+
+      const html = convertMarkdownToEditable(markdown);
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content: html,
+      });
+      const docString = editor.state.doc.toString();
+
+      expect(docString).toBe(
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))'
+      );
     });
 
-    const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe('```diff\nplaintext code\n```');
-  });
+    it('ファイル名付きマークダウンからコードブロックに変換', () => {
+      const markdown =
+        '```diff javascript:hello.js\nconsole.log("hello");\n```';
 
-  it('複数行のコードブロックをマークダウンに変換できる', () => {
-    const editor = renderTiptapEditor({
-      extensions: baseExtensions,
-      content: `<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div>
-        <pre><code class="language-diff diff-highlight"><span>plaintext code</span><span></span><span>plaintext code</span></code></pre></div>`,
+      const html = convertMarkdownToEditable(markdown);
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content: html,
+      });
+      const docString = editor.state.doc.toString();
+
+      expect(docString).toBe(
+        'doc(codeBlockContainer(codeBlockFileName("hello.js"), diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))'
+      );
     });
 
-    const markdown = markdownSerializer.serialize(editor.state.doc);
-    expect(markdown).toBe('```diff\nplaintext code\n\nplaintext code\n```');
-  });
+    it('複数行のマークダウンからコードブロックに変換', () => {
+      const markdown = '```diff\nplaintext code\n\nplaintext code\n\n```';
 
-  it('マークダウンからコードブロックに変換', () => {
-    const markdown = '```diff javascript\nconsole.log("hello");\n```';
+      const html = convertMarkdownToEditable(markdown);
+      const editor = renderTiptapEditor({
+        extensions: baseExtensions,
+        content: html,
+      });
+      const docString = editor.state.doc.toString();
 
-    const html = convertMarkdownToEditable(markdown);
-    const editor = renderTiptapEditor({
-      extensions: baseExtensions,
-      content: html,
+      expect(docString).toBe(
+        'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("plaintext code"), diffCodeLine, diffCodeLine("plaintext code"), diffCodeLine)))'
+      );
     });
-    const docString = editor.state.doc.toString();
-
-    expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))'
-    );
-  });
-
-  it('ファイル名付きマークダウンからコードブロックに変換', () => {
-    const markdown = '```diff javascript:hello.js\nconsole.log("hello");\n```';
-
-    const html = convertMarkdownToEditable(markdown);
-    const editor = renderTiptapEditor({
-      extensions: baseExtensions,
-      content: html,
-    });
-    const docString = editor.state.doc.toString();
-
-    expect(docString).toBe(
-      'doc(codeBlockContainer(codeBlockFileName("hello.js"), diffCodeBlock(diffCodeLine("console.log(\\"hello\\");"))))'
-    );
   });
 });

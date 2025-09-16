@@ -10,11 +10,16 @@
     margin: 0 !important;
   }
 
+  &.ProseMirror pre {
+    white-space: pre; /* ProseMirror の pre-wrap を打ち消す */
+  }
+
   h1,
   h2,
   h3,
   h4 {
     font-weight: 700;
+    line-height: 1.4;
   }
 
   /* エラーメッセージの場合は pタグになるため、zenn-content-cssを上書きする */
