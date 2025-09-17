@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'pnpm'
-          node-version: 18
+          node-version: 20
           registry-url: 'https://registry.npmjs.org'
 
       - name: ビルド時に使用する環境変数を設定
