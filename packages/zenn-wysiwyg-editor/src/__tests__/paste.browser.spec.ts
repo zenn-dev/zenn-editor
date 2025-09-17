@@ -8,6 +8,7 @@ import { waitSelectionChange } from '../tests/dom';
 import { renderTiptapEditor } from '../tests/editor';
 import { paste, setClipboardContent } from '../tests/clipboard';
 import { TEST_ALL_EXTENSIONS } from '../tests/test-extensions';
+import LakeImage from '../tests/assets/sikotuko.jpeg';
 
 describe('paste (codeBlock)', () => {
   it('テキストの貼り付け', async () => {
@@ -45,6 +46,26 @@ describe('paste (codeBlock)', () => {
     const docString = editor.state.doc.toString();
     expect(docString).toBe(
       'doc(codeBlockContainer(codeBlockFileName, codeBlock("http://example.com")), paragraph)'
+    );
+  });
+
+  it('マークダウン形式画像の貼り付け', async () => {
+    const editor = renderTiptapEditor({
+      content:
+        '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-javascript"></code></pre></div>',
+      extensions: TEST_ALL_EXTENSIONS,
+    });
+
+    const fullImageUrl = `${location.origin}${LakeImage}`;
+    await setClipboardContent(`![支笏湖](${fullImageUrl})`);
+    await waitSelectionChange(() => {
+      editor.chain().focus().setTextSelection(4).run();
+    });
+    await paste();
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe(
+      `doc(codeBlockContainer(codeBlockFileName, codeBlock("![支笏湖](${fullImageUrl})")), paragraph)`
     );
   });
 });
@@ -145,5 +166,94 @@ describe('paste (diffCodeBlock)', () => {
     expect(docString).toBe(
       'doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("+ console.log(\\"added\\");"), diffCodeLine("- console.log(\\"removed\\");"))), paragraph)'
     );
+  });
+
+  it('マークダウン形式画像の貼り付け', async () => {
+    const editor = renderTiptapEditor({
+      content:
+        '<div class="code-block-container"><div class="code-block-filename-container"><span class="code-block-filename"></span></div><pre><code class="language-diff-javascript diff-highlight"></code></pre></div>',
+      extensions: TEST_ALL_EXTENSIONS,
+    });
+
+    const fullImageUrl = `${location.origin}${LakeImage}`;
+    await setClipboardContent(`![支笏湖](${fullImageUrl})`);
+    await waitSelectionChange(() => {
+      editor.chain().focus().setTextSelection(5).run();
+    });
+    await paste();
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe(
+      `doc(codeBlockContainer(codeBlockFileName, diffCodeBlock(diffCodeLine("![支笏湖](${fullImageUrl})"))), paragraph)`
+    );
+  });
+});
+
+describe('paste (figure)', () => {
+  it('画像URLの貼り付け', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p></p>',
+      extensions: TEST_ALL_EXTENSIONS,
+    });
+
+    const fullImageUrl = `${location.origin}${LakeImage}`;
+    await setClipboardContent(fullImageUrl);
+    await waitSelectionChange(() => {
+      editor.chain().focus().setTextSelection(1).run();
+    });
+    await paste();
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe('doc(figure(image, caption), paragraph)');
+    expect(editor.state.doc.firstChild?.firstChild?.attrs.src).toBe(
+      fullImageUrl
+    );
+  });
+
+  it('markdown形式の画像の貼り付け', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p></p>',
+      extensions: TEST_ALL_EXTENSIONS,
+    });
+
+    const fullImageUrl = `${location.origin}${LakeImage}`;
+    await setClipboardContent(`![支笏湖](${fullImageUrl})`);
+    await waitSelectionChange(() => {
+      editor.chain().focus().setTextSelection(1).run();
+    });
+    await paste();
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe('doc(figure(image, caption), paragraph)');
+    expect(editor.state.doc.firstChild?.firstChild?.attrs).toEqual({
+      src: fullImageUrl,
+      alt: '支笏湖',
+      width: null,
+      isLoadingError: false,
+    });
+  });
+
+  it('範囲選択時の画像URL貼り付けではリンクが作成される', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p>selected text</p>',
+      extensions: TEST_ALL_EXTENSIONS,
+    });
+
+    const fullImageUrl = `${location.origin}${LakeImage}`;
+    await setClipboardContent(fullImageUrl);
+    await waitSelectionChange(() => {
+      editor
+        .chain()
+        .focus()
+        .setTextSelection({
+          from: 1,
+          to: 14,
+        })
+        .run();
+    });
+    await paste();
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe(`doc(paragraph(link("selected text")))`);
   });
 });
