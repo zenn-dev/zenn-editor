@@ -1,21 +1,18 @@
 import { userEvent } from '@vitest/browser/context';
-import { wait } from './utils';
 
 export async function setClipboardContent(text: string): Promise<void> {
-  const temp = document.createElement('textarea');
-  temp.value = text;
+  const temp = document.createElement('button');
+  temp.addEventListener('click', () => {
+    navigator.clipboard.writeText(text);
+  });
   document.body.appendChild(temp);
 
   await userEvent.click(temp);
-  await userEvent.keyboard('{ControlOrMeta>}{a}{/ControlOrMeta}');
-  await wait(100);
-  await userEvent.keyboard('{ControlOrMeta>}{c}{/ControlOrMeta}');
-  await wait(100);
 
+  document.body.removeChild(temp);
   temp.remove();
 }
 
 export async function paste(): Promise<void> {
   await userEvent.keyboard('{ControlOrMeta>}{v}{/ControlOrMeta}');
-  await wait(100);
 }
