@@ -10,7 +10,13 @@ export default defineConfig({
       provider: 'playwright',
       headless: true,
       instances: [
-        { browser: 'chromium' },
+        {
+          browser: 'chromium',
+          launch: {},
+          context: {
+            permissions: ['clipboard-read', 'clipboard-write'],
+          },
+        },
         { browser: 'firefox' },
         { browser: 'webkit' },
       ],

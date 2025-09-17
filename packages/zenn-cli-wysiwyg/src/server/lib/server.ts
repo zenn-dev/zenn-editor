@@ -7,13 +7,13 @@ import open from 'open';
 import { getWorkingPath, resolveHostname } from './helper';
 import fs from 'fs';
 import path from 'path';
-import { glob } from 'node:fs/promises';
 import { getLocalArticle, stringifyArticleWithMetaData } from './articles';
 import {
   WS_ArticleSavedMessage,
   WS_ClientMessage,
   WS_LocalArticleChangedMessage,
 } from 'common/types';
+import { glob } from 'glob';
 
 type ServerOptions = {
   app: Express;
@@ -60,7 +60,7 @@ export async function startLocalChangesWatcher(
   watchPathGlob: string
 ) {
   const wss = new WebSocketServer({ server });
-  const watcher = chokidar.watch(await Array.fromAsync(glob(watchPathGlob)));
+  const watcher = chokidar.watch(await glob(watchPathGlob));
   watcher.on('change', (path) => {
     if (path.includes('/articles/')) {
       const slug = path.split('/articles/')[1].replace(/\.mdx?$/, '');
@@ -92,9 +92,9 @@ export async function startLocalChangesWatcher(
 
         const contentWithMeta = stringifyArticleWithMetaData(article);
 
-        watcher.unwatch(await Array.fromAsync(glob(watchPathGlob)));
+        watcher.unwatch(await glob(watchPathGlob));
         fs.writeFileSync(outputFile, contentWithMeta ?? '', 'utf-8');
-        watcher.add(await Array.fromAsync(glob(watchPathGlob)));
+        watcher.add(await glob(watchPathGlob));
 
         const updatedArticle = getLocalArticle(article.slug);
         if (!updatedArticle) {

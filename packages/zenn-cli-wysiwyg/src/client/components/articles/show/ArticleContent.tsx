@@ -60,6 +60,14 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
       <StyledArticleShow className="article-show">
         <div className="article-show__content">
           <StyledEditMode>
+            <StyledHelpLink
+              href="https://zenn.dev/karintou/articles/eabe0354fcc947"
+              target="_blank"
+              rel="noreferrer"
+            >
+              ?
+            </StyledHelpLink>
+
             <StyledLabel>編集モード</StyledLabel>
             <Switch checked={isEditable} onChange={setIsEditable} />
           </StyledEditMode>
@@ -84,6 +92,22 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
     </ContentContainer>
   );
 };
+
+const StyledHelpLink = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  background-color: var(--c-primary-bg);
+  color: var(--c-primary);
+  font-weight: bold;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
 
 const StyledArticleShow = styled.div`
   .article-show__content {
