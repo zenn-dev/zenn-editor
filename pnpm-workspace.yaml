@@ -1,2 +1,6 @@
 packages:
   - 'packages/*'
+
+# https://pnpm.io/settings#minimumreleaseage
+# サプライチェーン攻撃緩和のため、パッケージがリリースされてから1週間待つようにする
+minimumReleaseAge: 10080
