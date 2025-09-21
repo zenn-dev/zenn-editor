@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
     "@tiptap/pm": "^3.1.0",
     "@tiptap/react": "^3.1.0",
-    "zenn-wysiwyg-editor": "workspace:*"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-icons": "^4.7.1",
+    "zenn-wysiwyg-editor": "workspace:*",
+    "zenn-model": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
