@@ -8,6 +8,7 @@ import { EditorContent, useZennEditor } from 'zenn-wysiwyg-editor';
 import { Toc } from './components/toc';
 import { usePersistedState } from './hooks/use-persisted-state';
 import styles from './app.module.css';
+import FixedMenu from './components/fixed-menu';
 
 function App() {
   const [toc, setToc] = useState<TocNode[]>([]);
@@ -43,6 +44,8 @@ function App() {
           </div>
         </aside>
       </div>
+
+      <FixedMenu editor={editor} className={styles.fixedMenu} />
 
       <div className={styles.contentWrapper}>
         <div className={styles.content}>

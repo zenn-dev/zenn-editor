@@ -12,12 +12,13 @@
   "dependencies": {
     "@tiptap/pm": "^3.1.0",
     "@tiptap/react": "^3.1.0",
+    "clsx": "^2.1.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.7.1",
-    "zenn-wysiwyg-editor": "workspace:*",
+    "zenn-markdown-html": "workspace:*",
     "zenn-model": "workspace:*",
-    "zenn-markdown-html": "workspace:*"
+    "zenn-wysiwyg-editor": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
