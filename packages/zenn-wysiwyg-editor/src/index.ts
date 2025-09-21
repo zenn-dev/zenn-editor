@@ -7,3 +7,4 @@ export {
   convertMarkdownToEditable,
 } from './lib/from-markdown';
 export { useZennEditor } from './use-zenn-editor';
+export type { Message } from './types';

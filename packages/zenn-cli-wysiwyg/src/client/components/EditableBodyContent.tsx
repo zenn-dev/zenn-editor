@@ -2,6 +2,7 @@ import {
   convertMarkdownToEditable,
   EditorContent,
   useZennEditor,
+  type Message,
 } from 'zenn-wysiwyg-editor';
 import { useMemo, useState } from 'react';
 import { parseToc } from 'zenn-markdown-html';
@@ -14,6 +15,7 @@ type Props = {
   markdown: string;
   onImageUpload?: (file: File) => Promise<string>;
   onChange?: (markdown: string) => void;
+  onMessage?: (message: Message) => void;
 };
 
 export const EditableBodyContent: React.FC<Props> = (props) => {
@@ -33,6 +35,7 @@ export const EditableBodyContent: React.FC<Props> = (props) => {
       setTocByEditor(parseToc(editor.getHTML()));
     },
     onImageUpload: props.onImageUpload,
+    onMessage: props.onMessage,
   });
 
   return (

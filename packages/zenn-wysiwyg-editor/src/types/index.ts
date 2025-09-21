@@ -26,3 +26,8 @@ export type SpeakerDeckEmbedResponse = {
   embedId: string;
   slideIndex?: number | null;
 };
+
+export type Message = {
+  type: 'alert' | 'info';
+  text: string;
+};
