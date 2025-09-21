@@ -1,9 +1,13 @@
 .container {
   max-width: 800px;
-  margin: 5rem auto;
-  padding: 2rem 0;
+  margin: 3rem auto;
+}
+
+.contentWrapper {
+  width: 100%;
   background-color: var(--c-base);
   border-radius: 4px;
+  padding: 2rem 0;
 }
 
 .content {

@@ -26,9 +26,29 @@ function App() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.content}>
-        <Toc maxDepth={2} toc={toc} />
-        <EditorContent editor={editor} />
+      <div className="znc">
+        <aside className="msg">
+          <span className="msg-symbol">!</span>
+          <div className="msg-content">
+            <p>情報共有コミュニティ Zenn の WYSIWYG エディターです。</p>
+            <p>
+              <a
+                href="https://zenn.dev/karintou/articles/eabe0354fcc947"
+                target="_blank"
+                rel="noreferrer"
+              >
+                使い方はこちら
+              </a>
+            </p>
+          </div>
+        </aside>
+      </div>
+
+      <div className={styles.contentWrapper}>
+        <div className={styles.content}>
+          <Toc maxDepth={2} toc={toc} />
+          <EditorContent editor={editor} />
+        </div>
       </div>
     </div>
   );
