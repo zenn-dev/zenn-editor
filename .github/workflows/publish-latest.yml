@@ -10,6 +10,7 @@ on:
       - 'lerna.json'
       - '**.md'
       - 'packages/example/**'
+      - 'packages/zenn-web/**'
 
 jobs:
   publish:
