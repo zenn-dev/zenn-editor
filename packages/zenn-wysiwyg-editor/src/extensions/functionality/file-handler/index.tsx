@@ -49,6 +49,10 @@ export const FileHandlePlugin = ({
         }
 
         if (!onUpload) {
+          editor.commands.setMeta('message', {
+            type: 'alert',
+            text: 'ファイルのドラッグ&ドロップに対応していません',
+          });
           console.warn(
             'FileHandler: onUpload callback is not provided. File upload is disabled.'
           );
@@ -83,6 +87,10 @@ export const FileHandlePlugin = ({
         }
 
         if (!onUpload) {
+          editor.commands.setMeta('message', {
+            type: 'alert',
+            text: 'ファイルの貼り付けに対応していません',
+          });
           console.warn(
             'FileHandler: onUpload callback is not provided. File upload is disabled.'
           );

@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.copyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background-color: var(--c-base);
+
+  &:hover {
+    color: var(--c-primary);
+  }
+}

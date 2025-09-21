@@ -1,0 +1,106 @@
+.tocContainer {
+  border: solid 1px var(--c-gray-border);
+  overflow: hidden;
+  margin-bottom: 1.8rem;
+  line-height: 1.5;
+  border-radius: 7px;
+}
+
+.containerOpen {
+  box-shadow: none;
+}
+
+.containerOpen .titleContainer {
+  background: var(--c-gray-bg);
+}
+
+.containerOpen .toc {
+  display: block;
+}
+
+.containerOpen .titleContainerToggleIcon {
+  transform: rotate(180deg);
+}
+
+.containerClosed .toc {
+  display: none;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.7rem 1.1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.titleContainerToggleIcon {
+  transition: 0.3s;
+}
+
+.toc {
+  padding: 0.7rem 1.1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--c-gray);
+}
+
+.toc a {
+  color: inherit;
+}
+
+.toc a:hover {
+  color: var(--c-body);
+  text-decoration: underline;
+}
+
+.toc li {
+  padding: 0.35em 0;
+  list-style: disc;
+  margin-left: 1.3rem;
+}
+
+.toc li li {
+  list-style: none;
+  margin-left: 0.1em;
+  padding: 0.4em 0 0.1em 0.9em;
+  position: relative;
+}
+
+.toc li li::before {
+  position: absolute;
+  content: '-';
+  left: 0;
+  flex-shrink: 0;
+  margin-right: 0.5em;
+  color: var(--c-gray-lighter);
+}
+
+.tocListItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.21rem;
+}
+
+.tocListItemIdLink {
+  display: block;
+}
+
+.tocListItemIdCopyButton {
+  opacity: 0;
+  display: block;
+  flex-shrink: 0;
+}
+
+.tocListItemIdCopyButton:hover {
+  background-color: transparent;
+}
+
+.toc:hover .tocListItemIdCopyButton {
+  opacity: 1;
+  transition: all 0.2s;
+}

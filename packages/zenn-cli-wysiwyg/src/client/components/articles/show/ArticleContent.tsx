@@ -10,6 +10,7 @@ import { ContentContainer } from '../../ContentContainer';
 import { WS_ArticlePostMessage } from 'common/types';
 import { uploadImage } from '../../../lib/api';
 import { showToast } from '../../../lib/toast';
+import { type Message } from 'zenn-wysiwyg-editor';
 
 interface ArticleContentProps {
   article: Article;
@@ -55,6 +56,14 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
     [article.slug]
   );
 
+  const handleMessage = useCallback((message: Message) => {
+    if (message.type === 'alert') {
+      showToast(message.text, 'error');
+    } else if (message.type === 'info') {
+      showToast(message.text, 'info');
+    }
+  }, []);
+
   return (
     <ContentContainer>
       <StyledArticleShow className="article-show">
@@ -78,6 +87,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
               markdown={article.markdown ?? ''}
               onChange={handleContentChange}
               onImageUpload={handleImageUpload}
+              onMessage={handleMessage}
             />
           ) : (
             <>
