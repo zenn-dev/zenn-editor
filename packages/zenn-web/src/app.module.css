@@ -1,0 +1,21 @@
+.container {
+  max-width: 800px;
+  margin: 3rem auto;
+}
+
+.contentWrapper {
+  width: 100%;
+  background-color: var(--c-base);
+  border-radius: 4px;
+  padding: 2rem 0;
+}
+
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.8rem;
+}
+
+.fixedMenu {
+  margin: 3rem 0 1rem;
+}
