@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { parseToc } from 'zenn-markdown-html';
 import type { TocNode } from 'zenn-model/lib/types';
 import { EditorContent, useZennEditor } from 'zenn-wysiwyg-editor';
+import { Toaster } from 'sonner';
 
 import { Toc } from './components/toc';
 import { usePersistedState } from './hooks/use-persisted-state';
 import styles from './app.module.css';
 import FixedMenu from './components/fixed-menu';
+import { showToast } from './lib/toast';
 
 function App() {
   const [toc, setToc] = useState<TocNode[]>([]);
@@ -22,6 +24,9 @@ function App() {
     onChange: (html) => {
       setToc(parseToc(html));
       setPersistedContent(html);
+    },
+    onMessage: (message) => {
+      showToast(message.text, message.type);
     },
   });
 
@@ -53,6 +58,8 @@ function App() {
           <EditorContent editor={editor} />
         </div>
       </div>
+
+      <Toaster />
     </div>
   );
 }

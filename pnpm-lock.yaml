@@ -409,6 +409,9 @@ importers:
       react-icons:
         specifier: ^4.7.1
         version: 4.7.1(react@18.2.0)
+      sonner:
+        specifier: ^2.0.7
+        version: 2.0.7(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       zenn-markdown-html:
         specifier: workspace:*
         version: link:../zenn-markdown-html

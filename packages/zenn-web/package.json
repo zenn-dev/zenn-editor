@@ -16,6 +16,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.7.1",
+    "sonner": "^2.0.7",
     "zenn-markdown-html": "workspace:*",
     "zenn-model": "workspace:*",
     "zenn-wysiwyg-editor": "workspace:*"
