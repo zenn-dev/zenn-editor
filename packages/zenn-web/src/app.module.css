@@ -1,0 +1,13 @@
+.container {
+  max-width: 800px;
+  margin: 5rem auto;
+  padding: 2rem 0;
+  background-color: var(--c-base);
+  border-radius: 4px;
+}
+
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.8rem;
+}
