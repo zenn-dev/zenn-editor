@@ -109,8 +109,6 @@
 
 .itemHighlighted {
   background-color: #f3f4f6;
-  outline: 2px solid #3b82f6;
-  outline-offset: -2px;
 }
 
 .itemHighlighted.itemSelected {
