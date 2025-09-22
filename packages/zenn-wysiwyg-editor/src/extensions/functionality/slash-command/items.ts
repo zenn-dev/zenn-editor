@@ -43,6 +43,18 @@ export const items: SuggestionItem[] = [
     },
   },
   {
+    value: 'table',
+    label: 'テーブル (3x3)',
+    command: ({ editor, range }) => {
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+        .run();
+    },
+  },
+  {
     value: 'codeBlock',
     label: 'コードブロック',
     command: ({ editor, range }) => {
