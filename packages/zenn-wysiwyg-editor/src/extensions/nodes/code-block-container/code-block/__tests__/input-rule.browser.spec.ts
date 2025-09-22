@@ -96,6 +96,29 @@ describe('InputRule', () => {
     expect(editor.state.selection.from).toBe(11);
   });
 
+  it('ファイル名で入力ができる', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p>Text</p>',
+      extensions: basicExtension,
+    });
+
+    await waitSelectionChange(() => {
+      editor.chain().focus().run();
+    });
+    await userEvent.keyboard('``` ');
+
+    await waitSelectionChange(() => {
+      editor.chain().setTextSelection(2).run();
+    });
+
+    await userEvent.keyboard('a');
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe(
+      'doc(codeBlockContainer(codeBlockFileName("a"), codeBlock("Text")))'
+    );
+  });
+
   it('行の途中では InputRule が発動しない', async () => {
     const editor = renderTiptapEditor({
       content: '<p>Text</p>',

@@ -1,6 +1,6 @@
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
-import { Editor, findChildren, ReactRenderer } from '@tiptap/react';
+import { Editor, ReactRenderer } from '@tiptap/react';
 import { Node as ProseMirrorNode } from '@tiptap/pm/model';
 
 import Combobox from '../../../components/ui/combobox';
@@ -96,6 +96,7 @@ function getDecorations(
       {
         side: -1,
         destroy: () => {
+          console.log('destroy');
           comboboxRenderer?.destroy();
           comboboxRenderer = null;
           switchRenderer?.destroy();
@@ -121,44 +122,8 @@ export function CodeBlockSettingsDecorationPlugin({
 
     state: {
       init: (_, { doc }) => getDecorations(doc, names, editor),
-      apply: (transaction, decorationSet, oldState, newState) => {
-        const oldNodeName = oldState.selection.$head.parent.type.name;
-        const newNodeName = newState.selection.$head.parent.type.name;
-        const oldNodes = findChildren(oldState.doc, (node) =>
-          names.includes(node.type.name)
-        );
-        const newNodes = findChildren(newState.doc, (node) =>
-          names.includes(node.type.name)
-        );
-
-        if (
-          transaction.docChanged &&
-          // Apply decorations if:
-          // selection includes named node,
-          (names.includes(oldNodeName) ||
-            names.includes(newNodeName) ||
-            // OR transaction adds/removes named node,
-            newNodes.length !== oldNodes.length ||
-            // OR transaction has changes that completely encapsulte a node
-            // (for example, a transaction that affects the entire document).
-            // Such transactions can happen during collab syncing via y-prosemirror, for example.
-            transaction.steps.some((step) => {
-              return (
-                // @ts-expect-error
-                step.from !== undefined &&
-                // @ts-expect-error
-                step.to !== undefined &&
-                oldNodes.some((node) => {
-                  return (
-                    // @ts-expect-error
-                    node.pos >= step.from &&
-                    // @ts-expect-error
-                    node.pos + node.node.nodeSize <= step.to
-                  );
-                })
-              );
-            }))
-        ) {
+      apply: (transaction, decorationSet) => {
+        if (transaction.docChanged) {
           return getDecorations(transaction.doc, names, editor);
         }
 
