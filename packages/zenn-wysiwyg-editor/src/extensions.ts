@@ -110,7 +110,7 @@ export const extensions: Extensions = [
         return '';
       }
 
-      return 'ここに入力';
+      return 'コマンドは「/」で表示';
     },
   }),
   EmbedPasteHandler,
