@@ -96,7 +96,6 @@ function getDecorations(
       {
         side: -1,
         destroy: () => {
-          console.log('destroy');
           comboboxRenderer?.destroy();
           comboboxRenderer = null;
           switchRenderer?.destroy();

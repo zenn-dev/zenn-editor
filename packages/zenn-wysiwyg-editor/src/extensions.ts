@@ -41,6 +41,7 @@ import { Table } from './extensions/nodes/tables/table';
 import { Typography } from './extensions/functionality/typography';
 import { Loading } from './extensions/nodes/loading';
 import { ListItem } from './extensions/nodes/list-item';
+import { SlashCommand } from './extensions/functionality/slash-command';
 
 export const extensions: Extensions = [
   // === Core ===
@@ -99,6 +100,9 @@ export const extensions: Extensions = [
   TrailingNode,
   Placeholder.configure({
     placeholder: ({ editor, node }) => {
+      const { selection } = editor.state;
+      const { $from } = selection;
+
       if (node.type === editor.schema.nodes.caption) {
         return 'キャプションを入力';
       } else if (
@@ -107,6 +111,11 @@ export const extensions: Extensions = [
         )
       ) {
         return '';
+      } else if (
+        node.type === editor.schema.nodes.paragraph &&
+        $from.depth === 1
+      ) {
+        return 'コマンドは「/」で表示（段落の先頭でのみ）';
       }
 
       return 'ここに入力';
@@ -116,4 +125,5 @@ export const extensions: Extensions = [
   Dropcursor,
   ListKeymap,
   Typography,
+  SlashCommand,
 ];
