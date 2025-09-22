@@ -39,6 +39,7 @@ export function useZennEditor({
     editorProps: {
       attributes: {
         class: 'znc',
+        spellcheck: 'false',
       },
     },
   });

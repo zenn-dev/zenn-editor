@@ -46,7 +46,7 @@
 
     .code-block-filename {
       /* PC版Safariで display: table をspanにつけると、contenteditableでの編集がバグる */
-      /* display: inline-block; */
+      display: inline-block;
     }
   }
 
@@ -204,18 +204,12 @@
     pointer-events: none;
   }
 
-  p.is-empty::before {
-    color: #adb5bd;
-    content: attr(data-placeholder);
-    float: left;
-    height: 0;
-    pointer-events: none;
-  }
-
+  p.is-empty::before,
   h1.is-empty::before,
   h2.is-empty::before,
-  h3.is-empty::before {
-    color: #6b7280;
+  h3.is-empty::before,
+  h4.is-empty::before {
+    color: #adb5bd;
     content: attr(data-placeholder);
     float: left;
     height: 0;

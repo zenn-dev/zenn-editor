@@ -1,0 +1,50 @@
+.container {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-height: 180px;
+  min-width: 160px;
+  overflow-y: auto;
+  padding: 2px;
+  z-index: 1000;
+}
+
+.item {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  gap: 6px;
+  padding: 6px 8px;
+  text-align: left;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.item:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.item.selected {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.item.selected:hover {
+  background: #2563eb;
+}
+
+.noResult {
+  color: #64748b;
+  font-size: 12px;
+  padding: 12px 8px;
+  text-align: center;
+}
