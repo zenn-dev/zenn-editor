@@ -4,10 +4,12 @@ export const LANGUAGE_ITEMS = [
 
   // 言語
   { value: 'html', label: 'HTML' },
+  { value: 'css', label: 'CSS' },
   { value: 'js', label: 'JavaScript' },
   { value: 'ts', label: 'TypeScript' },
   { value: 'vue', label: 'Vue' },
-  { value: 'react', label: 'React' },
+  { value: 'jsx', label: 'React' },
+  { value: 'tsx', label: 'React (TS)' },
   { value: 'python', label: 'Python' },
   { value: 'ruby', label: 'Ruby' },
   { value: 'php', label: 'PHP' },
@@ -20,6 +22,9 @@ export const LANGUAGE_ITEMS = [
   { value: 'kotlin', label: 'Kotlin' },
   { value: 'swift', label: 'Swift' },
   { value: 'dart', label: 'Dart' },
+  { value: 'scala', label: 'Scala' },
+  { value: 'perl', label: 'Perl' },
+  { value: 'r', label: 'R' },
 
   // その他
   { value: 'markdown', label: 'Markdown' },
@@ -36,4 +41,5 @@ export const LANGUAGE_ITEMS = [
 export const LANGUAGE_ALIAS_ITEMS = {
   javascript: 'js',
   typescript: 'ts',
+  react: 'jsx',
 };
