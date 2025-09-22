@@ -100,6 +100,9 @@ export const extensions: Extensions = [
   TrailingNode,
   Placeholder.configure({
     placeholder: ({ editor, node }) => {
+      const { selection } = editor.state;
+      const { $from } = selection;
+
       if (node.type === editor.schema.nodes.caption) {
         return 'キャプションを入力';
       } else if (
@@ -108,9 +111,14 @@ export const extensions: Extensions = [
         )
       ) {
         return '';
+      } else if (
+        node.type === editor.schema.nodes.paragraph &&
+        $from.depth === 1
+      ) {
+        return 'コマンドは「/」で表示（段落の先頭でのみ）';
       }
 
-      return 'コマンドは「/」で表示';
+      return 'ここに入力';
     },
   }),
   EmbedPasteHandler,

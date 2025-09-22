@@ -11,11 +11,12 @@ export function createSuggestion(editor: Editor) {
     pluginKey: new PluginKey('slashCommandSuggestion'),
     editor: editor,
     char: '/',
+    // TODO: paragraphの先頭以外でも許可する
     startOfLine: true,
     allow: () => {
       const { selection } = editor.state;
       const { $from } = selection;
-      return $from.parent.type.name === 'paragraph';
+      return $from.parent.type.name === 'paragraph' && $from.depth === 1;
     },
     items: ({ query }) => {
       return items.filter((item) =>
