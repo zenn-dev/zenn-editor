@@ -41,6 +41,7 @@ import { Table } from './extensions/nodes/tables/table';
 import { Typography } from './extensions/functionality/typography';
 import { Loading } from './extensions/nodes/loading';
 import { ListItem } from './extensions/nodes/list-item';
+import { SlashCommand } from './extensions/functionality/slash-command';
 
 export const extensions: Extensions = [
   // === Core ===
@@ -116,4 +117,5 @@ export const extensions: Extensions = [
   Dropcursor,
   ListKeymap,
   Typography,
+  SlashCommand,
 ];

@@ -524,6 +524,9 @@ importers:
       '@tiptap/react':
         specifier: ^3.0.0
         version: 3.3.1(@floating-ui/dom@1.7.4)(@tiptap/core@3.3.1(@tiptap/pm@3.3.1))(@tiptap/pm@3.3.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@tiptap/suggestion':
+        specifier: ^3.4.5
+        version: 3.4.5(@tiptap/core@3.3.1(@tiptap/pm@3.3.1))(@tiptap/pm@3.3.1)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -2372,6 +2375,12 @@ packages:
       '@tiptap/pm': ^3.3.1
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  '@tiptap/suggestion@3.4.5':
+    resolution: {integrity: sha512-VA2qX9o0CpwwVk9NWMIhmOjrFN2n+2tXfhf6M0cW1l0tu0G3fo4O/hLZC+o79V6cO1TWbc7WMfvv9v7El4emCQ==}
+    peerDependencies:
+      '@tiptap/core': ^3.4.5
+      '@tiptap/pm': ^3.4.5
 
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -8982,6 +8991,11 @@ snapshots:
       '@tiptap/extension-floating-menu': 3.3.1(@floating-ui/dom@1.7.4)(@tiptap/core@3.3.1(@tiptap/pm@3.3.1))(@tiptap/pm@3.3.1)
     transitivePeerDependencies:
       - '@floating-ui/dom'
+
+  '@tiptap/suggestion@3.4.5(@tiptap/core@3.3.1(@tiptap/pm@3.3.1))(@tiptap/pm@3.3.1)':
+    dependencies:
+      '@tiptap/core': 3.3.1(@tiptap/pm@3.3.1)
+      '@tiptap/pm': 3.3.1
 
   '@tootallnate/once@2.0.0': {}
 
