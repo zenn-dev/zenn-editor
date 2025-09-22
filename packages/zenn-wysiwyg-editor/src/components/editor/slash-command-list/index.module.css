@@ -3,10 +3,10 @@
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  max-height: 240px;
-  min-width: 200px;
+  max-height: 180px;
+  min-width: 160px;
   overflow-y: auto;
-  padding: 4px;
+  padding: 2px;
   z-index: 1000;
 }
 
@@ -18,9 +18,9 @@
   color: #334155;
   cursor: pointer;
   display: flex;
-  font-size: 14px;
-  gap: 8px;
-  padding: 8px 12px;
+  font-size: 12px;
+  gap: 6px;
+  padding: 6px 8px;
   text-align: left;
   transition: all 0.15s ease;
   width: 100%;
@@ -42,7 +42,7 @@
 
 .noResult {
   color: #64748b;
-  font-size: 14px;
-  padding: 16px 12px;
+  font-size: 12px;
+  padding: 12px 8px;
   text-align: center;
 }
