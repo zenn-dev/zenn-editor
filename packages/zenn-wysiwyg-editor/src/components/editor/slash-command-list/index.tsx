@@ -1,26 +1,34 @@
 import type { SuggestionProps } from '@tiptap/suggestion';
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { cn } from '../../../lib/utils';
 import styles from './index.module.css';
+import type { SuggestionItem } from 'src/extensions/functionality/slash-command/items';
 
 export default forwardRef<any, SuggestionProps>((props, ref) => {
+  const items = props.items as SuggestionItem[];
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selectItem = (index: number) => {
-    const item = props.items[index];
+    const item = items[index];
 
     if (item) {
-      props.command({ id: item });
+      props.command({ key: item.value });
     }
   };
 
   const upHandler = () => {
-    setSelectedIndex(
-      (selectedIndex + props.items.length - 1) % props.items.length
-    );
+    setSelectedIndex((selectedIndex + items.length - 1) % items.length);
   };
 
   const downHandler = () => {
-    setSelectedIndex((selectedIndex + 1) % props.items.length);
+    setSelectedIndex((selectedIndex + 1) % items.length);
   };
 
   const enterHandler = () => {
@@ -28,6 +36,16 @@ export default forwardRef<any, SuggestionProps>((props, ref) => {
   };
 
   useEffect(() => setSelectedIndex(0), [props.items]);
+
+  useEffect(() => {
+    const selectedElement = itemRefs.current[selectedIndex];
+    if (selectedElement) {
+      selectedElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [selectedIndex]);
 
   useImperativeHandle(ref, () => ({
     onKeyDown: ({ event }: { event: KeyboardEvent }) => {
@@ -52,9 +70,10 @@ export default forwardRef<any, SuggestionProps>((props, ref) => {
 
   return (
     <div className={styles.container}>
-      {props.items.length ? (
-        props.items.map((item, index) => (
+      {items.length ? (
+        items.map((item, index) => (
           <button
+            ref={(el) => (itemRefs.current[index] = el)}
             className={cn(
               styles.item,
               index === selectedIndex && styles.selected
@@ -62,7 +81,7 @@ export default forwardRef<any, SuggestionProps>((props, ref) => {
             key={index}
             onClick={() => selectItem(index)}
           >
-            {item}
+            {item.label}
           </button>
         ))
       ) : (
