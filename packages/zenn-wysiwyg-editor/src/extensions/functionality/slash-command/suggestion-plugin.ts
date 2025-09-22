@@ -63,7 +63,7 @@ export function createSuggestion(editor: Editor) {
 
           const rect = props.clientRect?.();
           if (!rect) {
-            throw new Error('Client rect not found');
+            return;
           }
 
           document.body.appendChild(component.element);
@@ -71,17 +71,17 @@ export function createSuggestion(editor: Editor) {
         },
 
         onUpdate(props) {
-          if (!component) throw new Error('Component not found');
+          if (!component) return;
 
           const rect = props.clientRect?.();
-          if (!rect) throw new Error('Client rect not found');
+          if (!rect) return;
 
           component.updateProps(props);
           repositionComponent(rect);
         },
 
         onKeyDown(props) {
-          if (!component) throw new Error('Component not found');
+          if (!component) return false;
 
           if (props.event.key === 'Escape') {
             document.body.removeChild(component.element);
@@ -95,7 +95,7 @@ export function createSuggestion(editor: Editor) {
         },
 
         onExit() {
-          if (!component) throw new Error('Component not found');
+          if (!component) return;
 
           if (document.body.contains(component.element)) {
             document.body.removeChild(component.element);
