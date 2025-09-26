@@ -79,4 +79,36 @@ describe('InputRule', () => {
       'doc(details(detailsSummary(":::alert "), detailsContent(paragraph("Text"))))'
     );
   });
+
+  it(':::message のundoableがOFFになっている', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p>test</p>',
+      extensions: baseExtensions,
+    });
+
+    await waitSelectionChange(() => {
+      editor.chain().focus().run();
+    });
+    await userEvent.keyboard(':::message ');
+    await userEvent.keyboard('{Backspace}');
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe('doc(paragraph("test"))');
+  });
+
+  it(':::alert のundoableがOFFになっている', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p>test</p>',
+      extensions: baseExtensions,
+    });
+
+    await waitSelectionChange(() => {
+      editor.chain().focus().run();
+    });
+    await userEvent.keyboard(':::alert ');
+    await userEvent.keyboard('{Backspace}');
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe('doc(paragraph("test"))');
+  });
 });

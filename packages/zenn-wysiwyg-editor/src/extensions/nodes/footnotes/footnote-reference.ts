@@ -143,7 +143,7 @@ const FootnoteReference = Node.create({
 
           chain().deleteRange(range).setFootnote().run();
         },
-        undoable: false,
+        undoable: false, // footnoteItemのtrが発生することで、実質的に意味がない
       },
     ];
   },
