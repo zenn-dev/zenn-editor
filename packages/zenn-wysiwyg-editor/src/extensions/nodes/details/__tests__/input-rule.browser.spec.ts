@@ -69,4 +69,20 @@ describe('InputRule', () => {
       'doc(details(detailsSummary(":::details Title"), detailsContent(paragraph("Text"))))'
     );
   });
+
+  it(':::details のundoableがOFFになっている', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p></p>',
+      extensions: basicExtension,
+    });
+
+    await waitSelectionChange(() => {
+      editor.chain().focus().run();
+    });
+    await userEvent.keyboard(':::details ');
+    await userEvent.keyboard('{Backspace}');
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe('doc(paragraph, paragraph)');
+  });
 });
