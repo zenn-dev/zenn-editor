@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tiptap/pm": "^3.1.0",
-    "@tiptap/react": "^3.1.0",
+    "@tiptap/pm": "^3.6.0",
+    "@tiptap/react": "^3.6.0",
     "clsx": "^2.1.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

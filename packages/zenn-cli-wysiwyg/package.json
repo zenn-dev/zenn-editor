@@ -40,8 +40,8 @@
     "semver": "^7.7.2"
   },
   "devDependencies": {
-    "@tiptap/pm": "^3.1.0",
-    "@tiptap/react": "^3.1.0",
+    "@tiptap/pm": "^3.6.0",
+    "@tiptap/react": "^3.6.0",
     "@types/configstore": "^6.0.0",
     "@types/connect-history-api-fallback": "^1.3.5",
     "@types/emoji-regex": "^9.2.0",
