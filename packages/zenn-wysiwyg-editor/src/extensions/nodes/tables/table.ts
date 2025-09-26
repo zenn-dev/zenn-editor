@@ -33,6 +33,7 @@ export const Table = TiptapTable.extend({
             })
             .run();
         },
+        undoable: false,
       }),
     ];
   },

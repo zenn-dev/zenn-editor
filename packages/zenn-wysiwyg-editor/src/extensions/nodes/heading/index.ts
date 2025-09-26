@@ -1,6 +1,7 @@
 import { Heading as TiptapHeading } from '@tiptap/extension-heading';
 import { splitBlockAs } from '@tiptap/pm/commands';
 import { TocPlugin } from './toc-plugin';
+import { textblockTypeInputRule } from '@tiptap/react';
 
 const Heading = TiptapHeading.extend({
   addAttributes() {
@@ -36,6 +37,21 @@ const Heading = TiptapHeading.extend({
         }))(this.editor.state, this.editor.view.dispatch);
       },
     };
+  },
+
+  addInputRules() {
+    return this.options.levels.map((level) => {
+      return textblockTypeInputRule({
+        find: new RegExp(
+          `^(#{${Math.min(...this.options.levels)},${level}})\\s$`
+        ),
+        type: this.type,
+        getAttributes: {
+          level,
+        },
+        undoable: false,
+      });
+    });
   },
 
   addProseMirrorPlugins() {

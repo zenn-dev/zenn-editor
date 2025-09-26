@@ -186,6 +186,7 @@ export const Details = Node.create({
 
           chain().deleteRange(range).setDetails().run();
         },
+        undoable: false,
       }),
     ];
   },

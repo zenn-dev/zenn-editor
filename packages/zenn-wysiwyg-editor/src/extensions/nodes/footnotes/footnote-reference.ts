@@ -143,6 +143,7 @@ const FootnoteReference = Node.create({
 
           chain().deleteRange(range).setFootnote().run();
         },
+        undoable: false,
       },
     ];
   },

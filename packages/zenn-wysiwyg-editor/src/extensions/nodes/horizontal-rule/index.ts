@@ -47,6 +47,7 @@ export const HorizontalRule = HorizontalRuleTiptap.extend({
 
           chain().deleteRange(range).setHorizontalRule().run();
         },
+        undoable: false,
       }),
     ];
   },

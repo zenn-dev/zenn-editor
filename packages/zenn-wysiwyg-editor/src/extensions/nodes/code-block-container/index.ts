@@ -340,10 +340,12 @@ export const CodeBlockContainer = Node.create({
       new InputRule({
         find: backtickInputRegex,
         handler: inputHandler,
+        undoable: false,
       }),
       new InputRule({
         find: tildeInputRegex,
         handler: inputHandler,
+        undoable: false,
       }),
     ];
   },

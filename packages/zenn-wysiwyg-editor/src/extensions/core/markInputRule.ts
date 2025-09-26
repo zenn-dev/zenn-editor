@@ -80,5 +80,6 @@ export function markInputRule(config: {
         tr.removeStoredMark(config.type);
       }
     },
+    undoable: false,
   });
 }

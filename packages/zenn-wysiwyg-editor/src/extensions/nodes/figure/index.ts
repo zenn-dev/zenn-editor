@@ -115,6 +115,7 @@ export const Figure = Node.create({
 
           chain().deleteRange(range).setFigure({ src, alt }).run();
         },
+        undoable: false,
       }),
     ];
   },

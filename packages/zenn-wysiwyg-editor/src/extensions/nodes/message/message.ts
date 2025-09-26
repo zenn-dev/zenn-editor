@@ -161,6 +161,7 @@ export const Message = Node.create({
 
           chain().deleteRange(range).setMessage({ type }).run();
         },
+        undoable: false,
       }),
     ];
   },

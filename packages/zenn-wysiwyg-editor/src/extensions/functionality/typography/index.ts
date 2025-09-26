@@ -8,18 +8,22 @@ export const Typography = Extension.create({
       textInputRule({
         find: /<-$/,
         replace: '←',
+        undoable: false,
       }),
       textInputRule({
         find: /<=$/,
         replace: '⇐',
+        undoable: false,
       }),
       textInputRule({
         find: /->$/,
         replace: '→',
+        undoable: false,
       }),
       textInputRule({
         find: /=>$/,
         replace: '⇒',
+        undoable: false,
       }),
     ];
   },
