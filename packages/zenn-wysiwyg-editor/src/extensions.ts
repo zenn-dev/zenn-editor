@@ -1,6 +1,6 @@
 import Blockquote from '@tiptap/extension-blockquote';
 import HardBreak from '@tiptap/extension-hard-break';
-import { BulletList, ListKeymap, OrderedList } from '@tiptap/extension-list';
+import { ListKeymap } from '@tiptap/extension-list';
 import Paragraph from '@tiptap/extension-paragraph';
 import { TableRow } from '@tiptap/extension-table';
 import Text from '@tiptap/extension-text';
@@ -42,6 +42,8 @@ import { Typography } from './extensions/functionality/typography';
 import { Loading } from './extensions/nodes/loading';
 import { ListItem } from './extensions/nodes/list-item';
 import { SlashCommand } from './extensions/functionality/slash-command';
+import { BulletList } from './extensions/nodes/bullet-list';
+import { OrderedList } from './extensions/nodes/ordered-list';
 
 export const extensions: Extensions = [
   // === Core ===
