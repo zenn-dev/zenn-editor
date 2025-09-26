@@ -174,4 +174,21 @@ describe('InputRule', () => {
     expect($node).not.toBeNull();
     expect(editor.state.selection.from).toBe(4);
   });
+
+  it('undoableがOFFになっている', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p>test</p>',
+      extensions: basicExtension,
+    });
+
+    await waitSelectionChange(() => {
+      editor.chain().focus().run();
+    });
+
+    await userEvent.keyboard('``` ');
+    await userEvent.keyboard('{Backspace}');
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe('doc(paragraph("test"))');
+  });
 });
