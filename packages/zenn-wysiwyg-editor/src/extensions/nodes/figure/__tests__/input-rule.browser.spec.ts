@@ -79,4 +79,20 @@ describe('InputRule', () => {
       `doc(details(detailsSummary("![支笏湖](${LakeImage}) "), detailsContent(paragraph("Text"))))`
     );
   });
+
+  it('undoableがOFFになっている', async () => {
+    const editor = renderTiptapEditor({
+      content: '<p></p>',
+      extensions: basicExtension,
+    });
+
+    await waitSelectionChange(() => {
+      editor.chain().focus().run();
+    });
+    await userEvent.keyboard(`!{[}支笏湖{]}(${LakeImage}) `);
+    await userEvent.keyboard('{Backspace}');
+
+    const docString = editor.state.doc.toString();
+    expect(docString).toBe('doc(paragraph)');
+  });
 });
