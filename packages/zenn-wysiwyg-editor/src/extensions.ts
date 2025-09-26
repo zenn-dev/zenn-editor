@@ -1,4 +1,4 @@
-import Blockquote from '@tiptap/extension-blockquote';
+import { Blockquote } from './extensions/nodes/blockquote';
 import HardBreak from '@tiptap/extension-hard-break';
 import { ListKeymap } from '@tiptap/extension-list';
 import Paragraph from '@tiptap/extension-paragraph';
