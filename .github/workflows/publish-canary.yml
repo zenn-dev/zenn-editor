@@ -79,5 +79,4 @@ jobs:
       - name: Publish canary
         run: pnpm lerna publish from-package --yes --pre-dist-tag canary
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
