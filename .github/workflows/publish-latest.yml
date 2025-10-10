@@ -11,6 +11,11 @@ on:
       - '**.md'
       - 'packages/example/**'
 
+# https://docs.npmjs.com/trusted-publishers
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   publish:
     name: Publish
@@ -74,7 +79,6 @@ jobs:
       - name: Publish latest
         run: pnpm lerna publish from-package --yes
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout
