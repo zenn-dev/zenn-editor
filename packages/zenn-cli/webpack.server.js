@@ -41,6 +41,10 @@ module.exports = {
         callback();
       }
     },
+
+    // ws パッケージの optional peer dependencies を外部化
+    'bufferutil',
+    'utf-8-validate',
   ],
 
   resolve: {
@@ -85,5 +89,13 @@ module.exports = {
         return env;
       }, {})
     ),
+  ],
+
+  ignoreWarnings: [
+    // express のビューエンジンの動的 require による警告を無視
+    {
+      module: /node_modules\/express\/lib\/view\.js/,
+      message: /Critical dependency: the request of a dependency is an expression/,
+    },
   ],
 };
