@@ -1,10 +1,11 @@
 {
   "private": true,
+  "packageManager": "pnpm@10.16.1",
   "devDependencies": {
-    "@lerna-lite/cli": "^1.15.1",
+    "@lerna-lite/cli": "^4.9.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.3.3",
-    "turbo": "^1.7.4"
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.8"
   },
   "scripts": {
     "build": "turbo build",
@@ -32,6 +33,6 @@
   "engines": {
     "npm": "use pnpm please!",
     "yarn": "use pnpm please!",
-    "pnpm": ">=9 <10"
+    "pnpm": ">=10 <11"
   }
 }
