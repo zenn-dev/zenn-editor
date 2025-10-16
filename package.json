@@ -3,8 +3,11 @@
   "packageManager": "pnpm@10.16.1",
   "devDependencies": {
     "@lerna-lite/cli": "^4.9.0",
+    "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.6.2",
+    "secretlint": "^11.2.5",
+    "simple-git-hooks": "^2.13.1",
     "turbo": "^2.5.8"
   },
   "scripts": {
@@ -15,7 +18,12 @@
     "fix": "turbo fix",
     "publish:all": "pnpm test && pnpm build && lerna publish",
     "publish:canary": "pnpm build && lerna publish --pre-dist-tag canary",
-    "test": "turbo test"
+    "test": "turbo test",
+    "secretlint": "secretlint --secretlintignore .gitignore \"**/*\"",
+    "prepare": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm secretlint"
   },
   "repository": {
     "type": "git",
