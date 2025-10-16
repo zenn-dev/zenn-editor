@@ -4,6 +4,10 @@ import { ErrorMessage } from './ErrorMessage';
 
 type ErrorType = null | 'NotFound' | 'Unknown';
 
+type Props = {
+  children: React.ReactNode;
+};
+
 type State = {
   error: ErrorType;
 };
@@ -11,9 +15,7 @@ type State = {
 // @ts-ignore
 const isProd = import.meta.env.PROD;
 
-export class ErrorBoundary extends React.Component<{
-  children: React.ReactNode;
-}> {
+export class ErrorBoundary extends React.Component<Props, State> {
   state: State = {
     error: null,
   };

@@ -8,7 +8,7 @@ import '../global.css';
 import 'zenn-content-css';
 
 // Scroll to the top of the window on route changes.
-const ScrollAdjuster: React.VFC = () => {
+const ScrollAdjuster: React.FC = () => {
   const location = useLocation();
   useEffect(() => {
     if (!location.hash) window.scrollTo(0, 0);
@@ -16,7 +16,7 @@ const ScrollAdjuster: React.VFC = () => {
   return null;
 };
 
-export const App: React.VFC = () => {
+export const App: React.FC = () => {
   // init embed elements
   useEffect(() => {
     import('zenn-embed-elements');

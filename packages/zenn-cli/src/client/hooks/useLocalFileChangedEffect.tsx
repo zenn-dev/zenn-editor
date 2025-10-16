@@ -6,7 +6,7 @@ const HotReloadContext = createContext<{ reloadedAt: ReloadedAt }>({
   reloadedAt: 0,
 });
 
-export const HotReloadRoot: React.VFC<{ children: React.ReactNode }> = (
+export const HotReloadRoot: React.FC<{ children: React.ReactNode }> = (
   props
 ) => {
   const [reloadedAt, setReloadedAt] = useState<ReloadedAt>(0);
