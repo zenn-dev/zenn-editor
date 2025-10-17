@@ -75,6 +75,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish canary
-        run: pnpm lerna publish from-package --yes --pre-dist-tag canary --provenance
+        run: pnpm lerna publish from-package --yes --pre-dist-tag canary
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
