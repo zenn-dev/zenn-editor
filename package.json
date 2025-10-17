@@ -37,7 +37,7 @@
   "engines": {
     "npm": "use pnpm please!",
     "yarn": "use pnpm please!",
-    "pnpm": ">=9 <10"
+    "pnpm": ">=10 <11"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm secretlint"
