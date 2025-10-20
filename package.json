@@ -1,9 +1,14 @@
 {
   "private": true,
   "devDependencies": {
-    "@lerna-lite/cli": "^1.15.1",
+    "@lerna-lite/cli": "^4.9.0",
+    "@lerna-lite/publish": "^4.9.0",
+    "@lerna-lite/version": "^4.9.0",
+    "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.3.3",
+    "secretlint": "^11.2.5",
+    "simple-git-hooks": "^2.13.1",
     "turbo": "^1.7.4"
   },
   "scripts": {
@@ -14,7 +19,9 @@
     "fix": "turbo fix",
     "publish:all": "pnpm test && pnpm build && lerna publish",
     "publish:canary": "pnpm build && lerna publish --pre-dist-tag canary",
-    "test": "turbo test"
+    "test": "turbo test",
+    "secretlint": "secretlint --secretlintignore .gitignore \"**/*\"",
+    "prepare": "simple-git-hooks"
   },
   "repository": {
     "type": "git",
@@ -32,6 +39,9 @@
   "engines": {
     "npm": "use pnpm please!",
     "yarn": "use pnpm please!",
-    "pnpm": ">=9 <10"
+    "pnpm": ">=10 <11"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm secretlint"
   }
 }
