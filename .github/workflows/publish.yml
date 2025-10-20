@@ -1,10 +1,11 @@
-name: Publish latest version
+name: Publish
 
 on:
   workflow_dispatch:
   push:
     branches:
       - main
+      - canary
     paths-ignore:
       - '**/package.json'
       - 'lerna.json'
@@ -41,8 +42,7 @@ jobs:
       - name: パッケージをインストール
         run: pnpm install
 
-      # Enable lerna to commit on GitHub.
-      # Note that this does not work with protected branch.
+      # lernaがGitHub上でコミットできるようにする
       - name: Configure git identity
         run: |
           git config --global user.name 'github-actions[bot]'
@@ -54,17 +54,23 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # zenn-editor packages does not follow semantic versioning.
-      # This is because anyone should use latest version which is synced with zenn.dev
-      - name: Bump version to latest
+      - name: '[main] Bump version'
+        if: github.ref_name == 'main'
         run: pnpm lerna version patch --yes --no-private
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: '[canary] Bump version'
+        if: github.ref_name == 'canary'
+        run: pnpm lerna version prerelease --yes --no-private
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set released version to env
         run: node -p -e '`RELEASED_PACKAGE_VERSION=${require("./lerna.json").version}`' >> $GITHUB_ENV
 
-      - name: Create release
+      - name: '[main] Create release'
+        if: github.ref_name == 'main'
         uses: release-drafter/release-drafter@v5
         with:
           version: ${{ env.RELEASED_PACKAGE_VERSION }}
@@ -74,17 +80,38 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish latest
+      - name: '[canary] Create release'
+        if: github.ref_name == 'canary'
+        uses: release-drafter/release-drafter@v5
+        with:
+          version: ${{ env.RELEASED_PACKAGE_VERSION }}
+          name: ${{ env.RELEASED_PACKAGE_VERSION }}
+          tag: ${{ env.RELEASED_PACKAGE_VERSION }}
+          publish: true
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: '[main] Publish'
+        if: github.ref_name == 'main'
         run: pnpm lerna publish from-package --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout
+      - name: '[canary] Publish'
+        if: github.ref_name == 'canary'
+        run: pnpm lerna publish from-package --yes --pre-dist-tag canary
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: '[main] Checkout'
+        if: github.ref_name == 'main'
         uses: actions/checkout@v2
         with:
           ref: canary
 
-      - name: Reflect changes on main branch to canary branch.
+      - name: '[main] Reflect changes on main branch to canary branch'
+        if: github.ref_name == 'main'
         run: |
           git pull origin main
           git push origin HEAD
