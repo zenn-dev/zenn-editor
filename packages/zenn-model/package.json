@@ -29,17 +29,17 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
-    "esbuild": "^0.17.8",
-    "eslint": "^8.34.0",
-    "eslint-config-prettier": "^8.6.0",
-    "rimraf": "^4.1.2",
-    "typescript": "^4.9.5",
-    "vitest": "^0.34.4"
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "esbuild": "^0.25.11",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
-    "emoji-regex": "^10.2.1"
+    "cheerio": "^1.1.2",
+    "emoji-regex": "^10.6.0"
   }
 }
