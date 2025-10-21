@@ -306,6 +306,9 @@ importers:
       '@babel/preset-typescript':
         specifier: ^7.27.1
         version: 7.27.1(@babel/core@7.28.4)
+      '@eslint/js':
+        specifier: ^9.38.0
+        version: 9.38.0
       '@types/markdown-it':
         specifier: ^14.1.2
         version: 14.1.2

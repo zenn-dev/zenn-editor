@@ -5,14 +5,14 @@ import { generateEmbedHTML, isEmbedType } from './embed-helper';
 // Forked from: https://github.com/posva/markdown-it-custom-block
 export function mdCustomBlock(md: MarkdownIt, options?: MarkdownOptions) {
   md.renderer.rules.custom = function tokenizeBlock(tokens, idx) {
-    const { tag, arg }: any = tokens[idx].info; // eslint-disable-line @typescript-eslint/no-explicit-any
+    const { tag, arg }: any = tokens[idx].info;
 
     if (!isEmbedType(tag)) return '';
     if (typeof arg !== 'string') return '';
 
     try {
       return generateEmbedHTML(tag, arg, options || {}) + '\n';
-    } catch (e) {
+    } catch (_e) {
       return '';
     }
   };
@@ -65,7 +65,6 @@ export function mdCustomBlock(md: MarkdownIt, options?: MarkdownOptions) {
       if (!silent) {
         const token = state.push('custom', 'div', 0);
         token.markup = state.src.slice(startPos, pointer.pos);
-        // eslint-disable-next-line
         token.info = { arg, tag } as any;
         token.block = true;
         token.map = [startLine, pointer.line + 1];
