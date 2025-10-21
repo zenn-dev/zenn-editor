@@ -1,5 +1,5 @@
 import Prism, { Grammar } from 'prismjs';
-import { md } from './markdown-it-utils';
+import { md } from './markdown-it';
 import { enableDiffHighlight } from '../prism-plugins/prism-diff-highlight';
 
 // diffプラグインを有効化

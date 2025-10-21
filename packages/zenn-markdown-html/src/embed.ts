@@ -1,6 +1,6 @@
 import type { MarkdownOptions } from './types';
 
-import { md } from './utils/markdown-it-utils';
+import { md } from './utils/markdown-it';
 import {
   sanitizeEmbedToken,
   generateEmbedServerIframe,

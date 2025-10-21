@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it';
-import { md } from './markdown-it-utils';
+import { md } from './markdown-it';
 import { MarkdownOptions } from '../types';
 import { highlight } from './highlight';
 

@@ -1,4 +1,4 @@
-import { md } from './markdown-it-utils';
+import { md } from './markdown-it';
 import type Token from 'markdown-it/lib/token.mjs';
 
 // containers
