@@ -324,12 +324,6 @@ importers:
       '@types/sanitize-html':
         specifier: ^2.16.0
         version: 2.16.0
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^8.46.2
-        version: 8.46.2(@typescript-eslint/parser@8.46.2(eslint@9.38.0)(typescript@5.9.3))(eslint@9.38.0)(typescript@5.9.3)
-      '@typescript-eslint/parser':
-        specifier: ^8.46.2
-        version: 8.46.2(eslint@9.38.0)(typescript@5.9.3)
       babel-plugin-prismjs:
         specifier: ^2.1.0
         version: 2.1.0(prismjs@1.30.0)
