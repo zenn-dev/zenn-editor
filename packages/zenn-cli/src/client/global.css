@@ -22,9 +22,11 @@
   }
 
   /* Font */
-  --font-base: -apple-system, 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
+  --font-base:
+    -apple-system, 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
     'Hiragino Sans', Meiryo, sans-serif, 'Segoe UI Emoji';
-  --font-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace,
+  --font-code:
+    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace,
     'Segoe UI Emoji';
 }
 
