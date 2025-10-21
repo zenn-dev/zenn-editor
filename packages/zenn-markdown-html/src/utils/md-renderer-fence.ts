@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it';
-import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { escapeHtml } from './markdown-it-utils';
 import { MarkdownOptions } from '../types';
 import { highlight } from './highlight';
 

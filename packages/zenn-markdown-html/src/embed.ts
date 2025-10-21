@@ -1,6 +1,6 @@
 import type { MarkdownOptions } from './types';
 
-import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { escapeHtml } from './utils/markdown-it-utils';
 import {
   sanitizeEmbedToken,
   generateEmbedServerIframe,

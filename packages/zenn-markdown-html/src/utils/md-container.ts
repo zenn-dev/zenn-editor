@@ -1,5 +1,5 @@
-import { escapeHtml } from 'markdown-it/lib/common/utils';
-import type Token from 'markdown-it/lib/token';
+import { escapeHtml } from './markdown-it-utils';
+import type Token from 'markdown-it/lib/token.mjs';
 
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container
