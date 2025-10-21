@@ -16,7 +16,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10.18.3
 
       - name: パッケージをインストール
         run: pnpm install
