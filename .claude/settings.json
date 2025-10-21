@@ -1,0 +1,20 @@
+{
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "300000",
+    "BASH_MAX_TIMEOUT_MS": "1200000"
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": false,
+    "excludedCommands": ["docker"],
+    "network": {
+      "allowUnixSockets": ["/var/run/docker.sock", "~/.docker/run/docker.sock"],
+      "allowLocalBinding": true
+    }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccusage statusline --no-offline",
+    "padding": 0
+  }
+}
