@@ -1,5 +1,5 @@
 import Prism, { Grammar } from 'prismjs';
-import { escapeHtml } from './markdown-it-utils';
+import { md } from './markdown-it-utils';
 import { enableDiffHighlight } from '../prism-plugins/prism-diff-highlight';
 
 // diffプラグインを有効化
@@ -24,7 +24,7 @@ function highlightContent({
   }
 
   if (hasDiff) return Prism.highlight(text, Prism.languages.diff, 'diff');
-  return escapeHtml(text);
+  return md.utils.escapeHtml(text);
 }
 
 export function highlight(

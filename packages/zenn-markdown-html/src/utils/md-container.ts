@@ -1,4 +1,4 @@
-import { escapeHtml } from './markdown-it-utils';
+import { md } from './markdown-it-utils';
 import type Token from 'markdown-it/lib/token.mjs';
 
 // containers
@@ -18,7 +18,7 @@ export const containerDetailsOptions = {
       // opening tag
       return (
         '<details><summary>' +
-        escapeHtml(summary) +
+        md.utils.escapeHtml(summary) +
         '</summary><div class="details-content">'
       );
     } else {
