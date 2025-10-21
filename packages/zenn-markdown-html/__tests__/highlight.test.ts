@@ -13,6 +13,7 @@ describe('コードハイライトのテスト', () => {
       `\`\`\`js:foo.js\nconsole.log("hello")\n\`\`\``
     );
     // <code />が取得できないので<pre />で取得する
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pre: any = parse(html).querySelector('pre');
     const code = parse(pre?.innerHTML).querySelector('code.language-js');
     expect(code).toBeTruthy();
