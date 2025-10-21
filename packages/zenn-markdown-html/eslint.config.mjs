@@ -1,5 +1,5 @@
 import eslint from '@eslint/js';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
@@ -11,9 +11,6 @@ export default defineConfig(
   {
     files: ['**/*.ts', '**/*.tsx'],
     rules: {
-      '@typescript-eslint/no-var-requires': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -26,5 +23,7 @@ export default defineConfig(
     },
   },
 
-  eslintConfigPrettier
+  eslintConfigPrettier,
+
+  globalIgnores(['**/*.js', '**/*.d.ts'])
 );
