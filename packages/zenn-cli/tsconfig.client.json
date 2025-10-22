@@ -9,9 +9,7 @@
     "module": "ESNext",
     "isolatedModules": false,
     "noEmit": true,
-    "jsx": "preserve",
-    "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment"
+    "jsx": "react-jsx"
   },
   "exclude": ["src/server", "node_modules", "**/__tests__"]
 }

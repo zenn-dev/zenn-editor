@@ -35,7 +35,7 @@ function completePublishedAt(
   }).format(new Date(publishedAtUnixTime));
 }
 
-export const ArticleHeader: React.VFC<Props> = ({ article }) => {
+export const ArticleHeader: React.FC<Props> = ({ article }) => {
   const validationErrors = useMemo(() => validateArticle(article), [article]);
   const publishedAt = completePublishedAt(
     article.published_at,

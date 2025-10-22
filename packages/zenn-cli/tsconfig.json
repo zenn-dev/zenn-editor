@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "allowJs": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "esModuleInterop": true,

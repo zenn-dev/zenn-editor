@@ -11,7 +11,7 @@ export async function notifyNeedUpdateCLI() {
   const config = new Configstore('zenn-cli', { lastUpdateCheck: Date.now() });
 
   // 一日前にチェックしていれば何も表示しない
-  if (Date.now() - config.get('lastUpdateCheck') < CLI_UPDATE_CHECK_INTERVAL) {
+  if (Date.now() - (config.get('lastUpdateCheck') as number) < CLI_UPDATE_CHECK_INTERVAL) {
     return;
   }
 
