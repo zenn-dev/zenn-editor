@@ -5,6 +5,7 @@
   },
   "sandbox": {
     "enabled": true,
+    "excludedCommands": ["git"],
     "autoAllowBashIfSandboxed": false,
     "network": {
       "allowLocalBinding": true
