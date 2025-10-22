@@ -1,0 +1,59 @@
+# https://docs.github.com/ja/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+
+version: 2
+updates:
+  # root npm(pnpm)の依存関係
+  - package-ecosystem: 'npm' # pnpmでもnpmと書く
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    cooldown:
+      default-days: 1
+    open-pull-requests-limit: 2
+    groups:
+      dev-dependencies:
+        dependency-type: 'development'
+        patterns:
+          - '*'
+      production-dependencies:
+        dependency-type: 'production'
+        patterns:
+          - '*'
+    commit-message:
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
+    labels:
+      - 'dependencies'
+      - 'automated'
+    allow:
+      - dependency-type: 'all'
+    assignees:
+      - 'cm-dyoshikawa'
+      - 'cm-igarashi-ryosuke'
+      - 'cm-wada-yusuke'
+
+  # GitHub Actionsの依存関係
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    cooldown:
+      default-days: 1
+    open-pull-requests-limit: 1
+    groups:
+      all-actions:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    labels:
+      - 'automated'
+      - 'dependencies'
+    allow:
+      - dependency-type: 'all'
+    assignees:
+      - 'cm-dyoshikawa'
+      - 'cm-igarashi-ryosuke'
+      - 'cm-wada-yusuke'
