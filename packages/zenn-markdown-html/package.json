@@ -48,6 +48,7 @@
     "node-html-parser": "^7.0.1",
     "rimraf": "^6.0.1",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2",
     "vitest": "^3.2.4"
   },
   "dependencies": {
@@ -61,8 +62,7 @@
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-task-lists": "^2.1.1",
     "prismjs": "^1.30.0",
-    "sanitize-html": "^2.17.0",
-    "typescript-eslint": "^8.46.2"
+    "sanitize-html": "^2.17.0"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
