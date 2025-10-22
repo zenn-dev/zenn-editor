@@ -9,6 +9,7 @@ export function sanitizeEmbedToken(str: string): string {
 
 /** `EmbedType`か判定する */
 export function isEmbedType(type: unknown): type is EmbedType {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return embedKeys.includes(type as any);
 }
 
@@ -22,6 +23,7 @@ export const validateEmbedToken = (
   /** 埋め込みURLまたはTokenの最大文字数( excludeEmbedTypeは除く ) */
   const MAX_EMBED_TOKEN_LENGTH = 300;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (ignoredEmbedType.includes(type as any)) {
     return { isValid: true, message: '' };
   }

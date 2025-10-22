@@ -84,6 +84,7 @@ describe('ソースマップ(data-line属性)のテスト', () => {
   test('Code Block', () => {
     const html = markdownToHtml('```\ncode\n```');
     // <code />が取得できないので<pre />で取得する
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const innerHTML: any = parse(html).querySelector('pre')?.innerHTML;
     const code = parse(innerHTML).querySelector('code');
     expect(code?.getAttribute('data-line')).toEqual('0'); // フェンス開始時の行番号

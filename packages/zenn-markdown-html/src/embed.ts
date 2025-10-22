@@ -1,6 +1,6 @@
 import type { MarkdownOptions } from './types';
 
-import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { md } from './utils/markdown-it';
 import {
   sanitizeEmbedToken,
   generateEmbedServerIframe,
@@ -58,7 +58,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
       return 'YouTubeのvideoIDが不正です';
     }
 
-    const escapedVideoId = escapeHtml(params.videoId);
+    const escapedVideoId = md.utils.escapeHtml(params.videoId);
     const time = Math.min(Number(params.start || 0), 48 * 60 * 60); // 48時間以内
     const startQuery = time ? `?start=${time}` : '';
 
@@ -68,7 +68,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (!key?.match(/^[a-zA-Z0-9_-]+$/)) {
       return 'Slide Shareのkeyが不正です';
     }
-    return `<span class="embed-block embed-slideshare"><iframe src="https://www.slideshare.net/slideshow/embed_code/key/${escapeHtml(
+    return `<span class="embed-block embed-slideshare"><iframe src="https://www.slideshare.net/slideshow/embed_code/key/${md.utils.escapeHtml(
       key
     )}" scrolling="no" allowfullscreen loading="lazy"></iframe></span>`;
   },
@@ -80,9 +80,9 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     const [key, slideParamStr] = str.split('?');
     const slideQuery = slideParamStr ? `?${slideParamStr}` : '';
 
-    return `<span class="embed-block embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${escapeHtml(
+    return `<span class="embed-block embed-speakerdeck"><iframe src="https://speakerdeck.com/player/${md.utils.escapeHtml(
       key
-    )}${escapeHtml(slideQuery)}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></span>`;
+    )}${md.utils.escapeHtml(slideQuery)}" scrolling="no" allowfullscreen allow="encrypted-media" loading="lazy"></iframe></span>`;
   },
   docswell(str) {
     const errorMessage = 'DocswellのスライドURLが不正です';

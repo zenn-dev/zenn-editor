@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it';
-import { RenderRule } from 'markdown-it/lib/renderer';
+import type { RenderRule } from 'markdown-it/lib/renderer.mjs';
 
 export const mdImage = (md: MarkdownIt): void => {
   const originalImageRenderRule = md.renderer.rules['image'] as RenderRule;

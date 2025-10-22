@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it';
-import Token from 'markdown-it/lib/token';
+import Token from 'markdown-it/lib/token.mjs';
 import { MarkdownOptions } from '../types';
 import { generateLinkifyEmbedHTML } from './embed-helper';
 

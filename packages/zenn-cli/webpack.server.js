@@ -63,9 +63,9 @@ module.exports = {
             options: {
               loader: 'ts',
 
-              // >=14.0.0の動作を保証するため、
-              // "node14" ではなく "node14.0.0" を指定する
-              target: 'node14.0.0',
+              // >=20.0.0の動作を保証するため、
+              // "node20" ではなく "node20.0.0" を指定する
+              target: 'node20.0.0',
             },
           },
         ],
