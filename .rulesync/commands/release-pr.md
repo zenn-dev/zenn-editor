@@ -10,9 +10,10 @@ targets:
     - canaryブランチ to mainブランチ
     - title: `release {new_version}`
     - description:
-        ```md
-        changes:
-        - {pr_url1}
-        - {pr_url2}
-        - ...
-        ```
+        - 以下の内容のみ。 @.github/PULL_REQUEST_TEMPLATE.md の内容は無視してください。
+          ```md
+          changes:
+          - {pr_url1}
+          - {pr_url2}
+          - ...
+          ```
