@@ -293,9 +293,6 @@ importers:
       sanitize-html:
         specifier: ^2.17.0
         version: 2.17.0
-      typescript-eslint:
-        specifier: ^8.46.2
-        version: 8.46.2(eslint@9.38.0)(typescript@5.9.3)
     devDependencies:
       '@babel/cli':
         specifier: ^7.28.3
@@ -342,6 +339,9 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      typescript-eslint:
+        specifier: ^8.46.2
+        version: 8.46.2(eslint@9.38.0)(typescript@5.9.3)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.9.1)(terser@5.44.0)(yaml@2.8.1)
