@@ -237,26 +237,26 @@ importers:
   packages/zenn-embed-elements:
     devDependencies:
       '@types/node':
-        specifier: ^18.13.0
-        version: 18.13.0
+        specifier: ^24.9.1
+        version: 24.9.1
       '@typescript-eslint/eslint-plugin':
-        specifier: ^5.52.0
-        version: 5.52.0(@typescript-eslint/parser@5.52.0(eslint@8.34.0)(typescript@4.9.5))(eslint@8.34.0)(typescript@4.9.5)
+        specifier: ^8.46.2
+        version: 8.46.2(@typescript-eslint/parser@8.46.2(eslint@9.38.0)(typescript@5.9.3))(eslint@9.38.0)(typescript@5.9.3)
       '@typescript-eslint/parser':
-        specifier: ^5.52.0
-        version: 5.52.0(eslint@8.34.0)(typescript@4.9.5)
+        specifier: ^8.46.2
+        version: 8.46.2(eslint@9.38.0)(typescript@5.9.3)
       eslint:
-        specifier: ^8.34.0
-        version: 8.34.0
+        specifier: ^9.38.0
+        version: 9.38.0
       eslint-config-prettier:
-        specifier: ^8.6.0
-        version: 8.6.0(eslint@8.34.0)
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@9.38.0)
       rimraf:
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^6.0.1
+        version: 6.0.1
       typescript:
-        specifier: ^4.9.5
-        version: 4.9.5
+        specifier: ^5.9.3
+        version: 5.9.3
 
   packages/zenn-markdown-html:
     dependencies:
@@ -5784,10 +5784,6 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  yocto-queue@1.0.0:
-    resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
-    engines: {node: '>=12.20'}
-
   yocto-queue@1.2.1:
     resolution: {integrity: sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==}
     engines: {node: '>=12.20'}
@@ -7616,7 +7612,7 @@ snapshots:
   '@types/body-parser@1.19.2':
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 18.13.0
+      '@types/node': 24.9.1
 
   '@types/chai-subset@1.3.3':
     dependencies:
@@ -7638,7 +7634,7 @@ snapshots:
 
   '@types/connect@3.4.35':
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 24.9.1
 
   '@types/cookiejar@2.1.2': {}
 
@@ -7662,7 +7658,7 @@ snapshots:
 
   '@types/express-serve-static-core@4.17.33':
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 24.9.1
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
 
@@ -7689,7 +7685,7 @@ snapshots:
 
   '@types/jsonfile@6.1.1':
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 24.9.1
 
   '@types/linkify-it@5.0.0': {}
 
@@ -7752,7 +7748,7 @@ snapshots:
   '@types/serve-static@1.15.0':
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 18.13.0
+      '@types/node': 24.9.1
 
   '@types/styled-components@5.1.26':
     dependencies:
@@ -7763,7 +7759,7 @@ snapshots:
   '@types/superagent@4.1.16':
     dependencies:
       '@types/cookiejar': 2.1.2
-      '@types/node': 18.13.0
+      '@types/node': 24.9.1
 
   '@types/supertest@2.0.12':
     dependencies:
@@ -9110,7 +9106,7 @@ snapshots:
     dependencies:
       acorn: 8.15.0
       acorn-jsx: 5.3.2(acorn@8.15.0)
-      eslint-visitor-keys: 3.3.0
+      eslint-visitor-keys: 3.4.3
 
   esprima@4.0.1: {}
 
@@ -9793,7 +9789,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 24.9.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -10337,7 +10333,7 @@ snapshots:
 
   p-limit@4.0.0:
     dependencies:
-      yocto-queue: 1.0.0
+      yocto-queue: 1.2.1
 
   p-limit@7.1.1:
     dependencies:
@@ -11080,7 +11076,7 @@ snapshots:
 
   strip-literal@1.3.0:
     dependencies:
-      acorn: 8.10.0
+      acorn: 8.15.0
 
   strip-literal@3.1.0:
     dependencies:
@@ -11809,8 +11805,6 @@ snapshots:
       yargs-parser: 22.0.0
 
   yocto-queue@0.1.0: {}
-
-  yocto-queue@1.0.0: {}
 
   yocto-queue@1.2.1: {}
 
