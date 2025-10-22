@@ -28,7 +28,6 @@ export function createApp() {
   });
 
   // serve static files built by vite
-
   app.use(history()); // required to directly access non-root pages such as /guide, /articles/foo
 
   app.use(
