@@ -8,7 +8,7 @@ import { ValidationErrors } from '../../ValidationErrors';
 
 type Props = { book: Book };
 
-export const BookHeader: React.VFC<Props> = ({ book }) => {
+export const BookHeader: React.FC<Props> = ({ book }) => {
   const validationErrors = useMemo(() => validateBook(book), [book]);
 
   return (

@@ -1,4 +1,3 @@
-import url from 'url';
 import path from 'path';
 import fs from 'fs-extra';
 import crypto from 'crypto';
@@ -39,7 +38,7 @@ export function getFileRaw(fullpath: string) {
   try {
     const raw = fs.readFileSync(fullpath, 'utf8');
     return raw;
-  } catch (err) {
+  } catch (_err) {
     return null;
   }
 }
@@ -48,7 +47,7 @@ export function getImageRaw(fullpath: string) {
   try {
     const raw = fs.readFileSync(fullpath);
     return raw;
-  } catch (err) {
+  } catch (_err) {
     return null;
   }
 }
@@ -61,7 +60,7 @@ export function listDirnames(searchDirFullpath: string) {
     return allFiles
       .filter((file) => file.isDirectory())
       .map(({ name }) => name);
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -87,7 +86,7 @@ export function listFilenames(searchDirFullpath: string) {
   try {
     const allFiles = fs.readdirSync(searchDirFullpath);
     return allFiles;
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -222,7 +221,8 @@ export function completeHtml(html: string): string {
 
 function isUrl(text: string): boolean {
   try {
-    return new url.URL(text) && true;
+    new URL(text);
+    return true;
   } catch {
     return false;
   }

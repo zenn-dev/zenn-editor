@@ -196,7 +196,7 @@ function readCoverFile(imageFullpath: string) {
       coverWidth: width,
       coverHeight: height,
     };
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }

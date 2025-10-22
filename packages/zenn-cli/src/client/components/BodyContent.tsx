@@ -7,7 +7,7 @@ type Props =
     }
   | { rawHtml: string };
 
-export const BodyContent: React.VFC<Props> = (props) => {
+export const BodyContent: React.FC<Props> = (props) => {
   if ('rawHtml' in props) {
     if (!props.rawHtml?.length) {
       return <StyledMessage>本文を入力してください</StyledMessage>;

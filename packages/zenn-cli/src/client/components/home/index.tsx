@@ -85,7 +85,7 @@ const StyledUpdateNotificationBar = styled.div`
   }
 `;
 
-export const Home: React.VFC = () => {
+export const Home: React.FC = () => {
   const { data } = useFetch<{ hasInit: boolean }>('/api/local-info');
   const hasInit = data?.hasInit;
 
