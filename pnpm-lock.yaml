@@ -355,12 +355,9 @@ importers:
         specifier: ^10.6.0
         version: 10.6.0
     devDependencies:
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^8.46.2
-        version: 8.46.2(@typescript-eslint/parser@8.46.2(eslint@9.38.0)(typescript@5.9.3))(eslint@9.38.0)(typescript@5.9.3)
-      '@typescript-eslint/parser':
-        specifier: ^8.46.2
-        version: 8.46.2(eslint@9.38.0)(typescript@5.9.3)
+      '@eslint/js':
+        specifier: ^9.38.0
+        version: 9.38.0
       esbuild:
         specifier: ^0.25.11
         version: 0.25.11
@@ -376,6 +373,9 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      typescript-eslint:
+        specifier: ^8.46.2
+        version: 8.46.2(eslint@9.38.0)(typescript@5.9.3)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.9.1)(terser@5.44.0)(yaml@2.8.1)
