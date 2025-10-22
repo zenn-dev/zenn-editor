@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.2.6-alpha.5",
+  "version": "0.2.6-alpha.6",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "devDependencies": {
+    "@eslint/js": "^9.38.0",
     "@types/configstore": "^6.0.2",
     "@types/connect-history-api-fallback": "^1.5.4",
     "@types/emoji-regex": "^9.2.2",
@@ -50,7 +51,6 @@
     "@types/styled-components": "^5.1.34",
     "@types/supertest": "^6.0.3",
     "@types/ws": "^8.18.1",
-    "@eslint/js": "^9.38.0",
     "@vitejs/plugin-react": "^5.0.4",
     "arg": "^5.0.2",
     "boxen": "^8.0.1",
