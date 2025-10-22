@@ -28,7 +28,7 @@ export function createApp() {
   });
 
   // serve static files built by vite
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   app.use(history() as any); // required to directly access non-root pages such as /guide, /articles/foo
 
   app.use(
