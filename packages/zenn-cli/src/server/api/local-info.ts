@@ -10,7 +10,7 @@ export async function getLocalInfo(
   try {
     fs.readdirSync(articleDirpath);
     res.json({ hasInit: true });
-  } catch (e) {
+  } catch (_e) {
     res.json({ hasInit: false });
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "zenn-content-css",
-  "version": "0.2.5",
+  "version": "0.2.6-alpha.6",
   "license": "MIT",
   "description": "Zenn flavor content style.",
   "repository": {
@@ -21,7 +21,7 @@
     "fix": "prettier -w ./src"
   },
   "devDependencies": {
-    "sass": "^1.58.1"
+    "sass": "^1.93.2"
   },
   "gitHead": "4d1b8deae4a6f359c0e6b25bb74aebd69af93458",
   "publishConfig": {

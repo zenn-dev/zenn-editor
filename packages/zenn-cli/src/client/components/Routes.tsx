@@ -46,7 +46,7 @@ export const Routes = () => {
 
 type LinkCommonProps = { className?: string; children: React.ReactNode };
 
-export const LinkHome: React.VFC<LinkCommonProps> = (props) => {
+export const LinkHome: React.FC<LinkCommonProps> = (props) => {
   const location = useLocation();
   const isActive = useMemo(() => {
     return location.key === tovlevelRoutes.exactRoute.key;
@@ -62,7 +62,7 @@ export const LinkHome: React.VFC<LinkCommonProps> = (props) => {
   );
 };
 
-export const LinkArticle: React.VFC<
+export const LinkArticle: React.FC<
   {
     slug: string;
   } & LinkCommonProps
@@ -83,7 +83,7 @@ export const LinkArticle: React.VFC<
   );
 };
 
-export const LinkBook: React.VFC<
+export const LinkBook: React.FC<
   {
     slug: string;
   } & LinkCommonProps
@@ -106,7 +106,7 @@ export const LinkBook: React.VFC<
   );
 };
 
-export const LinkChapter: React.VFC<
+export const LinkChapter: React.FC<
   {
     bookSlug: string;
     chapterFilename: string;
@@ -138,7 +138,7 @@ export const LinkChapter: React.VFC<
   );
 };
 
-export const LinkGuide: React.VFC<
+export const LinkGuide: React.FC<
   {
     slug: string;
     hash?: string;

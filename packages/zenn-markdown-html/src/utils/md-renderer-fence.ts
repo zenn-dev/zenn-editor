@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it';
-import { escapeHtml } from 'markdown-it/lib/common/utils';
+import { md } from './markdown-it';
 import { MarkdownOptions } from '../types';
 import { highlight } from './highlight';
 
@@ -14,11 +14,11 @@ function getHtml({
   fileName?: string;
   line?: number;
 }) {
-  const escapedClass = escapeHtml(className);
+  const escapedClass = md.utils.escapeHtml(className);
 
   return `<div class="code-block-container">${
     fileName
-      ? `<div class="code-block-filename-container"><span class="code-block-filename">${escapeHtml(
+      ? `<div class="code-block-filename-container"><span class="code-block-filename">${md.utils.escapeHtml(
           fileName
         )}</span></div>`
       : ''

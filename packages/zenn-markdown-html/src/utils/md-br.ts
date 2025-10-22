@@ -9,7 +9,7 @@ import MarkdownIt from 'markdown-it';
  * @param {number} start start position at br tag
  * @returns {string | null} br tag (<br> or <br/> or <br />)
  */
-// eslint-disable-next-line
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function matchBR(state: any, start: number): string | null {
   const match = state.src.slice(start, start + 6).match(/^<br\s?\/?>/);
   if (match) {
@@ -23,7 +23,7 @@ export function mdBr(md: MarkdownIt): void {
   md.inline.ruler.before(
     'emphasis',
     'br',
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function tokenize(state: any, silent): boolean {
       const max = state.posMax;
       const start = state.pos;

@@ -15,7 +15,7 @@ type BookShowProps = {
   slug: string;
 };
 
-export const BookShow: React.VFC<BookShowProps> = ({ slug }) => {
+export const BookShow: React.FC<BookShowProps> = ({ slug }) => {
   const {
     data: bookData,
     error: bookError,

@@ -131,7 +131,7 @@ export function mdKatex(md: MarkdownIt) {
           const lineMax = state.lineMax;
           const oldParentType = state.parentType;
           state.lineMax = curline;
-          // eslint-disable-next-line
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           state.parentType = 'math' as any;
 
           if (oldParentType === 'blockquote') {

@@ -12,7 +12,7 @@ export async function getCliVersion(
     if (!current) throw "Couldn't get current version";
     const updateAvailable = latest !== current;
     res.json({ current, latest, updateAvailable });
-  } catch (err) {
+  } catch (_err) {
     res
       .status(500)
       .json({ message: '最新のzenn-cliのバージョンを取得できませんでした' });

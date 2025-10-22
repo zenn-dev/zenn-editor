@@ -6,7 +6,7 @@ import { MdError, MdOutlineCallMade } from 'react-icons/md';
 
 const warningColor = '#ff9715';
 
-const ValidationErrorRow: React.VFC<ValidationError> = ({
+const ValidationErrorRow: React.FC<ValidationError> = ({
   message,
   isCritical,
   detailUrl,
@@ -80,7 +80,7 @@ const StyledValidationErrorRow = styled.div`
   }
 `;
 
-export const ValidationErrors: React.VFC<{
+export const ValidationErrors: React.FC<{
   validationErrors: ValidationError[];
 }> = ({ validationErrors }) => {
   const { criticalErrors, warnings } = useMemo(

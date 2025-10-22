@@ -47,7 +47,7 @@ export const exec: CliExecFn = (argv) => {
     const createFilePath = getWorkingPath(`${dirName}/.keep`);
     try {
       generateFileIfNotExist(createFilePath, '');
-    } catch (e) {
+    } catch (_e) {
       console.log(`Generating ${dirName} skipped.`);
     }
   });
@@ -58,7 +58,7 @@ export const exec: CliExecFn = (argv) => {
       getWorkingPath('.gitignore'),
       ['node_modules', '.DS_Store'].join('\n')
     );
-  } catch (e) {
+  } catch (_e) {
     console.log(`Generating .gitignore skipped.`);
   }
 
@@ -71,7 +71,7 @@ export const exec: CliExecFn = (argv) => {
         '* [📘 How to use](https://zenn.dev/zenn/articles/zenn-cli-guide)',
       ].join('\n')
     );
-  } catch (e) {
+  } catch (_e) {
     console.log(`Generating README.md skipped.`);
   }
 

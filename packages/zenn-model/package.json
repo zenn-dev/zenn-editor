@@ -1,6 +1,6 @@
 {
   "name": "zenn-model",
-  "version": "0.2.5",
+  "version": "0.2.6-alpha.6",
   "license": "MIT",
   "description": "Model utils for Zenn contents",
   "main": "lib/index.js",
@@ -18,28 +18,28 @@
     "build:src": "esbuild ./src/*.ts --format=cjs --outdir=lib",
     "build:types": "tsc --project ./tsconfig.build.json",
     "lint": "run-s lint:*",
-    "lint:eslint": "eslint . --ext .ts,.tsx",
+    "lint:eslint": "eslint .",
     "lint:prettier": "prettier .",
     "lint-strict": "run-s lint-strict:*",
-    "lint-strict:eslint": "eslint . --ext .ts,.tsx --max-warnings 0",
+    "lint-strict:eslint": "eslint . --max-warnings 0",
     "lint-strict:prettier": "prettier --check .",
     "fix": "run-s fix:*",
-    "fix:eslint": "eslint . --ext .ts,.tsx --fix",
+    "fix:eslint": "eslint . --fix",
     "fix:prettier": "prettier -w .",
     "test": "vitest run"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
-    "esbuild": "^0.17.8",
-    "eslint": "^8.34.0",
-    "eslint-config-prettier": "^8.6.0",
-    "rimraf": "^4.1.2",
-    "typescript": "^4.9.5",
-    "vitest": "^0.34.4"
+    "@eslint/js": "^9.38.0",
+    "esbuild": "^0.25.11",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
-    "emoji-regex": "^10.2.1"
+    "cheerio": "^1.1.2",
+    "emoji-regex": "^10.6.0"
   }
 }
