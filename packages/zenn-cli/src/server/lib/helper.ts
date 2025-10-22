@@ -1,4 +1,3 @@
-import url from 'url';
 import path from 'path';
 import fs from 'fs-extra';
 import crypto from 'crypto';
@@ -222,7 +221,7 @@ export function completeHtml(html: string): string {
 
 function isUrl(text: string): boolean {
   try {
-    new url.URL(text);
+    new URL(text);
     return true;
   } catch {
     return false;
