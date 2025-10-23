@@ -79,11 +79,24 @@ module.exports = {
     // 出力先のファイルを`zenn.js`のみするための設定
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     // 環境変数を埋め込む
-    new webpack.DefinePlugin(
-      Object.entries(ENV).reduce((env, [key, value]) => {
+    new webpack.DefinePlugin({
+      // wsパッケージのオプショナル依存関係（bufferutil, utf-8-validate）を無効化
+      // https://github.com/websockets/ws#opt-in-for-performance
+      'process.env.WS_NO_BUFFER_UTIL': JSON.stringify('1'),
+      'process.env.WS_NO_UTF_8_VALIDATE': JSON.stringify('1'),
+      ...Object.entries(ENV).reduce((env, [key, value]) => {
         env[`process.env.${key}`] = JSON.stringify(value);
         return env;
-      }, {})
-    ),
+      }, {}),
+    }),
+  ],
+
+  ignoreWarnings: [
+    // Expressのdynamic require警告を抑制
+    {
+      module: /express/,
+      message:
+        /Critical dependency: the request of a dependency is an expression/,
+    },
   ],
 };

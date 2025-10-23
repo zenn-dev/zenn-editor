@@ -18,7 +18,7 @@
   },
   "scripts": {
     "clean": "rimraf lib/*",
-    "build": "npm run clean && run-p build:*",
+    "build": "pnpm clean && run-p build:*",
     "build:src": "babel ./src --extensions '.ts,.tsx' --ignore '**/*.d.ts' --out-dir ./lib",
     "build:types": "tsc --project ./tsconfig.build.json",
     "lint": "run-s lint:*",

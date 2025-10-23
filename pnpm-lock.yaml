@@ -44,9 +44,6 @@ importers:
       '@types/configstore':
         specifier: ^6.0.2
         version: 6.0.2
-      '@types/connect-history-api-fallback':
-        specifier: ^1.5.4
-        version: 1.5.4
       '@types/emoji-regex':
         specifier: ^9.2.2
         version: 9.2.2
@@ -104,9 +101,6 @@ importers:
       configstore:
         specifier: ^7.1.0
         version: 7.1.0
-      connect-history-api-fallback:
-        specifier: ^2.0.0
-        version: 2.0.0
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
@@ -1810,9 +1804,6 @@ packages:
   '@types/configstore@6.0.2':
     resolution: {integrity: sha512-OS//b51j9uyR3zvwD04Kfs5kHpve2qalQ18JhY/ho3voGYUTPLEG90/ocfKPI48hyHH8T04f7KEEbK6Ue60oZQ==}
 
-  '@types/connect-history-api-fallback@1.5.4':
-    resolution: {integrity: sha512-n6Cr2xS1h4uAulPRdlw6Jl6s1oG8KrVilPN2yUITEs+K48EzMJJ3W1xy8K5eWuFvjp3R74AOIGSmp2UfBJ8HFw==}
-
   '@types/connect@3.4.35':
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
 
@@ -1834,9 +1825,6 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
-
-  '@types/express-serve-static-core@4.17.33':
-    resolution: {integrity: sha512-TPBqmR/HRYI3eC2E5hmiivIzv+bidAfXofM+sbonAGvyDhySGw9/PQZFt2BLOrjUUR++4eJVpx6KnLQK1Fk9tA==}
 
   '@types/express-serve-static-core@5.1.0':
     resolution: {integrity: sha512-jnHMsrd0Mwa9Cf4IdOzbz543y4XJepXrbia2T4b6+spXC2We3t1y6K44D3mR8XMFSXMCf3/l7rCgddfx7UNVBA==}
@@ -2484,10 +2472,6 @@ packages:
   configstore@7.1.0:
     resolution: {integrity: sha512-N4oog6YJWbR9kGyXvS7jEykLDXIE2C0ILYqNBZBp9iwiJpoCBWYsuAdW6PPFn6w06jjnC+3JstVvWHO4cZqvRg==}
     engines: {node: '>=18'}
-
-  connect-history-api-fallback@2.0.0:
-    resolution: {integrity: sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA==}
-    engines: {node: '>=0.8'}
 
   content-disposition@1.0.0:
     resolution: {integrity: sha512-Au9nRL8VNUut/XSzbQA38+M78dzP4D+eqg3gfJHMIHHYa3bg067xj1KxMUWj+VULbiZMowKngFFbKczUrNJ1mg==}
@@ -6943,11 +6927,6 @@ snapshots:
 
   '@types/configstore@6.0.2': {}
 
-  '@types/connect-history-api-fallback@1.5.4':
-    dependencies:
-      '@types/express-serve-static-core': 4.17.33
-      '@types/node': 24.9.1
-
   '@types/connect@3.4.35':
     dependencies:
       '@types/node': 24.9.1
@@ -6971,12 +6950,6 @@ snapshots:
       '@types/json-schema': 7.0.15
 
   '@types/estree@1.0.8': {}
-
-  '@types/express-serve-static-core@4.17.33':
-    dependencies:
-      '@types/node': 24.9.1
-      '@types/qs': 6.9.7
-      '@types/range-parser': 1.2.4
 
   '@types/express-serve-static-core@5.1.0':
     dependencies:
@@ -7747,8 +7720,6 @@ snapshots:
       dot-prop: 9.0.0
       graceful-fs: 4.2.11
       xdg-basedir: 5.1.0
-
-  connect-history-api-fallback@2.0.0: {}
 
   content-disposition@1.0.0:
     dependencies:
