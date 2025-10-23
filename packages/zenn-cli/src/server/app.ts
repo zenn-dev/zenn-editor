@@ -28,7 +28,8 @@ export function createApp() {
   });
 
   // serve static files built by vite
-  app.use(historyApiFallback()); // required to directly access non-root pages such as /guide, /articles/foo
+  // historyApiFallbackがないと `/articles/foo` などの非ルートページでリロードすると404エラーになる
+  app.use(historyApiFallback());
 
   app.use(
     express.static(path.join(__dirname, '../client'), {
