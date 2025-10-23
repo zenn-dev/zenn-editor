@@ -89,14 +89,14 @@ module.exports = {
         return env;
       }, {}),
     }),
+  ],
+
+  ignoreWarnings: [
     // Expressのdynamic require警告を抑制
-    new webpack.ContextReplacementPlugin(/express[/\\]lib/, (data) => {
-      data.dependencies.forEach((dep) => {
-        if (dep.critical === 'the request of a dependency is an expression') {
-          delete dep.critical;
-        }
-      });
-      return data;
-    }),
+    {
+      module: /express/,
+      message:
+        /Critical dependency: the request of a dependency is an expression/,
+    },
   ],
 };
