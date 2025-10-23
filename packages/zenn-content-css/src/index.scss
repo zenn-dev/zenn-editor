@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 /* border-radius */
 $rounded-xs: 4px;
 $rounded-sm: 7px;
@@ -18,7 +20,7 @@ $breakpoints: (
 );
 
 @mixin mq($size) {
-  @media #{map-get($breakpoints, $size)} {
+  @media #{map.get($breakpoints, $size)} {
     @content;
   }
 }
