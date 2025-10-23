@@ -3,6 +3,13 @@ const dotenv = require('dotenv');
 
 const ENV = dotenv.config().parsed || {};
 
+const clientEnv = Object.entries(ENV)
+  .filter(([key]) => key.startsWith('VITE_'))
+  .reduce((env, [key, value]) => {
+    env[`process.env.${key}`] = JSON.stringify(value);
+    return env;
+  }, {});
+
 /**
  * @type {import('webpack').Configuration}
  */
@@ -84,10 +91,7 @@ module.exports = {
       // https://github.com/websockets/ws#opt-in-for-performance
       'process.env.WS_NO_BUFFER_UTIL': JSON.stringify('1'),
       'process.env.WS_NO_UTF_8_VALIDATE': JSON.stringify('1'),
-      ...Object.entries(ENV).reduce((env, [key, value]) => {
-        env[`process.env.${key}`] = JSON.stringify(value);
-        return env;
-      }, {}),
+      ...clientEnv,
     }),
   ],
 
