@@ -1,3 +1,5 @@
+@use './utils' as utils;
+
 i,
 cite,
 em {
@@ -113,7 +115,7 @@ h6 {
   font-size: 0.9em;
 }
 
-@include mq(sm) {
+@include utils.mq(sm) {
   h1 {
     font-size: 1.6em;
   }
@@ -220,7 +222,7 @@ pre {
   & > code {
     display: block;
     padding: 1.1rem; // このようにしないとpreのスクロールバーがコードに重なってしまう
-    @include mq(sm) {
+    @include utils.mq(sm) {
       padding: 1rem 0.8rem;
       font-size: 0.85em;
     }

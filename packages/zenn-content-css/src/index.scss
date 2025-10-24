@@ -1,4 +1,9 @@
 @use 'sass:map';
+@use './content' as content;
+@use './embed' as embed;
+@use './prism' as prism;
+@use './message' as message;
+@use './footnotes' as footnotes;
 
 /* border-radius */
 $rounded-xs: 4px;
@@ -18,12 +23,6 @@ $breakpoints: (
   'sm': 'screen and (max-width: #{$sm})',
   'md': 'screen and (max-width: #{$md})',
 );
-
-@mixin mq($size) {
-  @media #{map.get($breakpoints, $size)} {
-    @content;
-  }
-}
 
 // use short classname so that nested css does not become too long.
 .znc {
@@ -93,11 +92,11 @@ $breakpoints: (
   // リンクのテキスト
   --c-text-link: var(--c-blue-600);
 
-  @import './_content.scss';
-  @import './_embed.scss';
-  @import './_prism.scss';
-  @import './_message.scss';
-  @import './_footnotes.scss';
+  @include content.styles;
+  @include embed.styles;
+  @include prism.styles;
+  @include message.styles;
+  @include footnotes.styles;
 }
 
 [data-theme^='dark'] .znc {
