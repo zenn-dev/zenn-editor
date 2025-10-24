@@ -1,97 +1,99 @@
-span.embed-block {
-  // markdown-it が<p>タグでコンテンツを囲むので、内部で<div>が使えない
-  // そのため、<div>を使いたいシーンでは<div>のかわりに<span>で囲み、このCSSでdisplay: block;を指定する
-  // 参考: https://stackoverflow.com/questions/8397852/why-cant-the-p-tag-contain-a-div-tag-inside-it
-  display: block;
-  width: 100%;
-  margin: 1.5rem 0;
-}
-.embed-slideshare,
-.embed-speakerdeck,
-.embed-docswell,
-.embed-codepen,
-.embed-jsfiddle,
-.embed-youtube,
-.embed-stackblitz {
-  padding-bottom: calc(56.25% + 38px);
-  position: relative;
-  width: 100%;
-  height: 0;
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-}
-.embed-slideshare iframe {
-  border: 1px solid var(--c-border);
-}
-
-.embed-jsfiddle iframe {
-  border: 1px solid var(--c-border);
-}
-
-.embed-figma {
-  border: 1px solid var(--c-border);
-}
-
-.zenn-embedded {
-  iframe {
-    width: 100%;
+@mixin styles {
+  span.embed-block {
+    // markdown-it が<p>タグでコンテンツを囲むので、内部で<div>が使えない
+    // そのため、<div>を使いたいシーンでは<div>のかわりに<span>で囲み、このCSSでdisplay: block;を指定する
+    // 参考: https://stackoverflow.com/questions/8397852/why-cant-the-p-tag-contain-a-div-tag-inside-it
     display: block;
-
-    /* 親windowのthemeによって、iframe内のcolor-schemeを指定する */
-    color-scheme: light;
-
-    [data-theme^='dark'] & {
-      color-scheme: dark;
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+  .embed-slideshare,
+  .embed-speakerdeck,
+  .embed-docswell,
+  .embed-codepen,
+  .embed-jsfiddle,
+  .embed-youtube,
+  .embed-stackblitz {
+    padding-bottom: calc(56.25% + 38px);
+    position: relative;
+    width: 100%;
+    height: 0;
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
     }
   }
-}
-.zenn-embedded-link-card {
-  margin: 1rem auto;
-  iframe {
-    height: 125px;
+  .embed-slideshare iframe {
+    border: 1px solid var(--c-border);
   }
-}
-.zenn-embedded-tweet,
-.zenn-embedded-mermaid,
-.zenn-embedded-github,
-.zenn-embedded-gist {
-  margin: 1.5rem auto;
-}
 
-embed-katex {
-  // issue: https://github.com/zenn-dev/zenn-community/issues/327
-  // 横に長い要素がはみ出さないようにはスクロールバーを有効化する
-  overflow-x: auto;
-  // issue: https://github.com/zenn-dev/zenn-community/issues/608
-  // .katex .vlist-t2 に指定されているネガティブマージン（margin-right: -2px）により一部のブラウザでスクロールバーが表示されるため
-  // ネガティブマージンを相殺するパディングを親要素に設定する
-  padding-right: 2px;
-}
-
-// prevent katex overflow
-// for inline $foo$
-embed-katex:not([display-mode='1']) {
-  display: inline-flex;
-  max-width: 100%;
-  // issue: https://github.com/zenn-dev/zenn-editor/pull/216
-  // インライン要素ではいかなる場合でもスクロールバーを表示しない
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+  .embed-jsfiddle iframe {
+    border: 1px solid var(--c-border);
   }
-}
-// for block
-// $$
-// foo
-// $$
-embed-katex[display-mode='1'] {
-  display: block;
-  width: 100%;
+
+  .embed-figma {
+    border: 1px solid var(--c-border);
+  }
+
+  .zenn-embedded {
+    iframe {
+      width: 100%;
+      display: block;
+
+      /* 親windowのthemeによって、iframe内のcolor-schemeを指定する */
+      color-scheme: light;
+
+      [data-theme^='dark'] & {
+        color-scheme: dark;
+      }
+    }
+  }
+  .zenn-embedded-link-card {
+    margin: 1rem auto;
+    iframe {
+      height: 125px;
+    }
+  }
+  .zenn-embedded-tweet,
+  .zenn-embedded-mermaid,
+  .zenn-embedded-github,
+  .zenn-embedded-gist {
+    margin: 1.5rem auto;
+  }
+
+  embed-katex {
+    // issue: https://github.com/zenn-dev/zenn-community/issues/327
+    // 横に長い要素がはみ出さないようにはスクロールバーを有効化する
+    overflow-x: auto;
+    // issue: https://github.com/zenn-dev/zenn-community/issues/608
+    // .katex .vlist-t2 に指定されているネガティブマージン（margin-right: -2px）により一部のブラウザでスクロールバーが表示されるため
+    // ネガティブマージンを相殺するパディングを親要素に設定する
+    padding-right: 2px;
+  }
+
+  // prevent katex overflow
+  // for inline $foo$
+  embed-katex:not([display-mode='1']) {
+    display: inline-flex;
+    max-width: 100%;
+    // issue: https://github.com/zenn-dev/zenn-editor/pull/216
+    // インライン要素ではいかなる場合でもスクロールバーを表示しない
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  // for block
+  // $$
+  // foo
+  // $$
+  embed-katex[display-mode='1'] {
+    display: block;
+    width: 100%;
+  }
 }
