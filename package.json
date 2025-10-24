@@ -12,7 +12,9 @@
     "turbo": "^2.5.8"
   },
   "scripts": {
+    "clean": "rm -rf packages/*/dist packages/*/lib",
     "build": "turbo build",
+    "build:nocache": "turbo build --cache=local:w",
     "lint": "turbo lint",
     "lint:lockfile": "npx lockfile-lint --path pnpm-lock.yaml --allowed-hosts npm yarn --validate-https",
     "lint-strict": "turbo lint-strict",

@@ -1,0 +1,18 @@
+/* border-radius */
+$rounded-xs: 4px;
+$rounded-sm: 7px;
+$rounded-md: 10px;
+$rounded-lg: 14px;
+$rounded-xl: 20px;
+$rounded-full: 99rem;
+$rounded-publication: 25%;
+
+$xs: 374px;
+$sm: 576px;
+$md: 768px;
+
+$breakpoints: (
+  'xs': 'screen and (max-width: #{$xs})',
+  'sm': 'screen and (max-width: #{$sm})',
+  'md': 'screen and (max-width: #{$md})',
+);
