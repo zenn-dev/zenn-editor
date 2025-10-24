@@ -1,10 +1,12 @@
+@use './variables' as variables;
+
 // Message box by markdown-it-container
 aside.msg {
   display: flex;
   align-items: flex-start;
   margin: 1.5rem 0;
   padding: 1.4em 1em;
-  border-radius: $rounded-xs;
+  border-radius: variables.$rounded-xs;
   background: var(--c-bg-warning);
   font-size: 0.94em;
   line-height: 1.6;
