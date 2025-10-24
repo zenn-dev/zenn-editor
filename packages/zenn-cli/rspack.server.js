@@ -1,10 +1,10 @@
-const webpack = require('webpack');
+const rspack = require('@rspack/core');
 const dotenv = require('dotenv');
 
 const ENV = dotenv.config().parsed || {};
 
 /**
- * @type {import('webpack').Configuration}
+ * @type {import('@rspack/core').Configuration}
  */
 module.exports = {
   target: 'node',
@@ -52,20 +52,21 @@ module.exports = {
       // fsevents の `*.node` ファイルに対応するため
       {
         test: /\.node$/,
-        loader: 'node-loader',
+        type: 'asset/resource',
       },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: 'esbuild-loader',
+            loader: 'builtin:swc-loader',
             options: {
-              loader: 'ts',
-
-              // >=20.0.0の動作を保証するため、
-              // "node20" ではなく "node20.0.0" を指定する
-              target: 'node20.0.0',
+              jsc: {
+                parser: {
+                  syntax: 'typescript',
+                },
+                target: 'es2020',
+              },
             },
           },
         ],
@@ -75,11 +76,11 @@ module.exports = {
 
   plugins: [
     // ビルドファイルの先頭に shebang を追加する
-    new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
+    new rspack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
     // 出力先のファイルを`zenn.js`のみするための設定
-    new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+    new rspack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     // 環境変数を埋め込む
-    new webpack.DefinePlugin({
+    new rspack.DefinePlugin({
       // wsパッケージのオプショナル依存関係（bufferutil, utf-8-validate）を無効化
       // https://github.com/websockets/ws#opt-in-for-performance
       'process.env.WS_NO_BUFFER_UTIL': JSON.stringify('1'),
