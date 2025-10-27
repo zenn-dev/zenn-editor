@@ -46,12 +46,12 @@ export async function startServer(options: ServerOptions): Promise<HttpServer> {
   });
 }
 
-export async function startLocalChangesWatcher(
+export function startLocalChangesWatcher(
   server: HttpServer,
-  watchPathGlob: string
+  watchPaths: string[]
 ) {
   const wss = new WebSocketServer({ server });
-  const watcher = await chokidar.watch(watchPathGlob);
+  const watcher = chokidar.watch(watchPaths);
   watcher.on('change', () => {
     wss.clients.forEach((client) => client.send('Should refresh'));
   });
