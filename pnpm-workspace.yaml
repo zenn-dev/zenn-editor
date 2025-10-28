@@ -1,6 +1,7 @@
 packages:
   - packages/*
 
+# 2025/10/28 に `pnpm audit --fix` を実行した結果
 overrides:
   '@babel/runtime@<7.26.10': '>=7.26.10'
   brace-expansion@>=1.0.0 <=1.1.11: '>=1.1.12'
