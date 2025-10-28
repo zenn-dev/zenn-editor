@@ -11,7 +11,7 @@ describe('preview コマンドのテスト', () => {
     console.log = vi.fn();
     mockReturnServer = {} as HttpServer;
     vi.spyOn(server, 'startServer').mockResolvedValue(mockReturnServer);
-    vi.spyOn(server, 'startLocalChangesWatcher').mockResolvedValue(undefined);
+    vi.spyOn(server, 'startLocalChangesWatcher').mockReturnValue(undefined);
   });
 
   test('--help オプションを渡すとヘルプメッセージを表示する', async () => {
@@ -69,7 +69,7 @@ describe('preview コマンドのテスト', () => {
     await exec([]);
     expect(server.startLocalChangesWatcher).toHaveBeenCalledWith(
       mockReturnServer,
-      `${process.cwd()}/{articles,books}/**/*`
+      [`${process.cwd()}/articles`, `${process.cwd()}/books`]
     );
   });
 
