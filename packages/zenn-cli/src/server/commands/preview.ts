@@ -54,9 +54,9 @@ export const exec: CliExecFn = async (argv) => {
   const server = await startServer(options);
 
   if (shouldWatch) {
-    await startLocalChangesWatcher(
-      server,
-      `${getWorkingPath('')}/{articles,books}/**/*`
-    );
+    startLocalChangesWatcher(server, [
+      `${getWorkingPath('')}/articles`,
+      `${getWorkingPath('')}/books`,
+    ]);
   }
 };
