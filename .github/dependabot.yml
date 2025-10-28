@@ -6,7 +6,7 @@ updates:
   - package-ecosystem: 'npm' # pnpmでもnpmと書く
     directory: '/'
     schedule:
-      interval: 'monthly'
+      interval: 'daily'
     cooldown:
       default-days: 1
     open-pull-requests-limit: 2
