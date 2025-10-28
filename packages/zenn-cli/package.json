@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.2.8",
+  "version": "0.2.9-alpha.0",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -74,7 +74,6 @@
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.10",
-    "npm-run-all": "^4.1.5",
     "open": "^10.2.0",
     "path": "^0.12.7",
     "react": "^19.2.0",
