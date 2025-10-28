@@ -87,7 +87,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
     "vite": "^7.1.11",
-    "vitest": "^3.2.4",
+    "vitest": "^4.0.3",
     "wait-on": "^9.0.1",
     "ws": "^8.18.3",
     "zenn-content-css": "workspace:*",
