@@ -3,7 +3,6 @@ import { createServer } from 'http';
 import type { Server as HttpServer } from 'http';
 import { WebSocketServer } from 'ws';
 import chokidar from 'chokidar';
-import open from 'open';
 import { resolveHostname } from './helper';
 
 type ServerOptions = {
@@ -20,7 +19,7 @@ export async function startServer(options: ServerOptions): Promise<HttpServer> {
   return new Promise((resolve, reject) => {
     server
       .listen(port, hostname)
-      .once('listening', function () {
+      .once('listening', async function () {
         if (process.env.TS_NODE_DEV) {
           console.log('🚀 Server is ready.');
         } else {
@@ -29,7 +28,10 @@ export async function startServer(options: ServerOptions): Promise<HttpServer> {
           console.log(`👀 Preview: http://${name}:${port}`);
           if (host) console.log(`🌏 NetWork: http://${host}:${port}`);
         }
-        if (shouldOpen) open(`http://localhost:${port}`);
+        if (shouldOpen) {
+          const open = (await import('open')).default;
+          await open(`http://localhost:${port}`);
+        }
         resolve(server);
       })
       .once('error', async function (err) {

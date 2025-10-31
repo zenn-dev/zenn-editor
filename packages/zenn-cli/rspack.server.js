@@ -43,7 +43,14 @@ module.exports = {
     },
 
     // open パッケージは外部依存として扱う（クロスプラットフォーム対応のため）
-    'open',
+    // ESM パッケージなので dynamic import で読み込む
+    ({ request }, callback) => {
+      if (request === 'open') {
+        callback(null, 'import open');
+      } else {
+        callback();
+      }
+    },
   ],
 
   resolve: {
