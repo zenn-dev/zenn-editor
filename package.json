@@ -7,12 +7,13 @@
     "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
     "npm-run-all2": "^8.0.4",
     "prettier": "^3.6.2",
+    "rimraf": "^6.0.1",
     "secretlint": "^11.2.5",
     "simple-git-hooks": "^2.13.1",
     "turbo": "^2.5.8"
   },
   "scripts": {
-    "clean": "rm -rf packages/*/dist packages/*/lib",
+    "clean": "rimraf packages/*/dist packages/*/lib",
     "build": "turbo build",
     "build:nocache": "turbo build --cache=local:w",
     "lint": "turbo lint",
