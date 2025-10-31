@@ -1,0 +1,53 @@
+name: E2E Test on Windows
+
+on:
+  pull_request:
+    branches:
+      - main
+      - canary
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+
+      - name: パッケージをインストール
+        run: pnpm install
+
+      - name: ビルド
+        run: pnpm build
+
+      - name: zenn-cliのdistディレクトリをキャッシュ
+        uses: actions/cache/save@v4
+        with:
+          path: packages/zenn-cli/dist
+          key: zenn-cli-dist-${{ github.sha }}
+
+  e2e:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+
+      - name: パッケージをインストール
+        run: pnpm install
+
+      - name: zenn-cliのdistディレクトリをキャッシュから復元
+        uses: actions/cache/restore@v4
+        with:
+          path: packages/zenn-cli/dist
+          key: zenn-cli-dist-${{ github.sha }}
+
+      - name: initコマンドを実行してエラーが出ないことを確認
+        run: node packages/zenn-cli/dist/server/zenn.js init
+        working-directory: .
