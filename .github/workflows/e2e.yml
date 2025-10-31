@@ -53,9 +53,10 @@ jobs:
       - name: distディレクトリの内容を確認
         run: |
           echo "Checking dist directory..."
-          ls -la packages/zenn-cli/dist/server/
+          Get-ChildItem packages/zenn-cli/dist/server/
           echo "Checking if zenn.js exists..."
-          test -f packages/zenn-cli/dist/server/zenn.js && echo "zenn.js found" || echo "zenn.js NOT found"
+          if (Test-Path packages/zenn-cli/dist/server/zenn.js) { echo "zenn.js found" } else { echo "zenn.js NOT found" }
+        shell: pwsh
 
       - name: initコマンドを実行してエラーが出ないことを確認
         run: node packages/zenn-cli/dist/server/zenn.js init
