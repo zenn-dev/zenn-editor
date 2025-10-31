@@ -50,6 +50,13 @@ jobs:
           key: zenn-cli-dist-${{ github.sha }}
           enableCrossOsArchive: true
 
+      - name: distディレクトリの内容を確認
+        run: |
+          echo "Checking dist directory..."
+          ls -la packages/zenn-cli/dist/server/
+          echo "Checking if zenn.js exists..."
+          test -f packages/zenn-cli/dist/server/zenn.js && echo "zenn.js found" || echo "zenn.js NOT found"
+
       - name: initコマンドを実行してエラーが出ないことを確認
         run: node packages/zenn-cli/dist/server/zenn.js init
         working-directory: .
