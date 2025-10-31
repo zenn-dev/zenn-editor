@@ -19,6 +19,11 @@ module.exports = {
     path: `${__dirname}/dist/server`,
   },
 
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
+
   externals: [
     // package.json はビルドファイルには含めず外部ファイルとして読み込む
     // パスはビルド後のファイル構造を考慮する
