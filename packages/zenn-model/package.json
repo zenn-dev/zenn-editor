@@ -13,7 +13,7 @@
     "lib"
   ],
   "scripts": {
-    "clean": "rimraf lib/*",
+    "clean": "rimraf lib",
     "build": "pnpm clean && run-p build:*",
     "build:src": "esbuild ./src/*.ts --format=cjs --outdir=lib",
     "build:types": "tsc --project ./tsconfig.build.json",

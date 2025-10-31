@@ -18,7 +18,7 @@
     "dev": "run-p dev:server dev:client",
     "dev:client": "wait-on http://localhost:8000 && vite",
     "dev:server": "nodemon -r dotenv/config ./src/server/zenn.ts",
-    "clean": "rimraf dist/*",
+    "clean": "rimraf dist",
     "build": "pnpm clean && run-p build:client build:server",
     "build:client": "tsc --project tsconfig.client.json && vite build",
     "build:server": "tsc --project tsconfig.server.json --noEmit && rspack build -c rspack.server.js",
