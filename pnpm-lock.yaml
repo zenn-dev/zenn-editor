@@ -46,6 +46,10 @@ importers:
         version: 2.5.8
 
   packages/zenn-cli:
+    dependencies:
+      open:
+        specifier: ^10.2.0
+        version: 10.2.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.38.0
@@ -158,9 +162,6 @@ importers:
       nodemon:
         specifier: ^3.1.10
         version: 3.1.10
-      open:
-        specifier: ^10.2.0
-        version: 10.2.0
       path:
         specifier: ^0.12.7
         version: 0.12.7
