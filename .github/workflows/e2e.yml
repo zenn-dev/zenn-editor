@@ -1,0 +1,69 @@
+name: E2E Test on Windows
+
+on:
+  pull_request:
+    branches:
+      - main
+      - canary
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+
+      - name: パッケージをインストール
+        run: pnpm install
+
+      - name: ビルド
+        run: pnpm build
+
+      - name: zenn-cliのdistディレクトリをキャッシュ
+        uses: actions/cache/save@v4
+        with:
+          path: packages/zenn-cli/dist
+          key: zenn-cli-dist-${{ github.sha }}
+          enableCrossOsArchive: true
+
+  e2e:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+
+      - name: パッケージをインストール
+        run: pnpm install
+
+      - name: zenn-cliのdistディレクトリをキャッシュから復元
+        uses: actions/cache/restore@v4
+        with:
+          path: packages/zenn-cli/dist
+          key: zenn-cli-dist-${{ github.sha }}
+          enableCrossOsArchive: true
+
+      - name: distディレクトリの内容を確認
+        run: |
+          echo "Checking dist directory..."
+          Get-ChildItem packages/zenn-cli/dist/server/
+          echo "Checking if zenn.js exists..."
+          if (Test-Path packages/zenn-cli/dist/server/zenn.js) { echo "zenn.js found" } else { echo "zenn.js NOT found" }
+        shell: pwsh
+
+      - name: initコマンドを実行してエラーが出ないことを確認
+        run: |
+          node packages/zenn-cli/dist/server/zenn.js init 2>&1 | Out-String
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Command failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+        shell: pwsh
+        working-directory: .
