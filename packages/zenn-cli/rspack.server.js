@@ -41,6 +41,9 @@ module.exports = {
         callback();
       }
     },
+
+    // open パッケージは外部依存として扱う（クロスプラットフォーム対応のため）
+    'open',
   ],
 
   resolve: {
