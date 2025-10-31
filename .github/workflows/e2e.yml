@@ -59,5 +59,11 @@ jobs:
         shell: pwsh
 
       - name: initコマンドを実行してエラーが出ないことを確認
-        run: node packages/zenn-cli/dist/server/zenn.js init
+        run: |
+          node packages/zenn-cli/dist/server/zenn.js init 2>&1 | Out-String
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Command failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
+        shell: pwsh
         working-directory: .
