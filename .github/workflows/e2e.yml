@@ -28,6 +28,7 @@ jobs:
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
+          enableCrossOsArchive: true
 
   e2e:
     needs: build
@@ -47,6 +48,7 @@ jobs:
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
+          enableCrossOsArchive: true
 
       - name: initコマンドを実行してエラーが出ないことを確認
         run: node packages/zenn-cli/dist/server/zenn.js init
