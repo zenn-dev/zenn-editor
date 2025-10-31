@@ -36,6 +36,9 @@
     "test:server": "vitest run --config vitest.server.config.ts",
     "exec:zenn": "node ./dist/server/zenn.js"
   },
+  "dependencies": {
+    "open": "^10.2.0"
+  },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
     "@rspack/cli": "^1.5.8",
@@ -74,7 +77,6 @@
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.10",
-    "open": "^10.2.0",
     "path": "^0.12.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
