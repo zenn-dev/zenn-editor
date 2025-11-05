@@ -1,0 +1,65 @@
+name: E2E Test on Cross Platform
+
+on:
+  pull_request:
+    branches:
+      - main
+      - canary
+    types: [opened, synchronize]
+
+jobs:
+  # zenn-editor packagesをwindowsでビルドする環境は整っていないため、linux環境でビルドして、zenn-cliのバンドルファイルをactions/cacheに保存しておく
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+
+      - name: パッケージをインストール
+        run: pnpm install
+
+      - name: ビルド
+        run: pnpm build
+
+      - name: zenn-cliのdistディレクトリをキャッシュ
+        uses: actions/cache/save@v4
+        with:
+          path: packages/zenn-cli/dist
+          key: zenn-cli-dist-${{ github.sha }}
+          enableCrossOsArchive: true
+
+  # actions/cacheからzenn-cliのバンドルファイルを復元して、E2Eテストを実行する
+  e2e:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+
+      - name: パッケージをインストール
+        run: pnpm install
+
+      - name: zenn-cliのdistディレクトリをキャッシュから復元
+        uses: actions/cache/restore@v4
+        with:
+          path: packages/zenn-cli/dist
+          key: zenn-cli-dist-${{ github.sha }}
+          enableCrossOsArchive: true
+
+      - name: zenn-cliのE2Eテストを実行 (Windows)
+        if: runner.os == 'Windows'
+        run: pnpm -C packages/zenn-cli e2e
+        shell: pwsh
+
+      - name: zenn-cliのE2Eテストを実行 (Linux)
+        if: runner.os == 'Linux'
+        run: pnpm -C packages/zenn-cli e2e

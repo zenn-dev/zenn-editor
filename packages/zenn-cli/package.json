@@ -18,6 +18,7 @@
     "dev": "run-p dev:server dev:client",
     "dev:client": "wait-on http://localhost:8000 && vite",
     "dev:server": "nodemon -r dotenv/config ./src/server/zenn.ts",
+    "e2e": "vitest run --config vitest.e2e.config.ts",
     "clean": "rimraf dist",
     "build": "pnpm clean && run-p build:client build:server",
     "build:client": "tsc --project tsconfig.client.json && vite build",
@@ -35,6 +36,9 @@
     "test:client": "vitest run --config vitest.client.config.ts",
     "test:server": "vitest run --config vitest.server.config.ts",
     "exec:zenn": "node ./dist/server/zenn.js"
+  },
+  "dependencies": {
+    "open": "^10.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
@@ -74,7 +78,6 @@
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.10",
-    "open": "^10.2.0",
     "path": "^0.12.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
