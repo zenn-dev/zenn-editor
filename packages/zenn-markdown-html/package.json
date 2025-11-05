@@ -17,7 +17,7 @@
     "./lib/utils": "./lib/utils/index.js"
   },
   "scripts": {
-    "clean": "rimraf lib/*",
+    "clean": "rimraf lib",
     "build": "pnpm clean && run-p build:*",
     "build:src": "babel ./src --extensions '.ts,.tsx' --ignore '**/*.d.ts' --out-dir ./lib",
     "build:types": "tsc --project ./tsconfig.build.json",
