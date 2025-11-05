@@ -48,9 +48,6 @@ jobs:
       - name: パッケージをインストール
         run: pnpm install
 
-      - name: zenn-cliのビルド
-        run: pnpm build
-
       - name: zenn-cliのdistディレクトリをキャッシュから復元
         uses: actions/cache/restore@v4
         with:
