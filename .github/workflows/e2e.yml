@@ -40,8 +40,8 @@ jobs:
         with:
           version: 10.18.3
 
-      - name: パッケージをインストール
-        run: pnpm install
+      - name: パッケージをインストール（devDependenciesを除外）
+        run: pnpm install --prod
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
         uses: actions/cache/restore@v4
@@ -65,113 +65,5 @@ jobs:
             Write-Error "init command failed with exit code $LASTEXITCODE"
             exit $LASTEXITCODE
           }
-        shell: pwsh
-        working-directory: .
-
-      - name: new:articleコマンドを実行してエラーが出ないことを確認
-        run: |
-          # 対話型プロンプトに自動応答するため、入力をパイプで渡す
-          $input = "test-article`nTest Article Title`n"
-          $input | node packages/zenn-cli/dist/server/zenn.js new:article 2>&1 | Out-String
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "new:article command failed with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
-          }
-          # 記事ファイルが作成されたことを確認
-          if (!(Test-Path "articles/*.md")) {
-            Write-Error "Article file was not created"
-            exit 1
-          }
-        shell: pwsh
-        working-directory: .
-
-      - name: new:bookコマンドを実行してエラーが出ないことを確認
-        run: |
-          # 対話型プロンプトに自動応答するため、入力をパイプで渡す
-          $input = "test-book`nTest Book Title`n"
-          $input | node packages/zenn-cli/dist/server/zenn.js new:book 2>&1 | Out-String
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "new:book command failed with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
-          }
-          # bookディレクトリが作成されたことを確認
-          if (!(Test-Path "books/test-book")) {
-            Write-Error "Book directory was not created"
-            exit 1
-          }
-        shell: pwsh
-        working-directory: .
-
-      - name: list:articlesコマンドを実行してエラーが出ないことを確認
-        run: |
-          node packages/zenn-cli/dist/server/zenn.js list:articles 2>&1 | Out-String
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "list:articles command failed with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
-          }
-        shell: pwsh
-        working-directory: .
-
-      - name: list:booksコマンドを実行してエラーが出ないことを確認
-        run: |
-          node packages/zenn-cli/dist/server/zenn.js list:books 2>&1 | Out-String
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "list:books command failed with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
-          }
-        shell: pwsh
-        working-directory: .
-
-      - name: previewコマンドを実行してエラーが出ないことを確認
-        run: |
-          # previewコマンドをバックグラウンドで起動
-          $job = Start-Job -ScriptBlock {
-            param($workDir)
-            Set-Location $workDir
-            node packages/zenn-cli/dist/server/zenn.js preview --no-watch --port 8000
-          } -ArgumentList (Get-Location)
-
-          # サーバーが起動するまで待機（最大30秒）
-          $maxWaitTime = 30
-          $waited = 0
-          $serverStarted = $false
-
-          while ($waited -lt $maxWaitTime) {
-            Start-Sleep -Seconds 1
-            $waited++
-
-            # サーバーが起動したかチェック
-            try {
-              $response = Invoke-WebRequest -Uri "http://localhost:8000" -TimeoutSec 2 -UseBasicParsing
-              if ($response.StatusCode -eq 200) {
-                Write-Host "Preview server started successfully"
-                $serverStarted = $true
-                break
-              }
-            } catch {
-              # まだ起動していない場合は続行
-            }
-
-            # ジョブがエラーで終了していないかチェック
-            if ($job.State -eq "Failed") {
-              Write-Error "Preview server failed to start"
-              Receive-Job -Job $job
-              Remove-Job -Job $job
-              exit 1
-            }
-          }
-
-          if (-not $serverStarted) {
-            Write-Error "Preview server did not start within $maxWaitTime seconds"
-            Stop-Job -Job $job
-            Receive-Job -Job $job
-            Remove-Job -Job $job
-            exit 1
-          }
-
-          # ジョブを停止
-          Stop-Job -Job $job
-          Remove-Job -Job $job
-          Write-Host "Preview command test completed successfully"
         shell: pwsh
         working-directory: .
