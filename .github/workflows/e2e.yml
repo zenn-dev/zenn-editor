@@ -1,4 +1,4 @@
-name: E2E Test on Windows
+name: E2E Test on Cross Platform
 
 on:
   pull_request:
