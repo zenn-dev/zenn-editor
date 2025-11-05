@@ -58,12 +58,5 @@ jobs:
           if (Test-Path packages/zenn-cli/dist/server/zenn.js) { echo "zenn.js found" } else { echo "zenn.js NOT found" }
         shell: pwsh
 
-      - name: initコマンドを実行してエラーが出ないことを確認
-        run: |
-          node packages/zenn-cli/dist/server/zenn.js init 2>&1 | Out-String
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "init command failed with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
-          }
-        shell: pwsh
-        working-directory: .
+      - name: zenn-cliのE2Eテストを実行
+        run: pnpm -C packages/zenn-cli e2e

@@ -18,6 +18,7 @@
     "dev": "run-p dev:server dev:client",
     "dev:client": "wait-on http://localhost:8000 && vite",
     "dev:server": "nodemon -r dotenv/config ./src/server/zenn.ts",
+    "e2e": "vitest run --config vitest.e2e.config.ts",
     "clean": "rimraf dist/*",
     "build": "pnpm clean && run-p build:client build:server",
     "build:client": "tsc --project tsconfig.client.json && vite build",
