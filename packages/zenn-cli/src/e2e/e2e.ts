@@ -49,13 +49,6 @@ describe('E2E Tests', () => {
     }
   });
 
-  /**
-   * new:articleコマンドのE2Eテスト
-   * - 一時ディレクトリを作成し初期化
-   * - zenn new:article コマンドを実行
-   * - エラーなく完了することを確認
-   * - 生成された記事ファイルの存在を確認
-   */
   it('should execute zenn new:article command successfully', async () => {
     // 一時ディレクトリを作成
     tmpDir = await mkdtemp(join(tmpdir(), 'zenn-new-article-test-'));
