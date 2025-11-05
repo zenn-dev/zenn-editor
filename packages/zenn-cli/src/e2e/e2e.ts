@@ -15,13 +15,6 @@ describe('E2E Tests', () => {
     }
   });
 
-  /**
-   * initコマンドのE2Eテスト
-   * - 一時ディレクトリを作成
-   * - zenn init コマンドを実行
-   * - エラーなく完了することを確認
-   * - 生成されたファイル/ディレクトリの存在を確認
-   */
   it('init コマンドが正常に実行される', async () => {
     // 一時ディレクトリを作成
     tmpDir = await mkdtemp(join(tmpdir(), 'zenn-init-test-'));
@@ -68,13 +61,6 @@ describe('E2E Tests', () => {
     }
   });
 
-  /**
-   * new:bookコマンドのE2Eテスト
-   * - 一時ディレクトリを作成し初期化
-   * - zenn new:book コマンドを実行
-   * - エラーなく完了することを確認
-   * - 生成された本のディレクトリとファイルの存在を確認
-   */
   it('new:book コマンドが正常に実行される', async () => {
     // 一時ディレクトリを作成
     tmpDir = await mkdtemp(join(tmpdir(), 'zenn-new-book-test-'));
