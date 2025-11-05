@@ -34,7 +34,10 @@ jobs:
   # actions/cacheからzenn-cliのバンドルファイルを復元して、E2Eテストを実行する
   e2e:
     needs: build
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v5
 
@@ -52,14 +55,11 @@ jobs:
           key: zenn-cli-dist-${{ github.sha }}
           enableCrossOsArchive: true
 
-      - name: distディレクトリの内容を確認
-        run: |
-          echo "Checking dist directory..."
-          Get-ChildItem packages/zenn-cli/dist/server/
-          echo "Checking if zenn.js exists..."
-          if (Test-Path packages/zenn-cli/dist/server/zenn.js) { echo "zenn.js found" } else { echo "zenn.js NOT found" }
-        shell: pwsh
-
-      - name: zenn-cliのE2Eテストを実行
+      - name: zenn-cliのE2Eテストを実行 (Windows)
+        if: runner.os == 'Windows'
         run: pnpm -C packages/zenn-cli e2e
         shell: pwsh
+
+      - name: zenn-cliのE2Eテストを実行 (Linux)
+        if: runner.os == 'Linux'
+        run: pnpm -C packages/zenn-cli e2e
