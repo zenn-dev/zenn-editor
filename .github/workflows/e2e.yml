@@ -62,3 +62,4 @@ jobs:
 
       - name: zenn-cliのE2Eテストを実行
         run: pnpm -C packages/zenn-cli e2e
+        shell: pwsh
