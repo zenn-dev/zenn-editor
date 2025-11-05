@@ -8,6 +8,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  # zenn-editor packagesをwindowsでビルドする環境は整っていないため、linux環境でビルドして、zenn-cliのバンドルファイルをactions/cacheに保存しておく
   build:
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +31,7 @@ jobs:
           key: zenn-cli-dist-${{ github.sha }}
           enableCrossOsArchive: true
 
+  # actions/cacheからzenn-cliのバンドルファイルを復元して、E2Eテストを実行する
   e2e:
     needs: build
     runs-on: windows-latest
