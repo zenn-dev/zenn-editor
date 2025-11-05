@@ -12,7 +12,7 @@
     "turbo": "^2.5.8"
   },
   "scripts": {
-    "clean": "rm -rf packages/*/dist packages/*/lib",
+    "clean": "turbo clean",
     "build": "turbo build",
     "build:nocache": "turbo build --cache=local:w",
     "lint": "turbo lint",
