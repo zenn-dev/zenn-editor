@@ -43,7 +43,8 @@ module.exports = {
     },
 
     // open パッケージは外部依存として扱う（クロスプラットフォーム対応のため）
-    // ESM パッケージなので dynamic import で読み込む
+    // https://github.com/sindresorhus/open/releases/tag/v9.0.0 より pure ESM パッケージになった
+    // requireは使えないためESM importとして扱う
     ({ request }, callback) => {
       if (request === 'open') {
         callback(null, 'import open');
