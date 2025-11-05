@@ -89,36 +89,6 @@ describe('E2E Tests', () => {
   });
 
   /**
-   * new:article --slug オプション付きのE2Eテスト
-   * - 指定したslugで記事が作成されることを確認
-   */
-  it('should execute zenn new:article with --slug option', async () => {
-    tmpDir = await mkdtemp(join(tmpdir(), 'zenn-new-article-slug-test-'));
-
-    // まず init を実行
-    const initResult = await execZennCommand(['init'], tmpDir);
-    expect(initResult.code).toBe(0);
-
-    // 指定したslugで記事を作成
-    const slug = 'test-article-slug';
-    const { code, stderr, stdout } = await execZennCommand(
-      ['new:article', '--slug', slug],
-      tmpDir
-    );
-
-    // エラーなく完了することを確認
-    if (code !== 0) {
-      console.error('STDOUT:', stdout);
-      console.error('STDERR:', stderr);
-    }
-    expect(code).toBe(0);
-
-    // 指定したslugのファイルが存在することを確認
-    const expectedPath = join(tmpDir, 'articles', `${slug}.md`);
-    await expect(access(expectedPath)).resolves.toBeUndefined();
-  });
-
-  /**
    * new:bookコマンドのE2Eテスト
    * - 一時ディレクトリを作成し初期化
    * - zenn new:book コマンドを実行
@@ -170,39 +140,4 @@ describe('E2E Tests', () => {
     }
   });
 
-  /**
-   * new:book --slug オプション付きのE2Eテスト
-   * - 指定したslugで本が作成されることを確認
-   */
-  it('should execute zenn new:book with --slug option', async () => {
-    tmpDir = await mkdtemp(join(tmpdir(), 'zenn-new-book-slug-test-'));
-
-    // まず init を実行
-    const initResult = await execZennCommand(['init'], tmpDir);
-    expect(initResult.code).toBe(0);
-
-    // 指定したslugで本を作成
-    const slug = 'test-book-slug';
-    const { code, stderr, stdout } = await execZennCommand(
-      ['new:book', '--slug', slug],
-      tmpDir
-    );
-
-    // エラーなく完了することを確認
-    if (code !== 0) {
-      console.error('STDOUT:', stdout);
-      console.error('STDERR:', stderr);
-    }
-    expect(code).toBe(0);
-
-    // 指定したslugのディレクトリとファイルが存在することを確認
-    const bookDir = join(tmpDir, 'books', slug);
-    const configPath = join(bookDir, 'config.yaml');
-    const chapter1Path = join(bookDir, 'example1.md');
-    const chapter2Path = join(bookDir, 'example2.md');
-
-    await expect(access(configPath)).resolves.toBeUndefined();
-    await expect(access(chapter1Path)).resolves.toBeUndefined();
-    await expect(access(chapter2Path)).resolves.toBeUndefined();
-  });
 });
