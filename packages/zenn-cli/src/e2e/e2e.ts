@@ -2,7 +2,7 @@ import { mkdtemp, rm, access } from 'fs/promises';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { describe, it, expect, afterEach } from 'vitest';
-import { execZennCommand, logIfFailed } from './helper';
+import { execZennCommand, logIfFailed, execZennPreview } from './helper';
 
 describe('E2E Tests', () => {
   let tmpDir: string | null = null;
@@ -22,7 +22,7 @@ describe('E2E Tests', () => {
    * - エラーなく完了することを確認
    * - 生成されたファイル/ディレクトリの存在を確認
    */
-  it('should execute zenn init command successfully', async () => {
+  it('init コマンドが正常に実行される', async () => {
     // 一時ディレクトリを作成
     tmpDir = await mkdtemp(join(tmpdir(), 'zenn-init-test-'));
 
@@ -44,7 +44,7 @@ describe('E2E Tests', () => {
     }
   });
 
-  it('should execute zenn new:article command successfully', async () => {
+  it('new:article コマンドが正常に実行される', async () => {
     // 一時ディレクトリを作成
     tmpDir = await mkdtemp(join(tmpdir(), 'zenn-new-article-test-'));
 
@@ -75,7 +75,7 @@ describe('E2E Tests', () => {
    * - エラーなく完了することを確認
    * - 生成された本のディレクトリとファイルの存在を確認
    */
-  it('should execute zenn new:book command successfully', async () => {
+  it('new:book コマンドが正常に実行される', async () => {
     // 一時ディレクトリを作成
     tmpDir = await mkdtemp(join(tmpdir(), 'zenn-new-book-test-'));
 
@@ -146,5 +146,24 @@ describe('E2E Tests', () => {
     const result = await execZennCommand(['list:books'], tmpDir);
     logIfFailed(result);
     expect(result.code).toBe(0);
+  });
+
+  it('preview コマンドが起動時エラーなく実行される', async () => {
+    // 一時ディレクトリを作成
+    tmpDir = await mkdtemp(join(tmpdir(), 'zenn-preview-test-'));
+
+    // まず init を実行
+    const initResult = await execZennCommand(['init'], tmpDir);
+    expect(initResult.code).toBe(0);
+
+    // zenn preview コマンドを起動（3秒後に自動終了）
+    const result = await execZennPreview(['preview'], tmpDir, 3000);
+
+    // エラーがないことを確認
+    if (result.hasError) {
+      console.error('STDOUT:', result.stdout);
+      console.error('STDERR:', result.stderr);
+    }
+    expect(result.hasError).toBe(false);
   });
 });

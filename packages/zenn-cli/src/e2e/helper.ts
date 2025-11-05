@@ -62,3 +62,54 @@ export const logIfFailed = (result: {
     console.error('STDERR:', result.stderr);
   }
 };
+
+/**
+ * zenn preview コマンドを起動して、起動エラーがないことを確認後に終了
+ */
+export const execZennPreview = (
+  args: string[],
+  cwd: string,
+  timeoutMs: number = 3000
+): Promise<{ stdout: string; stderr: string; hasError: boolean }> => {
+  return new Promise((resolve) => {
+    const child = spawn('node', [getZennCliPath(), ...args], {
+      cwd,
+      stdio: 'pipe',
+    });
+
+    let stdout = '';
+    let stderr = '';
+    let hasError = false;
+
+    child.stdout?.on('data', (data) => {
+      stdout += data.toString();
+    });
+
+    child.stderr?.on('data', (data) => {
+      stderr += data.toString();
+      // エラーメッセージが含まれているかチェック
+      if (data.toString().toLowerCase().includes('error')) {
+        hasError = true;
+      }
+    });
+
+    // 指定時間後にプロセスを終了
+    const timer = setTimeout(() => {
+      child.kill('SIGTERM');
+      resolve({ stdout, stderr, hasError });
+    }, timeoutMs);
+
+    child.on('error', (err) => {
+      clearTimeout(timer);
+      hasError = true;
+      stderr += err.message;
+      child.kill('SIGTERM');
+      resolve({ stdout, stderr, hasError });
+    });
+
+    child.on('close', () => {
+      clearTimeout(timer);
+      resolve({ stdout, stderr, hasError });
+    });
+  });
+};
