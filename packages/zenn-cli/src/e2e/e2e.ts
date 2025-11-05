@@ -140,4 +140,55 @@ describe('E2E Tests', () => {
     }
   });
 
+  it('list:articles コマンドが正常に実行される', async () => {
+    // 一時ディレクトリを作成
+    tmpDir = await mkdtemp(join(tmpdir(), 'zenn-list-articles-test-'));
+
+    // まず init を実行
+    const initResult = await execZennCommand(['init'], tmpDir);
+    expect(initResult.code).toBe(0);
+
+    // 記事を作成
+    const newArticleResult = await execZennCommand(['new:article'], tmpDir);
+    expect(newArticleResult.code).toBe(0);
+
+    // zenn list:articles コマンドを実行
+    const { code, stderr, stdout } = await execZennCommand(
+      ['list:articles'],
+      tmpDir
+    );
+
+    // エラーなく完了することを確認
+    if (code !== 0) {
+      console.error('STDOUT:', stdout);
+      console.error('STDERR:', stderr);
+    }
+    expect(code).toBe(0);
+  });
+
+  it('list:books コマンドが正常に実行される', async () => {
+    // 一時ディレクトリを作成
+    tmpDir = await mkdtemp(join(tmpdir(), 'zenn-list-books-test-'));
+
+    // まず init を実行
+    const initResult = await execZennCommand(['init'], tmpDir);
+    expect(initResult.code).toBe(0);
+
+    // 本を作成
+    const newBookResult = await execZennCommand(['new:book'], tmpDir);
+    expect(newBookResult.code).toBe(0);
+
+    // zenn list:books コマンドを実行
+    const { code, stderr, stdout } = await execZennCommand(
+      ['list:books'],
+      tmpDir
+    );
+
+    // エラーなく完了することを確認
+    if (code !== 0) {
+      console.error('STDOUT:', stdout);
+      console.error('STDERR:', stderr);
+    }
+    expect(code).toBe(0);
+  });
 });
