@@ -27,7 +27,7 @@ describe('E2E Tests', () => {
     tmpDir = await mkdtemp(join(tmpdir(), 'zenn-init-test-'));
 
     // zenn init コマンドを実行
-    const zennCliPath = join(__dirname, './dist/server/zenn.js');
+    const zennCliPath = join(process.cwd(), 'dist', 'server', 'zenn.js');
 
     await new Promise<void>((resolve, reject) => {
       const child = spawn('node', [zennCliPath, 'init'], {

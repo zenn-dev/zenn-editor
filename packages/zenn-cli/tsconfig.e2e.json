@@ -9,5 +9,5 @@
     "esModuleInterop": true,
     "types": ["vitest/globals"]
   },
-  "include": ["./e2e.ts"]
+  "include": ["./src/e2e/e2e.ts"]
 }
