@@ -40,8 +40,8 @@ jobs:
         with:
           version: 10.18.3
 
-      - name: パッケージをインストール（devDependenciesを除外）
-        run: pnpm install --prod
+      - name: パッケージをインストール
+        run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
         uses: actions/cache/restore@v4
