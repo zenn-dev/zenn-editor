@@ -48,3 +48,17 @@ export const execZennCommand = (
     });
   });
 };
+
+/**
+ * コマンド実行結果が失敗している場合にログを出力
+ */
+export const logIfFailed = (result: {
+  stdout: string;
+  stderr: string;
+  code: number;
+}) => {
+  if (result.code !== 0) {
+    console.error('STDOUT:', result.stdout);
+    console.error('STDERR:', result.stderr);
+  }
+};

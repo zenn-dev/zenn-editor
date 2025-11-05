@@ -2,7 +2,7 @@ import { mkdtemp, rm, access } from 'fs/promises';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { describe, it, expect, afterEach } from 'vitest';
-import { execZennCommand } from './helper';
+import { execZennCommand, logIfFailed } from './helper';
 
 describe('E2E Tests', () => {
   let tmpDir: string | null = null;
@@ -27,14 +27,9 @@ describe('E2E Tests', () => {
     tmpDir = await mkdtemp(join(tmpdir(), 'zenn-init-test-'));
 
     // zenn init コマンドを実行
-    const { code, stderr, stdout } = await execZennCommand(['init'], tmpDir);
-
-    // エラーなく完了することを確認
-    if (code !== 0) {
-      console.error('STDOUT:', stdout);
-      console.error('STDERR:', stderr);
-    }
-    expect(code).toBe(0);
+    const result = await execZennCommand(['init'], tmpDir);
+    logIfFailed(result);
+    expect(result.code).toBe(0);
 
     // 生成されたファイル/ディレクトリの存在確認
     const expectedPaths = [
@@ -58,21 +53,13 @@ describe('E2E Tests', () => {
     expect(initResult.code).toBe(0);
 
     // zenn new:article コマンドを実行（デフォルトのslugで）
-    const { code, stderr, stdout } = await execZennCommand(
-      ['new:article'],
-      tmpDir
-    );
-
-    // エラーなく完了することを確認
-    if (code !== 0) {
-      console.error('STDOUT:', stdout);
-      console.error('STDERR:', stderr);
-    }
-    expect(code).toBe(0);
+    const result = await execZennCommand(['new:article'], tmpDir);
+    logIfFailed(result);
+    expect(result.code).toBe(0);
 
     // 作成されたファイルを検証
     // stdout から作成されたファイルパスを抽出
-    const createdFilePath = stdout.match(/articles\/(.+\.md)/)?.[0];
+    const createdFilePath = result.stdout.match(/articles\/(.+\.md)/)?.[0];
     expect(createdFilePath).toBeTruthy();
 
     if (createdFilePath) {
@@ -97,21 +84,13 @@ describe('E2E Tests', () => {
     expect(initResult.code).toBe(0);
 
     // zenn new:book コマンドを実行（デフォルトのslugで）
-    const { code, stderr, stdout } = await execZennCommand(
-      ['new:book'],
-      tmpDir
-    );
-
-    // エラーなく完了することを確認
-    if (code !== 0) {
-      console.error('STDOUT:', stdout);
-      console.error('STDERR:', stderr);
-    }
-    expect(code).toBe(0);
+    const result = await execZennCommand(['new:book'], tmpDir);
+    logIfFailed(result);
+    expect(result.code).toBe(0);
 
     // 作成されたディレクトリとファイルを検証
     // stdout から作成されたファイルパスを抽出
-    const configPath = stdout.match(/books\/(.+)\/config\.yaml/)?.[0];
+    const configPath = result.stdout.match(/books\/(.+)\/config\.yaml/)?.[0];
     expect(configPath).toBeTruthy();
 
     if (configPath) {
@@ -146,17 +125,9 @@ describe('E2E Tests', () => {
     expect(newArticleResult.code).toBe(0);
 
     // zenn list:articles コマンドを実行
-    const { code, stderr, stdout } = await execZennCommand(
-      ['list:articles'],
-      tmpDir
-    );
-
-    // エラーなく完了することを確認
-    if (code !== 0) {
-      console.error('STDOUT:', stdout);
-      console.error('STDERR:', stderr);
-    }
-    expect(code).toBe(0);
+    const result = await execZennCommand(['list:articles'], tmpDir);
+    logIfFailed(result);
+    expect(result.code).toBe(0);
   });
 
   it('list:books コマンドが正常に実行される', async () => {
@@ -172,16 +143,8 @@ describe('E2E Tests', () => {
     expect(newBookResult.code).toBe(0);
 
     // zenn list:books コマンドを実行
-    const { code, stderr, stdout } = await execZennCommand(
-      ['list:books'],
-      tmpDir
-    );
-
-    // エラーなく完了することを確認
-    if (code !== 0) {
-      console.error('STDOUT:', stdout);
-      console.error('STDERR:', stderr);
-    }
-    expect(code).toBe(0);
+    const result = await execZennCommand(['list:books'], tmpDir);
+    logIfFailed(result);
+    expect(result.code).toBe(0);
   });
 });
