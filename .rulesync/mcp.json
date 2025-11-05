@@ -15,18 +15,28 @@
         "--project",
         "."
       ],
-      "env": {}
+      "env": {},
+      "description": "Serena provides essential semantic code retrieval and editing tools that are akin to an IDE's capabilities, extracting code entities at the symbol level and exploiting relational structure. When combined with an existing coding agent, these tools greatly enhance (token) efficiency."
     },
     "context7": {
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
-      "env": {}
+      "env": {},
+      "description": "Context7 MCP pulls up-to-date, version-specific documentation and code examples straight from the source — and places them directly into your prompt."
     },
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp"],
+      "env": {},
+      "description": "chrome-devtools-mcp lets your coding agent (such as Gemini, Claude, Cursor or Copilot) control and inspect a live Chrome browser. It acts as a Model-Context-Protocol (MCP) server, giving your AI coding assistant access to the full power of Chrome DevTools for reliable automation, in-depth debugging, and performance analysis."
+    },
+    "fetch": {
+      "description": "This server enables LLMs to retrieve and process content from web pages, converting HTML to markdown for easier consumption.",
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
       "env": {}
     }
   }

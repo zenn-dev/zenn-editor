@@ -1,6 +1,6 @@
 {
   "name": "zenn-embed-elements",
-  "version": "0.2.9",
+  "version": "0.2.10-alpha.3",
   "license": "MIT",
   "description": "Web components for embedded contents.",
   "repository": {
@@ -13,7 +13,7 @@
     "lib"
   ],
   "scripts": {
-    "clean": "rimraf lib/*",
+    "clean": "rimraf lib",
     "build": "pnpm clean && run-p build:*",
     "build:tsc": "tsc -p .",
     "lint": "run-s lint:*",

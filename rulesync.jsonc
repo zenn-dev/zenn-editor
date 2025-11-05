@@ -4,7 +4,8 @@
   "baseDirs": ["."],
   "delete": true,
   "verbose": false,
-  "experimentalGlobal": false,
-  "experimentalSimulateCommands": false,
-  "experimentalSimulateSubagents": false,
+  "global": false,
+  "simulateCommands": false,
+  "simulateSubagents": false,
+  "modularMcp": true,
 }
