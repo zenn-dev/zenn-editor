@@ -6,14 +6,14 @@
   "sandbox": {
     "enabled": true,
     "excludedCommands": ["git"],
-    "autoAllowBashIfSandboxed": false,
+    "autoAllowBashIfSandboxed": true,
     "network": {
       "allowLocalBinding": true
     }
   },
   "statusLine": {
     "type": "command",
-    "command": "npx -y ccusage statusline --no-offline",
+    "command": "pnpm dlx ccusage statusline",
     "padding": 0
   }
 }

@@ -1,6 +1,8 @@
 packages:
   - packages/*
 
+minimumReleaseAge: 30240
+
 # 2025/10/28 に `pnpm audit --fix` を実行した結果
 overrides:
   '@babel/runtime@<7.26.10': '>=7.26.10'
