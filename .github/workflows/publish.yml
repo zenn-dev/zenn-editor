@@ -39,6 +39,9 @@ jobs:
           touch ./packages/zenn-cli/.env
           echo VITE_EMBED_SERVER_ORIGIN=${{ vars.VITE_EMBED_SERVER_ORIGIN }} >> ./packages/zenn-cli/.env
 
+      - name: Setup safe-chain
+        run: pnpm dlx @aikidosec/safe-chain setup-ci
+
       - name: パッケージをインストール
         run: pnpm install
 

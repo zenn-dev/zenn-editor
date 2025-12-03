@@ -18,6 +18,9 @@ jobs:
         with:
           version: 10.24.0
 
+      - name: Setup safe-chain
+        run: pnpm dlx @aikidosec/safe-chain setup-ci
+
       - name: パッケージをインストール
         run: pnpm install
 
@@ -31,13 +34,37 @@ jobs:
           key: zenn-cli-dist-${{ github.sha }}
           enableCrossOsArchive: true
 
-  # actions/cacheからzenn-cliのバンドルファイルを復元して、E2Eテストを実行する
-  e2e:
+  # actions/cacheからzenn-cliのバンドルファイルを復元して、E2Eテストを実行する (Linux)
+  e2e-linux:
     needs: build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup safe-chain
+        run: pnpm dlx @aikidosec/safe-chain setup-ci
+
+      - name: パッケージをインストール
+        run: pnpm install
+
+      - name: zenn-cliのdistディレクトリをキャッシュから復元
+        uses: actions/cache/restore@v4
+        with:
+          path: packages/zenn-cli/dist
+          key: zenn-cli-dist-${{ github.sha }}
+          enableCrossOsArchive: true
+
+      - name: zenn-cliのE2Eテストを実行
+        run: pnpm -C packages/zenn-cli e2e
+
+  # Windows環境ではsafe-chainが動作しないため、Linux成功後に実行
+  e2e-windows:
+    needs: e2e-linux
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
 
@@ -55,11 +82,6 @@ jobs:
           key: zenn-cli-dist-${{ github.sha }}
           enableCrossOsArchive: true
 
-      - name: zenn-cliのE2Eテストを実行 (Windows)
-        if: runner.os == 'Windows'
+      - name: zenn-cliのE2Eテストを実行
         run: pnpm -C packages/zenn-cli e2e
         shell: pwsh
-
-      - name: zenn-cliのE2Eテストを実行 (Linux)
-        if: runner.os == 'Linux'
-        run: pnpm -C packages/zenn-cli e2e

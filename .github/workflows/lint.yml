@@ -18,6 +18,9 @@ jobs:
         with:
           version: 10.24.0
 
+      - name: Setup safe-chain
+        run: pnpm dlx @aikidosec/safe-chain setup-ci
+
       - name: パッケージをインストール
         run: pnpm install
 
