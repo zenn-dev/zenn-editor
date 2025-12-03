@@ -1,4 +1,6 @@
 name: E2E Test on Cross Platform
+permissions:
+  contents: read
 
 on:
   pull_request:
