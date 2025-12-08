@@ -20,8 +20,10 @@ jobs:
         with:
           version: 10.24.0
 
-      - name: Setup safe-chain
-        run: pnpm dlx @aikidosec/safe-chain setup-ci
+      - name: Install safe-chain
+        run: curl -fsSL https://raw.githubusercontent.com/AikidoSec/safe-chain/main/install-scripts/install-safe-chain.sh | sh -s -- --ci
+        env:
+          SAFE_CHAIN_VERSION: "1.2.2"
 
       - name: パッケージをインストール
         run: pnpm install
@@ -47,8 +49,10 @@ jobs:
         with:
           version: 10.24.0
 
-      - name: Setup safe-chain
-        run: pnpm dlx @aikidosec/safe-chain setup-ci
+      - name: Install safe-chain
+        run: curl -fsSL https://raw.githubusercontent.com/AikidoSec/safe-chain/main/install-scripts/install-safe-chain.sh | sh -s -- --ci
+        env:
+          SAFE_CHAIN_VERSION: "1.2.2"
 
       - name: パッケージをインストール
         run: pnpm install
