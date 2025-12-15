@@ -13,7 +13,7 @@ type GuideProps = {
 
 export const Guide: React.FC<GuideProps> = ({ hash, slug }) => {
   const { data, error } = useFetch<{ bodyHtml: string; title: string }>(
-    `/api/cli-guide/${slug}`,
+    `/api/manual/${slug}`,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,

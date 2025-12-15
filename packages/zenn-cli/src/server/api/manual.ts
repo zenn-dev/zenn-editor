@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 type ArticleResponse = { article: { title: string; body_html: string } };
 
-export async function getCliGuide(req: Express.Request, res: Express.Response) {
+export async function getManual(req: Express.Request, res: Express.Response) {
   const slug = req.params.slug;
   try {
     const response = await fetch(`https://zenn.dev/api/articles/${slug}`);
