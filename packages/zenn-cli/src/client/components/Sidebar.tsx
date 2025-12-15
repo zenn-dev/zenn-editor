@@ -246,17 +246,9 @@ export const Sidebar: React.FC = () => {
               </LinkGuide>
             </li>
             <li>
-              <a
-                href="https://zenn.dev/zenn/articles/markdown-guide"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ListItemInner
-                  title="マークダウン記法"
-                  emoji="🖋️ "
-                  showNewTabIcon={true}
-                />
-              </a>
+              <LinkGuide slug="markdown-guide">
+                <ListItemInner title="マークダウン記法" emoji="🖋️" />
+              </LinkGuide>
             </li>
             <li>
               <a
