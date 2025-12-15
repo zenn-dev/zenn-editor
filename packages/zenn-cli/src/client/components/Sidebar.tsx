@@ -250,19 +250,6 @@ export const Sidebar: React.FC = () => {
                 <ListItemInner title="マークダウン記法" emoji="🖋️" />
               </LinkGuide>
             </li>
-            <li>
-              <a
-                href="https://zenn.dev/dashboard/uploader"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ListItemInner
-                  title="画像のアップロード"
-                  emoji="📷"
-                  showNewTabIcon={true}
-                />
-              </a>
-            </li>
           </ul>
         </div>
       </div>
