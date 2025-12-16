@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { getArticle, getArticles } from './api/articles';
 import { getBook, getBooks, getChapter, getChapters } from './api/books';
-import { getCliGuide } from './api/cli-guide';
+import { getManual } from './api/manual';
 import { getLocalInfo } from './api/local-info';
 import { getCliVersion } from './api/cli-version';
 import { getWorkingPath } from './lib/helper';
@@ -16,7 +16,7 @@ export function createApp() {
   app.get(`/api/books/:slug`, getBook);
   app.get(`/api/books/:book_slug/chapters`, getChapters);
   app.get(`/api/books/:book_slug/chapters/:chapter_filename`, getChapter);
-  app.get(`/api/cli-guide/:slug`, getCliGuide);
+  app.get(`/api/manual/:slug`, getManual);
   app.get(`/api/cli-version`, getCliVersion);
   app.get(`/api/local-info`, getLocalInfo);
 

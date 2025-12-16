@@ -25,6 +25,8 @@ describe('CLIのアップデート通知のテスト', () => {
   let getPublishedCliVersionMock: SpyInstance;
 
   beforeEach(() => {
+    vi.clearAllMocks();
+    configGetMock.mockReturnValue(0);
     consoleLogMock = vi.spyOn(console, 'log').mockReturnValue(undefined);
     getCurrentCliVersionMock = vi
       .spyOn(helper, 'getCurrentCliVersion')

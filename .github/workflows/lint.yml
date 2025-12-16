@@ -16,7 +16,12 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10.18.3
+          version: 10.24.0
+
+      - name: Install safe-chain
+        run: curl -fsSL https://raw.githubusercontent.com/AikidoSec/safe-chain/main/install-scripts/install-safe-chain.sh | sh -s -- --ci
+        env:
+          SAFE_CHAIN_VERSION: "1.2.2"
 
       - name: パッケージをインストール
         run: pnpm install

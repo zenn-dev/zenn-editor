@@ -8,6 +8,7 @@ describe('preview コマンドのテスト', () => {
   let mockReturnServer: HttpServer;
 
   beforeEach(() => {
+    vi.clearAllMocks();
     console.log = vi.fn();
     mockReturnServer = {} as HttpServer;
     vi.spyOn(server, 'startServer').mockResolvedValue(mockReturnServer);
