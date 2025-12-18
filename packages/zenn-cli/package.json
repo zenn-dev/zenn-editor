@@ -38,7 +38,8 @@
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "dependencies": {
-    "open": "^10.2.0"
+    "open": "^10.2.0",
+    "package-manager-detector": "^1.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
