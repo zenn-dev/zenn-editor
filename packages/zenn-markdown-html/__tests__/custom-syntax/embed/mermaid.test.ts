@@ -14,8 +14,8 @@ describe('Mermaid埋め込み要素のテスト', () => {
 
   describe('デフォルトの挙動', () => {
     describe('有効なコードの場合', () => {
-      test('入力値をコードブロックとしてそのまま表示する', () => {
-        const html = markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``);
+      test('入力値をコードブロックとしてそのまま表示する', async () => {
+        const html = await markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``);
         // <code />が取得できないので<pre />で取得する
         const preElement = parse(html).querySelector(
           'div.code-block-container pre'
@@ -28,8 +28,10 @@ describe('Mermaid埋め込み要素のテスト', () => {
     });
 
     describe('無効なコードの場合', () => {
-      test('入力値をコードブロックとしてそのまま表示する', () => {
-        const html = markdownToHtml(`\`\`\`mermaid\n${invalidSrc}\n\`\`\``);
+      test('入力値をコードブロックとしてそのまま表示する', async () => {
+        const html = await markdownToHtml(
+          `\`\`\`mermaid\n${invalidSrc}\n\`\`\``
+        );
         // <code />が取得できないので<pre />で取得する
         const codeElement = parse(html).querySelector(
           'div.code-block-container pre'
@@ -41,9 +43,9 @@ describe('Mermaid埋め込み要素のテスト', () => {
   });
 
   describe('embedOriginを設定している場合', () => {
-    test('渡したembedOriginを`src`として<iframe />を表示する', () => {
+    test('渡したembedOriginを`src`として<iframe />を表示する', async () => {
       const embedOrigin = 'https://embed.example.com';
-      const html = markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``, {
+      const html = await markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``, {
         embedOrigin,
       });
       const iframe = parse(html).querySelector('span.zenn-embedded iframe');
@@ -58,10 +60,10 @@ describe('Mermaid埋め込み要素のテスト', () => {
   });
 
   describe('customEmbed.mermaid()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+    test('渡した関数を実行する', async () => {
       const customizeText = 'customized text';
       const mock = vi.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``, {
+      const html = await markdownToHtml(`\`\`\`mermaid\n${validSrc}\n\`\`\``, {
         customEmbed: { mermaid: mock },
       });
 

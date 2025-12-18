@@ -8,8 +8,8 @@ describe('SlideShare埋め込み要素のテスト', () => {
 
   describe('デフォルトの挙動', () => {
     describe('有効なURLの場合', () => {
-      test('<iframe />に変換する', () => {
-        const html = markdownToHtml(`@[slideshare](${validToken})`);
+      test('<iframe />に変換する', async () => {
+        const html = await markdownToHtml(`@[slideshare](${validToken})`);
         const iframe = parse(html).querySelector(
           `span.embed-slideshare iframe`
         );
@@ -23,18 +23,18 @@ describe('SlideShare埋め込み要素のテスト', () => {
     });
 
     describe('無効なURLの場合', () => {
-      test('エラーメッセージを出力する', () => {
-        const html = markdownToHtml(`@[slideshare](${invalidToken})`);
+      test('エラーメッセージを出力する', async () => {
+        const html = await markdownToHtml(`@[slideshare](${invalidToken})`);
         expect(html).toContain('Slide Shareのkeyが不正です');
       });
     });
   });
 
   describe('customEmbed.slideshare()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+    test('渡した関数を実行する', async () => {
       const customizeText = 'customized text!';
       const mock = vi.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`@[slideshare](${validToken})`, {
+      const html = await markdownToHtml(`@[slideshare](${validToken})`, {
         customEmbed: { slideshare: mock },
       });
 

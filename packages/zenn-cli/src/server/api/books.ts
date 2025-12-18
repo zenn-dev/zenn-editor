@@ -32,7 +32,7 @@ export function getBooks(req: Express.Request, res: Express.Response) {
   res.json({ books });
 }
 
-export function getChapter(req: Express.Request, res: Express.Response) {
+export async function getChapter(req: Express.Request, res: Express.Response) {
   const bookSlug = req.params.book_slug;
   const book = getLocalBookMeta(bookSlug);
   if (!book) {
@@ -42,7 +42,7 @@ export function getChapter(req: Express.Request, res: Express.Response) {
     return;
   }
   const chapterFilename = req.params.chapter_filename;
-  const chapter = getLocalChapter(book, chapterFilename);
+  const chapter = await getLocalChapter(book, chapterFilename);
   if (!chapter) {
     res
       .status(404)

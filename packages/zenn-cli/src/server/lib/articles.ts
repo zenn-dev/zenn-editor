@@ -14,11 +14,11 @@ import { ItemSortType } from '../../common/types';
 import markdownToHtml from 'zenn-markdown-html';
 import { parseToc } from 'zenn-markdown-html/lib/utils';
 
-export function getLocalArticle(slug: string): null | Article {
+export async function getLocalArticle(slug: string): Promise<null | Article> {
   const data = readArticleFile(slug);
   if (!data) return null;
   const { meta, bodyMarkdown } = data;
-  const rawHtml = markdownToHtml(bodyMarkdown, {
+  const rawHtml = await markdownToHtml(bodyMarkdown, {
     embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
   });
   const bodyHtml = completeHtml(rawHtml);

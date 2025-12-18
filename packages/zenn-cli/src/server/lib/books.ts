@@ -85,15 +85,15 @@ export function getLocalBookMetaList(sort?: ItemSortType): BookMeta[] {
   return books;
 }
 
-export function getLocalChapter(
+export async function getLocalChapter(
   book: BookMeta,
   chapterFilename: string
-): null | Chapter {
+): Promise<null | Chapter> {
   const data = readChapterFile(book, chapterFilename);
   if (!data) return null;
 
   const { meta, bodyMarkdown } = data;
-  const rawHtml = markdownToHtml(bodyMarkdown, {
+  const rawHtml = await markdownToHtml(bodyMarkdown, {
     embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
   });
   const bodyHtml = completeHtml(rawHtml);

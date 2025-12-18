@@ -1,0 +1,29 @@
+@mixin styles {
+  // Shiki base styles
+  pre.shiki {
+    position: relative;
+    overflow-x: auto;
+  }
+
+  // diff 行は背景色を全幅にするため inline-block + min-width
+  .shiki .line.diff {
+    display: inline-block;
+    min-width: 100%;
+  }
+
+  // diff モード: 追加行（+）の背景色
+  .shiki .line.diff.add {
+    background: rgba(0, 146, 27, 0.2);
+  }
+
+  // diff モード: 削除行（-）の背景色
+  .shiki .line.diff.remove {
+    background: rgba(218, 54, 50, 0.2);
+  }
+
+  // diff プレフィックス（+, -, <, >）は選択不可にする
+  // ref: https://github.com/zenn-dev/zenn-editor/issues/148
+  .shiki .diff-prefix {
+    user-select: none;
+  }
+}
