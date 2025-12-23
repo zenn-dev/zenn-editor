@@ -3,8 +3,8 @@ import Express from 'express';
 import { getLocalArticle, getLocalArticleMetaList } from '../lib/articles';
 import { getValidSortTypes } from '../../common/helper';
 
-export function getArticle(req: Express.Request, res: Express.Response) {
-  const article = getLocalArticle(req.params.slug);
+export async function getArticle(req: Express.Request, res: Express.Response) {
+  const article = await getLocalArticle(req.params.slug);
   if (!article) {
     res
       .status(404)

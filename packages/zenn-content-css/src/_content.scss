@@ -208,13 +208,7 @@
     border-radius: variables.$rounded-xs;
     word-break: normal; // iOSで折り返されるのを防ぐ
     word-wrap: normal; // iOSで折り返されるのを防ぐ
-    /* flex + codeの隣に疑似要素を配置することで横スクロール時の右端の余白を作る */
     display: flex;
-    &:after {
-      content: '';
-      width: 8px;
-      flex-shrink: 0;
-    }
     code {
       margin: 0;
       padding: 0;

@@ -8,8 +8,8 @@ describe('Youtube埋め込み要素のテスト', () => {
 
   describe('デフォルトの挙動', () => {
     describe('有効なvideoIdの場合', () => {
-      test('<iframe />に変換する', () => {
-        const html = markdownToHtml(`@[youtube](${validVideoId})`);
+      test('<iframe />に変換する', async () => {
+        const html = await markdownToHtml(`@[youtube](${validVideoId})`);
         const iframe = parse(html).querySelector(`span.embed-youtube iframe`);
 
         expect(iframe?.attributes).toEqual(
@@ -21,18 +21,18 @@ describe('Youtube埋め込み要素のテスト', () => {
     });
 
     describe('無効なvideoIdの場合', () => {
-      test('エラーメッセージを出力する', () => {
-        const html = markdownToHtml(`@[youtube](${invalidVideoId})`);
+      test('エラーメッセージを出力する', async () => {
+        const html = await markdownToHtml(`@[youtube](${invalidVideoId})`);
         expect(html).toContain('YouTubeのvideoIDが不正です');
       });
     });
   });
 
   describe('customEmbed.youtube()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+    test('渡した関数を実行する', async () => {
       const customizeText = 'customized text';
       const mock = vi.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`@[youtube](${validVideoId})`, {
+      const html = await markdownToHtml(`@[youtube](${validVideoId})`, {
         customEmbed: { youtube: mock },
       });
 

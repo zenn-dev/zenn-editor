@@ -2,6 +2,7 @@
 @use './content' as content;
 @use './embed' as embed;
 @use './prism' as prism;
+@use './shiki' as shiki;
 @use './message' as message;
 @use './footnotes' as footnotes;
 
@@ -76,6 +77,7 @@
   @include content.styles;
   @include embed.styles;
   @include prism.styles;
+  @include shiki.styles;
   @include message.styles;
   @include footnotes.styles;
 }

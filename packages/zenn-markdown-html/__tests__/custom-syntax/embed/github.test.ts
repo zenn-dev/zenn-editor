@@ -10,8 +10,8 @@ describe('GitHub埋め込み要素のテスト', () => {
 
   describe('デフォルトの挙動', () => {
     describe('有効なURLの場合', () => {
-      test('リンクに変換する', () => {
-        const html = markdownToHtml(`@[github](${validUrl})`);
+      test('リンクに変換する', async () => {
+        const html = await markdownToHtml(`@[github](${validUrl})`);
         const link = parse(html).querySelector(`a`);
 
         expect(link?.attributes).toEqual(
@@ -25,8 +25,8 @@ describe('GitHub埋め込み要素のテスト', () => {
     });
 
     describe('無効なURLの場合', () => {
-      test('エラーメッセージを出力する', () => {
-        const html = markdownToHtml(`@[github](${invalidUrl})`);
+      test('エラーメッセージを出力する', async () => {
+        const html = await markdownToHtml(`@[github](${invalidUrl})`);
         expect(html).toContain(
           'GitHub のファイルURLまたはパーマリンクを指定してください'
         );
@@ -35,9 +35,11 @@ describe('GitHub埋め込み要素のテスト', () => {
   });
 
   describe('embedOriginを設定している場合', () => {
-    test('渡したembedOriginを`src`として<iframe />を表示する', () => {
+    test('渡したembedOriginを`src`として<iframe />を表示する', async () => {
       const embedOrigin = 'https://embed.example.com';
-      const html = markdownToHtml(`@[github](${validUrl})`, { embedOrigin });
+      const html = await markdownToHtml(`@[github](${validUrl})`, {
+        embedOrigin,
+      });
       const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
       expect(iframe?.attributes).toEqual(
@@ -50,11 +52,11 @@ describe('GitHub埋め込み要素のテスト', () => {
   });
 
   describe('customEmbed.github()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+    test('渡した関数を実行する', async () => {
       const url = 'https://example.com';
       const customizeText = 'customized text';
       const mock = vi.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`@[github](${url})`, {
+      const html = await markdownToHtml(`@[github](${url})`, {
         customEmbed: { github: mock },
       });
 

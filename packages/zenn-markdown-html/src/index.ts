@@ -4,7 +4,7 @@ import { sanitize } from './sanitizer';
 import { embedGenerators } from './embed';
 import { MarkdownOptions } from './types';
 
-// plugis
+// plugins
 import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
 import { mdBr } from './utils/md-br';
@@ -13,7 +13,11 @@ import { mdCustomBlock } from './utils/md-custom-block';
 import { mdLinkAttributes } from './utils/md-link-attributes';
 import { mdSourceMap } from './utils/md-source-map';
 import { mdLinkifyToCard } from './utils/md-linkify-to-card';
-import { mdRendererFence } from './utils/md-renderer-fence';
+import {
+  mdRendererFence,
+  applyHighlighting,
+  CodeBlockInfo,
+} from './utils/md-renderer-fence';
 import { mdImage } from './utils/md-image';
 import {
   containerDetailsOptions,
@@ -25,7 +29,21 @@ const mdFootnote = require('markdown-it-footnote');
 const mdTaskLists = require('markdown-it-task-lists');
 const mdInlineComments = require('markdown-it-inline-comments');
 
-const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
+/**
+ * Markdown を HTML に変換する（非同期）
+ *
+ * Shiki によるシンタックスハイライトを使用。
+ * 詳細なアーキテクチャについては md-renderer-fence.ts のコメントを参照。
+ *
+ * 処理フロー:
+ * 1. [Phase 1] md.render() - Markdown を HTML に変換（コードブロックはプレースホルダーに）
+ * 2. [Phase 2 & 3] applyHighlighting() - プレースホルダーをハイライト済み HTML に置換
+ * 3. sanitize() - XSS 対策のためサニタイズ
+ */
+const markdownToHtml = async (
+  text: string,
+  options?: MarkdownOptions
+): Promise<string> => {
   if (!(text && text.length)) return '';
 
   const markdownOptions: MarkdownOptions = {
@@ -41,6 +59,10 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   md.linkify.set({ fuzzyLink: false });
   md.linkify.set({ fuzzyEmail: false }); // refs: https://github.com/markdown-it/linkify-it
 
+  // コードブロック情報を保存する配列
+  // Phase 1 で mdRendererFence によって追加され、Phase 2 でハイライト処理に使用される
+  const codeBlocks: CodeBlockInfo[] = [];
+
   md.use(mdBr)
     .use(mdKatex)
     .use(mdFootnote)
@@ -48,7 +70,7 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
     .use(markdownItImSize)
     .use(mdLinkAttributes)
     .use(mdCustomBlock, markdownOptions)
-    .use(mdRendererFence, markdownOptions)
+    .use(mdRendererFence, markdownOptions, codeBlocks)
     .use(mdLinkifyToCard, markdownOptions)
     .use(mdTaskLists, { enabled: true })
     .use(mdContainer, 'details', containerDetailsOptions)
@@ -76,7 +98,24 @@ const markdownToHtml = (text: string, options?: MarkdownOptions): string => {
   // - https://github.com/zenn-dev/zenn-community/issues/356
   // - https://github.com/markdown-it/markdown-it-footnote/pull/8
   const docId = crypto.randomBytes(2).toString('hex');
-  return sanitize(md.render(text, { docId }));
+
+  // ============================================================
+  // Phase 1: Markdown → HTML 変換（同期）
+  // ============================================================
+  // markdown-it がコードブロックを検出すると mdRendererFence が呼ばれ、
+  // コードブロック情報が codeBlocks 配列に保存され、
+  // HTML にはプレースホルダー（<!--SHIKI_CODE_BLOCK_xxxxxxxx-->）が挿入される
+  const rawHtml = md.render(text, { docId });
+
+  // ============================================================
+  // Phase 2 & 3: シンタックスハイライト適用（非同期）
+  // ============================================================
+  // - Phase 2: 全コードブロックを Shiki で並列ハイライト
+  // - Phase 3: プレースホルダーをハイライト済み HTML に置換
+  const highlightedHtml = await applyHighlighting(rawHtml, codeBlocks);
+
+  // サニタイズして返す（XSS 対策）
+  return sanitize(highlightedHtml);
 };
 
 export default markdownToHtml;

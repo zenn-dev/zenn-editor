@@ -3,8 +3,8 @@ import markdownToHtml from '../src/index';
 import { parse } from 'node-html-parser';
 
 describe('MarkdownからHTMLへの変換テスト', () => {
-  test('markdownからhtmlへ変換する', () => {
-    const html = markdownToHtml('Hello\n## hey\n\n- first\n- second\n');
+  test('markdownからhtmlへ変換する', async () => {
+    const html = await markdownToHtml('Hello\n## hey\n\n- first\n- second\n');
     const p = parse(html).querySelector('p');
     const h2 = parse(html).querySelector('h2');
     const ul = parse(html).querySelector('ul');
@@ -20,13 +20,13 @@ describe('MarkdownからHTMLへの変換テスト', () => {
     expect(liElms[1].innerHTML).toBe('second');
   });
 
-  test('インラインコメントはhtmlに変換しない', () => {
-    const html = markdownToHtml(`<!-- hey -->`);
+  test('インラインコメントはhtmlに変換しない', async () => {
+    const html = await markdownToHtml(`<!-- hey -->`);
     expect(html).not.toContain('hey');
   });
 
-  test('脚注に docId を設定する', () => {
-    const html = markdownToHtml(`Hello[^1]World!\n\n[^1]: hey`);
+  test('脚注に docId を設定する', async () => {
+    const html = await markdownToHtml(`Hello[^1]World!\n\n[^1]: hey`);
     // expect(html).toContain('<a href="#fn-27-1" id="fnref-27-1">[1]</a>');
     expect(html).toEqual(
       expect.stringMatching(
@@ -35,8 +35,8 @@ describe('MarkdownからHTMLへの変換テスト', () => {
     );
   });
 
-  test('dataスキーマの画像は除外する', () => {
-    const html = markdownToHtml(`![](data:image/png;base64,xxxx)`);
+  test('dataスキーマの画像は除外する', async () => {
+    const html = await markdownToHtml(`![](data:image/png;base64,xxxx)`);
     expect(html).toContain('<img alt="" class="md-img" loading="lazy" />');
   });
 });

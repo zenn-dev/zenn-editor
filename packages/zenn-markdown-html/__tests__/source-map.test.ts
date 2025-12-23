@@ -3,8 +3,8 @@ import markdownToHtml from '../src/index';
 import parse from 'node-html-parser';
 
 describe('ソースマップ(data-line属性)のテスト', () => {
-  test('Header', () => {
-    const html = markdownToHtml(`# Header1
+  test('Header', async () => {
+    const html = await markdownToHtml(`# Header1
 ## Header2
 ### Header3
 #### Header4
@@ -30,8 +30,8 @@ describe('ソースマップ(data-line属性)のテスト', () => {
     expect(h6?.classList.contains('code-line')).toBe(true);
   });
 
-  test('Paragraph', () => {
-    const html = markdownToHtml(`Paragraph1\n\nhttps://example.com`);
+  test('Paragraph', async () => {
+    const html = await markdownToHtml(`Paragraph1\n\nhttps://example.com`);
     const p = parse(html).querySelectorAll('p');
     expect(p?.[0].getAttribute('data-line')).toEqual('0');
     expect(p?.[0].classList.contains('code-line')).toBe(true);
@@ -39,8 +39,8 @@ describe('ソースマップ(data-line属性)のテスト', () => {
     expect(p?.[1].classList.contains('code-line')).toBe(true);
   });
 
-  test('List(unordered)', () => {
-    const html = markdownToHtml(`- item1\n- item2`);
+  test('List(unordered)', async () => {
+    const html = await markdownToHtml(`- item1\n- item2`);
     const ul = parse(html).querySelector('ul');
     const li = parse(html).querySelectorAll('li');
     expect(ul?.getAttribute('data-line')).toEqual('0');
@@ -51,8 +51,8 @@ describe('ソースマップ(data-line属性)のテスト', () => {
     expect(li?.[1].classList.contains('code-line')).toBe(true);
   });
 
-  test('List(ordered)', () => {
-    const html = markdownToHtml(`1. item1\n2. item2`);
+  test('List(ordered)', async () => {
+    const html = await markdownToHtml(`1. item1\n2. item2`);
     const ol = parse(html).querySelector('ol');
     const li = parse(html).querySelectorAll('li');
     expect(ol?.getAttribute('data-line')).toEqual('0');
@@ -63,8 +63,8 @@ describe('ソースマップ(data-line属性)のテスト', () => {
     expect(li?.[1].classList.contains('code-line')).toBe(true);
   });
 
-  test('Table', () => {
-    const html = markdownToHtml(`| a | b |\n| --- | --- |\n| c | d |`);
+  test('Table', async () => {
+    const html = await markdownToHtml(`| a | b |\n| --- | --- |\n| c | d |`);
     const table = parse(html).querySelector('table');
     const thead = parse(html).querySelector('thead');
     const tbody = parse(html).querySelector('tbody');
@@ -81,9 +81,10 @@ describe('ソースマップ(data-line属性)のテスト', () => {
     expect(tr?.[1].classList.contains('code-line')).toBe(true);
   });
 
-  test('Code Block', () => {
-    const html = markdownToHtml('```\ncode\n```');
-    // <code />が取得できないので<pre />で取得する
+  test('Code Block', async () => {
+    const html = await markdownToHtml('```\ncode\n```');
+    // node-html-parser では <pre> 内の <code> を直接取得できないため、
+    // <pre> の innerHTML を再パースして取得する
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const innerHTML: any = parse(html).querySelector('pre')?.innerHTML;
     const code = parse(innerHTML).querySelector('code');
@@ -91,36 +92,36 @@ describe('ソースマップ(data-line属性)のテスト', () => {
     expect(code?.classList.contains('code-line')).toBe(true);
   });
 
-  test('Katex', () => {
-    const html = markdownToHtml(`$$\na\n$$`);
+  test('Katex', async () => {
+    const html = await markdownToHtml(`$$\na\n$$`);
     const katex = parse(html).querySelector('section');
     expect(katex?.getAttribute('data-line')).toEqual('0');
     expect(katex?.classList.contains('code-line')).toBe(true);
   });
 
-  test('Blockquote', () => {
-    const html = markdownToHtml('> quote');
+  test('Blockquote', async () => {
+    const html = await markdownToHtml('> quote');
     const blockquote = parse(html).querySelector('blockquote');
     expect(blockquote?.getAttribute('data-line')).toEqual('0');
     expect(blockquote?.classList.contains('code-line')).toBe(true);
   });
 
-  test('Horizontal Rule', () => {
-    const html = markdownToHtml(`---`);
+  test('Horizontal Rule', async () => {
+    const html = await markdownToHtml(`---`);
     const hr = parse(html).querySelector('hr');
     expect(hr?.getAttribute('data-line')).toEqual('0');
     expect(hr?.classList.contains('code-line')).toBe(true);
   });
 
-  test('Alert', () => {
-    const html = markdownToHtml(':::message\nhello\n:::');
+  test('Alert', async () => {
+    const html = await markdownToHtml(':::message\nhello\n:::');
     const p = parse(html).querySelector('p');
     expect(p?.getAttribute('data-line')).toEqual('1');
     expect(p?.classList.contains('code-line')).toBe(true);
   });
 
-  test('Details/Summary', () => {
-    const html = markdownToHtml(`:::details タイトル\nhello\n:::`);
+  test('Details/Summary', async () => {
+    const html = await markdownToHtml(`:::details タイトル\nhello\n:::`);
     const p = parse(html).querySelector('p');
     expect(p?.getAttribute('data-line')).toEqual('1');
     expect(p?.classList.contains('code-line')).toBe(true);

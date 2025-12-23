@@ -8,8 +8,8 @@ describe('LinkCard埋め込み要素のテスト', () => {
 
   describe('デフォルトの挙動', () => {
     describe('有効なURL', () => {
-      test('リンクに変換する', () => {
-        const html = markdownToHtml(`@[card](${validUrl})`);
+      test('リンクに変換する', async () => {
+        const html = await markdownToHtml(`@[card](${validUrl})`);
         const link = parse(html).querySelector(`a`);
 
         expect(link?.attributes).toEqual(
@@ -23,15 +23,15 @@ describe('LinkCard埋め込み要素のテスト', () => {
     });
 
     describe('無効なURLの場合', () => {
-      test('エラーメッセージを出力する', () => {
-        const html = markdownToHtml(`@[card](${invalidUrl})`);
+      test('エラーメッセージを出力する', async () => {
+        const html = await markdownToHtml(`@[card](${invalidUrl})`);
         expect(html).toContain('URLが不正です');
       });
     });
 
     describe('メールアドレス', () => {
-      test('メールアドレスのまま出力する', () => {
-        const html = markdownToHtml(`ec2-user@33.80.180.159`);
+      test('メールアドレスのまま出力する', async () => {
+        const html = await markdownToHtml(`ec2-user@33.80.180.159`);
         expect(html).toContain('ec2-user@33.80.180.159');
         expect(html).not.toContain('URLが不正です');
       });
@@ -39,9 +39,9 @@ describe('LinkCard埋め込み要素のテスト', () => {
   });
 
   describe('embedOriginを設定している場合', () => {
-    test('渡したembedOriginを`src`として<iframe />を表示する', () => {
+    test('渡したembedOriginを`src`として<iframe />を表示する', async () => {
       const embedOrigin = 'https://embed.example.com';
-      const html = markdownToHtml(validUrl, { embedOrigin });
+      const html = await markdownToHtml(validUrl, { embedOrigin });
       const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
       expect(iframe?.attributes).toEqual(
@@ -54,11 +54,11 @@ describe('LinkCard埋め込み要素のテスト', () => {
   });
 
   describe('customEmbed.card()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+    test('渡した関数を実行する', async () => {
       const url = 'https://example.com';
       const customizeText = 'customized text';
       const mock = vi.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`@[card](${url})`, {
+      const html = await markdownToHtml(`@[card](${url})`, {
         customEmbed: { card: mock },
       });
 
