@@ -26,10 +26,22 @@ import {
 } from 'shiki';
 
 /**
- * Shiki ハイライターのシングルトンインスタンス
- * getHighlighter() で初期化され、以降は再利用される
+ * Shiki ハイライターの初期化 Promise をキャッシュ
+ *
+ * 注: インスタンスではなく Promise をキャッシュすることで、
+ * Promise.all による並列処理時の競合状態を防ぐ。
+ *
+ * 問題のあるパターン:
+ *   let instance = null;
+ *   if (instance) return instance;
+ *   instance = await createHighlighter(); // ← await 中に他の呼び出しが来る
+ *
+ * 正しいパターン:
+ *   let promise = null;
+ *   if (!promise) promise = createHighlighter(); // ← await しない
+ *   return promise; // ← 同じ Promise を返す
  */
-let highlighterInstance: Highlighter | null = null;
+let highlighterPromise: Promise<Highlighter> | null = null;
 
 const SHIKI_THEME = 'github-dark';
 
@@ -38,17 +50,15 @@ const SHIKI_THEME = 'github-dark';
  * 最初は最低限のセットで初期化し、必要に応じて言語をロードする
  */
 export async function getHighlighter(): Promise<Highlighter> {
-  if (highlighterInstance) {
-    return highlighterInstance;
+  if (!highlighterPromise) {
+    // Promise をキャッシュ（await しない）
+    highlighterPromise = createHighlighter({
+      themes: [SHIKI_THEME],
+      langs: [],
+    });
   }
 
-  // 最初は空の言語セットで初期化（高速）
-  highlighterInstance = await createHighlighter({
-    themes: [SHIKI_THEME],
-    langs: [],
-  });
-
-  return highlighterInstance;
+  return highlighterPromise;
 }
 
 /**
