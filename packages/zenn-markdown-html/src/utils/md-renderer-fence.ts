@@ -286,9 +286,14 @@ export async function applyHighlighting(
   );
 
   // プレースホルダーを置換
+  // 注: replace の第2引数を関数にすることで、$' や $` などの
+  // 特殊パターン解釈を防ぐ（コードブロック内に $ が含まれる場合の対策）
   let result = html;
   for (let i = 0; i < highlightedBlocks.length; i++) {
-    result = result.replace(codeBlocks[i].placeholder, highlightedBlocks[i]);
+    result = result.replace(
+      codeBlocks[i].placeholder,
+      () => highlightedBlocks[i]
+    );
   }
 
   return result;
