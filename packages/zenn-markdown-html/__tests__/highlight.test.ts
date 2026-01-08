@@ -182,3 +182,70 @@ describe('コードハイライトのテスト', () => {
     expect(html).toContain('language-js');
   });
 });
+
+describe('コードブロック内の特殊文字のテスト', () => {
+  test("$' を含むコードが正しく変換される", async () => {
+    // $' は String.replace() の特殊パターン（マッチ位置より後ろの文字列）
+    const markdown = [
+      '```text',
+      "#set($body = $input.path('$'))",
+      '```',
+      '',
+      '次の段落',
+    ].join('\n');
+    const html = await markdownToHtml(markdown);
+    // $' が展開されず、コードブロック内に収まっていること
+    expect(html).toContain("$input.path('$')");
+    // 次の段落がコードブロック外にあること
+    expect(html).toContain('<p data-line="4"');
+    expect(html).toContain('次の段落');
+    // HTML が異常に大きくならないこと
+    expect(html.length).toBeLessThan(5000);
+  });
+
+  test('$` を含むコードが正しく変換される', async () => {
+    // $` は String.replace() の特殊パターン（マッチ位置より前の文字列）
+    const markdown = ['```js', 'const str = `$`', '```', '', '次の段落'].join(
+      '\n'
+    );
+    const html = await markdownToHtml(markdown);
+    expect(html).toContain('次の段落');
+    expect(html.length).toBeLessThan(5000);
+  });
+
+  test('$& を含むコードが正しく変換される', async () => {
+    // $& は String.replace() の特殊パターン（マッチした文字列全体）
+    const markdown = ['```text', 'echo $&', '```', '', '次の段落'].join('\n');
+    const html = await markdownToHtml(markdown);
+    expect(html).toContain('次の段落');
+    expect(html.length).toBeLessThan(5000);
+  });
+
+  test('$$ を含むコードが正しく変換される', async () => {
+    // $$ は String.replace() で $ にエスケープされる
+    const markdown = ['```bash', 'echo $$', '```', '', '次の段落'].join('\n');
+    const html = await markdownToHtml(markdown);
+    expect(html).toContain('$$');
+    expect(html).toContain('次の段落');
+    expect(html.length).toBeLessThan(5000);
+  });
+
+  test('複数の特殊パターンを含むコードが正しく変換される', async () => {
+    const markdown = [
+      '```text',
+      "#set($body = $input.path('$'))",
+      '```',
+      '',
+      '```js',
+      "const x = `${'test'}`;",
+      '```',
+      '',
+      '最後の段落',
+    ].join('\n');
+    const html = await markdownToHtml(markdown);
+    expect(html).toContain('最後の段落');
+    // 各コードブロックが独立していること
+    expect(html.match(/<pre/g)?.length).toBe(2);
+    expect(html.length).toBeLessThan(10000);
+  });
+});
