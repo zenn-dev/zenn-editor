@@ -1,0 +1,12 @@
+{
+  "name": "zenn-markdown-html-benchmark",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "node bench.mjs",
+    "bench:local": "node bench.mjs --local"
+  },
+  "dependencies": {
+    "zenn-markdown-html": "0.2.11"
+  }
+}

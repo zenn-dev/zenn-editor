@@ -25,5 +25,5 @@ export default defineConfig(
 
   eslintConfigPrettier,
 
-  globalIgnores(['**/*.js', '**/*.d.ts'])
+  globalIgnores(['**/*.js', '**/*.d.ts', '__benchmarks__/**'])
 );
