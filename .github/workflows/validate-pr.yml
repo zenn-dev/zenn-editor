@@ -16,17 +16,24 @@ jobs:
     name: Validate PR
     runs-on: ubuntu-latest
     steps:
-      - name: Check label
+      - name: Check category label (for canary branch)
         if: |
-          !contains(github.event.pull_request.labels.*.name, 'bug') && 
-          !contains(github.event.pull_request.labels.*.name, 'enhancement') && 
-          !contains(github.event.pull_request.labels.*.name, 'chore') && 
-          !contains(github.event.pull_request.labels.*.name, 'feature') && 
-          !contains(github.event.pull_request.labels.*.name, 'release') &&
+          github.event.pull_request.base.ref == 'canary' &&
+          !contains(github.event.pull_request.labels.*.name, 'bug') &&
+          !contains(github.event.pull_request.labels.*.name, 'enhancement') &&
+          !contains(github.event.pull_request.labels.*.name, 'chore') &&
+          !contains(github.event.pull_request.labels.*.name, 'feature') &&
           !contains(github.event.pull_request.labels.*.name, 'dependencies')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          URL: ${{ github.event.pull_request.comments_url }}
         run: |
-          echo "::error::次のラベルを付けてください。 labels: bug, enhancement, feature, chore, release, dependencies"
+          echo "::error::次のラベルを付けてください。 labels: bug, enhancement, feature, chore, dependencies"
+          exit 1
+
+      - name: Check release label for main branch
+        if: |
+          github.event.pull_request.base.ref == 'main' &&
+          !contains(github.event.pull_request.labels.*.name, 'release:major') &&
+          !contains(github.event.pull_request.labels.*.name, 'release:minor') &&
+          !contains(github.event.pull_request.labels.*.name, 'release:patch')
+        run: |
+          echo "::error::mainブランチへのPRには release:major, release:minor, release:patch のいずれかのラベルを付けてください。"
           exit 1
