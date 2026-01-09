@@ -24,28 +24,28 @@ describe('埋め込み要素の共通テスト', () => {
       ];
 
       describe('URLやTokenが300文字より長い場合', () => {
-        test('エラーメッセージを出力', () => {
+        test('エラーメッセージを出力', async () => {
           const dummy = Array(301).fill('a').join('');
           const tokens = getRestrictedEmbedList(dummy);
 
-          tokens.forEach((text) => {
-            const html = markdownToHtml(text);
+          for (const text of tokens) {
+            const html = await markdownToHtml(text);
             expect(html).toContain(
               '埋め込みURLは300文字以内にする必要があります'
             );
-          });
+          }
         });
       });
 
       describe('URLやTokenが300文字以下の場合', () => {
-        test('エラーメッセージを出力しない', () => {
+        test('エラーメッセージを出力しない', async () => {
           const tokens = getRestrictedEmbedList('example');
-          tokens.forEach((text) => {
-            const html = markdownToHtml(text);
+          for (const text of tokens) {
+            const html = await markdownToHtml(text);
             expect(html).not.toContain(
               '埋め込みURLは300文字以内にする必要があります'
             );
-          });
+          }
         });
       });
     });
@@ -62,29 +62,29 @@ describe('埋め込み要素の共通テスト', () => {
       ];
 
       describe('URLやTokenが300文字より長い場合', () => {
-        test('エラーメッセージを出力しない', () => {
+        test('エラーメッセージを出力しない', async () => {
           const dummy = Array(350).fill('a').join('');
           const tokens = getEmbedList(dummy);
 
-          tokens.forEach((text) => {
-            const html = markdownToHtml(text);
+          for (const text of tokens) {
+            const html = await markdownToHtml(text);
             expect(html).not.toContain(
               '埋め込みURLは300文字以内にする必要があります'
             );
-          });
+          }
         });
       });
 
       describe('URLやTokenが300文字以下の場合', () => {
-        test('エラーメッセージを出力しない', () => {
+        test('エラーメッセージを出力しない', async () => {
           const tokens = getEmbedList('example');
 
-          tokens.forEach((text) => {
-            const html = markdownToHtml(text);
+          for (const text of tokens) {
+            const html = await markdownToHtml(text);
             expect(html).not.toContain(
               '埋め込みURLは300文字以内にする必要があります'
             );
-          });
+          }
         });
       });
     });

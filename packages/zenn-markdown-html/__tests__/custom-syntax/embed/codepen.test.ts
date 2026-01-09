@@ -9,8 +9,8 @@ describe('Codepen埋め込み要素のテスト', () => {
 
   describe('デフォルトの挙動', () => {
     describe('有効なURLの場合', () => {
-      test('<iframe />に変換する', () => {
-        const html = markdownToHtml(`@[codepen](${validUrl})`);
+      test('<iframe />に変換する', async () => {
+        const html = await markdownToHtml(`@[codepen](${validUrl})`);
         const iframe = parse(html).querySelector(`span.embed-codepen iframe`);
         const passedUrl = validUrl.replace('/pen/', '/embed/');
 
@@ -21,18 +21,18 @@ describe('Codepen埋め込み要素のテスト', () => {
     });
 
     describe('無効なURLの場合', () => {
-      test('エラーメッセージを出力する', () => {
-        const html = markdownToHtml(`@[codepen](${invalidUrl})`);
+      test('エラーメッセージを出力する', async () => {
+        const html = await markdownToHtml(`@[codepen](${invalidUrl})`);
         expect(html).toContain('CodePenのURLが不正です');
       });
     });
   });
 
   describe('customEmbed.codepen()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+    test('渡した関数を実行する', async () => {
       const customizeText = 'customized text';
       const mock = vi.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`@[codepen](${invalidUrl})`, {
+      const html = await markdownToHtml(`@[codepen](${invalidUrl})`, {
         customEmbed: { codepen: mock },
       });
 

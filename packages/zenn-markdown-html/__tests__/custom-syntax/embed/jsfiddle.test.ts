@@ -8,8 +8,8 @@ describe('jsfiddle埋め込み要素のテスト', () => {
 
   describe('デフォルトの挙動', () => {
     describe('有効なURLの場合', () => {
-      test('<iframe />に変換する', () => {
-        const html = markdownToHtml(`@[jsfiddle](${validUrl})`);
+      test('<iframe />に変換する', async () => {
+        const html = await markdownToHtml(`@[jsfiddle](${validUrl})`);
         const iframe = parse(html).querySelector(`span.embed-jsfiddle iframe`);
 
         expect(iframe?.attributes).toEqual(
@@ -19,18 +19,18 @@ describe('jsfiddle埋め込み要素のテスト', () => {
     });
 
     describe('無効なURLの場合', () => {
-      test('エラーメッセージを出力する', () => {
-        const html = markdownToHtml(`@[jsfiddle](${invalidUrl})`);
+      test('エラーメッセージを出力する', async () => {
+        const html = await markdownToHtml(`@[jsfiddle](${invalidUrl})`);
         expect(html).toContain('jsfiddleのURLが不正です');
       });
     });
   });
 
   describe('customEmbed.jsfiddle()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+    test('渡した関数を実行する', async () => {
       const customizeText = 'customized text!';
       const mock = vi.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`@[jsfiddle](${validUrl})`, {
+      const html = await markdownToHtml(`@[jsfiddle](${validUrl})`, {
         customEmbed: { jsfiddle: mock },
       });
 

@@ -8,8 +8,8 @@ describe('Blueprintue埋め込み要素のテスト', () => {
 
   describe('デフォルトの挙動', () => {
     describe('有効なURLの場合', () => {
-      test('<iframe />に変換する', () => {
-        const html = markdownToHtml(`@[blueprintue](${validUrl})`);
+      test('<iframe />に変換する', async () => {
+        const html = await markdownToHtml(`@[blueprintue](${validUrl})`);
         const iframe = parse(html).querySelector(
           `span.embed-blueprintue iframe`
         );
@@ -21,8 +21,8 @@ describe('Blueprintue埋め込み要素のテスト', () => {
     });
 
     describe('無効なURLの場合', () => {
-      test('エラーメッセージを出力する', () => {
-        const html = markdownToHtml(`@[blueprintue](${invalidUrl})`);
+      test('エラーメッセージを出力する', async () => {
+        const html = await markdownToHtml(`@[blueprintue](${invalidUrl})`);
 
         expect(html).toContain(
           '「https://blueprintue.com/render/」から始まる正しいURLを指定してください'
@@ -32,10 +32,10 @@ describe('Blueprintue埋め込み要素のテスト', () => {
   });
 
   describe('customEmbed.blueprintue()を設定している場合', () => {
-    test('渡した関数を実行する', () => {
+    test('渡した関数を実行する', async () => {
       const customizeText = 'customized text!';
       const mock = vi.fn().mockReturnValue(customizeText);
-      const html = markdownToHtml(`@[blueprintue](${validUrl})`, {
+      const html = await markdownToHtml(`@[blueprintue](${validUrl})`, {
         customEmbed: { blueprintue: mock },
       });
 
