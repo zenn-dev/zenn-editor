@@ -59,9 +59,35 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: '[main] Get PR labels'
+        if: github.ref_name == 'main'
+        id: pr-labels
+        run: |
+          # マージコミットから関連するPRのラベルを取得
+          PR_NUMBER=$(gh pr list --state merged --base main --json number,mergeCommit --jq ".[] | select(.mergeCommit.oid == \"${{ github.sha }}\") | .number")
+          if [ -n "$PR_NUMBER" ]; then
+            LABELS=$(gh pr view $PR_NUMBER --json labels --jq '.labels[].name' | tr '\n' ' ')
+            echo "labels=$LABELS" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: '[main] Determine version type'
+        if: github.ref_name == 'main'
+        id: version-type
+        run: |
+          LABELS="${{ steps.pr-labels.outputs.labels }}"
+          if echo "$LABELS" | grep -q "release:major"; then
+            echo "type=major" >> $GITHUB_OUTPUT
+          elif echo "$LABELS" | grep -q "release:minor"; then
+            echo "type=minor" >> $GITHUB_OUTPUT
+          else
+            echo "type=patch" >> $GITHUB_OUTPUT
+          fi
+
       - name: '[main] Bump version'
         if: github.ref_name == 'main'
-        run: pnpm lerna version patch --yes --no-private
+        run: pnpm lerna version ${{ steps.version-type.outputs.type }} --yes --no-private
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
