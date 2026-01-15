@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.3.1",
+  "version": "0.3.2-alpha.0",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -67,7 +67,6 @@
     "dotenv": "^17.2.3",
     "emoji-regex": "^10.6.0",
     "esbuild": "^0.27.0",
-    "tsx": "^4.20.6",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "express": "^5.1.0",
@@ -87,6 +86,7 @@
     "styled-components": "^6.1.19",
     "supertest": "^7.1.4",
     "swr": "^2.3.6",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
     "vite": "^7.1.11",
