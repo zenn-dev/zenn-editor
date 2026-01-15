@@ -3,24 +3,39 @@
   "version": "0.3.1",
   "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
-  "main": "lib/index.js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/zenn-dev/zenn-editor.git",
     "directory": "packages/zenn-markdown-html"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "exports": {
-    ".": "./lib/index.js",
-    "./lib/utils": "./lib/utils/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js",
+      "default": "./dist/utils/index.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "utils": [
+        "./dist/utils/index.d.ts"
+      ]
+    }
   },
   "scripts": {
-    "clean": "rimraf lib",
-    "build": "pnpm clean && run-p build:*",
-    "build:src": "babel ./src --extensions '.ts,.tsx' --ignore '**/*.d.ts' --out-dir ./lib",
-    "build:types": "tsc --project ./tsconfig.build.json",
+    "clean": "rimraf dist",
+    "build": "tsup && tsc",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier .",
@@ -33,10 +48,6 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@babel/cli": "^7.28.3",
-    "@babel/core": "^7.28.4",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
     "@eslint/js": "^9.38.0",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^24.9.1",
@@ -45,6 +56,7 @@
     "eslint-config-prettier": "^10.1.8",
     "node-html-parser": "^7.0.1",
     "rimraf": "^6.0.1",
+    "tsup": "^8.4.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
     "vitest": "^4.0.6"
