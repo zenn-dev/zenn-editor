@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "run-p dev:server dev:client",
     "dev:client": "wait-on http://localhost:8000 && vite",
-    "dev:server": "nodemon -r dotenv/config ./src/server/zenn.ts",
+    "dev:server": "nodemon --exec 'tsx --env-file=.env ./src/server/zenn.ts'",
     "e2e": "vitest run --config vitest.e2e.config.ts",
     "clean": "rimraf dist",
     "build": "pnpm clean && run-p build:client build:server",
@@ -67,7 +67,7 @@
     "dotenv": "^17.2.3",
     "emoji-regex": "^10.6.0",
     "esbuild": "^0.27.0",
-    "esbuild-register": "^3.6.0",
+    "tsx": "^4.20.6",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "express": "^5.1.0",
