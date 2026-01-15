@@ -23,11 +23,10 @@ import {
   containerDetailsOptions,
   containerMessageOptions,
 } from './utils/md-container';
-
-const mdContainer = require('markdown-it-container');
-const mdFootnote = require('markdown-it-footnote');
-const mdTaskLists = require('markdown-it-task-lists');
-const mdInlineComments = require('markdown-it-inline-comments');
+import mdContainer from 'markdown-it-container';
+import mdFootnote from 'markdown-it-footnote';
+import mdTaskLists from 'markdown-it-task-lists';
+import mdInlineComments from 'markdown-it-inline-comments';
 
 /**
  * Markdown を HTML に変換する（非同期）

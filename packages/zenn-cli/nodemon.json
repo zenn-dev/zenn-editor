@@ -6,8 +6,5 @@
     "**/__tests__/**",
     "*.test.ts"
   ],
-  "execMap": {
-    "ts": "node -r esbuild-register"
-  },
   "ext": "ts,js,json"
 }
