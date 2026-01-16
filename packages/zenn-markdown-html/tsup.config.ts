@@ -12,6 +12,4 @@ export default defineConfig({
   clean: true,
   outDir: 'dist',
   target: 'node18',
-  // CJS専用パッケージをバンドルに含める（フロントエンドでのCJS/ESM interop問題を回避）
-  noExternal: ['markdown-it-task-lists', 'markdown-it-inline-comments'],
 });
