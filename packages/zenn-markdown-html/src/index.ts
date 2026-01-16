@@ -4,8 +4,8 @@ import { embedGenerators } from './embed';
 import { MarkdownOptions } from './types';
 
 // plugins
-import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
+import { mdImsize } from './utils/md-imsize';
 import { mdBr } from './utils/md-br';
 import { mdKatex } from './utils/md-katex';
 import { mdCustomBlock } from './utils/md-custom-block';
@@ -65,7 +65,7 @@ const markdownToHtml = async (
     .use(mdKatex)
     .use(mdFootnote)
     .use(mdInlineComments)
-    .use(markdownItImSize)
+    .use(mdImsize)
     .use(mdLinkAttributes)
     .use(mdCustomBlock, markdownOptions)
     .use(mdRendererFence, markdownOptions, codeBlocks)
@@ -98,7 +98,9 @@ const markdownToHtml = async (
   // Web Crypto API を使用（ブラウザ・Node.js 両対応）
   const randomBytes = new Uint8Array(2);
   globalThis.crypto.getRandomValues(randomBytes);
-  const docId = Array.from(randomBytes, (b) => b.toString(16).padStart(2, '0')).join('');
+  const docId = Array.from(randomBytes, (b) =>
+    b.toString(16).padStart(2, '0')
+  ).join('');
 
   // ============================================================
   // Phase 1: Markdown → HTML 変換（同期）
