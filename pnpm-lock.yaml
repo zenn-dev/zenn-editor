@@ -55,10 +55,10 @@ importers:
         version: 9.39.1
       '@rspack/cli':
         specifier: ^1.5.8
-        version: 1.6.1(@rspack/core@1.6.1)(@types/express@5.0.5)(webpack@5.102.1(esbuild@0.27.0))
+        version: 1.6.1(@rspack/core@1.6.1(@swc/helpers@0.5.15))(@types/express@5.0.5)(webpack@5.102.1(esbuild@0.27.0))
       '@rspack/core':
         specifier: ^1.5.8
-        version: 1.6.1
+        version: 1.6.1(@swc/helpers@0.5.15)
       '@types/configstore':
         specifier: ^6.0.2
         version: 6.0.2
@@ -251,9 +251,6 @@ importers:
 
   packages/zenn-markdown-html:
     dependencies:
-      '@steelydylan/markdown-it-imsize':
-        specifier: ^1.0.2
-        version: 1.0.2
       cheerio:
         specifier: 1.1.2
         version: 1.1.2
@@ -1623,8 +1620,8 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  '@steelydylan/markdown-it-imsize@1.0.2':
-    resolution: {integrity: sha512-3tfhRLlv8w3GSNzjEx3y1JIyHpCuBhqXN6tILRTR4IhZcrJb6WJJo12jZ/lKiT9VITg9kHHHg6yVsDwO5nnZqw==}
+  '@swc/helpers@0.5.15':
+    resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
   '@textlint/ast-node-types@15.2.3':
     resolution: {integrity: sha512-GEhoxfmh6TF+xC8TJmAUwOzzh0J6sVDqjKhwTTwetf7YDdhHbIv1PuUb/dTadMVIWs1H0+JD4Y27n6LWMmqn9Q==}
@@ -4928,6 +4925,46 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
+  vite@6.4.1:
+    resolution: {integrity: sha512-+Oxm7q9hDoLMyJOYfUYBuHQo+dkAloi33apOPP56pzj+vsdJDzr+j1NISE5pyaAuKL4A3UD34qd0lx5+kfKp2g==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      jiti: '>=1.21.0'
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      sass-embedded: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.16.0
+      tsx: ^4.8.1
+      yaml: ^2.4.2
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      jiti:
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+      tsx:
+        optional: true
+      yaml:
+        optional: true
+
   vite@7.2.2:
     resolution: {integrity: sha512-BxAKBWmIbrDgrokdGZH1IgkIk/5mMHDreLDmCJ0qpyJaAteP8NvMhkwr/ZCQNqNH97bw/dANTE9PDzqwJghfMQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -5077,6 +5114,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -6339,11 +6377,11 @@ snapshots:
       '@rspack/binding-win32-ia32-msvc': 1.6.1
       '@rspack/binding-win32-x64-msvc': 1.6.1
 
-  '@rspack/cli@1.6.1(@rspack/core@1.6.1)(@types/express@5.0.5)(webpack@5.102.1(esbuild@0.27.0))':
+  '@rspack/cli@1.6.1(@rspack/core@1.6.1(@swc/helpers@0.5.15))(@types/express@5.0.5)(webpack@5.102.1(esbuild@0.27.0))':
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
-      '@rspack/core': 1.6.1
-      '@rspack/dev-server': 1.1.4(@rspack/core@1.6.1)(@types/express@5.0.5)(webpack@5.102.1(esbuild@0.27.0))
+      '@rspack/core': 1.6.1(@swc/helpers@0.5.15)
+      '@rspack/dev-server': 1.1.4(@rspack/core@1.6.1(@swc/helpers@0.5.15))(@types/express@5.0.5)(webpack@5.102.1(esbuild@0.27.0))
       exit-hook: 4.0.0
       webpack-bundle-analyzer: 4.10.2
     transitivePeerDependencies:
@@ -6355,15 +6393,17 @@ snapshots:
       - webpack
       - webpack-cli
 
-  '@rspack/core@1.6.1':
+  '@rspack/core@1.6.1(@swc/helpers@0.5.15)':
     dependencies:
       '@module-federation/runtime-tools': 0.21.2
       '@rspack/binding': 1.6.1
       '@rspack/lite-tapable': 1.0.1
+    optionalDependencies:
+      '@swc/helpers': 0.5.15
 
-  '@rspack/dev-server@1.1.4(@rspack/core@1.6.1)(@types/express@5.0.5)(webpack@5.102.1(esbuild@0.27.0))':
+  '@rspack/dev-server@1.1.4(@rspack/core@1.6.1(@swc/helpers@0.5.15))(@types/express@5.0.5)(webpack@5.102.1(esbuild@0.27.0))':
     dependencies:
-      '@rspack/core': 1.6.1
+      '@rspack/core': 1.6.1(@swc/helpers@0.5.15)
       chokidar: 3.6.0
       http-proxy-middleware: 2.0.9(@types/express@5.0.5)
       p-retry: 6.2.1
@@ -6528,7 +6568,10 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
-  '@steelydylan/markdown-it-imsize@1.0.2': {}
+  '@swc/helpers@0.5.15':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
 
   '@textlint/ast-node-types@15.2.3': {}
 
@@ -6917,13 +6960,13 @@ snapshots:
       chai: 6.2.1
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.8(vite@7.2.2(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
+  '@vitest/mocker@4.0.8(vite@6.4.1(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
       '@vitest/spy': 4.0.8
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.2.2(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+      vite: 6.4.1(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
 
   '@vitest/pretty-format@4.0.8':
     dependencies:
@@ -10259,6 +10302,22 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
+  vite@6.4.1(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1):
+    dependencies:
+      esbuild: 0.25.12
+      fdir: 6.5.0(picomatch@4.0.3)
+      picomatch: 4.0.3
+      postcss: 8.5.6
+      rollup: 4.53.2
+      tinyglobby: 0.2.15
+    optionalDependencies:
+      '@types/node': 24.10.1
+      fsevents: 2.3.3
+      sass: 1.94.0
+      terser: 5.44.0
+      tsx: 4.20.6
+      yaml: 2.8.1
+
   vite@7.2.2(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.12
@@ -10278,7 +10337,7 @@ snapshots:
   vitest@4.0.8(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1):
     dependencies:
       '@vitest/expect': 4.0.8
-      '@vitest/mocker': 4.0.8(vite@7.2.2(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
+      '@vitest/mocker': 4.0.8(vite@6.4.1(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
       '@vitest/pretty-format': 4.0.8
       '@vitest/runner': 4.0.8
       '@vitest/snapshot': 4.0.8
@@ -10295,7 +10354,7 @@ snapshots:
       tinyexec: 0.3.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.2.2(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+      vite: 6.4.1(@types/node@24.10.1)(sass@1.94.0)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.10.1

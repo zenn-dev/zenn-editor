@@ -1,12 +1,11 @@
-import crypto from 'crypto';
 import markdownIt from 'markdown-it';
 import { sanitize } from './sanitizer';
 import { embedGenerators } from './embed';
 import { MarkdownOptions } from './types';
 
 // plugins
-import markdownItImSize from '@steelydylan/markdown-it-imsize';
 import markdownItAnchor from 'markdown-it-anchor';
+import { mdImsize } from './utils/md-imsize';
 import { mdBr } from './utils/md-br';
 import { mdKatex } from './utils/md-katex';
 import { mdCustomBlock } from './utils/md-custom-block';
@@ -66,7 +65,7 @@ const markdownToHtml = async (
     .use(mdKatex)
     .use(mdFootnote)
     .use(mdInlineComments)
-    .use(markdownItImSize)
+    .use(mdImsize)
     .use(mdLinkAttributes)
     .use(mdCustomBlock, markdownOptions)
     .use(mdRendererFence, markdownOptions, codeBlocks)
@@ -96,7 +95,12 @@ const markdownToHtml = async (
   // 1ページの中で重複しなければ問題ないため、ごく短いランダムな文字列とする
   // - https://github.com/zenn-dev/zenn-community/issues/356
   // - https://github.com/markdown-it/markdown-it-footnote/pull/8
-  const docId = crypto.randomBytes(2).toString('hex');
+  // Web Crypto API を使用（ブラウザ・Node.js 両対応）
+  const randomBytes = new Uint8Array(2);
+  globalThis.crypto.getRandomValues(randomBytes);
+  const docId = Array.from(randomBytes, (b) =>
+    b.toString(16).padStart(2, '0')
+  ).join('');
 
   // ============================================================
   // Phase 1: Markdown → HTML 変換（同期）
