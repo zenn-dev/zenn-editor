@@ -24,6 +24,7 @@ import {
   BundledLanguage,
   ShikiTransformer,
 } from 'shiki';
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
 
 /**
  * Shiki ハイライターの初期化 Promise をキャッシュ
@@ -45,9 +46,16 @@ let highlighterPromise: Promise<Highlighter> | null = null;
 
 const SHIKI_THEME = 'github-dark';
 
+/** ブラウザ環境かどうかを判定 */
+// @ts-expect-error: window is not defined in Node.js types
+const isBrowser = typeof window !== 'undefined';
+
 /**
  * Shiki ハイライターを初期化する
  * 最初は最低限のセットで初期化し、必要に応じて言語をロードする
+ *
+ * ブラウザ環境では JavaScript エンジンを使用（WASM 不要）
+ * Node.js 環境では Oniguruma エンジンを使用（デフォルト）
  */
 export async function getHighlighter(): Promise<Highlighter> {
   if (!highlighterPromise) {
@@ -55,6 +63,11 @@ export async function getHighlighter(): Promise<Highlighter> {
     highlighterPromise = createHighlighter({
       themes: [SHIKI_THEME],
       langs: [],
+      // ブラウザ環境では JavaScript エンジンを使用
+      // forgiving: true で変換できないパターンもベストエフォートで処理
+      ...(isBrowser && {
+        engine: createJavaScriptRegexEngine({ forgiving: true }),
+      }),
     });
   }
 
