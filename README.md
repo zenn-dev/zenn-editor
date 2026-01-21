@@ -3,6 +3,9 @@
 このリポジトリは、主に Zenn の Markdown に関するパッケージをまとめて管理しています。
 これらのパッケージを利用することで、[Zenn CLI](https://zenn.dev/zenn/articles/install-zenn-cli) や Zenn の [VSCode 拡張](https://marketplace.visualstudio.com/items?itemName=zenn.zenn-preview) のような周辺システムを作ることができます。
 
+> [!WARNING]
+> このプロジェクトは厳密なセマンティックバージョニングに従っていません。現状、破壊的な変更を含むバージョンアップはマイナーバージョンアップで対応しています。変更内容は[リリースページ](https://github.com/zenn-dev/zenn-editor/releases)をご覧ください。
+
 ## パッケージ一覧
 
 | パッケージ名        | 説明                                                           |
