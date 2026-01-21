@@ -10,8 +10,13 @@ export default defineConfig(
 
   {
     files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.eslint.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
-      '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -25,5 +30,5 @@ export default defineConfig(
 
   eslintConfigPrettier,
 
-  globalIgnores(['**/*.js', '**/*.d.ts', '__benchmarks__/**'])
+  globalIgnores(['**/*.js', '**/*.mjs', '**/*.d.ts', '__benchmarks__/**'])
 );

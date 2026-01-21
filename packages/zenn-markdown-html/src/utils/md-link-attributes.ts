@@ -1,6 +1,5 @@
 import MarkdownIt from 'markdown-it';
-
-const markdownItLinkAttributes = require('markdown-it-link-attributes');
+import markdownItLinkAttributes from 'markdown-it-link-attributes';
 
 export function mdLinkAttributes(md: MarkdownIt) {
   // <a>タグの属性を設定する
