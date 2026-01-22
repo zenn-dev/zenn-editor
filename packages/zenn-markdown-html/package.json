@@ -1,6 +1,6 @@
 {
   "name": "zenn-markdown-html",
-  "version": "0.4.1-alpha.1",
+  "version": "0.4.1-alpha.2",
   "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
   "type": "module",
