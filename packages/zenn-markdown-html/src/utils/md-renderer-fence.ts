@@ -245,7 +245,6 @@ export async function applyHighlighting(
       try {
         const highlightedHtml = await highlight(block.content, block.langName, {
           hasDiff: block.hasDiff,
-          className: '',
           line: block.line,
         });
 
