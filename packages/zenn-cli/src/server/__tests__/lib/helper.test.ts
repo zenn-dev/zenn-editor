@@ -1,8 +1,13 @@
 import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
+vi.mock('package-manager-detector/detect', () => ({ detect: vi.fn() }));
+vi.mock('package-manager-detector/commands', () => ({
+  resolveCommand: vi.fn(),
+}));
+import { detect as detectPackageManager } from 'package-manager-detector/detect';
+import { resolveCommand } from 'package-manager-detector/commands';
 import path from 'path';
 import fs from 'fs-extra';
 import * as helper from '../../lib/helper';
-import { getWorkingPath } from '../../lib/helper';
 import * as Log from '../../lib/log';
 import { validateSlug } from '../../../common/helper';
 
@@ -210,64 +215,44 @@ describe('completeHtml() のテスト', () => {
   });
 });
 
-describe('detectPackageExecutor() のテスト', () => {
-  beforeEach(async () => {
-    if (fs.existsSync(getWorkingPath('package-lock.json'))) {
-      await fs.promises.unlink(getWorkingPath('package-lock.json'));
-    }
-    if (fs.existsSync(getWorkingPath('yarn.lock'))) {
-      await fs.promises.unlink(getWorkingPath('yarn.lock'));
-    }
-    if (fs.existsSync(getWorkingPath('pnpm-lock.yaml'))) {
-      await fs.promises.unlink(getWorkingPath('pnpm-lock.yaml'));
-    }
-    if (fs.existsSync(getWorkingPath('bun.lockb'))) {
-      await fs.promises.unlink(getWorkingPath('bun.lockb'));
-    }
+describe('resolveExecuteCommand() のテスト', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
   });
 
-  test('package-lock.json が存在する場合は `npx` を返す', async () => {
-    const tempFilePath = getWorkingPath('package-lock.json');
-    await fs.promises.writeFile(tempFilePath, '');
+  test('パッケージマネージャーが検出されコマンドが解決された場合はコマンド文字列を返す', async () => {
+    const detectMock = vi.mocked(detectPackageManager);
+    const resolveMock = vi.mocked(resolveCommand);
+    detectMock.mockResolvedValue({ name: 'bun', agent: 'bun' });
+    resolveMock.mockReturnValue({
+      command: 'bun',
+      args: ['x', 'zenn', 'foo', 'bar'],
+    });
 
-    const result = helper.detectPackageExecutor();
-    expect(result).toEqual('npx');
-
-    await fs.promises.unlink(tempFilePath);
+    const result = await helper.resolveExecuteCommand(['zenn', 'foo', 'bar']);
+    expect(result).toEqual('bun x zenn foo bar');
   });
 
-  test('yarn.lock が存在する場合は `yarn` を返す', async () => {
-    const tempFilePath = getWorkingPath('yarn.lock');
-    await fs.promises.writeFile(tempFilePath, '');
-
-    const result = helper.detectPackageExecutor();
-    expect(result).toEqual('yarn');
-
-    await fs.promises.unlink(tempFilePath);
+  test('パッケージマネージャーの検出に失敗した場合は `npm` にフォールバックしてコマンドの解決を試みる', async () => {
+    const detectMock = vi.mocked(detectPackageManager);
+    const resolveMock = vi.mocked(resolveCommand);
+    detectMock.mockResolvedValue(null);
+    resolveMock.mockImplementation((agent) => {
+      expect(agent).toEqual('npm');
+      return {
+        command: 'npx',
+        args: ['zenn', 'foo', 'bar'],
+      };
+    });
   });
 
-  test('pnpm-lock.yaml が存在する場合は `pnpm` を返す', async () => {
-    const tempFilePath = getWorkingPath('pnpm-lock.yaml');
-    await fs.promises.writeFile(tempFilePath, '');
+  test('コマンドの解決に失敗した場合はフォールバックとして `npx` を使用したコマンドを返す', async () => {
+    const detectMock = vi.mocked(detectPackageManager);
+    const resolveMock = vi.mocked(resolveCommand);
+    detectMock.mockResolvedValue({ name: 'npm', agent: 'npm' });
+    resolveMock.mockReturnValue(null);
 
-    const result = helper.detectPackageExecutor();
-    expect(result).toEqual('pnpm');
-
-    await fs.promises.unlink(tempFilePath);
-  });
-
-  test('bun.lockb が存在する場合は `bun` を返す', async () => {
-    const tempFilePath = getWorkingPath('bun.lockb');
-    await fs.promises.writeFile(tempFilePath, '');
-
-    const result = helper.detectPackageExecutor();
-    expect(result).toEqual('bun');
-
-    await fs.promises.unlink(tempFilePath);
-  });
-
-  test('どのファイルも存在しない場合は `npx` を返す', () => {
-    const result = helper.detectPackageExecutor();
-    expect(result).toEqual('npx');
+    const result = await helper.resolveExecuteCommand(['zenn', 'foo', 'bar']);
+    expect(result).toEqual('npx zenn foo bar');
   });
 });

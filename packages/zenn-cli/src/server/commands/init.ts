@@ -1,7 +1,7 @@
 import { CliExecFn } from '../types';
 import * as Log from '../lib/log';
 import {
-  detectPackageExecutor,
+  resolveExecuteCommand,
   getWorkingPath,
   generateFileIfNotExist,
 } from '../lib/helper';
@@ -31,7 +31,7 @@ function parseArgs(argv?: string[]) {
   }
 }
 
-export const exec: CliExecFn = (argv) => {
+export const exec: CliExecFn = async (argv) => {
   const args = parseArgs(argv);
   if (args === null) return;
 
@@ -75,18 +75,21 @@ export const exec: CliExecFn = (argv) => {
     console.log(`Generating README.md skipped.`);
   }
 
-  const packageExecutor = detectPackageExecutor();
+  const newArticleCmd = await resolveExecuteCommand(['zenn', 'new:article']);
+  const newBookCmd = await resolveExecuteCommand(['zenn', 'new:book']);
+  const previewCmd = await resolveExecuteCommand(['zenn', 'preview']);
+
   console.log(`
   🎉  Done!
   早速コンテンツを作成しましょう
 
   👇  新しい記事を作成する
-  $ ${packageExecutor} zenn new:article
+  $ ${newArticleCmd}
 
   👇  新しい本を作成する
-  $ ${packageExecutor} zenn new:book
+  $ ${newBookCmd}
 
   👇  投稿をプレビューする
-  $ ${packageExecutor} zenn preview
+  $ ${previewCmd}
   `);
 };

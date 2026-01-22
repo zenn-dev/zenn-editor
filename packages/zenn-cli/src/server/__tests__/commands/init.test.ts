@@ -12,8 +12,8 @@ describe('initコマンドのテスト', () => {
     console.error = vi.fn();
   });
 
-  test('ディレクトリに対して generateFileIfNotExist を実行する', () => {
-    exec([]);
+  test('ディレクトリに対して generateFileIfNotExist を実行する', async () => {
+    await exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), 'articles/.keep')),
       expect.stringMatching(/^$/)
@@ -24,31 +24,31 @@ describe('initコマンドのテスト', () => {
     );
   });
 
-  test('.gitignore に対して generateFileIfNotExist を実行する', () => {
-    exec([]);
+  test('.gitignore に対して generateFileIfNotExist を実行する', async () => {
+    await exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), '.gitignore')),
       expect.stringContaining(['node_modules', '.DS_Store'].join('\n'))
     );
   });
 
-  test('README に対して generateFileIfNotExist を実行する', () => {
-    exec([]);
+  test('README に対して generateFileIfNotExist を実行する', async () => {
+    await exec([]);
     expect(helper.generateFileIfNotExist).toHaveBeenCalledWith(
       expect.stringContaining(path.join(process.cwd(), 'README.md')),
       expect.stringContaining('Zenn CLI')
     );
   });
 
-  test('成功メッセージを表示する', () => {
-    exec([]);
+  test('成功メッセージを表示する', async () => {
+    await exec([]);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('🎉  Done!')
     );
   });
 
-  test('--helpでもヘルプメッセージを表示する', () => {
-    exec(['--help']);
+  test('--helpでもヘルプメッセージを表示する', async () => {
+    await exec(['--help']);
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(initHelpText)
     );
