@@ -1,24 +1,19 @@
 import { describe, test, expect } from 'vitest';
 import markdownToHtml from '../src/index';
-import parse from 'node-html-parser';
 
 describe('コードハイライトのテスト', () => {
   test('コードブロックを正しい<code />に変換する', async () => {
     const html = await markdownToHtml(
       `\`\`\`js:foo.js\nconsole.log("hello")\n\`\`\``
     );
-    // <code />が取得できないので<pre />で取得する
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pre: any = parse(html).querySelector('pre');
-    const code = parse(pre?.innerHTML).querySelector('code.language-js');
-    expect(code).toBeTruthy();
+    expect(html).toContain('class="shiki');
     expect(html).toContain('<span class="code-block-filename">foo.js</span>');
   });
 
   test('js のコードブロックをハイライトする', async () => {
     const jsString = ['```js', "console.log('foo')", '```'].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('language-js');
+    expect(html).toContain('class="shiki');
   });
 
   test('スペースで区切られた追加の言語は無視する', async () => {
@@ -26,27 +21,27 @@ describe('コードハイライトのテスト', () => {
       '\n'
     );
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('language-js');
+    expect(html).toContain('class="shiki');
   });
 
   test('htmlのコードブロックをハイライトできる', async () => {
     const jsString = ['```html', '<html></html>', '```'].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('language-html');
+    expect(html).toContain('class="shiki');
   });
   test('js のコードブロックをハイライトしてファイル名を表示する', async () => {
     const jsString = ['```js:index.js', "console.log('foo')", '```'].join('\n');
     const html = await markdownToHtml(jsString);
+    expect(html).toContain('class="shiki');
     expect(html).toContain('<span class="code-block-filename">index.js</span>');
-    expect(html).toContain('language-js');
   });
   test('html のコードブロックをハイライトしてファイル名を表示する', async () => {
     const jsString = ['```html:index.html', '<html></html>', '```'].join('\n');
     const html = await markdownToHtml(jsString);
+    expect(html).toContain('class="shiki');
     expect(html).toContain(
       '<span class="code-block-filename">index.html</span>'
     );
-    expect(html).toContain('language-html');
   });
   test('js diff のコードブロックをハイライトする', async () => {
     const jsString = [
@@ -56,7 +51,6 @@ describe('コードハイライトのテスト', () => {
       '```',
     ].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('diff-highlight language-diff-js');
     expect(html).toContain('class="line diff remove"');
     expect(html).toContain('class="line diff add"');
     expect(html).toContain('<span class="diff-prefix">-</span>');
@@ -70,7 +64,6 @@ describe('コードハイライトのテスト', () => {
       '```',
     ].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('diff-highlight language-diff-html');
     expect(html).toContain('class="line diff remove"');
     expect(html).toContain('class="line diff add"');
   });
@@ -109,7 +102,7 @@ describe('コードハイライトのテスト', () => {
       '```',
     ].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('diff-highlight language-diff-js');
+    expect(html).toContain('class="line diff');
   });
   test('diff html の順番でハイライトする', async () => {
     const jsString = [
@@ -119,7 +112,7 @@ describe('コードハイライトのテスト', () => {
       '```',
     ].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('diff-highlight language-diff-html');
+    expect(html).toContain('class="line diff');
   });
   test('js diff のコードブロックをハイライトしてファイル名を表示する', async () => {
     const jsString = [
@@ -129,7 +122,6 @@ describe('コードハイライトのテスト', () => {
       '```',
     ].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('diff-highlight language-diff-js');
     expect(html).toContain('<span class="code-block-filename">index.js</span>');
   });
   test('html diff のコードブロックをハイライトしてファイル名を表示する', async () => {
@@ -140,7 +132,6 @@ describe('コードハイライトのテスト', () => {
       '```',
     ].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('diff-highlight language-diff-html');
     expect(html).toContain(
       '<span class="code-block-filename">index.html</span>'
     );
@@ -153,7 +144,6 @@ describe('コードハイライトのテスト', () => {
       '```',
     ].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('diff-highlight language-diff-js');
     expect(html).toContain('<span class="code-block-filename">index.js</span>');
   });
   test('":" の前にスペースが存在しても html をハイライトしてファイル名を表示する', async () => {
@@ -164,7 +154,6 @@ describe('コードハイライトのテスト', () => {
       '```',
     ].join('\n');
     const html = await markdownToHtml(jsString);
-    expect(html).toContain('diff-highlight language-diff-html');
     expect(html).toContain(
       '<span class="code-block-filename">index.html</span>'
     );
@@ -179,7 +168,6 @@ describe('コードハイライトのテスト', () => {
     expect(html).toContain(
       '<span class="code-block-filename">index:withcolons.js</span>'
     );
-    expect(html).toContain('language-js');
   });
 });
 

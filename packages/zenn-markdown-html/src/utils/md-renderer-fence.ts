@@ -124,22 +124,6 @@ function getPlainHtml({
   return wrapHighlightedCode({ highlightedHtml: preHtml, fileName });
 }
 
-function getClassName({
-  langName = '',
-  hasDiff,
-}: {
-  hasDiff: boolean;
-  langName?: string;
-}): string {
-  const isSafe = /^[\w-]{0,30}$/.test(langName);
-  if (!isSafe) return '';
-
-  if (hasDiff) {
-    return `diff-highlight ${langName.length ? `language-diff-${langName}` : ''}`;
-  }
-  return langName ? `language-${langName}` : '';
-}
-
 // Shiki がネイティブサポートしていない言語のフォールバック
 const fallbackLanguages: {
   [key: string]: string;
@@ -258,15 +242,10 @@ export async function applyHighlighting(
   // すべてのコードブロックを並列でハイライト
   const highlightedBlocks = await Promise.all(
     codeBlocks.map(async (block) => {
-      const className = getClassName({
-        langName: block.langName,
-        hasDiff: block.hasDiff,
-      });
-
       try {
         const highlightedHtml = await highlight(block.content, block.langName, {
           hasDiff: block.hasDiff,
-          className,
+          className: '',
           line: block.line,
         });
 
