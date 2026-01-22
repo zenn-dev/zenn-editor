@@ -102,8 +102,6 @@ async function ensureLanguageLoaded(
 export interface HighlightOptions {
   /** diff モードかどうか */
   hasDiff: boolean;
-  /** 追加するクラス名 */
-  className: string;
   /** Markdown ソースの行番号（ソースマップ用） */
   line?: number;
 }
@@ -219,24 +217,13 @@ function wrapDiffPrefix(
 }
 
 /**
- * pre/code タグにクラスと属性を追加する transformer を作成
+ * code タグにクラスと属性を追加する transformer を作成
  */
-function createClassTransformer(options: {
-  className: string;
-  line?: number;
-}): ShikiTransformer {
-  const { className, line } = options;
+function createCodeTransformer(options: { line?: number }): ShikiTransformer {
+  const { line } = options;
   return {
-    pre(node) {
-      if (className) {
-        this.addClassToHast(node, className);
-      }
-    },
     code(node) {
       this.addClassToHast(node, 'code-line');
-      if (className) {
-        this.addClassToHast(node, className);
-      }
       if (line !== undefined) {
         node.properties['data-line'] = line;
       }
@@ -261,7 +248,7 @@ export async function highlight(
   langName: string,
   options: HighlightOptions
 ): Promise<string> {
-  const { hasDiff, className, line } = options;
+  const { hasDiff, line } = options;
   const highlighter = await getHighlighter();
 
   // 言語がサポートされているか確認し、必要に応じてロード
@@ -277,9 +264,7 @@ export async function highlight(
   }
 
   // transformers を構築
-  const transformers: ShikiTransformer[] = [
-    createClassTransformer({ className, line }),
-  ];
+  const transformers: ShikiTransformer[] = [createCodeTransformer({ line })];
   if (hasDiff) {
     transformers.push(createDiffTransformer());
   }
