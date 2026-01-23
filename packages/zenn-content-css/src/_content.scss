@@ -42,7 +42,7 @@
       list-style: disc;
       &::marker {
         font-size: 1.1em;
-        color: var(--c-gray-800);
+        color: var(--c-text-subtle);
       }
     }
   }
@@ -52,7 +52,7 @@
       list-style: decimal;
       padding-left: 0.2em;
       &::marker {
-        color: var(--c-gray-800);
+        color: var(--c-text-subtle);
         font-weight: 600;
         letter-spacing: -0.05em;
       }
