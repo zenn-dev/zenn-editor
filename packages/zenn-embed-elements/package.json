@@ -1,6 +1,6 @@
 {
   "name": "zenn-embed-elements",
-  "version": "0.4.0",
+  "version": "0.4.1-alpha.3",
   "license": "MIT",
   "description": "Web components for embedded contents.",
   "repository": {

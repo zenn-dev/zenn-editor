@@ -6,6 +6,9 @@ import * as cheerio from 'cheerio';
 import { networkInterfaces } from 'os';
 import * as Log from './log';
 import pkg from '../../../package.json';
+import { detect as detectPackageManager } from 'package-manager-detector/detect';
+import { resolveCommand } from 'package-manager-detector/commands';
+import type { Agent } from 'package-manager-detector';
 
 export function generateSlug(): string {
   return crypto.randomBytes(7).toString('hex');
@@ -256,22 +259,19 @@ export const resolveHostname = (
   return { name, host };
 };
 
-type PackageExecutorType = 'npx' | 'yarn' | 'pnpm' | 'bun';
-
-export const detectPackageExecutor = (): PackageExecutorType => {
-  const lockFileNames = [
-    ['npx', 'package-lock.json'],
-    ['yarn', 'yarn.lock'],
-    ['pnpm', 'pnpm-lock.yaml'],
-    ['bun', 'bun.lockb'],
-  ] as const;
-  let detectedPackageExecutor: PackageExecutorType = 'npx';
-  for (const [packageManager, lockFileName] of lockFileNames) {
-    const lockFilePath = getWorkingPath(`${lockFileName}`);
-    if (fs.existsSync(lockFilePath)) {
-      detectedPackageExecutor = packageManager;
-      break;
-    }
+export const resolveExecuteCommand = async (
+  executeCommandArgs: string[]
+): Promise<string> => {
+  const detectedPackageManager = await detectPackageManager();
+  const agent = (detectedPackageManager?.agent ?? 'npm') satisfies Agent;
+  const resolvedCommand = resolveCommand(
+    agent,
+    'execute-local',
+    executeCommandArgs
+  );
+  if (!resolvedCommand) {
+    return `npx ${executeCommandArgs.join(' ')}`;
   }
-  return detectedPackageExecutor;
+  const { command, args } = resolvedCommand;
+  return `${command} ${args.join(' ')}`;
 };

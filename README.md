@@ -1,7 +1,12 @@
+<a href="https://flatt.tech/oss/gmo/trampoline" target="_blank"><img src="https://flatt.tech/assets/images/badges/gmo-oss.svg" height="24px"/></a>
+
 ![Zenn Editor](https://user-images.githubusercontent.com/34590683/91540859-60e06780-e956-11ea-9762-0acac2b7c4c5.png)
 
 このリポジトリは、主に Zenn の Markdown に関するパッケージをまとめて管理しています。
 これらのパッケージを利用することで、[Zenn CLI](https://zenn.dev/zenn/articles/install-zenn-cli) や Zenn の [VSCode 拡張](https://marketplace.visualstudio.com/items?itemName=zenn.zenn-preview) のような周辺システムを作ることができます。
+
+> [!WARNING]
+> このプロジェクトは厳密なセマンティックバージョニングに従っていません。現状、破壊的な変更を含むバージョンアップはマイナーバージョンアップで対応しています。変更内容は[リリースページ](https://github.com/zenn-dev/zenn-editor/releases)をご覧ください。
 
 ## パッケージ一覧
 
