@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.4.1",
+  "version": "0.4.2-alpha.0",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "lint:eslint": "eslint src/**/*.{ts,tsx}",
     "lint:prettier": "prettier .",
     "lint-strict": "run-s lint-strict:*",
-    "lint-strict:eslint": "eslint src/**/*.{ts,tsx} --max-warnings 0",
+    "lint-strict:eslint": "eslint src/**/*.{ts,tsx} --max-warnings 0 --no-warn-ignored",
     "lint-strict:prettier": "prettier --check .",
     "fix": "run-s fix:*",
     "fix:eslint": "eslint --fix src/**/*.{ts,tsx}",
@@ -91,6 +91,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
     "vite": "^7.1.11",
+    "vite-plugin-svgr": "^4.5.0",
     "vitest": "^4.0.6",
     "wait-on": "^9.0.1",
     "ws": "^8.18.3",

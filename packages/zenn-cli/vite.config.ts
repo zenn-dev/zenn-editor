@@ -1,6 +1,7 @@
 // for preview client
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
 const srcDirRoot = 'src/client';
@@ -19,7 +20,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ['zenn-model'],
   },
-  plugins: [react()],
+  plugins: [react(), svgr()],
   // for developing preview
   server: {
     port: 3333,

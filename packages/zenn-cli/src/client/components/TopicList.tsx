@@ -38,7 +38,7 @@ const StyledTopicList = styled.div`
     color: var(--c-gray);
     font-size: 0.9em;
     border: solid 1px var(--c-gray-border);
-    background: #fff;
+    background: var(--c-base);
     padding: 0.1em 0.4em;
     border-radius: 5px;
     margin: ${itemMarginPx} 6px ${itemMarginPx} 0;

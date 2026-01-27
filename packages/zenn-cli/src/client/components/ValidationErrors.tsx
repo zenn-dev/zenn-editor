@@ -4,7 +4,7 @@ import { ValidationError } from 'zenn-model';
 
 import { MdError, MdOutlineCallMade } from 'react-icons/md';
 
-const warningColor = '#ff9715';
+const warningColor = 'var(--c-warning)';
 
 const ValidationErrorRow: React.FC<ValidationError> = ({
   message,
@@ -137,7 +137,7 @@ export const ValidationErrors: React.FC<{
 
 const StyledValidationErrors = styled.div`
   padding: 1.2rem 1.4rem 1.3rem;
-  background: #fff;
+  background: var(--c-base);
   border-radius: 10px;
   .validation-error__title {
     font-size: 0.95rem;

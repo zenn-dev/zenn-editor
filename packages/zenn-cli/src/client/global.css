@@ -1,5 +1,13 @@
 :root {
-  /* Colors */
+  /* Font */
+  --font-base:
+    -apple-system, 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif, 'Segoe UI Emoji';
+  --font-code:
+    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace,
+    'Segoe UI Emoji';
+
+  /* Light theme colors (default) */
   --c-base: #fff;
   --c-primary: #0f93ff;
   --c-primary-darker: #0087f5;
@@ -11,23 +19,37 @@
   --c-gray-bg: #edf2f7;
   --c-error: #fa5d5d;
   --c-error-bg: #fff0f0;
+  --c-warning: #ff9715;
+  --c-popover-bg: #fff;
+  --c-popover-shadow: rgba(15, 26, 62, 0.35);
+  --c-tooltip-bg: #1b1b1d;
+  --c-tooltip-text: #fff;
+  --c-on-primary: #fff;
+  --c-code-bg: #cfe6f9;
+  --c-notification-text: #364757;
+}
 
-  /* 動作確認のための暫定措置。zenn-cli をダークモード対応する場合は prefers-color-scheme を参照する */
-  &[data-theme^='dark'] {
-    /* --c-dark-blue-1100 */
-    --c-base: #0d223a;
-
-    /* --c-text-body */
-    --c-body: #ecf5ff;
-  }
-
-  /* Font */
-  --font-base:
-    -apple-system, 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
-    'Hiragino Sans', Meiryo, sans-serif, 'Segoe UI Emoji';
-  --font-code:
-    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace,
-    'Segoe UI Emoji';
+/* Dark theme colors */
+:root[data-theme='dark'] {
+  --c-base: #0d223a;
+  --c-primary: #3ea8ff;
+  --c-primary-darker: #0f93ff;
+  --c-primary-bg: #1a3a5c;
+  --c-primary-bg-lightest: #1a3a5c99;
+  --c-body: #ecf5ff;
+  --c-gray: #9bacbe;
+  --c-gray-border: #2d4a68;
+  --c-gray-bg: #1a3a5c;
+  --c-error: #ff6b6b;
+  --c-error-bg: #3d1f1f;
+  --c-warning: #ffb347;
+  --c-popover-bg: #1a3a5c;
+  --c-popover-shadow: rgba(0, 0, 0, 0.5);
+  --c-tooltip-bg: #ecf5ff;
+  --c-tooltip-text: #0d223a;
+  --c-on-primary: #fff;
+  --c-code-bg: #0d223a;
+  --c-notification-text: #ecf5ff;
 }
 
 html {
@@ -140,10 +162,10 @@ code {
   padding: 0.4em 0.7em;
   font-size: 11px;
   font-weight: normal;
-  color: #fff;
+  color: var(--c-tooltip-text);
   white-space: nowrap;
   content: attr(aria-label);
-  background: #1b1b1d;
+  background: var(--c-tooltip-bg);
   border-radius: var(--rounded-sm);
 }
 
@@ -162,7 +184,7 @@ code {
   bottom: 100%;
   left: 50%;
   border: 6px solid transparent;
-  border-top: 7px solid #1b1b1d;
+  border-top: 7px solid var(--c-tooltip-bg);
   transform: translateX(-50%);
 }
 
@@ -190,7 +212,7 @@ code {
   bottom: auto;
   left: 50%;
   border: 6px solid transparent;
-  border-bottom: 7px solid #1b1b1d;
+  border-bottom: 7px solid var(--c-tooltip-bg);
   transform: translateX(-50%);
 }
 
