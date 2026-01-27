@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
 import { LinkGuide } from '../Routes';
+import { Logo } from '../Logo';
 import { useFetch } from '../../hooks/useFetch';
 import { useTitle } from '../../hooks/useTitle';
 
@@ -53,7 +54,7 @@ const StyledUpdateNotificationBar = styled.div`
     margin-top: 1.3rem;
     padding: 0.9rem;
     background: var(--c-primary-bg);
-    color: #364757;
+    color: var(--c-notification-text);
     border-radius: 10px;
     animation: ${popin} 0.3s ease;
   }
@@ -68,7 +69,7 @@ const StyledUpdateNotificationBar = styled.div`
     text-align: center;
     border-radius: 50%;
     background: var(--c-primary);
-    color: #fff;
+    color: var(--c-on-primary);
     font-size: 12px;
   }
   .update-notification-bar__text {
@@ -79,7 +80,7 @@ const StyledUpdateNotificationBar = styled.div`
       margin: 0 0.2em;
       padding: 0.1em 0.6em;
       font-size: 0.9em;
-      background: #cfe6f9;
+      background: var(--c-code-bg);
       border-radius: 5px;
     }
   }
@@ -97,7 +98,7 @@ export const Home: React.FC = () => {
       <ContentContainer>
         <StyledHome className="home">
           <h1 className="home__title">
-            <img src="/logo.svg" alt="Zenn Editor" width={300} height={35} />
+            <Logo width={300} height={35} className="home__logo" />
           </h1>
           <div className="home__content">
             <BodyContent>
@@ -164,6 +165,9 @@ const StyledHome = styled.article`
     text-align: center;
     border-bottom: solid 1px var(--c-gray-border);
   }
+  .home__logo {
+    color: var(--c-body);
+  }
   .home__content {
     padding: 2.5rem 0;
   }
@@ -182,7 +186,7 @@ const StyledHome = styled.article`
     display: inline-flex;
     padding: 0.6em 1.5em;
     background: var(--c-primary);
-    color: #fff;
+    color: var(--c-on-primary);
     border-radius: 0.45em;
     border: solid 1px rgba(92, 147, 187, 0.15);
     font-size: 0.95rem;

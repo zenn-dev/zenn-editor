@@ -5,17 +5,22 @@ import {
   MdOutlineArrowBack,
   MdOutlineArrowForward,
   MdSort,
+  MdOutlineLightMode,
+  MdOutlineDarkMode,
+  MdOutlineContrast,
 } from 'react-icons/md';
 
 // hooks
 import { useFetch } from '../hooks/useFetch';
 import { useLocalFileChangedEffect } from '../hooks/useLocalFileChangedEffect';
 import { usePersistedState } from '../hooks/usePersistedState';
+import { useTheme, ThemePreference } from '../hooks/useTheme';
 
 // components
 import { Directory } from './sidebar/Directory';
 import { ListItemInner } from './sidebar/ListItemInner';
 import { Settings } from './sidebar/Settings';
+import { Logo } from './Logo';
 
 // others
 import { ArticleMeta, BookMeta, ChapterMeta } from 'zenn-model';
@@ -172,6 +177,23 @@ const ListBooks: React.FC<{ sort: ItemSortType }> = ({ sort }) => {
   );
 };
 
+const themeOptions: { value: ThemePreference; label: string }[] = [
+  { value: 'system', label: 'システム設定' },
+  { value: 'light', label: 'ライト' },
+  { value: 'dark', label: 'ダーク' },
+];
+
+const ThemeIcon: React.FC<{ theme: ThemePreference }> = ({ theme }) => {
+  switch (theme) {
+    case 'light':
+      return <MdOutlineLightMode className="sidebar__theme-open" />;
+    case 'dark':
+      return <MdOutlineDarkMode className="sidebar__theme-open" />;
+    default:
+      return <MdOutlineContrast className="sidebar__theme-open" />;
+  }
+};
+
 export const Sidebar: React.FC = () => {
   const [isFolded, setIsFolded] = usePersistedState<boolean>({
     cacheKey: 'fold-sidebar',
@@ -181,6 +203,7 @@ export const Sidebar: React.FC = () => {
     cacheKey: 'item-sort-type',
     defaultValue: 'modified',
   });
+  const { themePreference, setThemePreference } = useTheme();
 
   return (
     <StyledSidebar aria-expanded={!isFolded} className="sidebar">
@@ -198,26 +221,31 @@ export const Sidebar: React.FC = () => {
       <div className="sidebar__inner" aria-hidden={isFolded}>
         <header className="sidebar__header">
           <LinkHome>
-            <img
-              src="/logo.svg"
-              alt="Zenn Editor"
-              width={150}
-              height={20}
-              className="sidebar__header-logo"
-            />
+            <Logo width={150} height={20} className="sidebar__header-logo" />
           </LinkHome>
-          <Settings
-            openButtonIcon={<MdSort className="sidebar__sort-open" />}
-            openButtonAriaLabel="ソート設定を開く"
-            position="right"
-            options={[
-              { value: 'modified', label: 'ファイル更新順に並べる' },
-              { value: 'system', label: 'システムの表示順に従う' },
-            ]}
-            value={sort}
-            setValue={(val) => setSort(val)}
-            width={200}
-          />
+          <div className="sidebar__header-settings">
+            <Settings
+              openButtonIcon={<ThemeIcon theme={themePreference} />}
+              openButtonAriaLabel="テーマ設定を開く"
+              position="right"
+              options={themeOptions}
+              value={themePreference}
+              setValue={(val) => setThemePreference(val)}
+              width={180}
+            />
+            <Settings
+              openButtonIcon={<MdSort className="sidebar__sort-open" />}
+              openButtonAriaLabel="ソート設定を開く"
+              position="right"
+              options={[
+                { value: 'modified', label: 'ファイル更新順に並べる' },
+                { value: 'system', label: 'システムの表示順に従う' },
+              ]}
+              value={sort}
+              setValue={(val) => setSort(val)}
+              width={200}
+            />
+          </div>
         </header>
         <div className="sidebar__items">
           <ListArticles sort={sort} />
@@ -305,8 +333,15 @@ const StyledSidebar = styled.div`
   .sidebar__header-logo {
     flex-shrink: 0;
     display: block;
+    color: var(--c-body);
   }
-  .sidebar__sort-open {
+  .sidebar__header-settings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sidebar__sort-open,
+  .sidebar__theme-open {
     width: 22px;
     height: 22px;
   }

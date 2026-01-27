@@ -79,7 +79,7 @@ const StyledBookHeader = styled.header`
     align-items: center;
   }
   .book-header__cover-img {
-    background: #fff;
+    background: var(--c-base);
     object-fit: cover;
     box-shadow:
       0 9px 20px -9px rgba(0, 27, 68, 0.52),
