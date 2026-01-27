@@ -116,7 +116,6 @@ const StyledArticleHeader = styled.header`
   .article-header__emoji {
     margin-top: -0.5em;
     font-size: 56px;
-    color: #000;
   }
   .article-header__title {
     font-size: 1.9rem;

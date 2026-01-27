@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-theme="light" lang="ja">
+<html lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,21 @@
       content="no-cache, no-store, must-revalidate"
     />
     <title>Zenn CLI</title>
+
+    <!-- FOUC 防止: React がマウントされる前にテーマを適用 -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem('zenn-cli-theme');
+        var theme = stored;
+        if (!theme || theme === 'system') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
 
     <!-- 埋め込み要素のイベントを処理するためのスクリプト -->
     <script src="%VITE_EMBED_SERVER_ORIGIN%/js/listen-embed-event.js"></script>

@@ -91,9 +91,9 @@ const StyledSettings = styled.div`
   }
   .settings__popover {
     position: absolute;
-    background: #fff;
+    background: var(--c-popover-bg);
     top: calc(100% + 8px);
-    box-shadow: 0 2px 8px rgb(15 26 62 / 35%);
+    box-shadow: 0 2px 8px var(--c-popover-shadow);
     border-radius: 5px;
     font-size: 13.5px;
     overflow: hidden;

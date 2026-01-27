@@ -55,7 +55,7 @@ const StyledListItemInner = styled.div`
     color: var(--c-gray);
     font-size: 11px;
     border-radius: 4px;
-    background: #fff;
+    background: var(--c-base);
     line-height: 1.3;
   }
   .list-item-inner__title {
