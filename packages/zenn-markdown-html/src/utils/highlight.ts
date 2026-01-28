@@ -46,6 +46,30 @@ let highlighterPromise: Promise<Highlighter> | null = null;
 
 const SHIKI_THEME = 'github-dark';
 
+/**
+ * github-dark テーマの背景色
+ * @see https://github.com/shikijs/textmate-grammars-themes/blob/main/packages/tm-themes/themes/github-dark.json
+ */
+const SHIKI_THEME_BG_COLOR = '#24292e';
+
+/**
+ * コードブロックの背景色
+ * CSS変数 --c-bg-code-block より少し暗めに調整
+ * @see packages/zenn-content-css/src/index.scss
+ */
+const CODE_BLOCK_BG_COLOR = '#151e2c';
+
+/**
+ * github-dark テーマのコメント色
+ */
+const SHIKI_THEME_COMMENT_COLOR = '#6a737d';
+
+/**
+ * コントラスト改善後のコメント色
+ * github-dark-default テーマのコメント色(#8b949e)より明るく調整
+ */
+const COMMENT_COLOR = '#a0aab5';
+
 /** ブラウザ環境かどうかを判定 */
 // @ts-expect-error: window is not defined in Node.js types
 const isBrowser = typeof window !== 'undefined';
@@ -273,5 +297,9 @@ export async function highlight(
     lang,
     theme: SHIKI_THEME,
     transformers,
+    colorReplacements: {
+      [SHIKI_THEME_BG_COLOR]: CODE_BLOCK_BG_COLOR,
+      [SHIKI_THEME_COMMENT_COLOR]: COMMENT_COLOR,
+    },
   });
 }
