@@ -151,4 +151,69 @@ describe('EmbedKatex', () => {
       expect(mockKatexRender).not.toHaveBeenCalled();
     });
   });
+
+  describe('ブロックKaTeX（display-mode）', () => {
+    it('eqタグなしのテキストコンテンツでもレンダリングされる', async () => {
+      const element = document.createElement('embed-katex') as EmbedKatex;
+      element.setAttribute('display-mode', '1');
+      // ブロックKaTeXは<eq>タグなしで直接数式テキストが入る
+      element.textContent = 'e^{i\\theta} = \\cos\\theta + i\\sin\\theta';
+
+      container.appendChild(element);
+
+      await vi.waitFor(() => {
+        expect(mockKatexRender).toHaveBeenCalledWith(
+          'e^{i\\theta} = \\cos\\theta + i\\sin\\theta',
+          expect.any(HTMLElement),
+          expect.objectContaining({ displayMode: true })
+        );
+      });
+    });
+
+    it('ブロックKaTeXの内容が変更されたときに再レンダリングされる', async () => {
+      const element = document.createElement('embed-katex') as EmbedKatex;
+      element.setAttribute('display-mode', '1');
+      element.textContent = 'a = b';
+      container.appendChild(element);
+
+      await vi.waitFor(() => {
+        expect(mockKatexRender).toHaveBeenCalledTimes(1);
+      });
+
+      // 内容を変更（morphdomのシミュレーション）
+      mockKatexRender.mockClear();
+      element.textContent = 'c = d';
+
+      await vi.waitFor(() => {
+        expect(mockKatexRender).toHaveBeenCalledWith(
+          'c = d',
+          expect.any(HTMLElement),
+          expect.any(Object)
+        );
+      });
+    });
+
+    it('ブロックKaTeXの内容が空になったときも再レンダリングされる', async () => {
+      const element = document.createElement('embed-katex') as EmbedKatex;
+      element.setAttribute('display-mode', '1');
+      element.textContent = 'a = b';
+      container.appendChild(element);
+
+      await vi.waitFor(() => {
+        expect(mockKatexRender).toHaveBeenCalledTimes(1);
+      });
+
+      // 内容を空に変更（morphdomのシミュレーション）
+      mockKatexRender.mockClear();
+      element.textContent = '';
+
+      await vi.waitFor(() => {
+        expect(mockKatexRender).toHaveBeenCalledWith(
+          '',
+          expect.any(HTMLElement),
+          expect.any(Object)
+        );
+      });
+    });
+  });
 });
