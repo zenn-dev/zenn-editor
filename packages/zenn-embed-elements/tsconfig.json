@@ -11,6 +11,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules", "lib"],
+  "exclude": ["node_modules", "lib", "vitest.config.ts", "**/*.test.ts"],
   "include": ["**/*.ts", "**/*.tsx"]
 }

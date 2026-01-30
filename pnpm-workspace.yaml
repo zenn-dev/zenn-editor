@@ -1,7 +1,7 @@
 packages:
   - packages/*
 
-minimumReleaseAge: 30240
+minimumReleaseAge: 4320
 
 # 2025/10/28 に `pnpm audit --fix` を実行した結果
 overrides:
