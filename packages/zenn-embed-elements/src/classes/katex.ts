@@ -62,9 +62,15 @@ export class EmbedKatex extends HTMLElement {
       if (this._isRendering) return;
 
       // 未レンダリング状態の判定:
-      // - <eq>タグが存在する = まだKaTeXでレンダリングされていない
-      // - .katexクラスがない = KaTeXのレンダリング結果が存在しない
-      if (this.querySelector('eq') && !this.querySelector('.katex')) {
+      // - インラインKaTeX: <eq>タグが存在する
+      // - ブロックKaTeX: display-mode属性があり、firstElementChildが.katexでない
+      //   （レンダリング済みの場合、firstElementChildは.katex要素になる）
+      const hasEqTag = this.querySelector('eq');
+      const isUnrenderedBlockKatex =
+        this.hasAttribute('display-mode') &&
+        !this.firstElementChild?.classList.contains('katex');
+
+      if (hasEqTag || isUnrenderedBlockKatex) {
         this.render();
       }
     });
