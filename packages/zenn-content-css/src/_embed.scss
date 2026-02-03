@@ -80,6 +80,8 @@
   embed-katex:not([display-mode='1']) {
     display: inline-flex;
     max-width: 100%;
+    // 縦スクロールを無効化（インラインKaTeXは極端に高くならないため切り取られる心配はない）
+    overflow-y: hidden;
     // issue: https://github.com/zenn-dev/zenn-editor/pull/216
     // インライン要素ではいかなる場合でもスクロールバーを表示しない
     -ms-overflow-style: none;
