@@ -32,7 +32,7 @@ jobs:
         run: pnpm build
 
       - name: zenn-cliのdistディレクトリをキャッシュ
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
@@ -58,7 +58,7 @@ jobs:
         run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
@@ -82,7 +82,7 @@ jobs:
         run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
