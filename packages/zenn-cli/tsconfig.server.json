@@ -8,5 +8,5 @@
     "outDir": "./dist",
     "esModuleInterop": true
   },
-  "exclude": ["src/client", "node_modules", "**/__tests__"]
+  "exclude": ["src/client", "src/e2e", "node_modules", "**/__tests__"]
 }

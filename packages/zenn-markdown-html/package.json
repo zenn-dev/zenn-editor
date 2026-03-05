@@ -50,7 +50,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/markdown-it": "^14.1.2",
-    "@types/node": "^25.2.2",
+    "@types/node": "^24.9.1",
     "@types/sanitize-html": "^2.16.0",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
