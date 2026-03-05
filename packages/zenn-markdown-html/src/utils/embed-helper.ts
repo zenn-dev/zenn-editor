@@ -64,7 +64,14 @@ export function generateEmbedServerIframe(
   const id = `zenn-embedded__${Math.random().toString(16).slice(2)}`;
   const iframeSrc = `${origin}/${encodedType}#${id}`;
 
-  return `<span class="embed-block zenn-embedded zenn-embedded-${encodedType}"><iframe id="${id}" src="${iframeSrc}" data-content="${encodedSrc}" frameborder="0" scrolling="no" loading="lazy"></iframe></span>`;
+  // tweet埋め込みではloading="lazy"を使わない
+  // WebKit(Safari)のjoint session historyでは、遅延ロードされたiframe内の
+  // ナビゲーション(Twitter widget.jsによるもの)がbrowser historyに余計な
+  // エントリを追加し、ブラウザバックが正常に動作しなくなるため
+  // ref: https://github.com/zenn-dev/zenn-community/issues/746
+  const loading = type === 'tweet' ? '' : ' loading="lazy"';
+
+  return `<span class="embed-block zenn-embedded zenn-embedded-${encodedType}"><iframe id="${id}" src="${iframeSrc}" data-content="${encodedSrc}" frameborder="0" scrolling="no"${loading}></iframe></span>`;
 }
 
 /** 渡された`type`の埋め込み要素のHTML文字列を返す */
