@@ -15,7 +15,7 @@ function getBookNotFoundMessage(slug: string) {
 }
 
 export function getBook(req: Express.Request, res: Express.Response) {
-  const slug = req.params.slug;
+  const slug = req.params.slug as string;
   const book = getLocalBook(slug);
   if (!book) {
     res.status(404).json({
@@ -33,7 +33,7 @@ export function getBooks(req: Express.Request, res: Express.Response) {
 }
 
 export async function getChapter(req: Express.Request, res: Express.Response) {
-  const bookSlug = req.params.book_slug;
+  const bookSlug = req.params.book_slug as string;
   const book = getLocalBookMeta(bookSlug);
   if (!book) {
     res.status(404).json({
@@ -41,7 +41,7 @@ export async function getChapter(req: Express.Request, res: Express.Response) {
     });
     return;
   }
-  const chapterFilename = req.params.chapter_filename;
+  const chapterFilename = req.params.chapter_filename as string;
   const chapter = await getLocalChapter(book, chapterFilename);
   if (!chapter) {
     res
@@ -53,7 +53,7 @@ export async function getChapter(req: Express.Request, res: Express.Response) {
 }
 
 export function getChapters(req: Express.Request, res: Express.Response) {
-  const bookSlug = req.params.book_slug;
+  const bookSlug = req.params.book_slug as string;
   const book = getLocalBookMeta(bookSlug);
   if (!book) {
     res.status(404).json({

@@ -4,7 +4,7 @@ import { getLocalArticle, getLocalArticleMetaList } from '../lib/articles';
 import { getValidSortTypes } from '../../common/helper';
 
 export async function getArticle(req: Express.Request, res: Express.Response) {
-  const article = await getLocalArticle(req.params.slug);
+  const article = await getLocalArticle(req.params.slug as string);
   if (!article) {
     res
       .status(404)

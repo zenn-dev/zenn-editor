@@ -11,5 +11,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "exclude": ["src/server", "node_modules", "**/__tests__"]
+  "exclude": ["src/server", "src/e2e", "node_modules", "**/__tests__"]
 }
