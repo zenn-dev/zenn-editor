@@ -185,6 +185,7 @@
     background: var(--c-bg-dim);
   }
   code {
+    text-autospace: no-autospace;
     padding: 0.2em 0.4em;
     margin: 0 0.2em;
     background: var(--c-bg-code);
@@ -201,6 +202,7 @@
     -webkit-font-smoothing: antialiased;
   }
   pre {
+    text-autospace: no-autospace;
     margin: 1.3rem 0;
     background: var(--c-bg-code-block);
     overflow-x: auto;
