@@ -1,6 +1,6 @@
 {
   "name": "zenn-embed-elements",
-  "version": "0.4.6",
+  "version": "0.4.7-alpha.1",
   "license": "MIT",
   "description": "Web components for embedded contents.",
   "repository": {
@@ -28,9 +28,9 @@
     "test": "echo 'no test yet'"
   },
   "devDependencies": {
-    "@eslint/js": "^9.38.0",
+    "@eslint/js": "^10.0.1",
     "@types/node": "^24.9.1",
-    "eslint": "^9.38.0",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "rimraf": "^6.0.1",
     "typescript": "^5.9.3",
