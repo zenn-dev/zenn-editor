@@ -5,7 +5,6 @@ import { getBook, getBooks, getChapter, getChapters } from './api/books';
 import { getManual } from './api/manual';
 import { getLocalInfo } from './api/local-info';
 import { getCliVersion } from './api/cli-version';
-import { getWorkingPath } from './lib/helper';
 import { historyApiFallback } from './lib/history-fallback';
 
 export function createApp() {
@@ -23,8 +22,11 @@ export function createApp() {
   app.get('/images/*splat', (req, res) => {
     // `zenn preview`を起動したディレクトリ直下にあるimagesディレクトリを参照する
     // URLエンコードされた文字（%20など）をデコード
-    const decodedPath = decodeURIComponent(req.path);
-    res.sendFile(getWorkingPath(decodedPath));
+    const decodedPath = decodeURIComponent(req.path).replace(/^\//, '');
+    // rootオプションで解決のベースをcwdに限定する。rootを指定しないとsendがcwdの絶対パス
+    // 全体をdotfilesチェック対象にし、親ディレクトリが`.`で始まる場合（例: `~/.ghq/...`）
+    // に404となる。
+    res.sendFile(decodedPath, { root: process.cwd() });
   });
 
   // serve static files built by vite
