@@ -22,11 +22,23 @@ export function createApp() {
   app.get('/images/*splat', (req, res) => {
     // `zenn preview`を起動したディレクトリ直下にあるimagesディレクトリを参照する
     // URLエンコードされた文字（%20など）をデコード
-    const decodedPath = decodeURIComponent(req.path).replace(/^\//, '');
-    // rootオプションで解決のベースをcwdに限定する。rootを指定しないとsendがcwdの絶対パス
-    // 全体をdotfilesチェック対象にし、親ディレクトリが`.`で始まる場合（例: `~/.ghq/...`）
-    // に404となる。
-    res.sendFile(decodedPath, { root: process.cwd() });
+    const decodedPath = decodeURIComponent(
+      req.path.replace(/^\/images\/?/, '')
+    );
+    // デコード後に `..` セグメントが混ざっていれば早期に弾く
+    if (decodedPath.split(/[\\/]+/).some((seg) => seg === '..')) {
+      res.status(400).end();
+      return;
+    }
+    // rootをcwd/imagesに固定する。rootをcwdにするとsendのUP_PATH_REGEXPチェックが
+    // cwd脱出時にしか効かず、`images/../package.json` のようなcwd配下への脱出を許して
+    // しまう。加えて、rootをimagesに固定することでsendのdotfilesチェックはimages配下
+    // の相対パスにのみ適用され、親ディレクトリが`.`で始まる場合（例: `~/.ghq/...`）で
+    // も画像が配信できる。
+    res.sendFile(decodedPath, {
+      root: path.join(process.cwd(), 'images'),
+      dotfiles: 'ignore',
+    });
   });
 
   // serve static files built by vite

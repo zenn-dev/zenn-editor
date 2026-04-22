@@ -358,4 +358,20 @@ describe('/images/*', () => {
       fs.unlinkSync(hiddenImage);
     }
   });
+
+  test('should reject URL-encoded path traversal out of images directory', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app).get(
+      '/images/..%2Farticles%2Fmy-first-post.md'
+    );
+    expect(res.status).not.toBe(200);
+  });
+
+  test('should reject double URL-encoded path traversal', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app).get(
+      '/images/%2e%2e%2Farticles%2Fmy-first-post.md'
+    );
+    expect(res.status).not.toBe(200);
+  });
 });
