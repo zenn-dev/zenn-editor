@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 10.24.0
 
@@ -32,7 +32,7 @@ jobs:
         run: pnpm build
 
       - name: zenn-cliのdistディレクトリをキャッシュ
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v5.0.4
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 10.24.0
 
@@ -58,7 +58,7 @@ jobs:
         run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v5.0.4
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
@@ -74,7 +74,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 10.24.0
 
@@ -82,7 +82,7 @@ jobs:
         run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v5.0.4
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
