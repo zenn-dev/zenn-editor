@@ -65,7 +65,7 @@ describe('Linkifyのテスト', () => {
       );
     });
 
-    test('<details />内のリンクはリンクカードに変換しない', async () => {
+    test(':::message 内のリンクはリンクカードに変換しない', async () => {
       const html = await renderLink(
         ':::message alert\nhttps://example.com\n:::'
       );
@@ -76,13 +76,12 @@ describe('Linkifyのテスト', () => {
       );
     });
 
-    test('<details />内の2段落空いたリンクをリンクカードに変換しない', async () => {
+    test(':::message 内の2段落空いたリンクをリンクカードに変換しない', async () => {
       const html = await renderLink(
         ':::message alert\nhello\n\nhttps://example.com\n:::'
       );
       const iframes = parse(html).querySelectorAll('aside iframe');
       expect(iframes.length).toBe(0);
-      console.log(html);
       expect(html).toContain(
         '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
