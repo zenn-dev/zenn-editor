@@ -73,17 +73,23 @@ function convertAutolinkToEmbed(
 
 export function mdLinkifyToCard(md: MarkdownIt, options?: MarkdownOptions) {
   md.core.ruler.after('replacements', 'link-to-card', function ({ tokens }) {
-    // 埋め込みを許可するネストレベル
-    let allowLevel = 0;
+    const containerStack: ('details' | 'message')[] = [];
 
     // 本文内のすべてのtokenをチェック
     tokens.forEach((token, i) => {
       if (token.type === 'container_details_open') {
-        allowLevel++;
+        containerStack.push('details');
         return;
       }
-      if (token.type === 'container_details_close' && allowLevel > 0) {
-        allowLevel--;
+      if (token.type === 'container_message_open') {
+        containerStack.push('message');
+        return;
+      }
+      if (
+        token.type === 'container_details_close' ||
+        token.type === 'container_message_close'
+      ) {
+        containerStack.pop();
         return;
       }
 
@@ -105,8 +111,11 @@ export function mdLinkifyToCard(md: MarkdownIt, options?: MarkdownOptions) {
       const isParentRootParagraph =
         parentToken &&
         parentToken.type === 'paragraph_open' &&
-        parentToken.level === allowLevel;
+        parentToken.level === containerStack.length;
       if (!isParentRootParagraph) return;
+
+      // 直近の container が message のときは非カード
+      if (containerStack.at(-1) === 'message') return;
 
       token.children = convertAutolinkToEmbed(children, options || {});
     });
