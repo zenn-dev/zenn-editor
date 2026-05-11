@@ -65,7 +65,7 @@ describe('Linkifyのテスト', () => {
       );
     });
 
-    test('<details />内のリンクはリンクカードに変換しない', async () => {
+    test(':::message 内のリンクはリンクカードに変換しない', async () => {
       const html = await renderLink(
         ':::message alert\nhttps://example.com\n:::'
       );
@@ -76,13 +76,12 @@ describe('Linkifyのテスト', () => {
       );
     });
 
-    test('<details />内の2段落空いたリンクをリンクカードに変換しない', async () => {
+    test(':::message 内の2段落空いたリンクをリンクカードに変換しない', async () => {
       const html = await renderLink(
         ':::message alert\nhello\n\nhttps://example.com\n:::'
       );
       const iframes = parse(html).querySelectorAll('aside iframe');
       expect(iframes.length).toBe(0);
-      console.log(html);
       expect(html).toContain(
         '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">https://example.com</a>'
       );
@@ -311,14 +310,65 @@ describe('Linkifyのテスト', () => {
         expect(iframe).not.toBe(null);
       });
 
-      test('<details />以外のネストは埋め込みiframeに変換しない', async () => {
+      test.each([
+        {
+          label: 'リスト',
+          input: [`:::details example`, `- https://example1.com`, `:::`].join(
+            '\n'
+          ),
+        },
+        {
+          label: ':::message',
+          input: [
+            `::::details example`,
+            `:::message`,
+            `https://example1.com`,
+            `:::`,
+            `::::`,
+          ].join('\n'),
+        },
+      ])(
+        '<details />以外のネストは埋め込みiframeに変換しない ($label)',
+        async ({ input }) => {
+          const html = await renderLink(input);
+          const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+
+          expect(iframe).toBe(null);
+        }
+      );
+
+      test(':::message 内の <details /> でも埋め込みiframeに変換する', async () => {
         const html = await renderLink(
-          [`:::details example`, `- https://example1.com`, `:::`].join('\n')
+          [
+            `::::message`,
+            `:::details example`,
+            `https://example1.com`,
+            `:::`,
+            `::::`,
+          ].join('\n')
         );
 
         const iframe = parse(html).querySelector('span.zenn-embedded iframe');
 
-        expect(iframe).toBe(null);
+        expect(iframe).not.toBe(null);
+      });
+
+      test(':::message を挟んで <details /> が深くネストしていても埋め込みiframeに変換する', async () => {
+        const html = await renderLink(
+          [
+            `:::::details outer`,
+            `::::message`,
+            `:::details inner`,
+            `https://example1.com`,
+            `:::`,
+            `::::`,
+            `:::::`,
+          ].join('\n')
+        );
+
+        const iframe = parse(html).querySelector('span.zenn-embedded iframe');
+
+        expect(iframe).not.toBe(null);
       });
     });
   });
