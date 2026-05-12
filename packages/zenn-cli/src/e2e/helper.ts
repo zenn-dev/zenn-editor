@@ -2,6 +2,8 @@ import { spawn } from 'child_process';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
+const FORCE_CLOSE_TIMEOUT_MS = 5000;
+
 /**
  * zenn CLI のパス
  */
@@ -111,7 +113,7 @@ export const execZennPreview = (
       hasError = true;
       stderr += '\npreview process did not close in time';
       finalize();
-    }, timeoutMs + 5000);
+    }, timeoutMs + FORCE_CLOSE_TIMEOUT_MS);
 
     child.on('error', (err) => {
       clearTimeout(timer);
