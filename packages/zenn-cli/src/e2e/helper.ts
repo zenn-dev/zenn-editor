@@ -106,10 +106,11 @@ export const execZennPreview = (
     // 指定時間後にプロセスを終了
     const timer = setTimeout(() => {
       // close を待ってから resolve することで、Windows での後続 cleanup と競合しないようにする
+      // signal 指定なしの kill を使い、実行環境ごとのデフォルトシグナルで終了させる
       child.kill();
       forceFinalizeTimer = setTimeout(() => {
         hasError = true;
-        stderr += '\npreview process did not close in time';
+        stderr += `\npreview process did not close within ${FORCE_CLOSE_TIMEOUT_MS}ms after kill`;
         finalize();
       }, FORCE_CLOSE_TIMEOUT_MS);
     }, timeoutMs);
