@@ -7,6 +7,7 @@
     "rootDir": "./src",
     "strict": true,
     "moduleResolution": "node",
+    // TODO: TypeScript 6の根本対応（moduleResolution移行）後に削除する一時回避策
     "ignoreDeprecations": "6.0",
     "esModuleInterop": true,
     "skipLibCheck": true,
