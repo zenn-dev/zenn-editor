@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -7,17 +8,15 @@ export default defineConfig({
     alias: [
       {
         find: /^zenn-markdown-html\/utils$/,
-        replacement: new URL(
-          '../zenn-markdown-html/src/utils/index.ts',
-          import.meta.url
-        ).pathname,
+        replacement: fileURLToPath(
+          new URL('../zenn-markdown-html/src/utils/index.ts', import.meta.url)
+        ),
       },
       {
         find: /^zenn-markdown-html$/,
-        replacement: new URL(
-          '../zenn-markdown-html/src/index.ts',
-          import.meta.url
-        ).pathname,
+        replacement: fileURLToPath(
+          new URL('../zenn-markdown-html/src/index.ts', import.meta.url)
+        ),
       },
     ],
   },
