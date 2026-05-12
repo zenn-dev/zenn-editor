@@ -9,7 +9,7 @@ updates:
       interval: 'monthly'
     cooldown:
       default-days: 21
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 5
     groups:
       dev-dependencies:
         dependency-type: 'development'
@@ -22,6 +22,9 @@ updates:
         dependency-type: 'production'
         patterns:
           - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
     commit-message:
       prefix: 'chore'
       prefix-development: 'chore'
