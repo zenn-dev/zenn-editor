@@ -83,6 +83,7 @@ export const execZennPreview = (
     let stderr = '';
     let hasError = false;
     let settled = false;
+    let forceFinalizeTimer: ReturnType<typeof setTimeout> | null = null;
 
     const finalize = () => {
       if (settled) return;
@@ -106,18 +107,16 @@ export const execZennPreview = (
     const timer = setTimeout(() => {
       // close を待ってから resolve することで、Windows での後続 cleanup と競合しないようにする
       child.kill();
+      forceFinalizeTimer = setTimeout(() => {
+        hasError = true;
+        stderr += '\npreview process did not close in time';
+        finalize();
+      }, FORCE_CLOSE_TIMEOUT_MS);
     }, timeoutMs);
-
-    // kill 後も close が来ないケースに備えて強制的に終了する
-    const forceFinalizeTimer = setTimeout(() => {
-      hasError = true;
-      stderr += '\npreview process did not close in time';
-      finalize();
-    }, timeoutMs + FORCE_CLOSE_TIMEOUT_MS);
 
     child.on('error', (err) => {
       clearTimeout(timer);
-      clearTimeout(forceFinalizeTimer);
+      if (forceFinalizeTimer) clearTimeout(forceFinalizeTimer);
       hasError = true;
       stderr += err.message;
       child.kill();
@@ -126,7 +125,7 @@ export const execZennPreview = (
 
     child.on('close', () => {
       clearTimeout(timer);
-      clearTimeout(forceFinalizeTimer);
+      if (forceFinalizeTimer) clearTimeout(forceFinalizeTimer);
       finalize();
     });
   });
