@@ -102,6 +102,7 @@ export const execZennPreview = (
 
     // 指定時間後にプロセスを終了
     const timer = setTimeout(() => {
+      // close を待ってから resolve することで、Windows での後続 cleanup と競合しないようにする
       child.kill();
     }, timeoutMs);
 
