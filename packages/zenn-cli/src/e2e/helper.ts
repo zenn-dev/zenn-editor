@@ -80,6 +80,13 @@ export const execZennPreview = (
     let stdout = '';
     let stderr = '';
     let hasError = false;
+    let settled = false;
+
+    const finalize = () => {
+      if (settled) return;
+      settled = true;
+      resolve({ stdout, stderr, hasError });
+    };
 
     child.stdout?.on('data', (data) => {
       stdout += data.toString();
@@ -95,21 +102,29 @@ export const execZennPreview = (
 
     // 指定時間後にプロセスを終了
     const timer = setTimeout(() => {
-      child.kill('SIGTERM');
-      resolve({ stdout, stderr, hasError });
+      child.kill();
     }, timeoutMs);
+
+    // kill 後も close が来ないケースに備えて強制的に終了する
+    const forceFinalizeTimer = setTimeout(() => {
+      hasError = true;
+      stderr += '\npreview process did not close in time';
+      finalize();
+    }, timeoutMs + 5000);
 
     child.on('error', (err) => {
       clearTimeout(timer);
+      clearTimeout(forceFinalizeTimer);
       hasError = true;
       stderr += err.message;
-      child.kill('SIGTERM');
-      resolve({ stdout, stderr, hasError });
+      child.kill();
+      finalize();
     });
 
     child.on('close', () => {
       clearTimeout(timer);
-      resolve({ stdout, stderr, hasError });
+      clearTimeout(forceFinalizeTimer);
+      finalize();
     });
   });
 };
