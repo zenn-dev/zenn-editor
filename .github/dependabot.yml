@@ -15,6 +15,9 @@ updates:
         dependency-type: 'development'
         patterns:
           - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
       production-dependencies:
         dependency-type: 'production'
         patterns:
