@@ -1,4 +1,4 @@
-import LogoSvg from '../public/logo.svg?react';
+import logoSvg from '../public/logo.svg';
 
 type Props = {
   width?: number;
@@ -12,11 +12,12 @@ export const Logo: React.FC<Props> = ({
   className,
 }) => {
   return (
-    <LogoSvg
+    <img
+      src={logoSvg}
       width={width}
       height={height}
       className={className}
-      aria-label="Zenn Editor"
+      alt="Zenn Editor"
     />
   );
 };

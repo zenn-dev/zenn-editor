@@ -5,6 +5,7 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "jsx": "preserve",

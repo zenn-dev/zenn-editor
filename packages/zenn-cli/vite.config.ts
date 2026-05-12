@@ -20,7 +20,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ['zenn-model'],
   },
-  plugins: [react(), svgr()],
+  plugins: [svgr(), react()],
   // for developing preview
   server: {
     port: 3333,
