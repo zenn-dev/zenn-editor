@@ -16,6 +16,9 @@ concurrency:
   group: publish-${{ github.ref_name }}
   cancel-in-progress: false
 
+env:
+  NPM_CONFIG_REGISTRY: https://npm.flatt.tech
+
 jobs:
   publish:
     name: Publish
@@ -34,19 +37,12 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v6.3.0
         with:
-          cache: 'pnpm'
           node-version: 24
-          registry-url: 'https://registry.npmjs.org'
 
       - name: ビルド時に使用する環境変数を設定
         run: |
           touch ./packages/zenn-cli/.env
           echo VITE_EMBED_SERVER_ORIGIN=${{ vars.VITE_EMBED_SERVER_ORIGIN }} >> ./packages/zenn-cli/.env
-
-      - name: Install safe-chain
-        run: curl -fsSL https://raw.githubusercontent.com/AikidoSec/safe-chain/main/install-scripts/install-safe-chain.sh | sh -s -- --ci
-        env:
-          SAFE_CHAIN_VERSION: "1.2.2"
 
       - name: パッケージをインストール
         run: pnpm install
@@ -132,12 +128,14 @@ jobs:
         run: pnpm lerna publish from-package --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
 
       - name: '[canary] Publish'
         if: github.ref_name == 'canary'
         run: pnpm lerna publish from-package --yes --pre-dist-tag canary
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
 
       - name: '[main] Checkout'
         if: github.ref_name == 'main'

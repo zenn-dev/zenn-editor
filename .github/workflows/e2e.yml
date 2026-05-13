@@ -9,6 +9,9 @@ on:
       - canary
     types: [opened, synchronize]
 
+env:
+  NPM_CONFIG_REGISTRY: https://npm.flatt.tech
+
 jobs:
   # zenn-editor packagesをwindowsでビルドする環境は整っていないため、linux環境でビルドして、zenn-cliのバンドルファイルをactions/cacheに保存しておく
   build:
@@ -19,11 +22,6 @@ jobs:
       - uses: pnpm/action-setup@v6
         with:
           version: 10.24.0
-
-      - name: Install safe-chain
-        run: curl -fsSL https://raw.githubusercontent.com/AikidoSec/safe-chain/main/install-scripts/install-safe-chain.sh | sh -s -- --ci
-        env:
-          SAFE_CHAIN_VERSION: "1.2.2"
 
       - name: パッケージをインストール
         run: pnpm install
@@ -48,11 +46,6 @@ jobs:
       - uses: pnpm/action-setup@v6
         with:
           version: 10.24.0
-
-      - name: Install safe-chain
-        run: curl -fsSL https://raw.githubusercontent.com/AikidoSec/safe-chain/main/install-scripts/install-safe-chain.sh | sh -s -- --ci
-        env:
-          SAFE_CHAIN_VERSION: "1.2.2"
 
       - name: パッケージをインストール
         run: pnpm install
