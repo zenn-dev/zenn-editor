@@ -67,7 +67,7 @@
     "configstore": "^8.0.0",
     "dotenv": "^17.2.3",
     "emoji-regex": "^10.6.0",
-    "esbuild": "^0.27.0",
+    "esbuild": "^0.28.0",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "express": "^5.1.0",
