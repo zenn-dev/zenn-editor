@@ -327,4 +327,51 @@ describe('/images/*', () => {
     vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
     await supertest(app).get('/images/nonexistent.jpg').expect(404);
   });
+
+  test('should serve images when cwd is under a dot-prefixed directory', async () => {
+    const dotCwd = path.join(fixturesRootPath, '.dot-prefixed-cwd');
+    const imagesDir = path.join(dotCwd, 'images');
+    const targetImage = path.join(imagesDir, 'test.jpg');
+    fs.copySync(path.join(fixturesRootPath, 'images'), imagesDir);
+
+    try {
+      vi.spyOn(process, 'cwd').mockReturnValue(dotCwd);
+      const res = await supertest(app).get('/images/test.jpg').expect(200);
+      expect(res.headers['content-type']).toMatch(/image/);
+    } finally {
+      fs.removeSync(dotCwd);
+      expect(fs.existsSync(targetImage)).toBe(false);
+    }
+  });
+
+  test('should return 404 for dotfiles inside the images directory', async () => {
+    const hiddenImage = path.join(fixturesRootPath, 'images', '.secret.jpg');
+    fs.copyFileSync(
+      path.join(fixturesRootPath, 'images', 'test.jpg'),
+      hiddenImage
+    );
+
+    try {
+      vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+      await supertest(app).get('/images/.secret.jpg').expect(404);
+    } finally {
+      fs.unlinkSync(hiddenImage);
+    }
+  });
+
+  test('should reject URL-encoded path traversal out of images directory', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app).get(
+      '/images/..%2Farticles%2Fmy-first-post.md'
+    );
+    expect(res.status).not.toBe(200);
+  });
+
+  test('should reject double URL-encoded path traversal', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app).get(
+      '/images/%2e%2e%2Farticles%2Fmy-first-post.md'
+    );
+    expect(res.status).not.toBe(200);
+  });
 });

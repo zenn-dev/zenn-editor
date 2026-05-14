@@ -1,6 +1,6 @@
 {
   "name": "zenn-markdown-html",
-  "version": "0.4.7",
+  "version": "0.4.8-alpha.9",
   "license": "MIT",
   "description": "Convert markdown to zenn flavor html.",
   "type": "module",
@@ -50,7 +50,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/markdown-it": "^14.1.2",
-    "@types/node": "^24.9.1",
+    "@types/node": "^25.4.0",
     "@types/sanitize-html": "^2.16.0",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
@@ -62,7 +62,7 @@
     "vitest": "^4.0.6"
   },
   "dependencies": {
-    "cheerio": "1.1.2",
+    "cheerio": "1.2.0",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
     "markdown-it-container": "^4.0.0",

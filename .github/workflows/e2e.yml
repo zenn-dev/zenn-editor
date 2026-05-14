@@ -9,6 +9,9 @@ on:
       - canary
     types: [opened, synchronize]
 
+env:
+  NPM_CONFIG_REGISTRY: https://npm.flatt.tech
+
 jobs:
   # zenn-editor packagesをwindowsでビルドする環境は整っていないため、linux環境でビルドして、zenn-cliのバンドルファイルをactions/cacheに保存しておく
   build:
@@ -16,14 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6.0.3
         with:
           version: 10.24.0
-
-      - name: Install safe-chain
-        run: curl -fsSL https://raw.githubusercontent.com/AikidoSec/safe-chain/main/install-scripts/install-safe-chain.sh | sh -s -- --ci
-        env:
-          SAFE_CHAIN_VERSION: "1.2.2"
 
       - name: パッケージをインストール
         run: pnpm install
@@ -32,7 +30,7 @@ jobs:
         run: pnpm build
 
       - name: zenn-cliのdistディレクトリをキャッシュ
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v5.0.5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
@@ -45,20 +43,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6.0.3
         with:
           version: 10.24.0
-
-      - name: Install safe-chain
-        run: curl -fsSL https://raw.githubusercontent.com/AikidoSec/safe-chain/main/install-scripts/install-safe-chain.sh | sh -s -- --ci
-        env:
-          SAFE_CHAIN_VERSION: "1.2.2"
 
       - name: パッケージをインストール
         run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v5.0.5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
@@ -74,7 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6.0.3
         with:
           version: 10.24.0
 
@@ -82,7 +75,7 @@ jobs:
         run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v5.0.5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
