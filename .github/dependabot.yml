@@ -11,20 +11,24 @@ updates:
       default-days: 21
     open-pull-requests-limit: 5
     groups:
-      dev-dependencies:
+      dev-npm-minor-dependencies:
         dependency-type: 'development'
-        patterns:
-          - '*'
         update-types:
           - 'minor'
           - 'patch'
-      production-dependencies:
+      prod-npm-minor-dependencies:
         dependency-type: 'production'
-        patterns:
-          - '*'
         update-types:
           - 'minor'
           - 'patch'
+      dev-npm-major-dependencies:
+        dependency-type: 'development'
+        update-types:
+          - 'major'
+      prod-npm-major-dependencies:
+        dependency-type: 'production'
+        update-types:
+          - 'major'
     commit-message:
       prefix: 'chore'
       prefix-development: 'chore'
