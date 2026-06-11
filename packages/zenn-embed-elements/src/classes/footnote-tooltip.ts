@@ -37,9 +37,7 @@ function getTooltip(): HTMLDivElement {
   return tooltip;
 }
 
-function findFootnoteRef(
-  target: EventTarget | null
-): HTMLAnchorElement | null {
+function findFootnoteRef(target: EventTarget | null): HTMLAnchorElement | null {
   if (!(target instanceof Element)) return null;
   const ref = target.closest('sup.footnote-ref > a');
   if (!(ref instanceof HTMLAnchorElement)) return null;
