@@ -1,11 +1,4 @@
-import {
-  describe,
-  test,
-  expect,
-  beforeEach,
-  afterEach,
-  vi,
-} from 'vitest';
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   initFootnoteTooltip,
   _resetFootnoteTooltipStateForTest,
@@ -176,7 +169,10 @@ describe('キーボードフォーカス', () => {
   test('focusout で非表示になる', () => {
     getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     getRef().dispatchEvent(
-      new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body })
+      new FocusEvent('focusout', {
+        bubbles: true,
+        relatedTarget: document.body,
+      })
     );
 
     expect(getTooltipEl()!.hidden).toBe(true);
@@ -186,7 +182,10 @@ describe('キーボードフォーカス', () => {
     getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     const linkInTooltip = getTooltipEl()!.querySelector('a')!;
     getRef().dispatchEvent(
-      new FocusEvent('focusout', { bubbles: true, relatedTarget: linkInTooltip })
+      new FocusEvent('focusout', {
+        bubbles: true,
+        relatedTarget: linkInTooltip,
+      })
     );
 
     expect(getTooltipEl()!.hidden).toBe(false);
@@ -196,11 +195,17 @@ describe('キーボードフォーカス', () => {
     getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     const linkInTooltip = getTooltipEl()!.querySelector('a')!;
     getRef().dispatchEvent(
-      new FocusEvent('focusout', { bubbles: true, relatedTarget: linkInTooltip })
+      new FocusEvent('focusout', {
+        bubbles: true,
+        relatedTarget: linkInTooltip,
+      })
     );
 
     linkInTooltip.dispatchEvent(
-      new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body })
+      new FocusEvent('focusout', {
+        bubbles: true,
+        relatedTarget: document.body,
+      })
     );
 
     expect(getTooltipEl()!.hidden).toBe(true);
@@ -210,7 +215,10 @@ describe('キーボードフォーカス', () => {
     getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     const linkInTooltip = getTooltipEl()!.querySelector('a')!;
     getRef().dispatchEvent(
-      new FocusEvent('focusout', { bubbles: true, relatedTarget: linkInTooltip })
+      new FocusEvent('focusout', {
+        bubbles: true,
+        relatedTarget: linkInTooltip,
+      })
     );
 
     linkInTooltip.dispatchEvent(
@@ -218,5 +226,83 @@ describe('キーボードフォーカス', () => {
     );
 
     expect(getTooltipEl()!.hidden).toBe(false);
+  });
+});
+
+describe('ガード条件', () => {
+  test('参照先の脚注が存在しない場合は何も起きない', () => {
+    document.getElementById('fn-abcd-1')!.remove();
+
+    hoverRef();
+    vi.advanceTimersByTime(1000);
+    expect(getTooltipEl()).toBeNull();
+  });
+
+  test('脚注の内容が空（戻りリンクのみ）の場合は表示されない', () => {
+    document.getElementById('fn-abcd-1')!.innerHTML =
+      '<a href="#fnref-abcd-1" class="footnote-backref">↩︎</a>';
+
+    hoverRef();
+    vi.advanceTimersByTime(1000);
+    expect(getTooltipEl()).toBeNull();
+  });
+
+  test('ホバー不可のデバイス（hover: none）では mouseover で表示されない', () => {
+    stubMatchMedia(false);
+
+    hoverRef();
+    vi.advanceTimersByTime(1000);
+    expect(getTooltipEl()).toBeNull();
+  });
+
+  test('.znc 外の同形マークアップには反応しない', () => {
+    document.body.insertAdjacentHTML(
+      'beforeend',
+      '<div><sup class="footnote-ref"><a href="#fn-abcd-1" id="fnref-outside">[1]</a></sup></div>'
+    );
+
+    document
+      .getElementById('fnref-outside')!
+      .dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+    vi.advanceTimersByTime(1000);
+    expect(getTooltipEl()).toBeNull();
+  });
+
+  test('表示中に別の参照リンクへ移動すると内容が切り替わる', () => {
+    // 2 つ目の脚注を追加する
+    document
+      .querySelector('.znc > p')!
+      .insertAdjacentHTML(
+        'beforeend',
+        '<sup class="footnote-ref"><a href="#fn-abcd-2" id="fnref-abcd-2">[2]</a></sup>'
+      );
+    document
+      .querySelector('.footnotes-list')!
+      .insertAdjacentHTML(
+        'beforeend',
+        '<li id="fn-abcd-2" class="footnote-item"><p>2つ目の脚注</p></li>'
+      );
+
+    // ref1 を表示
+    hoverRef();
+    vi.advanceTimersByTime(150);
+    expect(getTooltipEl()!.textContent).toContain('脚注の内容');
+
+    // 実ブラウザの発火順: ref1 の mouseout → ref2 の mouseover
+    getRef().dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+    document
+      .getElementById('fnref-abcd-2')!
+      .dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+    vi.advanceTimersByTime(150);
+    expect(getTooltipEl()!.hidden).toBe(false);
+    expect(getTooltipEl()!.textContent).toContain('2つ目の脚注');
+    expect(getTooltipEl()!.textContent).not.toContain('脚注の内容');
+
+    // aria-describedby は新しい ref に付け替わっている
+    expect(getRef().hasAttribute('aria-describedby')).toBe(false);
+    expect(
+      document.getElementById('fnref-abcd-2')!.getAttribute('aria-describedby')
+    ).toBe('zenn-footnote-tooltip');
   });
 });
