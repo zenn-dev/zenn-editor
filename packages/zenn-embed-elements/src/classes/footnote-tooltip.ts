@@ -143,10 +143,15 @@ function onFocusIn(event: FocusEvent) {
 }
 
 function onFocusOut(event: FocusEvent) {
-  if (!findFootnoteRef(event.target)) return;
+  // 参照リンクまたはツールチップ内からのフォーカス喪失のみ対象にする
+  const fromRef = findFootnoteRef(event.target) !== null;
+  const fromTooltip =
+    event.target instanceof Node && !!tooltip && tooltip.contains(event.target);
+  if (!fromRef && !fromTooltip) return;
   const next = event.relatedTarget;
-  // フォーカス移動先がツールチップ内なら表示を維持する
+  // フォーカス移動先がツールチップ内または参照リンクなら表示を維持する
   if (next instanceof Node && tooltip && tooltip.contains(next)) return;
+  if (findFootnoteRef(next)) return;
   hideNow();
 }
 

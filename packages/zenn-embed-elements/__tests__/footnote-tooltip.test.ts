@@ -191,4 +191,32 @@ describe('キーボードフォーカス', () => {
 
     expect(getTooltipEl()!.hidden).toBe(false);
   });
+
+  test('ツールチップ内のリンクからさらに外へフォーカスが移ると閉じる', () => {
+    getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    const linkInTooltip = getTooltipEl()!.querySelector('a')!;
+    getRef().dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: linkInTooltip })
+    );
+
+    linkInTooltip.dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body })
+    );
+
+    expect(getTooltipEl()!.hidden).toBe(true);
+  });
+
+  test('ツールチップ内から参照リンクへフォーカスが戻った場合は表示を維持する', () => {
+    getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    const linkInTooltip = getTooltipEl()!.querySelector('a')!;
+    getRef().dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: linkInTooltip })
+    );
+
+    linkInTooltip.dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: getRef() })
+    );
+
+    expect(getTooltipEl()!.hidden).toBe(false);
+  });
 });
