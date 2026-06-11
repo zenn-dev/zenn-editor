@@ -25,16 +25,18 @@
     "fix": "run-s fix:*",
     "fix:eslint": "eslint . --fix",
     "fix:prettier": "prettier -w .",
-    "test": "echo 'no test yet'"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^25.4.0",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
+    "jsdom": "^29.1.1",
     "rimraf": "^6.0.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2"
+    "typescript-eslint": "^8.46.2",
+    "vitest": "^4.1.5"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
