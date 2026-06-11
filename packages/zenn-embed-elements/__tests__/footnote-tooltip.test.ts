@@ -104,3 +104,51 @@ describe('表示', () => {
     );
   });
 });
+
+describe('非表示', () => {
+  test('参照リンクから離れて 300ms 後に非表示になり aria-describedby も除去される', () => {
+    hoverRef();
+    vi.advanceTimersByTime(150);
+    getRef().dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+
+    vi.advanceTimersByTime(299);
+    expect(getTooltipEl()!.hidden).toBe(false);
+
+    vi.advanceTimersByTime(1);
+    expect(getTooltipEl()!.hidden).toBe(true);
+    expect(getRef().hasAttribute('aria-describedby')).toBe(false);
+  });
+
+  test('表示遅延の経過前にマウスが離れた場合は表示されない', () => {
+    hoverRef();
+    getRef().dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+
+    vi.advanceTimersByTime(1000);
+    expect(getTooltipEl()).toBeNull();
+  });
+
+  test('ツールチップ上にマウスがある間は表示が維持され、離れたら遅延後に消える', () => {
+    hoverRef();
+    vi.advanceTimersByTime(150);
+    getRef().dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+    // mouseenter はバブリングしないが、リスナーはツールチップ要素に直接付いている
+    getTooltipEl()!.dispatchEvent(new MouseEvent('mouseenter'));
+
+    vi.advanceTimersByTime(1000);
+    expect(getTooltipEl()!.hidden).toBe(false);
+
+    getTooltipEl()!.dispatchEvent(new MouseEvent('mouseleave'));
+    vi.advanceTimersByTime(300);
+    expect(getTooltipEl()!.hidden).toBe(true);
+  });
+
+  test('Esc キーで即時に閉じる', () => {
+    hoverRef();
+    vi.advanceTimersByTime(150);
+
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+    expect(getTooltipEl()!.hidden).toBe(true);
+  });
+});

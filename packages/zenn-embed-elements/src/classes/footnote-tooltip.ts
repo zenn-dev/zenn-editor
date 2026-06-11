@@ -126,11 +126,25 @@ function onMouseOver(event: MouseEvent) {
   showTimerId = window.setTimeout(() => show(ref), SHOW_DELAY_MS);
 }
 
+function onMouseOut(event: MouseEvent) {
+  const ref = findFootnoteRef(event.target);
+  if (!ref) return;
+  cancelShowTimer();
+  if (ref === currentRef) scheduleHide();
+}
+
+function onKeyDown(event: KeyboardEvent) {
+  if (event.key !== 'Escape') return;
+  if (tooltip && !tooltip.hidden) hideNow();
+}
+
 export function initFootnoteTooltip() {
   if (initialized) return;
   if (typeof document === 'undefined') return;
   initialized = true;
   document.addEventListener('mouseover', onMouseOver);
+  document.addEventListener('mouseout', onMouseOut);
+  document.addEventListener('keydown', onKeyDown);
 }
 
 // テスト用: モジュール内部の状態をリセットする（リスナーの登録は維持される）
