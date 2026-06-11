@@ -133,6 +133,23 @@ function onMouseOut(event: MouseEvent) {
   if (ref === currentRef) scheduleHide();
 }
 
+function onFocusIn(event: FocusEvent) {
+  const ref = findFootnoteRef(event.target);
+  if (!ref) return;
+  cancelHideTimer();
+  if (ref === currentRef) return;
+  // キーボード利用者には遅延なしで表示する
+  show(ref);
+}
+
+function onFocusOut(event: FocusEvent) {
+  if (!findFootnoteRef(event.target)) return;
+  const next = event.relatedTarget;
+  // フォーカス移動先がツールチップ内なら表示を維持する
+  if (next instanceof Node && tooltip && tooltip.contains(next)) return;
+  hideNow();
+}
+
 function onKeyDown(event: KeyboardEvent) {
   if (event.key !== 'Escape') return;
   // 表示遅延中なら表示の予約ごと取り消す
@@ -146,6 +163,8 @@ export function initFootnoteTooltip() {
   initialized = true;
   document.addEventListener('mouseover', onMouseOver);
   document.addEventListener('mouseout', onMouseOut);
+  document.addEventListener('focusin', onFocusIn);
+  document.addEventListener('focusout', onFocusOut);
   document.addEventListener('keydown', onKeyDown);
 }
 

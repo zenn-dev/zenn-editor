@@ -162,3 +162,33 @@ describe('非表示', () => {
     expect(getTooltipEl()).toBeNull();
   });
 });
+
+describe('キーボードフォーカス', () => {
+  test('focusin で（遅延なしで）即時表示される', () => {
+    getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+
+    const tooltip = getTooltipEl();
+    expect(tooltip).not.toBeNull();
+    expect(tooltip!.hidden).toBe(false);
+    expect(tooltip!.textContent).toContain('脚注の内容');
+  });
+
+  test('focusout で非表示になる', () => {
+    getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    getRef().dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body })
+    );
+
+    expect(getTooltipEl()!.hidden).toBe(true);
+  });
+
+  test('フォーカスがツールチップ内へ移った場合は表示を維持する', () => {
+    getRef().dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    const linkInTooltip = getTooltipEl()!.querySelector('a')!;
+    getRef().dispatchEvent(
+      new FocusEvent('focusout', { bubbles: true, relatedTarget: linkInTooltip })
+    );
+
+    expect(getTooltipEl()!.hidden).toBe(false);
+  });
+});
