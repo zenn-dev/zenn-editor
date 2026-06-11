@@ -36,7 +36,7 @@
     "rimraf": "^6.0.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
-    "vitest": "^4.1.5"
+    "vitest": "^4.0.6"
   },
   "gitHead": "7da0b06004cf615e42e475de47011c4670eb7318",
   "publishConfig": {
