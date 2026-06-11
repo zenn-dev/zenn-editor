@@ -135,6 +135,8 @@ function onMouseOut(event: MouseEvent) {
 
 function onKeyDown(event: KeyboardEvent) {
   if (event.key !== 'Escape') return;
+  // 表示遅延中なら表示の予約ごと取り消す
+  cancelShowTimer();
   if (tooltip && !tooltip.hidden) hideNow();
 }
 

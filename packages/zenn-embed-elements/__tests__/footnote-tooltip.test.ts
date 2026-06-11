@@ -151,4 +151,14 @@ describe('非表示', () => {
     );
     expect(getTooltipEl()!.hidden).toBe(true);
   });
+
+  test('表示遅延中に Esc を押すと表示の予約がキャンセルされる', () => {
+    hoverRef();
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
+
+    vi.advanceTimersByTime(1000);
+    expect(getTooltipEl()).toBeNull();
+  });
 });
