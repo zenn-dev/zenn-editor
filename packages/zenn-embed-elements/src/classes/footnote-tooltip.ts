@@ -46,6 +46,46 @@ function findFootnoteRef(target: EventTarget | null): HTMLAnchorElement | null {
   return ref;
 }
 
+function isHttpUrl(str: string): boolean {
+  try {
+    const url = new URL(str);
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+// 埋め込み要素（iframe）はツールチップ内では機能しないため、リンクに置き換える
+function replaceEmbedsWithLinks(fragment: DocumentFragment, refHref: string) {
+  fragment.querySelectorAll('.embed-block').forEach((embed) => {
+    const dataContent = embed
+      .querySelector('iframe')
+      ?.getAttribute('data-content');
+    const decoded = (() => {
+      if (!dataContent) return null;
+      try {
+        return decodeURIComponent(dataContent);
+      } catch {
+        return null;
+      }
+    })();
+
+    const link = document.createElement('a');
+    if (decoded && isHttpUrl(decoded)) {
+      // card 等の embed-server 系は data-content に元の URL を保持している
+      link.href = decoded;
+      link.textContent = decoded;
+      link.rel = 'noreferrer noopener nofollow';
+      link.target = '_blank';
+    } else {
+      // 元の URL を復元できない埋め込みは脚注へのリンクにする
+      link.href = refHref;
+      link.textContent = '埋め込みコンテンツ';
+    }
+    embed.replaceWith(link);
+  });
+}
+
 function getFootnoteContent(ref: HTMLAnchorElement): DocumentFragment | null {
   const id = decodeURIComponent(ref.hash.slice(1));
   if (!id) return null;
@@ -58,6 +98,7 @@ function getFootnoteContent(ref: HTMLAnchorElement): DocumentFragment | null {
   });
   // 「↩︎」戻りリンクはツールチップ内では不要
   fragment.querySelectorAll('.footnote-backref').forEach((el) => el.remove());
+  replaceEmbedsWithLinks(fragment, ref.getAttribute('href') ?? '');
 
   if (!fragment.textContent?.trim()) return null;
   return fragment;

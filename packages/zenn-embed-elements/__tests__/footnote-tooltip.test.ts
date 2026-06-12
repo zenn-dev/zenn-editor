@@ -306,3 +306,72 @@ describe('ガード条件', () => {
     ).toBe('zenn-footnote-tooltip');
   });
 });
+
+describe('埋め込み要素を含む脚注', () => {
+  function setFootnoteContent(html: string) {
+    document.getElementById('fn-abcd-1')!.innerHTML = html;
+  }
+
+  test('リンクカード（data-content が URL）はテキストリンクに置換される', () => {
+    setFootnoteContent(
+      '<p><span class="embed-block zenn-embedded zenn-embedded-card">' +
+        '<iframe id="zenn-embedded__aaa" src="https://embed.zenn.studio/card#zenn-embedded__aaa" ' +
+        'data-content="https%3A%2F%2Fexample.com%2Farticle" frameborder="0" scrolling="no"></iframe>' +
+        '</span>' +
+        '<a href="#fnref-abcd-1" class="footnote-backref">↩︎</a></p>'
+    );
+
+    hoverRef();
+    vi.advanceTimersByTime(150);
+
+    const tooltip = getTooltipEl()!;
+    expect(tooltip.hidden).toBe(false);
+    expect(tooltip.querySelector('iframe')).toBeNull();
+    const link = tooltip.querySelector('a')!;
+    expect(link.getAttribute('href')).toBe('https://example.com/article');
+    expect(link.textContent).toBe('https://example.com/article');
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toBe('noreferrer noopener nofollow');
+    // 元の脚注セクションは変更されない
+    expect(
+      document.querySelector('.footnotes .footnote-item iframe')
+    ).not.toBeNull();
+  });
+
+  test('data-content が URL でない埋め込み（mermaid 等）は脚注へのリンクに置換される', () => {
+    setFootnoteContent(
+      '<p><span class="embed-block zenn-embedded zenn-embedded-mermaid">' +
+        '<iframe id="zenn-embedded__bbb" src="https://embed.zenn.studio/mermaid#zenn-embedded__bbb" ' +
+        'data-content="graph%20TD%3BA--%3EB%3B" frameborder="0" scrolling="no"></iframe>' +
+        '</span></p>'
+    );
+
+    hoverRef();
+    vi.advanceTimersByTime(150);
+
+    const tooltip = getTooltipEl()!;
+    expect(tooltip.hidden).toBe(false);
+    expect(tooltip.querySelector('iframe')).toBeNull();
+    const link = tooltip.querySelector('a')!;
+    expect(link.getAttribute('href')).toBe('#fn-abcd-1');
+    expect(link.textContent).toBe('埋め込みコンテンツ');
+  });
+
+  test('data-content を持たない埋め込み（YouTube 等）は脚注へのリンクに置換される', () => {
+    setFootnoteContent(
+      '<p><span class="embed-block embed-youtube">' +
+        '<iframe src="https://www.youtube-nocookie.com/embed/XXXX" allowfullscreen loading="lazy"></iframe>' +
+        '</span></p>'
+    );
+
+    hoverRef();
+    vi.advanceTimersByTime(150);
+
+    const tooltip = getTooltipEl()!;
+    expect(tooltip.hidden).toBe(false);
+    expect(tooltip.querySelector('iframe')).toBeNull();
+    const link = tooltip.querySelector('a')!;
+    expect(link.getAttribute('href')).toBe('#fn-abcd-1');
+    expect(link.textContent).toBe('埋め込みコンテンツ');
+  });
+});
