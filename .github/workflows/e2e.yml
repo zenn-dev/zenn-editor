@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v6.0.3
+      - uses: pnpm/action-setup@v6.0.8
         with:
           version: 10.24.0
 
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v6.0.3
+      - uses: pnpm/action-setup@v6.0.8
         with:
           version: 10.24.0
 
@@ -67,7 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v6.0.3
+      - uses: pnpm/action-setup@v6.0.8
         with:
           version: 10.24.0
 
