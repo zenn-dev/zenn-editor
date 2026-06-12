@@ -34,3 +34,7 @@ jobs:
       - name: Run tests for zenn-cli
         run: pnpm test
         working-directory: packages/zenn-cli
+
+      - name: Run tests for zenn-embed-elements
+        run: pnpm test
+        working-directory: packages/zenn-embed-elements

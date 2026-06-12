@@ -5,6 +5,7 @@
 @use './shiki' as shiki;
 @use './message' as message;
 @use './footnotes' as footnotes;
+@use './footnote-tooltip' as footnoteTooltip;
 
 // use short classname so that nested css does not become too long.
 .znc {
@@ -81,6 +82,7 @@
   @include shiki.styles;
   @include message.styles;
   @include footnotes.styles;
+  @include footnoteTooltip.styles;
 }
 
 [data-theme^='dark'] .znc {
