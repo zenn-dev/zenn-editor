@@ -111,9 +111,8 @@ function getFootnoteContent(ref: HTMLAnchorElement): DocumentFragment | null {
   return fragment;
 }
 
-function positionTooltip(tip: HTMLDivElement, ref: HTMLAnchorElement) {
+function positionTooltip(tip: HTMLDivElement, refRect: DOMRect) {
   const margin = 8;
-  const refRect = ref.getBoundingClientRect();
   const tipRect = tip.getBoundingClientRect();
 
   let left = refRect.left + refRect.width / 2 - tipRect.width / 2;
@@ -140,11 +139,14 @@ function positionTooltip(tip: HTMLDivElement, ref: HTMLAnchorElement) {
 function show(ref: HTMLAnchorElement) {
   const content = getFootnoteContent(ref);
   if (!content) return;
+  // 入れ子の脚注（ツールチップ内の参照）の場合、この後の replaceChildren で
+  // ref が DOM から外れて座標が取れなくなるため、先に位置を測っておく
+  const refRect = ref.getBoundingClientRect();
   hideNow();
   const tip = getTooltip();
   tip.replaceChildren(content);
   tip.hidden = false;
-  positionTooltip(tip, ref);
+  positionTooltip(tip, refRect);
   ref.setAttribute('aria-describedby', TOOLTIP_ID);
   currentRef = ref;
 }

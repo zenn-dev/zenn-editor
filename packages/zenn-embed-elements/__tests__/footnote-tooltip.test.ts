@@ -432,4 +432,61 @@ describe('位置調整', () => {
     // 下側反転: 66 + 8 = 74px（クランプの影響を受けない）
     expect(getTooltipEl()!.style.top).toBe('74px');
   });
+
+  test('ツールチップ内の入れ子の脚注参照にホバーすると、その参照の位置を基準に表示される', () => {
+    vi.stubGlobal('innerHeight', 768);
+    vi.stubGlobal('innerWidth', 1024);
+    // 脚注 1 の中に脚注 2 への参照を入れる
+    document
+      .querySelector('.footnotes-list')!
+      .insertAdjacentHTML(
+        'beforeend',
+        '<li id="fn-abcd-2" class="footnote-item"><p>入れ子先の脚注</p></li>'
+      );
+    document.getElementById('fn-abcd-1')!.innerHTML =
+      '<p>入れ子参照<sup class="footnote-ref"><a href="#fn-abcd-2" id="fnref-abcd-2">[2]</a></sup></p>';
+
+    hoverRef();
+    vi.advanceTimersByTime(150);
+
+    const cloneRef = getTooltipEl()!.querySelector('sup.footnote-ref > a')!;
+    const original = Element.prototype.getBoundingClientRect;
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
+      function (this: Element) {
+        // 実ブラウザ同様、DOM から外れた要素の rect は 0 になる
+        if (!this.isConnected) {
+          return { top: 0, bottom: 0, left: 0, width: 0, height: 0 } as DOMRect;
+        }
+        if (this === cloneRef) {
+          return {
+            top: 300,
+            bottom: 316,
+            left: 400,
+            width: 16,
+            height: 16,
+          } as DOMRect;
+        }
+        if (this.id === 'zenn-footnote-tooltip') {
+          return {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            width: 200,
+            height: 100,
+          } as DOMRect;
+        }
+        return original.call(this);
+      }
+    );
+
+    cloneRef.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+    vi.advanceTimersByTime(150);
+
+    const tip = getTooltipEl()!;
+    expect(tip.textContent).toContain('入れ子先の脚注');
+    // 入れ子参照の rect（top: 300, left: 400）を基準に上側へ表示される
+    // top: 300 - 100 - 8 = 192px / left: 400 + 8 - 100 = 308px
+    expect(tip.style.top).toBe('192px');
+    expect(tip.style.left).toBe('308px');
+  });
 });
