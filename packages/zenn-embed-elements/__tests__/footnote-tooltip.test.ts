@@ -56,6 +56,7 @@ beforeEach(() => {
 afterEach(() => {
   vi.useRealTimers();
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 describe('表示', () => {
@@ -255,6 +256,16 @@ describe('ガード条件', () => {
     expect(getTooltipEl()).toBeNull();
   });
 
+  test('href のハッシュが不正なパーセントエンコードでも例外を投げず何も起きない', () => {
+    getRef().setAttribute('href', '#fn-%zz');
+
+    expect(() => {
+      hoverRef();
+      vi.advanceTimersByTime(1000);
+    }).not.toThrow();
+    expect(getTooltipEl()).toBeNull();
+  });
+
   test('.znc 外の同形マークアップには反応しない', () => {
     document.body.insertAdjacentHTML(
       'beforeend',
@@ -373,5 +384,52 @@ describe('埋め込み要素を含む脚注', () => {
     const link = tooltip.querySelector('a')!;
     expect(link.getAttribute('href')).toBe('#fn-abcd-1');
     expect(link.textContent).toBe('埋め込みコンテンツ');
+  });
+});
+
+describe('位置調整', () => {
+  // jsdom はレイアウトを持たないため getBoundingClientRect をモックする
+  function mockRects(refRect: Partial<DOMRect>, tipRect: Partial<DOMRect>) {
+    const original = Element.prototype.getBoundingClientRect;
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
+      function (this: Element) {
+        if (this.id === 'fnref-abcd-1') return refRect as DOMRect;
+        if (this.id === 'zenn-footnote-tooltip') return tipRect as DOMRect;
+        return original.call(this);
+      }
+    );
+  }
+
+  test('上下どちらにも収まらない場合はビューポート下端にクランプされる', () => {
+    vi.stubGlobal('innerHeight', 600);
+    vi.stubGlobal('innerWidth', 1000);
+    // 参照リンクは上から 290px（上に 300px のツールチップは入らない）、
+    // 下側に出すと 306 + 8 + 300 = 614 > 600 で下端からはみ出す
+    mockRects(
+      { top: 290, bottom: 306, left: 500, width: 16, height: 16 },
+      { top: 0, bottom: 0, left: 0, width: 300, height: 300 }
+    );
+
+    hoverRef();
+    vi.advanceTimersByTime(150);
+
+    // クランプ後: 600 - 300 - 8 = 292px
+    expect(getTooltipEl()!.style.top).toBe('292px');
+  });
+
+  test('下側に収まる場合は従来どおり参照リンクの直下に表示される', () => {
+    vi.stubGlobal('innerHeight', 600);
+    vi.stubGlobal('innerWidth', 1000);
+    // 上には入らないが下には収まるケース
+    mockRects(
+      { top: 50, bottom: 66, left: 500, width: 16, height: 16 },
+      { top: 0, bottom: 0, left: 0, width: 300, height: 100 }
+    );
+
+    hoverRef();
+    vi.advanceTimersByTime(150);
+
+    // 下側反転: 66 + 8 = 74px（クランプの影響を受けない）
+    expect(getTooltipEl()!.style.top).toBe('74px');
   });
 });

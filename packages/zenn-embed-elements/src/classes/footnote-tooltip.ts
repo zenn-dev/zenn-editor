@@ -87,7 +87,14 @@ function replaceEmbedsWithLinks(fragment: DocumentFragment, refHref: string) {
 }
 
 function getFootnoteContent(ref: HTMLAnchorElement): DocumentFragment | null {
-  const id = decodeURIComponent(ref.hash.slice(1));
+  const id = (() => {
+    try {
+      return decodeURIComponent(ref.hash.slice(1));
+    } catch {
+      // 不正なパーセントエンコードを含む hash は対象外
+      return null;
+    }
+  })();
   if (!id) return null;
   const item = document.getElementById(id);
   if (!item || !item.classList.contains('footnote-item')) return null;
@@ -120,6 +127,11 @@ function positionTooltip(tip: HTMLDivElement, ref: HTMLAnchorElement) {
   if (top < margin) {
     top = refRect.bottom + margin;
   }
+  // 下側でも収まらない場合はビューポート内にクランプする（参照リンクとの重なりを許容）
+  top = Math.max(
+    Math.min(top, window.innerHeight - tipRect.height - margin),
+    margin
+  );
 
   tip.style.left = `${left + window.scrollX}px`;
   tip.style.top = `${top + window.scrollY}px`;
