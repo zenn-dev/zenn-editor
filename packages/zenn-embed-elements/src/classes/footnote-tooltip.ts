@@ -41,6 +41,8 @@ function findFootnoteRef(target: EventTarget | null): HTMLAnchorElement | null {
   if (!(target instanceof Element)) return null;
   const ref = target.closest('sup.footnote-ref > a');
   if (!(ref instanceof HTMLAnchorElement)) return null;
+  // ツールチップ内の入れ子の参照は対象外（ポップアップは連鎖させない）
+  if (tooltip && tooltip.contains(ref)) return null;
   // コンテンツ領域（.znc）内の脚注参照のみ対象にする
   if (!ref.closest('.znc')) return null;
   return ref;
@@ -139,8 +141,7 @@ function positionTooltip(tip: HTMLDivElement, refRect: DOMRect) {
 function show(ref: HTMLAnchorElement) {
   const content = getFootnoteContent(ref);
   if (!content) return;
-  // 入れ子の脚注（ツールチップ内の参照）の場合、この後の replaceChildren で
-  // ref が DOM から外れて座標が取れなくなるため、先に位置を測っておく
+  // ツールチップの内容差し替えで ref の位置が影響を受けないよう、先に測っておく
   const refRect = ref.getBoundingClientRect();
   hideNow();
   const tip = getTooltip();

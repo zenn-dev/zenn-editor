@@ -433,9 +433,7 @@ describe('位置調整', () => {
     expect(getTooltipEl()!.style.top).toBe('74px');
   });
 
-  test('ツールチップ内の入れ子の脚注参照にホバーすると、その参照の位置を基準に表示される', () => {
-    vi.stubGlobal('innerHeight', 768);
-    vi.stubGlobal('innerWidth', 1024);
+  test('ツールチップ内の入れ子の脚注参照にホバーしてもポップアップは連鎖しない', () => {
     // 脚注 1 の中に脚注 2 への参照を入れる
     document
       .querySelector('.footnotes-list')!
@@ -450,43 +448,13 @@ describe('位置調整', () => {
     vi.advanceTimersByTime(150);
 
     const cloneRef = getTooltipEl()!.querySelector('sup.footnote-ref > a')!;
-    const original = Element.prototype.getBoundingClientRect;
-    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
-      function (this: Element) {
-        // 実ブラウザ同様、DOM から外れた要素の rect は 0 になる
-        if (!this.isConnected) {
-          return { top: 0, bottom: 0, left: 0, width: 0, height: 0 } as DOMRect;
-        }
-        if (this === cloneRef) {
-          return {
-            top: 300,
-            bottom: 316,
-            left: 400,
-            width: 16,
-            height: 16,
-          } as DOMRect;
-        }
-        if (this.id === 'zenn-footnote-tooltip') {
-          return {
-            top: 0,
-            bottom: 0,
-            left: 0,
-            width: 200,
-            height: 100,
-          } as DOMRect;
-        }
-        return original.call(this);
-      }
-    );
-
     cloneRef.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-    vi.advanceTimersByTime(150);
+    vi.advanceTimersByTime(1000);
 
+    // 表示は元の脚注のまま切り替わらない
     const tip = getTooltipEl()!;
-    expect(tip.textContent).toContain('入れ子先の脚注');
-    // 入れ子参照の rect（top: 300, left: 400）を基準に上側へ表示される
-    // top: 300 - 100 - 8 = 192px / left: 400 + 8 - 100 = 308px
-    expect(tip.style.top).toBe('192px');
-    expect(tip.style.left).toBe('308px');
+    expect(tip.hidden).toBe(false);
+    expect(tip.textContent).toContain('入れ子参照');
+    expect(tip.textContent).not.toContain('入れ子先の脚注');
   });
 });
