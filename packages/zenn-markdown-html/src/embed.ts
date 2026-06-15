@@ -123,8 +123,13 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (!isCodesandboxUrl(str)) {
       return '「https://codesandbox.io/embed/」から始まる正しいURLを入力してください';
     }
+    // パフォーマンスのため、自動実行を抑止するclick-to-load(runonclick=1)を一律強制する。
+    // runonclickが既に指定されている場合はrunonclick=1に上書きし、無ければ付与する。
+    const url = /[?&]runonclick=/.test(str)
+      ? str.replace(/([?&]runonclick=)[^&]*/, (_match, prefix) => `${prefix}1`)
+      : str + (str.includes('?') ? '&runonclick=1' : '?runonclick=1');
     return `<span class="embed-block embed-codesandbox"><iframe src="${sanitizeEmbedToken(
-      str
+      url
     )}" style="width:100%;height:500px;border:none;overflow:hidden;" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" loading="lazy" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe></span>`;
   },
   stackblitz(str) {
