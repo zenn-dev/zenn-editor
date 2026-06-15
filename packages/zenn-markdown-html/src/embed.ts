@@ -131,8 +131,13 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (!isStackblitzUrl(str)) {
       return 'StackBlitzのembed用のURLを指定してください';
     }
+    // パフォーマンスのため、自動実行を抑止するclick-to-load(ctl=1)を一律強制する。
+    // ctlが既に指定されている場合はctl=1に上書きし、無ければ付与する。
+    const url = /[?&]ctl=/.test(str)
+      ? str.replace(/([?&]ctl=)[^&]*/, (_match, prefix) => `${prefix}1`)
+      : str + (str.includes('?') ? '&ctl=1' : '?ctl=1');
     return `<span class="embed-block embed-stackblitz"><iframe src="${sanitizeEmbedToken(
-      str
+      url
     )}" scrolling="no" frameborder="no" loading="lazy"></iframe></span>`;
   },
   blueprintue(str) {

@@ -7,6 +7,9 @@ describe('Stackblitz埋め込み要素のテスト', () => {
     'https://stackblitz.com/edit/test-examples?embed=1&file=pages/api/[id].ts';
   const invalidUrl = '@https://bad-url.stackblitz.com/edit/test-examples';
 
+  const srcOf = (html: string) =>
+    parse(html).querySelector(`span.embed-stackblitz iframe`)?.attributes?.src;
+
   describe('デフォルトの挙動', () => {
     describe('有効なURLの場合', () => {
       test('<iframe />に変換する', async () => {
@@ -15,8 +18,9 @@ describe('Stackblitz埋め込み要素のテスト', () => {
           `span.embed-stackblitz iframe`
         );
 
-        expect(iframe?.attributes).toEqual(
-          expect.objectContaining({ src: validUrl })
+        expect(iframe).not.toBeNull();
+        expect(iframe?.attributes?.src).toContain(
+          'https://stackblitz.com/edit/test-examples'
         );
       });
     });
@@ -26,6 +30,34 @@ describe('Stackblitz埋め込み要素のテスト', () => {
         const html = await markdownToHtml(`@[stackblitz](${invalidUrl})`);
         expect(html).toContain('StackBlitzのembed用のURLを指定してください');
       });
+    });
+  });
+
+  describe('ctl=1（click-to-load）の強制付与', () => {
+    test('ctlが無いURLにはctl=1を付与する', async () => {
+      const html = await markdownToHtml(`@[stackblitz](${validUrl})`);
+      expect(srcOf(html)).toBe(`${validUrl}&ctl=1`);
+    });
+
+    test('クエリが無いURLには?ctl=1を付与する', async () => {
+      const url = 'https://stackblitz.com/edit/test-examples';
+      const html = await markdownToHtml(`@[stackblitz](${url})`);
+      expect(srcOf(html)).toBe(`${url}?ctl=1`);
+    });
+
+    test('ctl=0が指定されていてもctl=1に上書きする', async () => {
+      const url =
+        'https://stackblitz.com/edit/test-examples?embed=1&ctl=0&file=index.ts';
+      const html = await markdownToHtml(`@[stackblitz](${url})`);
+      expect(srcOf(html)).toBe(
+        'https://stackblitz.com/edit/test-examples?embed=1&ctl=1&file=index.ts'
+      );
+    });
+
+    test('既にctl=1があれば二重付与しない（冪等）', async () => {
+      const url = 'https://stackblitz.com/edit/test-examples?embed=1&ctl=1';
+      const html = await markdownToHtml(`@[stackblitz](${url})`);
+      expect(srcOf(html)).toBe(url);
     });
   });
 
