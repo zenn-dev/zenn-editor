@@ -14,7 +14,7 @@ import {
   isCodepenUrl,
   isJsfiddleUrl,
   isBlueprintUEUrl,
-  isFigmaUrl,
+  convertToFigmaEmbedUrl,
   isValidHttpUrl,
   isDocswellUrl,
   extractYoutubeVideoParameters,
@@ -153,10 +153,11 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`;
   },
   figma(str: string) {
-    if (!isFigmaUrl(str))
+    const embedUrl = convertToFigmaEmbedUrl(str);
+    if (!embedUrl)
       return 'ファイルまたはプロトタイプのFigma URLを指定してください';
-    return `<span class="embed-block embed-figma"><iframe src="https://www.figma.com/embed?embed_host=zenn&url=${sanitizeEmbedToken(
-      str
+    return `<span class="embed-block embed-figma"><iframe src="${sanitizeEmbedToken(
+      embedUrl
     )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`;
   },
 

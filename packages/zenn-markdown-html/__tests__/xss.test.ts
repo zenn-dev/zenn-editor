@@ -71,4 +71,11 @@ describe('XSS脆弱性のテスト', () => {
       'ファイルまたはプロトタイプのFigma URLを指定してください'
     );
   });
+  test('figma v2 URLのXSSをエスケープする', async () => {
+    const content = `@[figma](https://embed.figma.com/design/LKQ4FJ4bTnCSjedbRpk931/Sample-File"></iframe><img src onerror=alert("XSS") />)`;
+    const html = await markdownToHtml(content);
+    expect(html).toContain(
+      'ファイルまたはプロトタイプのFigma URLを指定してください'
+    );
+  });
 });
