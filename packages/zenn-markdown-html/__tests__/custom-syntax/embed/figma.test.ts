@@ -117,7 +117,7 @@ describe('Figma埋め込み要素のテスト', () => {
         const html = await markdownToHtml(`@[figma](${invalidUrl})`);
 
         expect(html).toContain(
-          'ファイルまたはプロトタイプのFigma URLを指定してください'
+          '埋め込みに対応しているFigma URLを指定してください'
         );
       });
     });

@@ -154,8 +154,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
   },
   figma(str: string) {
     const embedUrl = convertToFigmaEmbedUrl(str);
-    if (!embedUrl)
-      return 'ファイルまたはプロトタイプのFigma URLを指定してください';
+    if (!embedUrl) return '埋め込みに対応しているFigma URLを指定してください';
     return `<span class="embed-block embed-figma"><iframe src="${sanitizeEmbedToken(
       embedUrl
     )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`;

@@ -169,24 +169,27 @@ export function convertToFigmaEmbedUrl(url: string): string | null {
     const urlObj = new URL(url);
     const pathParts = urlObj.pathname.split('/').filter(Boolean);
 
-    // pathParts: [type, fileKey, ...slug]
-    const type = pathParts[0];
-    const fileKey = pathParts[1];
+    // pathParts: [type, fileKey, ...slugParts]
+    const [type, fileKey, ...slugParts] = pathParts;
 
     if (!type || !fileKey) return null;
 
     // v1 → v2 変換: file → design
     const embedType = type === 'file' ? 'design' : type;
 
-    // embed.figma.com 形式のURLを構築
-    const embedUrl = new URL(`https://embed.figma.com/${embedType}/${fileKey}`);
+    // embed.figma.com 形式のURLを構築（slug があれば保持する）
+    const embedPath = `/${embedType}/${fileKey}${
+      slugParts.length ? `/${slugParts.join('/')}` : ''
+    }`;
+    const embedUrl = new URL(embedPath, 'https://embed.figma.com');
 
     // 既存のクエリパラメータをコピー
     urlObj.searchParams.forEach((value, key) => {
       embedUrl.searchParams.set(key, value);
     });
 
-    // embed-host=zenn を設定
+    // 旧パラメータ名 (embed_host) があれば削除し、embed-host=zenn を設定
+    embedUrl.searchParams.delete('embed_host');
     embedUrl.searchParams.set('embed-host', 'zenn');
 
     return embedUrl.toString();
