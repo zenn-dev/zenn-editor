@@ -127,16 +127,14 @@ describe('isFigmaUrlのテスト', () => {
     });
 
     test('ファイルキーが短すぎる', () => {
-      expect(
-        isFigmaUrl('https://www.figma.com/file/short/Sample-File')
-      ).toBe(false);
+      expect(isFigmaUrl('https://www.figma.com/file/short/Sample-File')).toBe(
+        false
+      );
     });
 
     test('figma.com以外のドメイン', () => {
       expect(
-        isFigmaUrl(
-          'https://evil.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File'
-        )
+        isFigmaUrl('https://evil.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File')
       ).toBe(false);
     });
   });
