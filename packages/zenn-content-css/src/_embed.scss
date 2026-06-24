@@ -37,6 +37,10 @@
 
   .embed-figma {
     border: 1px solid var(--c-border);
+
+    [data-theme^='dark'] & {
+      border-color: transparent;
+    }
   }
 
   .zenn-embedded {

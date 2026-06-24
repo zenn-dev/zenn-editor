@@ -146,10 +146,54 @@ export function isBlueprintUEUrl(url: string): boolean {
 }
 
 /**
- * 参考: https://www.figma.com/developers/embed
+ * Figma URL バリデーション
+ * Embed Kit 2.0 (embed.figma.com) と v1 (www.figma.com) の両方をサポート
+ * 参考: https://developers.figma.com/docs/embeds/embed-kit-2.0/
  */
 export function isFigmaUrl(url: string): boolean {
-  return /^https:\/\/([\w.-]+\.)?figma.com\/(file|proto)\/([0-9a-zA-Z]{22,128})(?:\/[\w-?=&%]+)?$/.test(
+  return /^https:\/\/((www|embed)\.)?figma\.com\/(file|proto|design|board|slides|deck)\/([0-9a-zA-Z]{22,128})(?:\/[\w.?=&%-]+)?(?:\?[\w.?=&%-]+)?$/.test(
     url
   );
+}
+
+/**
+ * Figma URL を Embed Kit 2.0 形式 (embed.figma.com) に変換する
+ * - www.figma.com/file/... → embed.figma.com/design/...
+ * - www.figma.com/proto/... → embed.figma.com/proto/...
+ * - embed.figma.com/... → そのまま
+ */
+export function convertToFigmaEmbedUrl(url: string): string | null {
+  if (!isFigmaUrl(url)) return null;
+
+  try {
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/').filter(Boolean);
+
+    // pathParts: [type, fileKey, ...slugParts]
+    const [type, fileKey, ...slugParts] = pathParts;
+
+    if (!type || !fileKey) return null;
+
+    // v1 → v2 変換: file → design
+    const embedType = type === 'file' ? 'design' : type;
+
+    // embed.figma.com 形式のURLを構築（slug があれば保持する）
+    const embedPath = `/${embedType}/${fileKey}${
+      slugParts.length ? `/${slugParts.join('/')}` : ''
+    }`;
+    const embedUrl = new URL(embedPath, 'https://embed.figma.com');
+
+    // 既存のクエリパラメータをコピー
+    urlObj.searchParams.forEach((value, key) => {
+      embedUrl.searchParams.set(key, value);
+    });
+
+    // 旧パラメータ名 (embed_host) があれば削除し、embed-host=zenn を設定
+    embedUrl.searchParams.delete('embed_host');
+    embedUrl.searchParams.set('embed-host', 'zenn');
+
+    return embedUrl.toString();
+  } catch {
+    return null;
+  }
 }

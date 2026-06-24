@@ -8,8 +8,20 @@ published: true
 
 ## Figma
 
-@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File)
-@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File?node-id=0%3A1)
+Embed Kit 1.0 file (ドット入り名)
+@[figma](https://www.figma.com/file/nrPSsILSYjesyc5UHjYYa4/Embed-Kit-2.0-examples)
+
+Embed Kit 1.0 file (名前なし)
+@[figma](https://www.figma.com/file/nrPSsILSYjesyc5UHjYYa4)
+
+Embed Kit 1.0 proto (名前なし)
+@[figma](https://www.figma.com/proto/nrPSsILSYjesyc5UHjYYa4)
+
+Embed Kit 2.0 design
+@[figma](https://embed.figma.com/design/nrPSsILSYjesyc5UHjYYa4/Embed-Kit-2.0-examples?node-id=5-3)
+
+Embed Kit 2.0 proto
+@[figma](https://embed.figma.com/proto/nrPSsILSYjesyc5UHjYYa4/Embed-Kit-2.0-examples?node-id=5-3)
 
 ## Blueprint UE
 
