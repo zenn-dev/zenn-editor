@@ -67,8 +67,11 @@ describe('XSS脆弱性のテスト', () => {
   test('figmaのURL内の<img />をエスケープする', async () => {
     const content = `@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File"></iframe><img src onerror=alert("XSS") />)`;
     const html = await markdownToHtml(content);
-    expect(html).toContain(
-      'ファイルまたはプロトタイプのFigma URLを指定してください'
-    );
+    expect(html).toContain('埋め込みに対応しているFigma URLを指定してください');
+  });
+  test('figma v2 URLのXSSをエスケープする', async () => {
+    const content = `@[figma](https://embed.figma.com/design/LKQ4FJ4bTnCSjedbRpk931/Sample-File"></iframe><img src onerror=alert("XSS") />)`;
+    const html = await markdownToHtml(content);
+    expect(html).toContain('埋め込みに対応しているFigma URLを指定してください');
   });
 });
