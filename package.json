@@ -1,13 +1,13 @@
 {
   "private": true,
   "devDependencies": {
-    "@lerna-lite/cli": "^4.9.1",
-    "@lerna-lite/publish": "^4.9.1",
-    "@lerna-lite/version": "^4.9.1",
-    "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
-    "npm-run-all2": "^8.0.4",
+    "@lerna-lite/cli": "^5.3.0",
+    "@lerna-lite/publish": "^5.3.0",
+    "@lerna-lite/version": "^5.3.0",
+    "@secretlint/secretlint-rule-preset-recommend": "^13.0.2",
+    "npm-run-all2": "^9.0.1",
     "prettier": "^3.6.2",
-    "secretlint": "^11.2.5",
+    "secretlint": "^13.0.2",
     "simple-git-hooks": "^2.13.1",
     "turbo": "^2.5.8"
   },
