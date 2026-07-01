@@ -28,7 +28,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.3
 
       - uses: pnpm/action-setup@v6.0.8
         with:
@@ -102,7 +102,7 @@ jobs:
 
       - name: '[main] Create release'
         if: github.ref_name == 'main'
-        uses: release-drafter/release-drafter@v7.3.0
+        uses: release-drafter/release-drafter@v7.3.1
         with:
           version: ${{ env.RELEASED_PACKAGE_VERSION }}
           name: ${{ env.RELEASED_PACKAGE_VERSION }}
@@ -113,7 +113,7 @@ jobs:
 
       - name: '[canary] Create release'
         if: github.ref_name == 'canary'
-        uses: release-drafter/release-drafter@v7.3.0
+        uses: release-drafter/release-drafter@v7.3.1
         with:
           version: ${{ env.RELEASED_PACKAGE_VERSION }}
           name: ${{ env.RELEASED_PACKAGE_VERSION }}
@@ -139,7 +139,7 @@ jobs:
 
       - name: '[main] Checkout'
         if: github.ref_name == 'main'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.3
         with:
           ref: canary
 
