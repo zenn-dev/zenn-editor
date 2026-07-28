@@ -1,0 +1,4 @@
+interface:
+  display_name: "リリースPR作成"
+  short_description: "次のpatch版に向けたリリースPRを作成する"
+  default_prompt: "Use $release-pr to prepare the next patch release pull request from canary to main."
