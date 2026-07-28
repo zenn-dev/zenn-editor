@@ -1,11 +1,10 @@
 {
-  "targets": ["copilot", "cursor", "claudecode", "codexcli"],
-  "features": ["rules", "ignore", "mcp", "commands", "subagents"],
-  "baseDirs": ["."],
+  "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
+  "targets": ["claudecode", "opencode", "codexcli"],
+  "features": ["rules", "subagents", "skills"],
+  "inputRoot": ".",
+  "outputRoots": ["."],
   "delete": true,
   "verbose": false,
-  "global": false,
-  "simulateCommands": false,
-  "simulateSubagents": false,
-  "modularMcp": true,
+  "silent": false
 }
