@@ -17,9 +17,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - uses: pnpm/action-setup@v6.0.8
+      - uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
         with:
           version: 10.24.0
 
@@ -30,7 +30,7 @@ jobs:
         run: pnpm build
 
       - name: zenn-cliのdistディレクトリをキャッシュ
-        uses: actions/cache/save@v5.0.5
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
@@ -41,9 +41,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - uses: pnpm/action-setup@v6.0.8
+      - uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
         with:
           version: 10.24.0
 
@@ -51,7 +51,7 @@ jobs:
         run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
-        uses: actions/cache/restore@v5.0.5
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
@@ -65,9 +65,9 @@ jobs:
     needs: e2e-linux
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - uses: pnpm/action-setup@v6.0.8
+      - uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
         with:
           version: 10.24.0
 
@@ -75,7 +75,7 @@ jobs:
         run: pnpm install
 
       - name: zenn-cliのdistディレクトリをキャッシュから復元
-        uses: actions/cache/restore@v5.0.5
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: packages/zenn-cli/dist
           key: zenn-cli-dist-${{ github.sha }}
