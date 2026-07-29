@@ -1,6 +1,7 @@
 # GitHub Actions workflowを静的解析する
 # zizmor 単体で SHA pinning (unpinned-uses) や excessive-permissions 等を一括検査する。
-# min-severity: high の検出があれば job を失敗させ、PR のマージを止める。
+# min-severity: high の検出があれば job を失敗させる。
+# この job を required check に設定することで、PR のマージを止められる。
 name: actions check
 
 on:
@@ -8,9 +9,6 @@ on:
     branches:
       - main
       - canary
-    paths:
-      - '.github/workflows/**'
-      - '.github/actions/**'
 
 jobs:
   zizmor:
