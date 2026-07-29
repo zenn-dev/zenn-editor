@@ -1,0 +1,36 @@
+# GitHub Actions workflowを静的解析する
+# zizmor 単体で SHA pinning (unpinned-uses) や excessive-permissions 等を一括検査する。
+# min-severity: high の検出があれば job を失敗させる。
+# この job を required check に設定することで、PR のマージを止められる。
+name: actions check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - canary
+
+jobs:
+  zizmor:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@192e21d79ab29983730a13d1382995c2307fbcaa # v0.5.7
+        with:
+          min-severity: high
+          online-audits: true
+          # online-audits 時の GitHub REST API 呼び出しに使うトークン。
+          # 未指定でも token のデフォルトが ${{ github.token }} のため認証済み
+          # (5,000 req/h) で動作し、未認証の 60 req/h 制限には掛からない。
+          # 明示する場合は下記を有効化する（挙動は変わらず意図の明確化のみ）。
+          # token: ${{ secrets.GITHUB_TOKEN }}
+          # annotations と advanced-security(default true) は排他のため
+          # advanced-security を明示的に無効化する。
+          # 有効のままだと action 起動時に "Mutually exclusive options" で die する。
+          advanced-security: false
+          annotations: true
