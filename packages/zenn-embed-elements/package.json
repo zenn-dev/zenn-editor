@@ -29,12 +29,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^25.4.0",
+    "@types/node": "^26.1.1",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "jsdom": "^29.1.1",
     "rimraf": "^6.0.1",
-    "typescript": "^5.9.3",
+    "typescript": "^7.0.2",
     "typescript-eslint": "^8.46.2",
     "vitest": "^4.0.6"
   },
