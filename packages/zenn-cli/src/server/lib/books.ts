@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import { load } from 'js-yaml';
 import path from 'path';
 import imageSizeOf from 'image-size';
 import matter from 'gray-matter';
@@ -144,7 +144,7 @@ function readBookFile(slug: string) {
   if (!configRaw) return null;
 
   try {
-    const yamlData = yaml.load(configRaw) as any;
+    const yamlData = load(configRaw) as any;
     if (typeof yamlData === 'string' || typeof yamlData === 'number') {
       throw 'Invalid yaml format.';
     }
