@@ -49,9 +49,11 @@ GitHub 埋め込みの脚注[^github]、mermaid の脚注[^mermaid]、YouTube �
 
 ## 数式を含む脚注
 
-KaTeX 数式を含む脚注[^katex]です。
+KaTeX 数式を含む脚注[^katex]です。複数のインライン数式を含む脚注[^katex-multi]と、分数を含む脚注[^katex-frac]もあります。
 
 [^katex]: オイラーの等式 $e^{i\pi} + 1 = 0$ は最も美しい数式と言われます。
+[^katex-multi]: $A$は$B$より$C$
+[^katex-frac]: 収束半径は $\frac{1}{\limsup_{n\to\infty} \sqrt[n]{|a_n|}}$ で与えられます。
 
 ## 入れ子の脚注
 
