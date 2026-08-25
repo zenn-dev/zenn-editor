@@ -9,7 +9,7 @@ overrides:
   cross-spawn@<6.0.6: '>=6.0.6'
   form-data@>=4.0.0 <4.0.4: '>=4.0.4'
   nanoid@<3.3.18: 3.3.18
-  postcss@<8.5.18: '>=8.5.18'
+  postcss@<8.5.23: '>=8.5.23'
   semver@<5.7.2: '>=5.7.2'
 
 importers:
@@ -3947,7 +3947,7 @@ packages:
     engines: {node: '>= 18'}
     peerDependencies:
       jiti: '>=1.21.0'
-      postcss: '>=8.5.18'
+      postcss: '>=8.5.23'
       tsx: ^4.8.1
       yaml: ^2.4.2
     peerDependenciesMeta:
@@ -4525,7 +4525,7 @@ packages:
     peerDependencies:
       '@microsoft/api-extractor': ^7.36.0
       '@swc/core': ^1
-      postcss: '>=8.5.18'
+      postcss: '>=8.5.23'
       typescript: '>=4.5.0'
     peerDependenciesMeta:
       '@microsoft/api-extractor':
