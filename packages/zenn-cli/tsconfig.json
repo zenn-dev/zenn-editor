@@ -4,11 +4,11 @@
     "allowJs": false,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "jsx": "preserve",
-    "baseUrl": "./src",
     "lib": ["ESNext", "dom"]
   },
   "exclude": ["**/__tests__"],
