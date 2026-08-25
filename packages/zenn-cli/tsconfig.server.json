@@ -2,8 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ES2022",
+    "module": "preserve",
     "rootDir": ".",
     "outDir": "./dist",
     "esModuleInterop": true

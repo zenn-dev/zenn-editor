@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "es6", // important for web components
-    "module": "commonjs",
+    "module": "node16",
     "declaration": true,
     "outDir": "./lib",
     "rootDir": "./src",
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
