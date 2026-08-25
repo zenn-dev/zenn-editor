@@ -5,7 +5,25 @@ const RUNTIME_ONLY_ENV_KEYS = new Set([
   'ZENN_API_KEY',
   'ZENN_API_BASE_URL',
   'ZENN_CLI_EXPERIMENTAL_SCRAP_API',
+  'ZENN_CLI_AI_SCAN',
+  'ZENN_CLI_FORCE_SAFE',
+  'ZENN_CLI_FORCE_UNLISTED',
+  'ZENN_CLI_AI_PROVIDER',
+  'ZENN_CLI_AI_MODEL',
+  'ZENN_CLI_AI_EFFORT',
+  'ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD',
+  'ZENN_CLI_AI_SCAN_PROMPT',
+  'OPENAI_API_KEY',
+  'FIREWORKS_API_KEY',
 ]);
+const ESM_EXTERNALS = new Set([
+  'open',
+  '@secretlint/node',
+  'ai',
+  '@ai-sdk/openai',
+  '@ai-sdk/fireworks',
+]);
+
 const ENV =
   dotenv.config({ path: process.env.ZENN_CLI_DOTENV_PATH || '.env' }).parsed ||
   {};
@@ -31,16 +49,21 @@ module.exports = {
 
   externals: [
     ({ request }, callback) => {
+      // package.json はビルドファイルには含めず外部ファイルとして読み込む
+      // パスはビルド後のファイル構造を考慮する
       if (/package\.json$/.test(request)) {
         return callback(null, 'commonjs ../../package.json');
       }
 
+      // require("node:<package>") に対応していない node バージョンのために、
+      // require("<package>") に変換する
       const module = request.match(/^node:(.+)/)?.[1];
       if (module) {
         return callback(null, `commonjs ${module}`);
       }
 
-      if (request === 'open' || request === '@secretlint/node') {
+      // pure ESMかつnpm配布後に実行時解決するパッケージは外部依存にする
+      if (ESM_EXTERNALS.has(request)) {
         return callback(null, `import ${request}`);
       }
 
