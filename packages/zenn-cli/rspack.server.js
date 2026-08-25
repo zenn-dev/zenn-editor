@@ -1,7 +1,13 @@
 const rspack = require('@rspack/core');
 const dotenv = require('dotenv');
 
-const ENV = dotenv.config().parsed || {};
+const RUNTIME_ONLY_ENV_KEYS = new Set(['ZENN_API_KEY', 'ZENN_API_BASE_URL']);
+const ENV =
+  dotenv.config({ path: process.env.ZENN_CLI_DOTENV_PATH || '.env' }).parsed ||
+  {};
+const BUILD_TIME_ENV = Object.fromEntries(
+  Object.entries(ENV).filter(([key]) => !RUNTIME_ONLY_ENV_KEYS.has(key))
+);
 
 /**
  * @type {import('@rspack/core').Configuration}
@@ -20,37 +26,21 @@ module.exports = {
   },
 
   externals: [
-    // package.json はビルドファイルには含めず外部ファイルとして読み込む
-    // パスはビルド後のファイル構造を考慮する
     ({ request }, callback) => {
       if (/package\.json$/.test(request)) {
-        callback(null, 'commonjs ../../package.json');
-      } else {
-        callback();
+        return callback(null, 'commonjs ../../package.json');
       }
-    },
 
-    // require("node:<package>") に対応していない node バージョンのために、
-    // require("<package>") に変換する
-    ({ request }, callback) => {
       const module = request.match(/^node:(.+)/)?.[1];
-
       if (module) {
-        callback(null, `commonjs ${module}`);
-      } else {
-        callback();
+        return callback(null, `commonjs ${module}`);
       }
-    },
 
-    // open パッケージは外部依存として扱う（クロスプラットフォーム対応のため）
-    // https://github.com/sindresorhus/open/releases/tag/v9.0.0 より pure ESM パッケージになった
-    // requireは使えないためESM importとして扱う
-    ({ request }, callback) => {
       if (request === 'open') {
-        callback(null, 'import open');
-      } else {
-        callback();
+        return callback(null, 'import open');
       }
+
+      callback();
     },
   ],
 
@@ -96,7 +86,7 @@ module.exports = {
       // https://github.com/websockets/ws#opt-in-for-performance
       'process.env.WS_NO_BUFFER_UTIL': JSON.stringify('1'),
       'process.env.WS_NO_UTF_8_VALIDATE': JSON.stringify('1'),
-      ...Object.entries(ENV).reduce((env, [key, value]) => {
+      ...Object.entries(BUILD_TIME_ENV).reduce((env, [key, value]) => {
         env[`process.env.${key}`] = JSON.stringify(value);
         return env;
       }, {}),
