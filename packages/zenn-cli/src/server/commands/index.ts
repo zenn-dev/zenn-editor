@@ -1,6 +1,7 @@
 import * as Log from '../lib/log';
-import { commandListText } from '../lib/messages';
+import { getCommandListText } from '../lib/messages';
 import { notifyNeedUpdateCLI } from '../lib/notify-update';
+import { isExperimentalScrapApiEnabled } from '../lib/experimental-features';
 import { CliExecFn } from '../types';
 import * as preview from './preview';
 import * as init from './init';
@@ -10,6 +11,7 @@ import * as listArticles from './list-articles';
 import * as listBooks from './list-books';
 import * as help from './help';
 import * as version from './version';
+import * as scrap from './scrap';
 
 type Commands = { [command: string]: CliExecFn };
 type ExecOptions = { canNotifyUpdate: boolean };
@@ -34,6 +36,10 @@ export async function exec(
     '-v': async () => version.exec(),
   };
 
+  if (isExperimentalScrapApiEnabled()) {
+    commands.scrap = async () => scrap.exec(execCommandArgs);
+  }
+
   if (options.canNotifyUpdate) {
     // zenn-cli のアップデートが必要な場合はCLI上に通知メッセージを表示する
     await notifyNeedUpdateCLI().catch(() => void 0);
@@ -41,9 +47,9 @@ export async function exec(
 
   if (!commands[execCommandName]) {
     Log.error('該当するCLIコマンドが存在しません');
-    console.log(commandListText);
+    console.log(getCommandListText());
     return;
   }
 
-  commands[execCommandName](execCommandArgs);
+  await commands[execCommandName](execCommandArgs);
 }

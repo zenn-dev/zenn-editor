@@ -46,6 +46,12 @@ importers:
 
   packages/zenn-cli:
     dependencies:
+      '@secretlint/node':
+        specifier: ^11.3.1
+        version: 11.7.1
+      '@secretlint/secretlint-rule-preset-recommend':
+        specifier: ^11.3.1
+        version: 11.7.1
       open:
         specifier: ^10.2.0
         version: 10.2.0
@@ -1735,35 +1741,69 @@ packages:
     resolution: {integrity: sha512-wEHE/x7jeaWnDqVhzUg3qLsnl3NOQTA2fVnxwc0Z7dn3SOSh5sEKFr6xTp/LhZxyuHnKJltlcF085UDUFOoqYQ==}
     engines: {node: '>=22.0.0'}
 
+  '@secretlint/config-loader@11.7.1':
+    resolution: {integrity: sha512-XExWOV82/nbuo9N+m6G9by4n2mnts3Z1k2i499pIJ0+VaASbA06u1fQFErMGYrobeUpSTC5i077Ee7G2lJhFiw==}
+    engines: {node: '>=20.0.0'}
+
   '@secretlint/config-loader@13.0.2':
     resolution: {integrity: sha512-r0ZVJ3oGUwWqoFPwhR9RK/fnp358TImaa72UhrBdBiuzMvAcPtE6EbnAYhbj0Yr5QS6ns+GI11jV344MLqkhTg==}
     engines: {node: '>=22.0.0'}
+
+  '@secretlint/core@11.7.1':
+    resolution: {integrity: sha512-D1a/6U3JT2hhs+OpocAf1j+2t79ExrFqNm8j7pilhCQqpJ9QIEexGs1ty3v9wDACm48v0PFhCNCyn4hyctGYig==}
+    engines: {node: '>=20.0.0'}
 
   '@secretlint/core@13.0.2':
     resolution: {integrity: sha512-15vg+zCmjQuDFVoOPNt0TyEu0Z95eir2MO19++wG82yM/vbPtFu/m9qd6oh54ZOBXgMcchdGDTxMwJNDnCLxcA==}
     engines: {node: '>=22.0.0'}
 
+  '@secretlint/formatter@11.7.1':
+    resolution: {integrity: sha512-x/9yd8DzUOgJlURhXH9Z0aIOmCn1XNvHxQPhlufPKFg9MWeDTysGGqUwEn1TBIlOvkeB38y2nJkrCkK/u2y7dg==}
+    engines: {node: '>=20.0.0'}
+
   '@secretlint/formatter@13.0.2':
     resolution: {integrity: sha512-DoU+aEsqPQxiWTQBNkTvQDmGTWB+TQS4UC6XEliWYv4KHpMV81O52jOE7XKS7QUoDMD4dbjh5wUTAgNO1dpzEg==}
     engines: {node: '>=22.0.0'}
+
+  '@secretlint/node@11.7.1':
+    resolution: {integrity: sha512-spzkxcE+MjgO6cGir2AoLHyuCmOBufJLq/rHwUDmi/AOCPITGbCRvow+cBC5O9uWQcGOxDq/DgIsbgIlnooTVA==}
+    engines: {node: '>=20.0.0'}
 
   '@secretlint/node@13.0.2':
     resolution: {integrity: sha512-xAK+0INjjMASH5guHLSozl++6kDyeOTy4FNC6dhPA7ieebCmHe/+QiAsr4KP9yDRZoh/uRmEno2NMDy5lgQpkA==}
     engines: {node: '>=22.0.0'}
 
+  '@secretlint/profiler@11.7.1':
+    resolution: {integrity: sha512-Fa1fCVT4izv8PRXL8t4KB6FwBEL2OYqOYtNsyssWd7giNoNcohCoLGnDhJNLcTxTyTqkDzLlGV0M4CYsCkcfZQ==}
+
   '@secretlint/profiler@13.0.2':
     resolution: {integrity: sha512-vGaLZCoi9KewOF+sM0iIEBviWaH9mls1HmQFBgEPq4fnvmVO4PfKIkVr4CcAFm3Msg4NjzFE2RBAGwRR+5HEmQ==}
 
+  '@secretlint/resolver@11.7.1':
+    resolution: {integrity: sha512-TShFKvFDqJalqM4r/NHrpdbd512odIOLZit01r65Szs5vdRq/W38B1QF0hwh0ZJq9wLOOpkTuVWkff0S4LFwZQ==}
+
   '@secretlint/resolver@13.0.2':
     resolution: {integrity: sha512-Ko50V0P3YAtEO20xBTczOzguBVk6+taSqkoAPHoOSdsTsSq1gzeYggY1UC8vVEHPGyRp/mb2QOuwIShdJZ8JFg==}
+
+  '@secretlint/secretlint-rule-preset-recommend@11.7.1':
+    resolution: {integrity: sha512-LsiEhDWoXi9GNx1Zp5eYRNajeUvBrZ82h3k/vzFqo0WoSdmpyDnkkzBTLXqWqj1VNyPCcTwlxOqnEmlz6lXc7A==}
+    engines: {node: '>=20.0.0'}
 
   '@secretlint/secretlint-rule-preset-recommend@13.0.2':
     resolution: {integrity: sha512-D03Kw51qOgffj9zNlJFZUarVmP8zGcCZNi7A14+vZtHskbbBPEsS/f09idb48rrlMSaRMBN29IkqfbmPyL9xtw==}
     engines: {node: '>=22.0.0'}
 
+  '@secretlint/source-creator@11.7.1':
+    resolution: {integrity: sha512-y7SS9VXbUJgVn0qT1KvaDsB0asLa+vsg55W6WLX4DStgkB1IrnUdwAtelZizDjeToLtjRhRRroCs8y6FFIpf3g==}
+    engines: {node: '>=20.0.0'}
+
   '@secretlint/source-creator@13.0.2':
     resolution: {integrity: sha512-tSooHad8QL+lqHP88zH9F8GMoR7bHUqPja5M/QnNHGnvOq/8OT1V8t1uigm6jlD03oJWNLwwF8QeHIedWKJ13g==}
     engines: {node: '>=22.0.0'}
+
+  '@secretlint/types@11.7.1':
+    resolution: {integrity: sha512-bIkBwIdQScZX5xm3DsLp3oL5U/KKUYWgmst39dZsDi55X9tKuPd7/uVpO1PqNrDW1I0QD5t6es/2LonG5RjxXg==}
+    engines: {node: '>=20.0.0'}
 
   '@secretlint/types@13.0.2':
     resolution: {integrity: sha512-cAZjr6ZTKgSuJMLyTGDrUEtK3XEZa+JStIkD+DmdkT32VGAN+dQJiYr1So3XJopsKSrqhP5kjZKT8WWtftZIpQ==}
@@ -4396,6 +4436,10 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
+  supports-hyperlinks@3.2.0:
+    resolution: {integrity: sha512-zFObLMyZeEwzAoKCyu1B91U79K2t7ApXuQfo8OuxwXLDgcKxuwM+YvcbIhm6QWqz7mHUH1TVytR1PwVVjEuMig==}
+    engines: {node: '>=14.18'}
+
   supports-hyperlinks@4.5.0:
     resolution: {integrity: sha512-ZW2OvfeCXrNTbLakPUzjQG922EeGCOteFSVoek5DKStTh898wf7zgtuFlzQN8HfZCxC3Eh02yJVrRW51hADf+w==}
     engines: {node: '>=20'}
@@ -4421,6 +4465,10 @@ packages:
 
   tar@7.5.19:
     resolution: {integrity: sha512-4LeEWl96twnS2Q7Bz4MGqgazLqO+hJN63GZxXoIqh1T3VweYD997gbU1ItNsQafqqXTXd5WFyFdReLtwvRBNiw==}
+    engines: {node: '>=18'}
+
+  terminal-link@4.0.0:
+    resolution: {integrity: sha512-lk+vH+MccxNqgVqSnkMVKx4VLJfnLjDBGzH16JVZjKE2DoxP57s6/vt6JmXV5I3jBcfGrxNrYtC+mPtU7WJztA==}
     engines: {node: '>=18'}
 
   terminal-link@5.0.0:
@@ -6043,6 +6091,17 @@ snapshots:
     dependencies:
       '@secretlint/types': 13.0.2
 
+  '@secretlint/config-loader@11.7.1':
+    dependencies:
+      '@secretlint/profiler': 11.7.1
+      '@secretlint/resolver': 11.7.1
+      '@secretlint/types': 11.7.1
+      ajv: 8.20.0
+      debug: 4.4.3(supports-color@5.5.0)
+      rc-config-loader: 4.1.4
+    transitivePeerDependencies:
+      - supports-color
+
   '@secretlint/config-loader@13.0.2':
     dependencies:
       '@secretlint/profiler': 13.0.2
@@ -6054,12 +6113,37 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@secretlint/core@11.7.1':
+    dependencies:
+      '@secretlint/profiler': 11.7.1
+      '@secretlint/types': 11.7.1
+      debug: 4.4.3(supports-color@5.5.0)
+      structured-source: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@secretlint/core@13.0.2':
     dependencies:
       '@secretlint/profiler': 13.0.2
       '@secretlint/types': 13.0.2
       debug: 4.4.3(supports-color@5.5.0)
       structured-source: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@secretlint/formatter@11.7.1':
+    dependencies:
+      '@secretlint/resolver': 11.7.1
+      '@secretlint/types': 11.7.1
+      '@textlint/linter-formatter': 15.7.1
+      '@textlint/module-interop': 15.7.1
+      '@textlint/types': 15.7.1
+      chalk: 5.6.2
+      debug: 4.4.3(supports-color@5.5.0)
+      pluralize: 8.0.0
+      strip-ansi: 7.2.0
+      table: 6.9.0
+      terminal-link: 4.0.0
     transitivePeerDependencies:
       - supports-color
 
@@ -6079,6 +6163,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@secretlint/node@11.7.1':
+    dependencies:
+      '@secretlint/config-loader': 11.7.1
+      '@secretlint/core': 11.7.1
+      '@secretlint/formatter': 11.7.1
+      '@secretlint/profiler': 11.7.1
+      '@secretlint/source-creator': 11.7.1
+      '@secretlint/types': 11.7.1
+      debug: 4.4.3(supports-color@5.5.0)
+      p-map: 7.0.5
+    transitivePeerDependencies:
+      - supports-color
+
   '@secretlint/node@13.0.2':
     dependencies:
       '@secretlint/config-loader': 13.0.2
@@ -6092,16 +6189,29 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@secretlint/profiler@11.7.1': {}
+
   '@secretlint/profiler@13.0.2': {}
+
+  '@secretlint/resolver@11.7.1': {}
 
   '@secretlint/resolver@13.0.2': {}
 
+  '@secretlint/secretlint-rule-preset-recommend@11.7.1': {}
+
   '@secretlint/secretlint-rule-preset-recommend@13.0.2': {}
+
+  '@secretlint/source-creator@11.7.1':
+    dependencies:
+      '@secretlint/types': 11.7.1
+      istextorbinary: 9.5.0
 
   '@secretlint/source-creator@13.0.2':
     dependencies:
       '@secretlint/types': 13.0.2
       istextorbinary: 9.5.0
+
+  '@secretlint/types@11.7.1': {}
 
   '@secretlint/types@13.0.2': {}
 
@@ -9019,6 +9129,11 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
+  supports-hyperlinks@3.2.0:
+    dependencies:
+      has-flag: 4.0.0
+      supports-color: 7.2.0
+
   supports-hyperlinks@4.5.0:
     dependencies:
       has-flag: 5.0.1
@@ -9051,6 +9166,11 @@ snapshots:
       minipass: 7.1.3
       minizlib: 3.1.0
       yallist: 5.0.0
+
+  terminal-link@4.0.0:
+    dependencies:
+      ansi-escapes: 7.3.0
+      supports-hyperlinks: 3.2.0
 
   terminal-link@5.0.0:
     dependencies:

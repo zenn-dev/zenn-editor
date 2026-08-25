@@ -8,6 +8,7 @@ describe('CLIのデフォルトの挙動のテスト', () => {
   let notifyNeedUpdateCLIMock: SpyInstance<any[], Promise<void>>;
 
   beforeEach(() => {
+    delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
     // mock
     console.log = vi.fn();
     console.error = vi.fn();
@@ -30,5 +31,26 @@ describe('CLIのデフォルトの挙動のテスト', () => {
   test('canNotifyUpdateオプションが有効ならnotifyNeedUpdateCLI()を実行する', () => {
     exec('not-exist-args', [], { canNotifyUpdate: true });
     expect(notifyNeedUpdateCLIMock).toBeCalled();
+  });
+
+  test('実験的機能が無効ならscrapコマンドを登録しない', async () => {
+    await exec('scrap', []);
+
+    expect(Log.error).toHaveBeenCalledWith(
+      expect.stringContaining('該当するCLIコマンドが存在しません')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.not.stringContaining('zenn scrap')
+    );
+  });
+
+  test('実験的機能が有効ならscrapコマンドを登録する', async () => {
+    process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API = 'true';
+
+    await exec('scrap', ['--help']);
+
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('Public API経由でScrapを作成・追記・返信')
+    );
   });
 });
