@@ -27,6 +27,16 @@ describe('Rspackの環境変数設定', () => {
         'ZENN_API_KEY=DO_NOT_PUBLISH',
         'ZENN_API_BASE_URL=https://public-api.example.com',
         'ZENN_CLI_EXPERIMENTAL_SCRAP_API=true',
+        'ZENN_CLI_FORCE_SAFE=true',
+        'ZENN_CLI_FORCE_UNLISTED=true',
+        'ZENN_CLI_AI_SCAN=true',
+        'ZENN_CLI_AI_PROVIDER=openai',
+        'ZENN_CLI_AI_MODEL=gpt-5-mini',
+        'ZENN_CLI_AI_EFFORT=medium',
+        'ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD=high',
+        'ZENN_CLI_AI_SCAN_PROMPT=DO_NOT_PUBLISH_PROMPT',
+        'OPENAI_API_KEY=DO_NOT_PUBLISH_OPENAI',
+        'FIREWORKS_API_KEY=DO_NOT_PUBLISH_FIREWORKS',
         'OTHER_BUILD_TIME_VALUE=safe-to-inline',
       ].join('\n')
     );

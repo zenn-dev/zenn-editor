@@ -38,10 +38,14 @@
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "dependencies": {
+    "@ai-sdk/fireworks": "^3.0.23",
+    "@ai-sdk/openai": "^4.0.28",
     "@secretlint/node": "^11.3.1",
     "@secretlint/secretlint-rule-preset-recommend": "^11.3.1",
+    "ai": "^7.0.50",
     "open": "^10.2.0",
-    "package-manager-detector": "^1.6.0"
+    "package-manager-detector": "^1.6.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

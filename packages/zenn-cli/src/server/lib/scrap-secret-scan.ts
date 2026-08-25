@@ -9,6 +9,8 @@ const configFileJSON = {
 export async function scanScrapContentForSecrets(content: {
   title?: string;
   body: string;
+  notes?: string;
+  aiPrompt?: string;
 }) {
   const engine = await createEngine({
     configFileJSON,
@@ -16,7 +18,12 @@ export async function scanScrapContentForSecrets(content: {
     color: false,
     maskSecrets: true,
   });
-  const scannedContent = [content.title, content.body]
+  const scannedContent = [
+    content.title,
+    content.body,
+    content.notes,
+    content.aiPrompt,
+  ]
     .filter((value): value is string => Boolean(value))
     .join('\n\n');
   const result = await engine.executeOnContent({
@@ -26,7 +33,7 @@ export async function scanScrapContentForSecrets(content: {
 
   if (!result.ok) {
     throw new ScrapSecretDetectedError(
-      'タイトルまたは本文にシークレットの可能性がある値が含まれています。削除してから再実行してください'
+      'タイトル、本文、notes-to-ai、AI scan promptのいずれかにシークレットの可能性がある値が含まれています。削除してから再実行してください'
     );
   }
 }

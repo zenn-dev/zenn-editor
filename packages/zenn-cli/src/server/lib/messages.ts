@@ -1,3 +1,5 @@
+import { runtimeEnv } from './runtime-env';
+
 export const commandListText = `
 Command:
   zenn init           コンテンツ管理用のディレクトリを作成. 初回のみ実行
@@ -14,7 +16,7 @@ Command:
 `;
 
 export function getCommandListText() {
-  return process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API === 'true'
+  return runtimeEnv('ZENN_CLI_EXPERIMENTAL_SCRAP_API') === 'true'
     ? commandListText.replace(
         '  zenn list:books     本の一覧を表示',
         '  zenn list:books     本の一覧を表示\n  zenn scrap          Public API経由でScrapを投稿（実験的機能）'
@@ -162,13 +164,40 @@ Options:
   --file PATH            本文ファイルのパス。標準入力は - を指定
   --unlisted             限定公開のScrapとして作成（createのみ）
   --reply-to COMMENT_SLUG ルートコメントへの返信（postのみ）
+  --dangerously-skip-secret-scan  Secret scanをスキップ
+  --dangerously-skip-ai-scan      AI scanをスキップ
+  --notes-to-ai NOTES     AI scanへ追加の備考を送信
   --machine-readable     成功時にURLだけを標準出力へ表示
   --help, -h             このヘルプを表示
 
 Environment:
   ZENN_API_KEY                 scrap:write スコープを持つAPIキー
   ZENN_CLI_EXPERIMENTAL_SCRAP_API=true  実験的なScrap投稿機能を有効化
-  ZENN_PUBLIC_API_BASE_URL     integration用のPublic APIベースURL（任意）
+  ZENN_API_BASE_URL            開発・テスト用のPublic APIベースURL（任意）
+  ZENN_CLI_FORCE_SAFE          dangerousなscanスキップを禁止する場合はtrue
+  ZENN_CLI_FORCE_UNLISTED      Scrap作成を常に限定公開にする場合はtrue
+  ZENN_CLI_AI_SCAN             AI scanを有効にする場合はtrue
+  ZENN_CLI_AI_PROVIDER         openai または fireworks
+  ZENN_CLI_AI_MODEL            AI scanに使用するモデルID（任意）
+  ZENN_CLI_AI_EFFORT           none / low / medium / high。デフォルトはmedium
+  ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD  拒否するlevel。デフォルトはhigh
+  ZENN_CLI_AI_SCAN_PROMPT      AI scanの検知方針（任意）
+  OPENAI_API_KEY               OpenAI利用時のAPIキー
+  FIREWORKS_API_KEY            Fireworks利用時のAPIキー
+
+Default AI models:
+  openai: gpt-5.6-luna
+  fireworks: ZENN_CLI_AI_MODEL の指定が必須
+
+AI scan:
+  Secret scanはデフォルトで有効です。AI scanはZENN_CLI_AI_SCAN=true を
+  指定した場合だけ有効です。scanをスキップするにはdangerouslyオプションが
+  必要です。ZENN_CLI_FORCE_SAFE=true の場合はSecret scanとAI scanの両方が
+  必須です。AI scanでは、タイトル・本文・notes-to-ai・AI scan promptを
+  選択したAIプロバイダーへ送信します。保持、学習利用、リージョン、契約条件は
+  利用者の責任で確認してください。notes-to-aiはシェル履歴に残るため、機密情報
+  そのものを指定しないでください。限定公開でもURLまたはslugを知る利用者は閲覧
+  できるため、URLとslugは秘密情報として扱ってください。
 
 Example:
   npx zenn scrap create --title "作業メモ" --file ./scrap.md
