@@ -26,6 +26,7 @@ describe('Rspackの環境変数設定', () => {
       [
         'ZENN_API_KEY=DO_NOT_PUBLISH',
         'ZENN_API_BASE_URL=https://public-api.example.com',
+        'ZENN_CLI_EXPERIMENTAL_SCRAP_API=true',
         'OTHER_BUILD_TIME_VALUE=safe-to-inline',
       ].join('\n')
     );

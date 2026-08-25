@@ -13,6 +13,15 @@ Command:
   https://zenn.dev/zenn/articles/zenn-cli-guide
 `;
 
+export function getCommandListText() {
+  return process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API === 'true'
+    ? commandListText.replace(
+        '  zenn list:books     本の一覧を表示',
+        '  zenn list:books     本の一覧を表示\n  zenn scrap          Public API経由でScrapを投稿（実験的機能）'
+      )
+    : commandListText;
+}
+
 export const initHelpText = `
 Command:
   zenn init           コンテンツ管理用のディレクトリを作成. 初回のみ実行
@@ -139,3 +148,30 @@ Example:
 `;
 
 export const invalidOptionText = `⚠️ 不正なオプションが含まれています`;
+
+export const scrapHelpText = `
+Command:
+  zenn scrap          Public API経由でScrapを作成・追記・返信
+
+Usage:
+  npx zenn scrap create --title TITLE --file PATH [options]
+  npx zenn scrap post SCRAP_SLUG_OR_URL --file PATH [options]
+
+Options:
+  --title TITLE          Scrapのタイトル（createで必須）
+  --file PATH            本文ファイルのパス。標準入力は - を指定
+  --unlisted             限定公開のScrapとして作成（createのみ）
+  --reply-to COMMENT_SLUG ルートコメントへの返信（postのみ）
+  --machine-readable     成功時にURLだけを標準出力へ表示
+  --help, -h             このヘルプを表示
+
+Environment:
+  ZENN_API_KEY                 scrap:write スコープを持つAPIキー
+  ZENN_CLI_EXPERIMENTAL_SCRAP_API=true  実験的なScrap投稿機能を有効化
+  ZENN_PUBLIC_API_BASE_URL     integration用のPublic APIベースURL（任意）
+
+Example:
+  npx zenn scrap create --title "作業メモ" --file ./scrap.md
+  npx zenn scrap post abcdef12345678 --file ./update.md
+  printf '追記' | npx zenn scrap post abcdef12345678 --file -
+`;

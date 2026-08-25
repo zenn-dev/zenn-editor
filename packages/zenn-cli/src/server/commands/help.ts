@@ -1,6 +1,6 @@
 import { CliExecFn } from '../types';
-import { commandListText } from '../lib/messages';
+import { getCommandListText } from '../lib/messages';
 
 export const exec: CliExecFn = () => {
-  console.log(commandListText);
+  console.log(getCommandListText());
 };

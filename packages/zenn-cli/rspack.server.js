@@ -1,7 +1,11 @@
 const rspack = require('@rspack/core');
 const dotenv = require('dotenv');
 
-const RUNTIME_ONLY_ENV_KEYS = new Set(['ZENN_API_KEY', 'ZENN_API_BASE_URL']);
+const RUNTIME_ONLY_ENV_KEYS = new Set([
+  'ZENN_API_KEY',
+  'ZENN_API_BASE_URL',
+  'ZENN_CLI_EXPERIMENTAL_SCRAP_API',
+]);
 const ENV =
   dotenv.config({ path: process.env.ZENN_CLI_DOTENV_PATH || '.env' }).parsed ||
   {};
@@ -36,8 +40,8 @@ module.exports = {
         return callback(null, `commonjs ${module}`);
       }
 
-      if (request === 'open') {
-        return callback(null, 'import open');
+      if (request === 'open' || request === '@secretlint/node') {
+        return callback(null, `import ${request}`);
       }
 
       callback();
