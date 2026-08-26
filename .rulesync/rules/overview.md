@@ -562,6 +562,12 @@ pnpm test          # Test that package
 - API integration tests
 - Command execution tests
 
+### Prompt Testing Policy
+- Do not assert exact prompt wording or partial prompt text with equality or containment checks in RSpec, Vitest, or similar tests.
+- Prompts are qualitative configuration. Wording-based assertions unnecessarily prevent prompt improvements without guaranteeing actual LLM judgment quality.
+- Test structural and behavioral contracts instead, such as provider/model selection, structured output schemas, retry and telemetry settings, data-flow boundaries, and fail-open/fail-closed behavior.
+- Evaluate prompt quality with representative LLM eval cases rather than string-matching tests.
+
 ## Performance Considerations
 
 ### Server-Side

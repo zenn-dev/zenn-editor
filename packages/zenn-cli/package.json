@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.5.2",
+  "version": "0.5.3-alpha.7",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -38,26 +38,32 @@
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "dependencies": {
+    "@ai-sdk/fireworks": "^3.0.23",
+    "@ai-sdk/openai": "^4.0.28",
+    "@secretlint/node": "^11.3.1",
+    "@secretlint/secretlint-rule-preset-recommend": "^11.3.1",
+    "ai": "^7.0.50",
     "open": "^10.2.0",
-    "package-manager-detector": "^1.6.0"
+    "package-manager-detector": "^1.6.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@rspack/cli": "^1.5.8",
-    "@rspack/core": "^1.5.8",
+    "@rspack/cli": "^2.1.3",
+    "@rspack/core": "^2.1.3",
     "@types/configstore": "^6.0.2",
     "@types/emoji-regex": "^9.2.2",
     "@types/express": "^5.0.3",
     "@types/fs-extra": "^11.0.4",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^25.4.0",
+    "@types/node": "^26.1.1",
     "@types/node-fetch": "^2.6.13",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/styled-components": "^5.1.34",
     "@types/supertest": "^7.2.0",
     "@types/ws": "^8.18.1",
-    "@vitejs/plugin-react": "^5.0.4",
+    "@vitejs/plugin-react": "^6.0.3",
     "arg": "^5.0.2",
     "boxen": "^8.0.1",
     "cheerio": "1.2.0",
@@ -75,7 +81,7 @@
     "gray-matter": "^4.0.3",
     "history": "^5.3.0",
     "image-size": "^2.0.2",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^5.2.1",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.10",
     "path": "^0.12.7",
@@ -88,10 +94,10 @@
     "supertest": "^7.1.4",
     "swr": "^2.3.6",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.46.2",
-    "vite": "^7.1.11",
-    "vite-plugin-svgr": "^4.5.0",
+    "vite": "^8.1.4",
+    "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.0.6",
     "wait-on": "^9.0.1",
     "ws": "^8.18.3",
@@ -101,7 +107,7 @@
     "zenn-model": "workspace:*"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.12.0"
   },
   "publishConfig": {
     "access": "public"

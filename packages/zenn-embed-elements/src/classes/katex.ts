@@ -37,8 +37,16 @@ export class EmbedKatex extends HTMLElement {
 
     const displayMode = !!this.getAttribute('display-mode');
 
-    // detailsタグの中ではinnerTextがnullになることがあるため
-    const content = this.textContent || this.innerText;
+    // レンダリング済みの要素が cloneNode で複製されて再接続されると
+    // （脚注ツールチップ等）、textContent はレンダリング結果のテキストに
+    // なっているため、初回レンダリング時に元のソースを属性へ保存しておき、
+    // 2回目以降はそこから読み出す
+    let content = this.getAttribute('data-tex-source');
+    if (content === null) {
+      // detailsタグの中ではinnerTextがnullになることがあるため
+      content = this.textContent || this.innerText;
+      this.setAttribute('data-tex-source', content);
+    }
     katex?.render(content, this._container, {
       macros: { '\\RR': '\\mathbb{R}' },
       throwOnError: false,
