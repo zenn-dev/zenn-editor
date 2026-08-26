@@ -1,8 +1,13 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import {
   createScrap,
+  getScrap,
+  getScrapComments,
+  listMyScraps,
   postScrapComment,
   PublicApiClientError,
+  updateScrap,
+  updateScrapComment,
 } from '../../lib/zenn-public-api-client';
 
 describe('Zenn Public API client', () => {
@@ -66,6 +71,88 @@ describe('Zenn Public API client', () => {
       body_markdown: '返信',
       parent_comment_slug: 'comment123456',
     });
+  });
+
+  test('取得・更新用の各endpointをOpenAPIどおりに呼び出す', async () => {
+    process.env.ZENN_API_KEY = 'test-api-key';
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ scraps: [], next_page: null }), {
+          status: 200,
+        })
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ scrap: {}, comments: [], next_page: null }),
+          { status: 200 }
+        )
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ scrap: {} }), { status: 200 })
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ comments: [], not_found_slugs: ['comment234567'] }),
+          { status: 200 }
+        )
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ comment: {} }), { status: 200 })
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    await listMyScraps(2, 10);
+    await getScrap('abcdef123456', 3, 20);
+    await updateScrap('abcdef123456', {
+      title: '更新後のタイトル',
+      canOthersPost: false,
+      topicNames: [],
+    });
+    await getScrapComments(['comment123456', 'comment234567']);
+    await updateScrapComment({
+      scrapSlug: 'abcdef123456',
+      commentSlug: 'comment123456',
+      bodyMarkdown: '更新後の本文',
+    });
+
+    expect(
+      fetchMock.mock.calls.map(([url, options]) => [
+        url.toString(),
+        options.method,
+        options.body ? JSON.parse(options.body) : undefined,
+      ])
+    ).toEqual([
+      [
+        'https://zenn.dev/api/public-api/v1/scraps?page=2&count=10',
+        'GET',
+        undefined,
+      ],
+      [
+        'https://zenn.dev/api/public-api/v1/scraps/abcdef123456?page=3&count=20',
+        'GET',
+        undefined,
+      ],
+      [
+        'https://zenn.dev/api/public-api/v1/scraps/abcdef123456',
+        'PATCH',
+        {
+          title: '更新後のタイトル',
+          can_others_post: false,
+          topic_names: [],
+        },
+      ],
+      [
+        'https://zenn.dev/api/public-api/v1/comments?slugs%5B%5D=comment123456&slugs%5B%5D=comment234567',
+        'GET',
+        undefined,
+      ],
+      [
+        'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments/comment123456',
+        'PATCH',
+        { body_markdown: '更新後の本文' },
+      ],
+    ]);
   });
 
   test.each([
@@ -157,6 +244,15 @@ describe('Zenn Public API client', () => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
     }
   );
+
+  test('取得の通信失敗は再実行可能なnetworkエラーへ変換する', async () => {
+    process.env.ZENN_API_KEY = 'test-api-key';
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('failed')));
+
+    await expect(listMyScraps()).rejects.toMatchObject<
+      Partial<PublicApiClientError>
+    >({ kind: 'network' });
+  });
 
   test('成功応答に必須pathがない場合は互換性エラーにする', async () => {
     process.env.ZENN_API_KEY = 'test-api-key';

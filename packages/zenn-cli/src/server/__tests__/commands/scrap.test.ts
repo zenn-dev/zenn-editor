@@ -115,6 +115,35 @@ describe('scrapコマンド', () => {
     );
   });
 
+  test('updateは変更項目だけをPATCHし、空のtopicsで全解除できる', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ scrap: {} }), { status: 200 })
+    );
+
+    await exec([
+      'update',
+      'abcdef123456',
+      '--title',
+      '更新後のタイトル',
+      '--open',
+      '--topics',
+      '',
+      '--machine-readable',
+    ]);
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url.toString()).toBe(
+      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456'
+    );
+    expect(options.method).toBe('PATCH');
+    expect(JSON.parse(options.body)).toEqual({
+      title: '更新後のタイトル',
+      closed: false,
+      topic_names: [],
+    });
+    expect(console.log).toHaveBeenLastCalledWith('{"scrap":{}}');
+  });
+
   test('FORCE_UNLISTEDでは--unlistedなしでも限定公開にする', async () => {
     process.env.ZENN_CLI_FORCE_UNLISTED = 'true';
     fetchMock.mockResolvedValue(

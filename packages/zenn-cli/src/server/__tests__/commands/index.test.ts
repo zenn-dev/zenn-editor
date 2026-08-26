@@ -50,7 +50,7 @@ describe('CLIのデフォルトの挙動のテスト', () => {
     await exec('scrap', ['--help']);
 
     expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('Public API経由でScrapを作成・追記・返信')
+      expect.stringContaining('zenn scrap')
     );
   });
 });
