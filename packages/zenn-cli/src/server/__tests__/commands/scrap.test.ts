@@ -242,6 +242,26 @@ describe('scrapコマンド', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  test('Secretlint検出時はtopicsをPublic APIやAI scanへ送信しない', async () => {
+    const secret = `ghp_${'abcdefghijklmnopqrstuvwxyz1234567890'}`;
+
+    await exec([
+      'create',
+      '--title',
+      'タイトル',
+      '--file',
+      await bodyFile('通常の本文'),
+      '--topics',
+      secret,
+    ]);
+
+    expect(aiScanMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(JSON.stringify((console.error as any).mock.calls)).not.toContain(
+      secret
+    );
+  });
+
   test('AI scan検出時はPublic APIを呼ばない', async () => {
     aiScanMock.mockRejectedValue(
       new ScrapAiDetectedError('AIスキャンでhigh以上の検知事項が見つかりました')

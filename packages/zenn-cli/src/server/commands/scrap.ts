@@ -226,7 +226,12 @@ async function create(argv: string[]) {
     ensurePublicApiCredentials();
     publicApiBaseUrl();
     const body = await readScrapBody(args['--file']);
-    await runSafetyGates({ title, body }, scanSettings, notes);
+    const topicNames = parseTopicNames(args['--topics'] as string | undefined);
+    await runSafetyGates(
+      { title, body: [body, ...(topicNames ?? [])].join('\n') },
+      scanSettings,
+      notes
+    );
     const result = await createScrap({
       title,
       bodyMarkdown: body,
@@ -234,7 +239,7 @@ async function create(argv: string[]) {
       ...(args['--archived'] ? { archived: true } : {}),
       ...(args['--disallow-others-post'] ? { canOthersPost: false } : {}),
       unlisted: Boolean(args['--unlisted']) || forceUnlisted,
-      topicNames: parseTopicNames(args['--topics'] as string | undefined),
+      topicNames,
     });
     printSuccess(
       'Scrapを作成しました',
