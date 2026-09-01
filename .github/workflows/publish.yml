@@ -28,14 +28,14 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
         with:
           version: 10.24.0
 
       - name: Setup node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
           package-manager-cache: false
@@ -103,7 +103,7 @@ jobs:
 
       - name: '[main] Create release'
         if: github.ref_name == 'main'
-        uses: release-drafter/release-drafter@4d75298e00d9e34c483e5ff8c68d0ea1c1940c1e # v7.5.1
+        uses: release-drafter/release-drafter@34d80673e067bdc0c24568d3af899c216adcfaa9 # v7.7.0
         with:
           version: ${{ env.RELEASED_PACKAGE_VERSION }}
           name: ${{ env.RELEASED_PACKAGE_VERSION }}
@@ -114,7 +114,7 @@ jobs:
 
       - name: '[canary] Create release'
         if: github.ref_name == 'canary'
-        uses: release-drafter/release-drafter@4d75298e00d9e34c483e5ff8c68d0ea1c1940c1e # v7.5.1
+        uses: release-drafter/release-drafter@34d80673e067bdc0c24568d3af899c216adcfaa9 # v7.7.0
         with:
           version: ${{ env.RELEASED_PACKAGE_VERSION }}
           name: ${{ env.RELEASED_PACKAGE_VERSION }}
@@ -140,7 +140,7 @@ jobs:
 
       - name: '[main] Checkout'
         if: github.ref_name == 'main'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: canary
 
