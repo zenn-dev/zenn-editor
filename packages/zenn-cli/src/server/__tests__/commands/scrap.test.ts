@@ -32,6 +32,7 @@ describe('scrapコマンド', () => {
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
+    process.exitCode = undefined;
     directory = await mkdtemp(path.join(tmpdir(), 'zenn-scrap-test-'));
     process.env.ZENN_API_KEY = 'test-api-key';
     process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API = 'true';
@@ -47,6 +48,7 @@ describe('scrapコマンド', () => {
   });
 
   afterEach(async () => {
+    process.exitCode = undefined;
     delete process.env.ZENN_API_KEY;
     delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
     scanEnvironmentNames.forEach((name) => delete process.env[name]);
@@ -260,6 +262,49 @@ describe('scrapコマンド', () => {
     expect(JSON.stringify((console.error as any).mock.calls)).not.toContain(
       secret
     );
+  });
+
+  test('AI scan実行時はtopicsの外部送信を警告する', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          scrap: { slug: 'abcdef123456', path: '/me/scraps/abcdef123456' },
+        }),
+        { status: 201 }
+      )
+    );
+
+    await exec([
+      'create',
+      '--title',
+      'タイトル',
+      '--file',
+      await bodyFile('通常の本文'),
+      '--topics',
+      'typescript,zenn',
+    ]);
+
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('topics')
+    );
+    expect(aiScanMock).toHaveBeenCalledWith(
+      { title: 'タイトル', body: '通常の本文\ntypescript\nzenn' },
+      expect.any(Object),
+      undefined
+    );
+  });
+
+  test('APIエラー時は終了コードを非0にする', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ error: { code: 'invalid_token' } }), {
+        status: 401,
+      })
+    );
+
+    await exec(['list', '--machine-readable']);
+
+    expect(process.exitCode).toBe(1);
   });
 
   test('AI scan検出時はPublic APIを呼ばない', async () => {

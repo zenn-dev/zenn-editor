@@ -42,12 +42,17 @@ function parseArgs(argv: string[], spec: arg.Spec) {
   try {
     return arg(spec, { argv });
   } catch (error: any) {
-    Log.error(
+    fail(
       error.code === 'ARG_UNKNOWN_OPTION' ? invalidOptionText : '引数が不正です'
     );
     console.log(scrapHelpText);
     return null;
   }
+}
+
+function fail(message: string) {
+  process.exitCode = 1;
+  Log.error(message);
 }
 
 function printSuccess(message: string, url: string, machineReadable: boolean) {
@@ -135,23 +140,29 @@ function showError(error: unknown) {
       error instanceof PublicApiClientError && error.code
         ? ` (${error.code})`
         : '';
-    Log.error(`${error.message}${code}`);
+    fail(`${error.message}${code}`);
     return;
   }
-  Log.error('原因不明のエラーが発生しました');
+  fail('原因不明のエラーが発生しました');
 }
 
 async function runSafetyGates(
-  content: { title?: string; body: string },
+  content: { title?: string; body?: string; topics?: string[] },
   settings: ScrapScanSettings,
   notes: string | undefined
 ) {
+  const scanContent = {
+    ...(content.title === undefined ? {} : { title: content.title }),
+    body: [content.body, ...(content.topics ?? [])]
+      .filter((value): value is string => value !== undefined)
+      .join('\n'),
+  };
   const aiConfig = settings.aiScanEnabled
     ? getScrapAiConfiguration()
     : undefined;
   if (settings.secretScanEnabled) {
     await scanScrapContentForSecrets({
-      ...content,
+      ...scanContent,
       notes,
       aiPrompt: aiConfig?.customPrompt,
     });
@@ -171,15 +182,16 @@ async function runSafetyGates(
   }
 
   const sentItems = [
-    ...(content.title ? ['タイトル'] : []),
-    '本文',
+    ...(content.title !== undefined ? ['タイトル'] : []),
+    ...(content.body !== undefined ? ['本文'] : []),
+    ...(content.topics !== undefined ? ['topics'] : []),
     ...(notes ? ['notes-to-ai'] : []),
     ...(aiConfig.customPrompt ? ['AI scan prompt'] : []),
   ];
   Log.warn(
     `AI scanを実行します。${sentItems.join('、')}を${aiConfig.provider}（model=${JSON.stringify(aiConfig.model)}, effort=${aiConfig.effort}）へ送信します。データ取扱いは利用者の責任で確認してください`
   );
-  const findings = await scanScrapContentWithAi(content, aiConfig, notes);
+  const findings = await scanScrapContentWithAi(scanContent, aiConfig, notes);
   findings.forEach((finding) => {
     Log.warn(`AI scan warning: ${formatAiScanFinding(finding)}`);
   });
@@ -205,7 +217,7 @@ async function create(argv: string[]) {
   if (args['--help']) return console.log(scrapHelpText);
   const title = args['--title'] as string | undefined;
   if (args._.length || !title?.trim()) {
-    Log.error('--title を指定してください');
+    fail('--title を指定してください');
     return;
   }
 
@@ -228,7 +240,7 @@ async function create(argv: string[]) {
     const body = await readScrapBody(args['--file']);
     const topicNames = parseTopicNames(args['--topics'] as string | undefined);
     await runSafetyGates(
-      { title, body: [body, ...(topicNames ?? [])].join('\n') },
+      { title, body, topics: topicNames },
       scanSettings,
       notes
     );
@@ -262,7 +274,7 @@ async function list(argv: string[]) {
   if (!args) return;
   if (args['--help']) return console.log(scrapHelpText);
   if (args._.length) {
-    Log.error('listに位置引数は指定できません');
+    fail('listに位置引数は指定できません');
     return;
   }
 
@@ -289,7 +301,7 @@ async function get(argv: string[]) {
   if (!args) return;
   if (args['--help']) return console.log(scrapHelpText);
   if (args._.length !== 1) {
-    Log.error('取得するScrap slugまたはURLを指定してください');
+    fail('取得するScrap slugまたはURLを指定してください');
     return;
   }
 
@@ -328,7 +340,7 @@ async function update(argv: string[]) {
   if (!args) return;
   if (args['--help']) return console.log(scrapHelpText);
   if (args._.length !== 1) {
-    Log.error('更新するScrap slugまたはURLを指定してください');
+    fail('更新するScrap slugまたはURLを指定してください');
     return;
   }
 
@@ -364,11 +376,7 @@ async function update(argv: string[]) {
           '--notes-to-ai はAI scanをスキップする場合には指定できません'
         );
       }
-      await runSafetyGates(
-        { title, body: topicNames?.join('\n') ?? '' },
-        scanSettings,
-        notes
-      );
+      await runSafetyGates({ title, topics: topicNames }, scanSettings, notes);
     }
     printJson(
       await updateScrap(scrapSlug, {
@@ -395,7 +403,7 @@ async function comments(argv: string[]) {
   if (!args) return;
   if (args['--help']) return console.log(scrapHelpText);
   if (!args._.length || args._.length > 100) {
-    Log.error('取得するコメントslugを1件以上100件以下指定してください');
+    fail('取得するコメントslugを1件以上100件以下指定してください');
     return;
   }
 
@@ -424,7 +432,7 @@ async function updateComment(argv: string[]) {
   if (!args) return;
   if (args['--help']) return console.log(scrapHelpText);
   if (args._.length !== 2) {
-    Log.error('Scrap slugまたはURLと更新するコメントslugを指定してください');
+    fail('Scrap slugまたはURLと更新するコメントslugを指定してください');
     return;
   }
 
@@ -469,7 +477,7 @@ async function post(argv: string[]) {
   if (!args) return;
   if (args['--help']) return console.log(scrapHelpText);
   if (args._.length !== 1) {
-    Log.error('投稿先のScrap slugまたはURLを指定してください');
+    fail('投稿先のScrap slugまたはURLを指定してください');
     return;
   }
 
@@ -510,7 +518,7 @@ async function post(argv: string[]) {
 
 export const exec: CliExecFn = async (argv = []) => {
   if (!isExperimentalScrapApiEnabled()) {
-    Log.error(
+    fail(
       'Scrap投稿は実験的機能です。ZENN_CLI_EXPERIMENTAL_SCRAP_API=true を設定してください'
     );
     return;
@@ -529,6 +537,6 @@ export const exec: CliExecFn = async (argv = []) => {
   if (subcommand === 'post') return post(subcommandArgs);
   if (subcommand === 'update-comment') return updateComment(subcommandArgs);
 
-  Log.error('Scrapのサブコマンドが不正です');
+  fail('Scrapのサブコマンドが不正です');
   console.log(scrapHelpText);
 };

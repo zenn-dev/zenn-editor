@@ -1,4 +1,12 @@
-import { vi, describe, test, expect, beforeEach, SpyInstance } from 'vitest';
+import {
+  vi,
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterEach,
+  SpyInstance,
+} from 'vitest';
 import { exec } from '../../commands/index';
 import * as Log from '../../lib/log';
 import { commandListText } from '../../lib/messages';
@@ -8,6 +16,7 @@ describe('CLIのデフォルトの挙動のテスト', () => {
   let notifyNeedUpdateCLIMock: SpyInstance<any[], Promise<void>>;
 
   beforeEach(() => {
+    process.exitCode = undefined;
     delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
     // mock
     console.log = vi.fn();
@@ -18,8 +27,13 @@ describe('CLIのデフォルトの挙動のテスト', () => {
       .mockResolvedValue();
   });
 
+  afterEach(() => {
+    process.exitCode = undefined;
+  });
+
   test('存在しないコマンドが指定された場合はエラーメッセージを表示する', () => {
     exec('not-exist-args', []);
+    expect(process.exitCode).toBe(1);
     expect(Log.error).toHaveBeenCalledWith(
       expect.stringContaining('該当するCLIコマンドが存在しません')
     );

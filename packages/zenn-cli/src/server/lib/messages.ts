@@ -176,7 +176,8 @@ Options:
   --dangerously-skip-secret-scan  Secret scanをスキップ
   --dangerously-skip-ai-scan      AI scanをスキップ
   --notes-to-ai NOTES     AI scanへ追加の備考を送信
-  --machine-readable     成功時にURLだけを標準出力へ表示
+  --machine-readable     成功結果を機械可読形式で標準出力へ表示
+                         create/postはURL、その他はレスポンスJSONを1行で表示
   --help, -h             このヘルプを表示
 
 Environment:
@@ -202,7 +203,7 @@ AI scan:
   Secret scanはデフォルトで有効です。AI scanはZENN_CLI_AI_SCAN=true を
   指定した場合だけ有効です。scanをスキップするにはdangerouslyオプションが
   必要です。ZENN_CLI_FORCE_SAFE=true の場合はSecret scanとAI scanの両方が
-  必須です。AI scanでは、タイトル・本文・notes-to-ai・AI scan promptを
+  必須です。AI scanでは、タイトル・本文・topics・notes-to-ai・AI scan promptを
   選択したAIプロバイダーへ送信します。保持、学習利用、リージョン、契約条件は
   利用者の責任で確認してください。notes-to-aiはシェル履歴に残るため、機密情報
   そのものを指定しないでください。限定公開でもURLまたはslugを知る利用者は閲覧
