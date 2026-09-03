@@ -153,25 +153,35 @@ export const invalidOptionText = `⚠️ 不正なオプションが含まれて
 
 export const scrapHelpText = `
 Command:
-  zenn scrap          Public API経由でScrapを作成・追記・返信
+  zenn scrap          Public API経由でScrapを取得・作成・更新・コメント投稿
 
 Usage:
+  npx zenn scrap list [--page PAGE] [--count COUNT] [--machine-readable]
+  npx zenn scrap get SCRAP_SLUG_OR_URL [--page PAGE] [--count COUNT] [--machine-readable]
   npx zenn scrap create --title TITLE --file PATH [options]
+  npx zenn scrap update SCRAP_SLUG_OR_URL [options]
+  npx zenn scrap comments COMMENT_SLUG [COMMENT_SLUG ...] [--machine-readable]
   npx zenn scrap post SCRAP_SLUG_OR_URL --file PATH [options]
+  npx zenn scrap update-comment SCRAP_SLUG_OR_URL COMMENT_SLUG --file PATH [options]
 
 Options:
   --title TITLE          Scrapのタイトル（createで必須）
   --file PATH            本文ファイルのパス。標準入力は - を指定
-  --unlisted             限定公開のScrapとして作成（createのみ）
+  --closed, --open       Scrapを完了・未完了にする（openはupdateのみ）
+  --archived, --unarchived  Scrapをアーカイブ・復元する（unarchivedはupdateのみ）
+  --allow-others-post, --disallow-others-post  他者投稿を許可・禁止する（updateでは排他）
+  --unlisted, --public   Scrapを限定公開・公開にする（publicはupdateのみ）
+  --topics TOPIC,...     topicを設定する。空文字列で全解除（create/updateのみ）
   --reply-to COMMENT_SLUG ルートコメントへの返信（postのみ）
   --dangerously-skip-secret-scan  Secret scanをスキップ
   --dangerously-skip-ai-scan      AI scanをスキップ
   --notes-to-ai NOTES     AI scanへ追加の備考を送信
-  --machine-readable     成功時にURLだけを標準出力へ表示
+  --machine-readable     成功結果を機械可読形式で標準出力へ表示
+                         create/postはURL、その他はレスポンスJSONを1行で表示
   --help, -h             このヘルプを表示
 
 Environment:
-  ZENN_API_KEY                 scrap:write スコープを持つAPIキー
+  ZENN_API_KEY                 必要なscrap:readまたはscrap:writeスコープを持つAPIキー
   ZENN_CLI_EXPERIMENTAL_SCRAP_API=true  実験的なScrap投稿機能を有効化
   ZENN_API_BASE_URL            開発・テスト用のPublic APIベースURL（任意）
   ZENN_CLI_FORCE_SAFE          dangerousなscanスキップを禁止する場合はtrue
@@ -193,14 +203,19 @@ AI scan:
   Secret scanはデフォルトで有効です。AI scanはZENN_CLI_AI_SCAN=true を
   指定した場合だけ有効です。scanをスキップするにはdangerouslyオプションが
   必要です。ZENN_CLI_FORCE_SAFE=true の場合はSecret scanとAI scanの両方が
-  必須です。AI scanでは、タイトル・本文・notes-to-ai・AI scan promptを
+  必須です。AI scanでは、タイトル・本文・topics・notes-to-ai・AI scan promptを
   選択したAIプロバイダーへ送信します。保持、学習利用、リージョン、契約条件は
   利用者の責任で確認してください。notes-to-aiはシェル履歴に残るため、機密情報
   そのものを指定しないでください。限定公開でもURLまたはslugを知る利用者は閲覧
   できるため、URLとslugは秘密情報として扱ってください。
 
 Example:
+  npx zenn scrap list --count 20
+  npx zenn scrap get abcdef12345678
   npx zenn scrap create --title "作業メモ" --file ./scrap.md
   npx zenn scrap post abcdef12345678 --file ./update.md
+  npx zenn scrap update abcdef12345678 --closed --topics typescript,zenn
+  npx zenn scrap comments comment123456 comment234567
+  npx zenn scrap update-comment abcdef12345678 comment123456 --file ./revised.md
   printf '追記' | npx zenn scrap post abcdef12345678 --file -
 `;
