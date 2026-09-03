@@ -16,7 +16,7 @@ export const BodyContentWithToc: React.FC<Props> = ({ bodyHtml, toc }) => {
   return (
     <>
       {!!toc?.length && <Toc maxDepth={2} toc={toc} />}
-      <InsertAnchorButtonToHeadings>
+      <InsertAnchorButtonToHeadings bodyHtml={bodyHtml}>
         <BodyContent rawHtml={bodyHtml || ''} />
       </InsertAnchorButtonToHeadings>
     </>
