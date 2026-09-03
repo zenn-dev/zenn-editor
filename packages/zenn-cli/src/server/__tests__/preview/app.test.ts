@@ -202,6 +202,14 @@ describe('/api/books/:book_slug/chapters', () => {
       .expect(200);
     expect(res.body.chapters[0].bodyHtml).toBe(undefined);
   });
+
+  test('should not include toc', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app)
+      .get('/api/books/my-second-book/chapters')
+      .expect(200);
+    expect(res.body.chapters[0].toc).toBe(undefined);
+  });
 });
 
 describe('/api/books/:book_slug/chapters/:chapter_filename', () => {
@@ -220,6 +228,31 @@ describe('/api/books/:book_slug/chapters/:chapter_filename', () => {
         bodyHtml: expect.stringMatching(/<p.*>Hello!<\/p>/),
       })
     );
+  });
+
+  test('should respond with the toc of the chapter', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app)
+      .get('/api/books/my-first-book/chapters/example1.md')
+      .expect(200);
+    expect(res.body.chapter.toc).toEqual([
+      expect.objectContaining({
+        level: 2,
+        text: 'heading1',
+        children: [
+          expect.objectContaining({
+            level: 3,
+            text: 'heading1-1',
+            children: [],
+          }),
+        ],
+      }),
+      expect.objectContaining({
+        level: 2,
+        text: 'heading2',
+        children: [],
+      }),
+    ]);
   });
 
   test('should respond with chapters orderby position specified on filename', async () => {

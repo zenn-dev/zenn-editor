@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { BodyContent } from '../BodyContent';
 import { ContentContainer } from '../ContentContainer';
 import { ArticleHeader } from './show/ArticleHeader';
 import { ErrorMessage } from '../ErrorMessage';
@@ -8,8 +7,7 @@ import { useFetch } from '../../hooks/useFetch';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { useTitle } from '../../hooks/useTitle';
 import { Article } from 'zenn-model';
-import { Toc } from '../Toc';
-import { InsertAnchorButtonToHeadings } from '../InsertAnchorButtonToHeadings';
+import { BodyContentWithToc } from '../BodyContentWithToc';
 
 type ArticleShowProps = {
   slug: string;
@@ -44,12 +42,7 @@ export const ArticleShow: React.FC<ArticleShowProps> = ({ slug }) => {
       <ContentContainer>
         <StyledArticleShow className="article-show">
           <div className="article-show__content">
-            {article.toc && article.toc.length > 0 && (
-              <Toc maxDepth={2} toc={article.toc} />
-            )}
-            <InsertAnchorButtonToHeadings>
-              <BodyContent rawHtml={article.bodyHtml || ''} />
-            </InsertAnchorButtonToHeadings>
+            <BodyContentWithToc bodyHtml={article.bodyHtml} toc={article.toc} />
           </div>
         </StyledArticleShow>
       </ContentContainer>

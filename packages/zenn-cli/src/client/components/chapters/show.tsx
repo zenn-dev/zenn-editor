@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import { ContentContainer } from '../ContentContainer';
 import { ChapterHeader } from './show/ChapterHeader';
 import { ChapterFooterNav } from './show/ChapterFooterNav';
-import { Toc } from '../Toc';
-import { InsertAnchorButtonToHeadings } from '../InsertAnchorButtonToHeadings';
+import { BodyContentWithToc } from '../BodyContentWithToc';
 import { ErrorMessage } from '../ErrorMessage';
-import { BodyContent } from '../BodyContent';
 import { Loading } from '../Loading';
 import { useLocalFileChangedEffect } from '../../hooks/useLocalFileChangedEffect';
 import { useFetch } from '../../hooks/useFetch';
@@ -62,11 +60,18 @@ export const ChapterShow: React.FC<ChapterShowProps> = ({
   const { prevChapter, nextChapter } = useMemo(() => {
     const chapters = chaptersData?.chapters;
     if (!chapters) return {};
-    const index = chapters.findIndex((c) => c.filename === chapterFilename);
+    // 本ページと同様に、デプロイ対象のチャプターのみを前後の対象とする。
+    // デプロイ対象外のチャプターを表示している場合は前後リンクを表示しない。
+    const deployedChapters = chapters.filter(
+      (chapter) => typeof chapter.position === 'number'
+    );
+    const index = deployedChapters.findIndex(
+      (chapter) => chapter.filename === chapterFilename
+    );
     if (index === -1) return {};
     return {
-      prevChapter: chapters[index - 1],
-      nextChapter: chapters[index + 1],
+      prevChapter: deployedChapters[index - 1],
+      nextChapter: deployedChapters[index + 1],
     };
   }, [chaptersData, chapterFilename]);
 
@@ -108,18 +113,13 @@ export const ChapterShow: React.FC<ChapterShowProps> = ({
       <ContentContainer>
         <StyledChapterShow className="book-show">
           <div className="chapter-show__content">
-            {chapter.toc && chapter.toc.length > 0 && (
-              <Toc maxDepth={2} toc={chapter.toc} />
-            )}
-            <InsertAnchorButtonToHeadings>
-              <BodyContent rawHtml={chapter.bodyHtml || ''} />
-            </InsertAnchorButtonToHeadings>
+            <BodyContentWithToc bodyHtml={chapter.bodyHtml} toc={chapter.toc} />
+            <ChapterFooterNav
+              bookSlug={bookSlug}
+              prev={prevChapter}
+              next={nextChapter}
+            />
           </div>
-          <ChapterFooterNav
-            bookSlug={bookSlug}
-            prev={prevChapter}
-            next={nextChapter}
-          />
         </StyledChapterShow>
       </ContentContainer>
     </>

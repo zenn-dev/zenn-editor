@@ -26,11 +26,11 @@ export const ChapterFooterNav: React.FC<Props> = ({ bookSlug, prev, next }) => {
             className="chapter-footer-nav__link"
           >
             <span className="chapter-footer-nav__label">
-              <MdOutlineArrowBackIos />
+              <MdOutlineArrowBackIos aria-hidden="true" />
               前のチャプター
             </span>
             <span className="chapter-footer-nav__title">
-              {prev.title || prev.slug || prev.filename}
+              {prev.title || prev.slug}
             </span>
           </LinkChapter>
         )}
@@ -44,10 +44,10 @@ export const ChapterFooterNav: React.FC<Props> = ({ bookSlug, prev, next }) => {
           >
             <span className="chapter-footer-nav__label">
               次のチャプター
-              <MdOutlineArrowForwardIos />
+              <MdOutlineArrowForwardIos aria-hidden="true" />
             </span>
             <span className="chapter-footer-nav__title">
-              {next.title || next.slug || next.filename}
+              {next.title || next.slug}
             </span>
           </LinkChapter>
         )}
@@ -56,24 +56,21 @@ export const ChapterFooterNav: React.FC<Props> = ({ bookSlug, prev, next }) => {
   );
 };
 
+const CHAPTER_FOOTER_NAV_LINK_WIDTH = '300px';
+
 const StyledChapterFooterNav = styled.nav`
   display: flex;
+  justify-content: space-between;
   gap: 1rem;
-  margin: 3rem 0 2rem;
+  margin: 3rem 0 0;
   border-top: solid 1px var(--c-gray-border, rgba(158, 186, 203, 0.4));
   padding-top: 1.6rem;
 
-  .chapter-footer-nav__side {
-    flex: 1;
-    min-width: 0;
-  }
-  .chapter-footer-nav__side--next {
-    text-align: right;
-  }
   .chapter-footer-nav__link {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     gap: 0.3rem;
+    width: ${CHAPTER_FOOTER_NAV_LINK_WIDTH};
     max-width: 100%;
     padding: 0.8rem 1rem;
     border: solid 1px var(--c-gray-border, rgba(158, 186, 203, 0.4));
@@ -93,6 +90,9 @@ const StyledChapterFooterNav = styled.nav`
   .chapter-footer-nav__side--next .chapter-footer-nav__label {
     justify-content: flex-end;
   }
+  .chapter-footer-nav__side--next .chapter-footer-nav__title {
+    text-align: right;
+  }
   .chapter-footer-nav__title {
     font-size: 14.5px;
     font-weight: 700;
@@ -105,16 +105,14 @@ const StyledChapterFooterNav = styled.nav`
     flex-direction: column;
     gap: 0.7rem;
 
-    .chapter-footer-nav__side,
-    .chapter-footer-nav__side--next {
-      text-align: left;
-    }
     .chapter-footer-nav__link {
-      display: flex;
       width: 100%;
     }
     .chapter-footer-nav__side--next .chapter-footer-nav__label {
       justify-content: flex-start;
+    }
+    .chapter-footer-nav__side--next .chapter-footer-nav__title {
+      text-align: left;
     }
   }
 `;
