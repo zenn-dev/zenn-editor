@@ -3,13 +3,18 @@ import styled from 'styled-components';
 import clsx from 'clsx';
 
 type Props = {
+  /** 本文の HTML。変わったときに見出しへボタンを付け直すために使う */
+  bodyHtml?: string;
   children: React.ReactNode;
 };
 
 /**
  * 見出しの横にアンカーリンクコピーボタンを追加するコンポーネント
  */
-export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
+export const InsertAnchorButtonToHeadings: React.FC<Props> = ({
+  bodyHtml,
+  children,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,7 +91,7 @@ export const InsertAnchorButtonToHeadings: React.FC<Props> = ({ children }) => {
         }
       });
     };
-  }, []);
+  }, [bodyHtml]);
 
   return (
     <StyledInsertAnchorButtonToHeadings>
