@@ -1,5 +1,6 @@
 const rspack = require('@rspack/core');
 const dotenv = require('dotenv');
+const { dependencies } = require('./package.json');
 
 const RUNTIME_ONLY_ENV_KEYS = new Set([
   'ZENN_API_KEY',
@@ -16,13 +17,26 @@ const RUNTIME_ONLY_ENV_KEYS = new Set([
   'OPENAI_API_KEY',
   'FIREWORKS_API_KEY',
 ]);
+const SERVER_EXTERNALS = new Set(Object.keys(dependencies));
 const ESM_EXTERNALS = new Set([
-  'open',
-  '@secretlint/node',
-  'ai',
-  '@ai-sdk/openai',
   '@ai-sdk/fireworks',
+  '@ai-sdk/openai',
+  '@secretlint/node',
+  '@secretlint/secretlint-rule-preset-recommend',
+  'ai',
+  'boxen',
+  'chokidar',
+  'configstore',
+  'node-fetch',
+  'open',
+  'package-manager-detector',
+  'zenn-markdown-html',
 ]);
+
+const getPackageName = (request) => {
+  const segments = request.split('/');
+  return request.startsWith('@') ? segments.slice(0, 2).join('/') : segments[0];
+};
 
 const ENV =
   dotenv.config({ path: process.env.ZENN_CLI_DOTENV_PATH || '.env' }).parsed ||
@@ -62,9 +76,13 @@ module.exports = {
         return callback(null, `commonjs ${module}`);
       }
 
-      // pure ESMかつnpm配布後に実行時解決するパッケージは外部依存にする
-      if (ESM_EXTERNALS.has(request)) {
-        return callback(null, `import ${request}`);
+      // 公開パッケージのdependenciesはbundleせず、利用者側で更新可能にする
+      const packageName = getPackageName(request);
+      if (SERVER_EXTERNALS.has(packageName)) {
+        const externalType = ESM_EXTERNALS.has(packageName)
+          ? 'import'
+          : 'commonjs';
+        return callback(null, `${externalType} ${request}`);
       }
 
       callback();
