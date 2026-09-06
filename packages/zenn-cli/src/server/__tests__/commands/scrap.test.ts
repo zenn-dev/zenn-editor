@@ -32,6 +32,7 @@ describe('scrapコマンド', () => {
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
+    process.exitCode = undefined;
     directory = await mkdtemp(path.join(tmpdir(), 'zenn-scrap-test-'));
     process.env.ZENN_API_KEY = 'test-api-key';
     process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API = 'true';
@@ -47,6 +48,7 @@ describe('scrapコマンド', () => {
   });
 
   afterEach(async () => {
+    process.exitCode = undefined;
     delete process.env.ZENN_API_KEY;
     delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
     scanEnvironmentNames.forEach((name) => delete process.env[name]);
@@ -113,6 +115,35 @@ describe('scrapコマンド', () => {
     expect(console.log).toHaveBeenCalledWith(
       'https://zenn.dev/link/comments/comment123456'
     );
+  });
+
+  test('updateは変更項目だけをPATCHし、空のtopicsで全解除できる', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ scrap: {} }), { status: 200 })
+    );
+
+    await exec([
+      'update',
+      'abcdef123456',
+      '--title',
+      '更新後のタイトル',
+      '--open',
+      '--topics',
+      '',
+      '--machine-readable',
+    ]);
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url.toString()).toBe(
+      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456'
+    );
+    expect(options.method).toBe('PATCH');
+    expect(JSON.parse(options.body)).toEqual({
+      title: '更新後のタイトル',
+      closed: false,
+      topic_names: [],
+    });
+    expect(console.log).toHaveBeenLastCalledWith('{"scrap":{}}');
   });
 
   test('FORCE_UNLISTEDでは--unlistedなしでも限定公開にする', async () => {
@@ -211,6 +242,69 @@ describe('scrapコマンド', () => {
 
     expect(aiScanMock).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  test('Secretlint検出時はtopicsをPublic APIやAI scanへ送信しない', async () => {
+    const secret = `ghp_${'abcdefghijklmnopqrstuvwxyz1234567890'}`;
+
+    await exec([
+      'create',
+      '--title',
+      'タイトル',
+      '--file',
+      await bodyFile('通常の本文'),
+      '--topics',
+      secret,
+    ]);
+
+    expect(aiScanMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(JSON.stringify((console.error as any).mock.calls)).not.toContain(
+      secret
+    );
+  });
+
+  test('AI scan実行時はtopicsの外部送信を警告する', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          scrap: { slug: 'abcdef123456', path: '/me/scraps/abcdef123456' },
+        }),
+        { status: 201 }
+      )
+    );
+
+    await exec([
+      'create',
+      '--title',
+      'タイトル',
+      '--file',
+      await bodyFile('通常の本文'),
+      '--topics',
+      'typescript,zenn',
+    ]);
+
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('topics')
+    );
+    expect(aiScanMock).toHaveBeenCalledWith(
+      { title: 'タイトル', body: '通常の本文\ntypescript\nzenn' },
+      expect.any(Object),
+      undefined
+    );
+  });
+
+  test('APIエラー時は終了コードを非0にする', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ error: { code: 'invalid_token' } }), {
+        status: 401,
+      })
+    );
+
+    await exec(['list', '--machine-readable']);
+
+    expect(process.exitCode).toBe(1);
   });
 
   test('AI scan検出時はPublic APIを呼ばない', async () => {

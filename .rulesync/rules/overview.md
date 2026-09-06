@@ -204,6 +204,7 @@ Chapter {
   title?: string
   free?: boolean
   bodyHtml?: string
+  toc?: TocNode[]
   position: null | number
 }
 ```

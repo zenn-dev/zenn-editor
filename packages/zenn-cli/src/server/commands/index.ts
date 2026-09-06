@@ -46,6 +46,7 @@ export async function exec(
   }
 
   if (!commands[execCommandName]) {
+    process.exitCode = 1;
     Log.error('該当するCLIコマンドが存在しません');
     console.log(getCommandListText());
     return;

@@ -3,6 +3,7 @@ import path from 'path';
 import imageSizeOf from 'image-size';
 import matter from 'gray-matter';
 import markdownToHtml from 'zenn-markdown-html';
+import { parseToc } from 'zenn-markdown-html/utils';
 import * as Log from './log';
 import {
   listDirnames,
@@ -97,9 +98,11 @@ export async function getLocalChapter(
     embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
   });
   const bodyHtml = completeHtml(rawHtml);
+  const toc = parseToc(bodyHtml);
   return {
     ...meta,
     bodyHtml,
+    toc,
   };
 }
 
