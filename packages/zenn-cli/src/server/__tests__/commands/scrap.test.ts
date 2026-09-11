@@ -146,6 +146,50 @@ describe('scrapコマンド', () => {
     expect(console.log).toHaveBeenLastCalledWith('{"scrap":{}}');
   });
 
+  test('deleteは確認後にScrapをDELETEする', async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+
+    await exec(['delete', 'abcdef123456', '--yes', '--machine-readable']);
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url.toString()).toBe(
+      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456'
+    );
+    expect(options.method).toBe('DELETE');
+    expect(console.log).toHaveBeenLastCalledWith(
+      '{"deleted":true,"scrap_slug":"abcdef123456"}'
+    );
+  });
+
+  test('delete-commentは確認後にコメントをDELETEする', async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+
+    await exec([
+      'delete-comment',
+      'abcdef123456',
+      'comment123456',
+      '--yes',
+      '--machine-readable',
+    ]);
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url.toString()).toBe(
+      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments/comment123456'
+    );
+    expect(options.method).toBe('DELETE');
+    expect(console.log).toHaveBeenLastCalledWith(
+      '{"deleted":true,"scrap_slug":"abcdef123456","comment_slug":"comment123456"}'
+    );
+  });
+
+  test('削除は--yesがなければAPIを呼ばない', async () => {
+    await exec(['delete', 'abcdef123456']);
+    await exec(['delete-comment', 'abcdef123456', 'comment123456']);
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(process.exitCode).toBe(1);
+  });
+
   test('FORCE_UNLISTEDでは--unlistedなしでも限定公開にする', async () => {
     process.env.ZENN_CLI_FORCE_UNLISTED = 'true';
     fetchMock.mockResolvedValue(

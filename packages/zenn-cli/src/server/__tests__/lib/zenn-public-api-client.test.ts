@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import {
   createScrap,
+  deleteScrap,
+  deleteScrapComment,
   getScrap,
   getScrapComments,
   listMyScraps,
@@ -8,6 +10,7 @@ import {
   PublicApiClientError,
   updateScrap,
   updateScrapComment,
+  uploadImage,
 } from '../../lib/zenn-public-api-client';
 
 describe('Zenn Public API client', () => {
@@ -270,5 +273,62 @@ describe('Zenn Public API client', () => {
     ).rejects.toMatchObject<Partial<PublicApiClientError>>({
       kind: 'compatibility',
     });
+  });
+
+  test('ScrapとコメントをOpenAPIどおりにDELETEする', async () => {
+    process.env.ZENN_API_KEY = 'test-api-key';
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(null, { status: 204 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await deleteScrap('abcdef123456');
+    await deleteScrapComment({
+      scrapSlug: 'abcdef123456',
+      commentSlug: 'comment123456',
+    });
+
+    expect(
+      fetchMock.mock.calls.map(([url, options]) => [
+        url.toString(),
+        options.method,
+      ])
+    ).toEqual([
+      ['https://zenn.dev/api/public-api/v1/scraps/abcdef123456', 'DELETE'],
+      [
+        'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments/comment123456',
+        'DELETE',
+      ],
+    ]);
+  });
+
+  test('画像をmultipart/form-dataでアップロードする', async () => {
+    process.env.ZENN_API_KEY = 'test-api-key';
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          image_url: 'https://storage.example.com/image.png',
+        }),
+        { status: 201 }
+      )
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(
+      uploadImage({
+        bytes: new Uint8Array([0x89, 0x50, 0x4e, 0x47]),
+        filename: 'image.png',
+        contentType: 'image/png',
+      })
+    ).resolves.toEqual({ url: 'https://storage.example.com/image.png' });
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url.toString()).toBe('https://zenn.dev/api/public-api/v1/images');
+    expect(options.method).toBe('POST');
+    expect(options.headers).not.toHaveProperty('Content-Type');
+    expect(options.body).toBeInstanceOf(FormData);
+    const file = options.body.get('file');
+    expect(file).toBeInstanceOf(File);
+    expect(file).toMatchObject({ name: 'image.png', type: 'image/png' });
   });
 });

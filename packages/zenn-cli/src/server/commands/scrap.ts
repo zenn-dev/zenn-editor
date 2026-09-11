@@ -11,6 +11,8 @@ import {
 } from '../lib/scrap-input';
 import {
   createScrap,
+  deleteScrap,
+  deleteScrapComment,
   ensurePublicApiCredentials,
   getScrap,
   getScrapComments,
@@ -66,6 +68,14 @@ function printSuccess(message: string, url: string, machineReadable: boolean) {
 
 function printJson(value: unknown, machineReadable: boolean) {
   console.log(JSON.stringify(value, null, machineReadable ? undefined : 2));
+}
+
+function requireConfirmation(value: unknown, command: string) {
+  if (!value) {
+    throw new ScrapInputError(
+      `${command} は取り消せません。実行する場合は --yes を指定してください`
+    );
+  }
 }
 
 function parsePositiveInteger(
@@ -463,6 +473,68 @@ async function updateComment(argv: string[]) {
   }
 }
 
+async function removeScrap(argv: string[]) {
+  const args = parseArgs(argv, {
+    '--yes': Boolean,
+    '--machine-readable': Boolean,
+    '--help': Boolean,
+    '-h': '--help',
+  });
+  if (!args) return;
+  if (args['--help']) return console.log(scrapHelpText);
+  if (args._.length !== 1) {
+    fail('削除するScrap slugまたはURLを指定してください');
+    return;
+  }
+
+  try {
+    requireConfirmation(args['--yes'], 'Scrapの削除');
+    ensurePublicApiCredentials();
+    const scrapSlug = parseScrapSlugOrUrl(args._[0], publicApiBaseUrl().origin);
+    await deleteScrap(scrapSlug);
+    if (args['--machine-readable']) {
+      printJson({ deleted: true, scrap_slug: scrapSlug }, true);
+    } else {
+      Log.success('Scrapを削除しました');
+    }
+  } catch (error) {
+    showError(error);
+  }
+}
+
+async function removeComment(argv: string[]) {
+  const args = parseArgs(argv, {
+    '--yes': Boolean,
+    '--machine-readable': Boolean,
+    '--help': Boolean,
+    '-h': '--help',
+  });
+  if (!args) return;
+  if (args['--help']) return console.log(scrapHelpText);
+  if (args._.length !== 2) {
+    fail('Scrap slugまたはURLと削除するコメントslugを指定してください');
+    return;
+  }
+
+  try {
+    requireConfirmation(args['--yes'], 'コメントの削除');
+    ensurePublicApiCredentials();
+    const scrapSlug = parseScrapSlugOrUrl(args._[0], publicApiBaseUrl().origin);
+    const commentSlug = parseCommentSlug(args._[1]);
+    await deleteScrapComment({ scrapSlug, commentSlug });
+    if (args['--machine-readable']) {
+      printJson(
+        { deleted: true, scrap_slug: scrapSlug, comment_slug: commentSlug },
+        true
+      );
+    } else {
+      Log.success('Scrapコメントを削除しました');
+    }
+  } catch (error) {
+    showError(error);
+  }
+}
+
 async function post(argv: string[]) {
   const args = parseArgs(argv, {
     '--file': String,
@@ -536,6 +608,8 @@ export const exec: CliExecFn = async (argv = []) => {
   if (subcommand === 'comments') return comments(subcommandArgs);
   if (subcommand === 'post') return post(subcommandArgs);
   if (subcommand === 'update-comment') return updateComment(subcommandArgs);
+  if (subcommand === 'delete') return removeScrap(subcommandArgs);
+  if (subcommand === 'delete-comment') return removeComment(subcommandArgs);
 
   fail('Scrapのサブコマンドが不正です');
   console.log(scrapHelpText);

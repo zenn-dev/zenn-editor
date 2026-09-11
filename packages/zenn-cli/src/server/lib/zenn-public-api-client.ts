@@ -6,6 +6,7 @@ const REQUEST_TIMEOUT_MS = 15_000;
 type ErrorPayload = { error?: { code?: unknown } };
 type ScrapResponse = { scrap?: { slug?: unknown; path?: unknown } };
 type CommentResponse = { comment?: { path?: unknown } };
+type ImageResponse = { image_url?: unknown };
 type ObjectResponse = Record<string, unknown>;
 
 export type CreateScrapInput = {
@@ -52,11 +53,11 @@ function messageFor(kind: PublicApiClientError['kind']) {
     case 'authentication':
       return 'APIキーの発行状態・期限・アカウント状態を確認してください';
     case 'authorization':
-      return '必要なscrap:readまたはscrap:writeスコープ、またはScrap所有者の他者投稿設定を確認してください';
+      return '必要なscrap:read、scrap:write、image:writeスコープ、または対象リソースの操作条件を確認してください';
     case 'not-found':
       return 'この環境またはアカウントではPublic APIを利用できないか、対象Scrapを利用できません';
     case 'validation':
-      return 'タイトルまたは本文を修正してください';
+      return 'リクエスト値または画像ファイルを確認してください';
     case 'rate-limit':
       return 'レート制限に達しました。しばらく待ってから再実行してください';
     case 'compatibility':
@@ -137,13 +138,14 @@ function publicApiUrl(resourcePath: string) {
   return new URL(`${prefix}${resourcePath}`, baseUrl);
 }
 
-async function request<T extends ObjectResponse>(
-  method: 'GET' | 'POST' | 'PATCH',
+async function request<T extends ObjectResponse | undefined>(
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
   resourcePath: string,
   options: {
-    body?: object;
+    body?: object | FormData;
     expectedStatus: number;
     resultUnknownOnFailure: boolean;
+    expectsJson?: boolean;
   }
 ) {
   const url = publicApiUrl(resourcePath);
@@ -155,9 +157,18 @@ async function request<T extends ObjectResponse>(
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       headers: {
         Authorization: `Bearer ${apiKey()}`,
-        ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+        ...(options.body && !(options.body instanceof FormData)
+          ? { 'Content-Type': 'application/json' }
+          : {}),
       },
-      ...(options.body ? { body: JSON.stringify(options.body) } : {}),
+      ...(options.body
+        ? {
+            body:
+              options.body instanceof FormData
+                ? options.body
+                : JSON.stringify(options.body),
+          }
+        : {}),
     });
   } catch {
     throw new PublicApiClientError(
@@ -177,6 +188,7 @@ async function request<T extends ObjectResponse>(
   if (response.status !== options.expectedStatus) {
     throw new PublicApiClientError('compatibility');
   }
+  if (options.expectsJson === false) return undefined as T;
   if (!isObject(json)) throw new PublicApiClientError('compatibility');
   return json as T;
 }
@@ -206,6 +218,25 @@ async function patch<T extends ObjectResponse>(
   return request<T>('PATCH', resourcePath, {
     body,
     expectedStatus: 200,
+    resultUnknownOnFailure: true,
+  });
+}
+
+async function remove(resourcePath: string) {
+  await request<undefined>('DELETE', resourcePath, {
+    expectedStatus: 204,
+    resultUnknownOnFailure: true,
+    expectsJson: false,
+  });
+}
+
+async function postForm<T extends ObjectResponse>(
+  resourcePath: string,
+  body: FormData
+) {
+  return request<T>('POST', resourcePath, {
+    body,
+    expectedStatus: 201,
     resultUnknownOnFailure: true,
   });
 }
@@ -251,6 +282,27 @@ function requiredPath(value: unknown) {
   const baseUrl = publicApiBaseUrl();
   const url = new URL(value, baseUrl);
   if (url.origin !== baseUrl.origin) {
+    throw new PublicApiClientError('compatibility');
+  }
+  return url.toString();
+}
+
+function requiredImageUrl(value: unknown) {
+  if (typeof value !== 'string') {
+    throw new PublicApiClientError('compatibility');
+  }
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch {
+    throw new PublicApiClientError('compatibility');
+  }
+  const isLocalHttp = url.protocol === 'http:' && url.hostname === 'localhost';
+  if (
+    (url.protocol !== 'https:' && !isLocalHttp) ||
+    url.username ||
+    url.password
+  ) {
     throw new PublicApiClientError('compatibility');
   }
   return url.toString();
@@ -372,4 +424,34 @@ export async function updateScrapComment(input: {
   );
   requiredObject(json, 'comment');
   return json;
+}
+
+export async function deleteScrap(scrapSlug: string) {
+  await remove(`/scraps/${encodeURIComponent(scrapSlug)}`);
+}
+
+export async function deleteScrapComment(input: {
+  scrapSlug: string;
+  commentSlug: string;
+}) {
+  await remove(
+    `/scraps/${encodeURIComponent(input.scrapSlug)}/comments/${encodeURIComponent(input.commentSlug)}`
+  );
+}
+
+export async function uploadImage(input: {
+  bytes: Uint8Array;
+  filename: string;
+  contentType: string;
+}) {
+  const form = new FormData();
+  const bytes = new Uint8Array(input.bytes.byteLength);
+  bytes.set(input.bytes);
+  form.append(
+    'file',
+    new Blob([bytes.buffer], { type: input.contentType }),
+    input.filename
+  );
+  const json = (await postForm('/images', form)) as ImageResponse;
+  return { url: requiredImageUrl(json.image_url) };
 }
