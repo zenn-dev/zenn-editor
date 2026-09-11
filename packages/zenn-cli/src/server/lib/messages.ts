@@ -253,7 +253,8 @@ Environment:
 Notice:
   JPEG、PNG、GIF、WebP形式の3MB以下の画像に対応します。アップロード後は
   公開URLで配信され、URLを知る人が閲覧できます。現在、公開APIに削除機能は
-  ありません。機密情報や個人情報を含む画像はアップロードしないでください。
+  ありません。通常ユーザーは直近24時間に50ファイル、合計50MiBまでです。
+  機密情報や個人情報を含む画像はアップロードしないでください。
 
 Example:
   npx zenn image upload ./images/example.png --confirm-public
