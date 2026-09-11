@@ -1,6 +1,6 @@
 import arg from 'arg';
 import path from 'node:path';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { CliExecFn } from '../types';
 import { imageHelpText, invalidOptionText } from '../lib/messages';
 import * as Log from '../lib/log';
@@ -44,6 +44,17 @@ function contentType(bytes: Uint8Array) {
 }
 
 async function readImage(filePath: string) {
+  let fileSize: number;
+  try {
+    const metadata = await stat(filePath);
+    if (!metadata.isFile()) throw new Error();
+    fileSize = metadata.size;
+  } catch {
+    throw new ImageInputError('画像ファイルを読み込めませんでした');
+  }
+  if (fileSize < 1 || fileSize > MAX_IMAGE_BYTES) {
+    throw new ImageInputError('3MB以下の画像を指定してください');
+  }
   let bytes: Buffer;
   try {
     bytes = await readFile(filePath);
@@ -51,7 +62,7 @@ async function readImage(filePath: string) {
     throw new ImageInputError('画像ファイルを読み込めませんでした');
   }
   if (!bytes.length || bytes.length > MAX_IMAGE_BYTES) {
-    throw new ImageInputError('3MiB以下の画像を指定してください');
+    throw new ImageInputError('3MB以下の画像を指定してください');
   }
   return { bytes, contentType: contentType(bytes) };
 }
@@ -119,7 +130,7 @@ async function upload(argv: string[]) {
 export const exec: CliExecFn = async (argv = []) => {
   if (!isExperimentalImageApiEnabled()) {
     fail(
-      '画像アップロードは実験的機能です。ZENN_CLI_EXPERIMENTAL_IMAGE_API=true を設定してください'
+      '画像操作は実験的機能です。ZENN_CLI_EXPERIMENTAL_IMAGE_API=true を設定してください'
     );
     return;
   }

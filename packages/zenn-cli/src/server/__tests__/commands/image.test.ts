@@ -88,6 +88,27 @@ describe('imageコマンド', () => {
     expect(process.exitCode).toBe(1);
   });
 
+  test.each([
+    ['jpeg', [0xff, 0xd8, 0xff], 'image/jpeg'],
+    ['gif', [...Buffer.from('GIF89a')], 'image/gif'],
+    ['webp', [...Buffer.from('RIFF0000WEBP')], 'image/webp'],
+  ])('%s形式をContent-Type付きで送信する', async (extension, bytes, type) => {
+    const file = await imageFile(`image.${extension}`, bytes as number[]);
+    fetchMock.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          image_url: `https://storage.example.com/image.${extension}`,
+        }),
+        { status: 201 }
+      )
+    );
+
+    await exec(['upload', file, '--confirm-public']);
+
+    const uploaded = fetchMock.mock.calls[0][1].body.get('file');
+    expect(uploaded).toMatchObject({ type });
+  });
+
   test('実験的機能が無効なら画像を読み込まずAPIも呼ばない', async () => {
     delete process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API;
 

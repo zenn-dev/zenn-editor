@@ -591,7 +591,7 @@ async function post(argv: string[]) {
 export const exec: CliExecFn = async (argv = []) => {
   if (!isExperimentalScrapApiEnabled()) {
     fail(
-      'Scrap投稿は実験的機能です。ZENN_CLI_EXPERIMENTAL_SCRAP_API=true を設定してください'
+      'Scrap操作は実験的機能です。ZENN_CLI_EXPERIMENTAL_SCRAP_API=true を設定してください'
     );
     return;
   }

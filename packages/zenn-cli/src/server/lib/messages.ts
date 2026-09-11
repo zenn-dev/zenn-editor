@@ -161,7 +161,7 @@ export const invalidOptionText = `⚠️ 不正なオプションが含まれて
 
 export const scrapHelpText = `
 Command:
-  zenn scrap          Public API経由でScrapを取得・作成・更新・コメント投稿
+  zenn scrap          Public API経由でScrapとコメントを操作
 
 Usage:
   npx zenn scrap list [--page PAGE] [--count COUNT] [--machine-readable]

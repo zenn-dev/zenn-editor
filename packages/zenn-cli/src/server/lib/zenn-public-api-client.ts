@@ -53,9 +53,9 @@ function messageFor(kind: PublicApiClientError['kind']) {
     case 'authentication':
       return 'APIキーの発行状態・期限・アカウント状態を確認してください';
     case 'authorization':
-      return '必要なscrap:read、scrap:write、image:writeスコープ、または対象リソースの操作条件を確認してください';
+      return 'APIキーのスコープ、または対象リソースの操作条件を確認してください';
     case 'not-found':
-      return 'この環境またはアカウントではPublic APIを利用できないか、対象Scrapを利用できません';
+      return 'この環境またはアカウントではPublic APIを利用できないか、対象リソースを利用できません';
     case 'validation':
       return 'リクエスト値または画像ファイルを確認してください';
     case 'rate-limit':

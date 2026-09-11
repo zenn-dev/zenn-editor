@@ -331,4 +331,26 @@ describe('Zenn Public API client', () => {
     expect(file).toBeInstanceOf(File);
     expect(file).toMatchObject({ name: 'image.png', type: 'image/png' });
   });
+
+  test('画像URLが安全な絶対URLでなければ互換性エラーにする', async () => {
+    process.env.ZENN_API_KEY = 'test-api-key';
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ image_url: 'javascript:alert(1)' }), {
+          status: 201,
+        })
+      )
+    );
+
+    await expect(
+      uploadImage({
+        bytes: new Uint8Array([0x89, 0x50, 0x4e, 0x47]),
+        filename: 'image.png',
+        contentType: 'image/png',
+      })
+    ).rejects.toMatchObject<Partial<PublicApiClientError>>({
+      kind: 'compatibility',
+    });
+  });
 });
