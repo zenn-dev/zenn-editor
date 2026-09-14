@@ -18,6 +18,7 @@ describe('CLIのデフォルトの挙動のテスト', () => {
   beforeEach(() => {
     process.exitCode = undefined;
     delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
+    delete process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API;
     // mock
     console.log = vi.fn();
     console.error = vi.fn();
@@ -65,6 +66,27 @@ describe('CLIのデフォルトの挙動のテスト', () => {
 
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('zenn scrap')
+    );
+  });
+
+  test('画像の実験的機能が無効ならimageコマンドを登録しない', async () => {
+    await exec('image', []);
+
+    expect(Log.error).toHaveBeenCalledWith(
+      expect.stringContaining('該当するCLIコマンドが存在しません')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.not.stringContaining('zenn image')
+    );
+  });
+
+  test('画像の実験的機能が有効ならimageコマンドを登録する', async () => {
+    process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API = 'true';
+
+    await exec('image', ['--help']);
+
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('zenn image')
     );
   });
 });

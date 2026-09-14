@@ -16,12 +16,20 @@ Command:
 `;
 
 export function getCommandListText() {
-  return runtimeEnv('ZENN_CLI_EXPERIMENTAL_SCRAP_API') === 'true'
-    ? commandListText.replace(
-        '  zenn list:books     本の一覧を表示',
-        '  zenn list:books     本の一覧を表示\n  zenn scrap          Public API経由でScrapを投稿（実験的機能）'
-      )
-    : commandListText;
+  let text = commandListText;
+  if (runtimeEnv('ZENN_CLI_EXPERIMENTAL_SCRAP_API') === 'true') {
+    text = text.replace(
+      '  zenn list:books     本の一覧を表示',
+      '  zenn list:books     本の一覧を表示\n  zenn scrap          Public API経由でScrapを操作（実験的機能）'
+    );
+  }
+  if (runtimeEnv('ZENN_CLI_EXPERIMENTAL_IMAGE_API') === 'true') {
+    text = text.replace(
+      '  zenn list:books     本の一覧を表示',
+      '  zenn list:books     本の一覧を表示\n  zenn image          Public API経由で画像をアップロード（実験的機能）'
+    );
+  }
+  return text;
 }
 
 export const initHelpText = `
@@ -153,7 +161,7 @@ export const invalidOptionText = `⚠️ 不正なオプションが含まれて
 
 export const scrapHelpText = `
 Command:
-  zenn scrap          Public API経由でScrapを取得・作成・更新・コメント投稿
+  zenn scrap          Public API経由でScrapとコメントを操作
 
 Usage:
   npx zenn scrap list [--page PAGE] [--count COUNT] [--machine-readable]
@@ -163,6 +171,8 @@ Usage:
   npx zenn scrap comments COMMENT_SLUG [COMMENT_SLUG ...] [--machine-readable]
   npx zenn scrap post SCRAP_SLUG_OR_URL --file PATH [options]
   npx zenn scrap update-comment SCRAP_SLUG_OR_URL COMMENT_SLUG --file PATH [options]
+  npx zenn scrap delete SCRAP_SLUG_OR_URL --yes [--machine-readable]
+  npx zenn scrap delete-comment SCRAP_SLUG_OR_URL COMMENT_SLUG --yes [--machine-readable]
 
 Options:
   --title TITLE          Scrapのタイトル（createで必須）
@@ -173,6 +183,7 @@ Options:
   --unlisted, --public   Scrapを限定公開・公開にする（publicはupdateのみ）
   --topics TOPIC,...     topicを設定する。空文字列で全解除（create/updateのみ）
   --reply-to COMMENT_SLUG ルートコメントへの返信（postのみ）
+  --yes                  取り消せない削除操作を確認する（delete/delete-commentで必須）
   --dangerously-skip-secret-scan  Secret scanをスキップ
   --dangerously-skip-ai-scan      AI scanをスキップ
   --notes-to-ai NOTES     AI scanへ追加の備考を送信
@@ -217,5 +228,34 @@ Example:
   npx zenn scrap update abcdef12345678 --closed --topics typescript,zenn
   npx zenn scrap comments comment123456 comment234567
   npx zenn scrap update-comment abcdef12345678 comment123456 --file ./revised.md
+  npx zenn scrap delete abcdef12345678 --yes
+  npx zenn scrap delete-comment abcdef12345678 comment123456 --yes
   printf '追記' | npx zenn scrap post abcdef12345678 --file -
+`;
+
+export const imageHelpText = `
+Command:
+  zenn image          Public API経由でMarkdown用画像をアップロード
+
+Usage:
+  npx zenn image upload FILE --confirm-public [--machine-readable]
+
+Options:
+  --confirm-public     画像が公開URLで配信され、機密情報・個人情報を含まないことを確認する（必須）
+  --machine-readable   成功時に画像URLだけを標準出力へ表示
+  --help, -h           このヘルプを表示
+
+Environment:
+  ZENN_API_KEY                         image:writeスコープを持つAPIキー
+  ZENN_CLI_EXPERIMENTAL_IMAGE_API=true 実験的な画像API機能を有効化
+  ZENN_API_BASE_URL                    開発・テスト用のPublic APIベースURL（任意）
+
+Notice:
+  JPEG、PNG、GIF、WebP形式の3MB以下の画像に対応します。アップロード後は
+  公開URLで配信され、URLを知る人が閲覧できます。現在、公開APIに削除機能は
+  ありません。通常ユーザーは直近24時間に50ファイル、合計50MiBまでです。
+  機密情報や個人情報を含む画像はアップロードしないでください。
+
+Example:
+  npx zenn image upload ./images/example.png --confirm-public
 `;
