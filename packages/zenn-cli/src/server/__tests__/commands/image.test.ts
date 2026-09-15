@@ -56,7 +56,7 @@ describe('imageコマンド', () => {
     );
     expect(console.warn).toHaveBeenCalledWith(
       expect.any(String),
-      expect.stringContaining('公開URL')
+      expect.stringContaining('直ちには削除されません')
     );
   });
 

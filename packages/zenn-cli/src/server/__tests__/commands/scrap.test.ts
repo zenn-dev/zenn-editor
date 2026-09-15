@@ -156,6 +156,10 @@ describe('scrapコマンド', () => {
       'https://zenn.dev/api/public-api/v1/scraps/abcdef123456'
     );
     expect(options.method).toBe('DELETE');
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('すべてのコメント')
+    );
     expect(console.log).toHaveBeenLastCalledWith(
       '{"deleted":true,"scrap_slug":"abcdef123456"}'
     );
@@ -177,6 +181,10 @@ describe('scrapコマンド', () => {
       'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments/comment123456'
     );
     expect(options.method).toBe('DELETE');
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('返信も削除')
+    );
     expect(console.log).toHaveBeenLastCalledWith(
       '{"deleted":true,"scrap_slug":"abcdef123456","comment_slug":"comment123456"}'
     );
