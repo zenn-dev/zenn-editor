@@ -70,7 +70,10 @@ describe('scrapコマンド', () => {
       expect.stringContaining('IPアドレスごとに毎分60リクエスト')
     );
     expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('自分のアーカイブ済みScrap')
+      expect.stringContaining('getでは自分のアーカイブ済みScrapに加えて')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('slugを知っている限定公開Scrap')
     );
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('非表示・スパム判定コメントは返しません')
