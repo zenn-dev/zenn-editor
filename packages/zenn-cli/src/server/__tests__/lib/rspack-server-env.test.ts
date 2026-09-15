@@ -10,7 +10,29 @@ type DefinePluginForTest = {
   _args: [Record<string, unknown>];
 };
 
-type RspackConfigForTest = { plugins: DefinePluginForTest[] };
+type ExternalCallback = (error?: Error | null, result?: string) => void;
+
+type ExternalResolver = (
+  context: { request: string },
+  callback: ExternalCallback
+) => void;
+
+type RspackConfigForTest = {
+  externals: ExternalResolver[];
+  plugins: DefinePluginForTest[];
+};
+
+function resolveExternal(
+  resolver: ExternalResolver,
+  request: string
+): Promise<string | undefined> {
+  return new Promise((resolve, reject) => {
+    resolver({ request }, (error, result) => {
+      if (error) reject(error);
+      else resolve(result);
+    });
+  });
+}
 
 describe('Rspackの環境変数設定', () => {
   afterEach(() => {
@@ -56,5 +78,26 @@ describe('Rspackの環境変数設定', () => {
     });
 
     await rm(directory, { recursive: true, force: true });
+  });
+});
+
+describe('Rspackのサーバー依存設定', () => {
+  test('dependenciesとそのサブパスをbundle対象から除外する', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const config = require(configPath) as RspackConfigForTest;
+    const resolver = config.externals[0];
+
+    await expect(resolveExternal(resolver, 'colors/safe')).resolves.toBe(
+      'commonjs colors/safe'
+    );
+    await expect(
+      resolveExternal(resolver, 'package-manager-detector/detect')
+    ).resolves.toBe('import package-manager-detector/detect');
+    await expect(
+      resolveExternal(resolver, 'zenn-markdown-html/utils')
+    ).resolves.toBe('import zenn-markdown-html/utils');
+    await expect(
+      resolveExternal(resolver, 'zenn-content-css')
+    ).resolves.toBeUndefined();
   });
 });
