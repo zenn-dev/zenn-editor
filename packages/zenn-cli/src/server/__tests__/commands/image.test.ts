@@ -35,6 +35,23 @@ describe('imageコマンド', () => {
     return file;
   }
 
+  test('helpは最新Public APIの公開・保持・容量・レート制限を案内する', async () => {
+    await exec(['--help']);
+
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('公開APIに削除機能は')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('直近24時間に50ファイル、合計50MiB')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('直ちには削除されません')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('IPアドレスごとに毎分60リクエスト')
+    );
+  });
+
   test('確認後に画像をアップロードしてmachine-readableではURLだけを出力する', async () => {
     const file = await imageFile(
       'image.png',

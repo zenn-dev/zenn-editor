@@ -63,6 +63,26 @@ describe('scrapコマンド', () => {
     return file;
   }
 
+  test('helpは最新Public APIの取得条件・制限・連鎖削除を案内する', async () => {
+    await exec(['--help']);
+
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('IPアドレスごとに毎分60リクエスト')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('自分のアーカイブ済みScrap')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('非表示・スパム判定コメントは返しません')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('配下の全コメントを削除')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('返信も削除')
+    );
+  });
+
   test('createはSecretlint後に単一のAPIリクエストを送信する', async () => {
     fetchMock.mockResolvedValue(
       new Response(
