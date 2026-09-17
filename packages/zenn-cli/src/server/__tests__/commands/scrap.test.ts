@@ -63,6 +63,29 @@ describe('scrapコマンド', () => {
     return file;
   }
 
+  test('helpは最新Public APIの取得条件・制限・連鎖削除を案内する', async () => {
+    await exec(['--help']);
+
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('IPアドレスごとに毎分60リクエスト')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('getでは自分のアーカイブ済みScrapに加えて')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('slugを知っている限定公開Scrap')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('非表示・スパム判定コメントは返しません')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('配下の全コメントを削除')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('返信も削除')
+    );
+  });
+
   test('createはSecretlint後に単一のAPIリクエストを送信する', async () => {
     fetchMock.mockResolvedValue(
       new Response(
@@ -156,6 +179,10 @@ describe('scrapコマンド', () => {
       'https://zenn.dev/api/public-api/v1/scraps/abcdef123456'
     );
     expect(options.method).toBe('DELETE');
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('すべてのコメント')
+    );
     expect(console.log).toHaveBeenLastCalledWith(
       '{"deleted":true,"scrap_slug":"abcdef123456"}'
     );
@@ -177,6 +204,10 @@ describe('scrapコマンド', () => {
       'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments/comment123456'
     );
     expect(options.method).toBe('DELETE');
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('返信も削除')
+    );
     expect(console.log).toHaveBeenLastCalledWith(
       '{"deleted":true,"scrap_slug":"abcdef123456","comment_slug":"comment123456"}'
     );

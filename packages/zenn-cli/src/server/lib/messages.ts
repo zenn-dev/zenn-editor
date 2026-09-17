@@ -220,6 +220,14 @@ AI scan:
   そのものを指定しないでください。限定公開でもURLまたはslugを知る利用者は閲覧
   できるため、URLとslugは秘密情報として扱ってください。
 
+Public API:
+  すべての操作はIPアドレスごとに毎分60リクエストまでです。listは自分の
+  アーカイブ済みScrapも返します。getでは自分のアーカイブ済みScrapに加えて、
+  閲覧可能な他ユーザーのScrapと、slugを知っている限定公開Scrapも取得できますが、
+  非表示・スパム判定コメントは返しません。
+  deleteは自分のアーカイブ済みScrapと配下の全コメントを削除します。
+  delete-commentで返信があるコメントを削除すると、返信も削除されます。
+
 Example:
   npx zenn scrap list --count 20
   npx zenn scrap get abcdef12345678
@@ -254,7 +262,9 @@ Notice:
   JPEG、PNG、GIF、WebP形式の3MB以下の画像に対応します。アップロード後は
   公開URLで配信され、URLを知る人が閲覧できます。現在、公開APIに削除機能は
   ありません。通常ユーザーは直近24時間に50ファイル、合計50MiBまでです。
-  機密情報や個人情報を含む画像はアップロードしないでください。
+  Markdown本文から参照しない画像も直ちには削除されません。すべての操作は
+  IPアドレスごとに毎分60リクエストまでです。機密情報や個人情報を含む画像は
+  アップロードしないでください。
 
 Example:
   npx zenn image upload ./images/example.png --confirm-public

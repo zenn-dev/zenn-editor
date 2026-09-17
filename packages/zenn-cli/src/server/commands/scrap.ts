@@ -491,6 +491,9 @@ async function removeScrap(argv: string[]) {
     requireConfirmation(args['--yes'], 'Scrapの削除');
     ensurePublicApiCredentials();
     const scrapSlug = parseScrapSlugOrUrl(args._[0], publicApiBaseUrl().origin);
+    Log.warn(
+      '自分のアーカイブ済みScrapと、そのScrapに含まれるすべてのコメントを削除します'
+    );
     await deleteScrap(scrapSlug);
     if (args['--machine-readable']) {
       printJson({ deleted: true, scrap_slug: scrapSlug }, true);
@@ -521,6 +524,7 @@ async function removeComment(argv: string[]) {
     ensurePublicApiCredentials();
     const scrapSlug = parseScrapSlugOrUrl(args._[0], publicApiBaseUrl().origin);
     const commentSlug = parseCommentSlug(args._[1]);
+    Log.warn('コメントに返信がある場合は、返信も削除します');
     await deleteScrapComment({ scrapSlug, commentSlug });
     if (args['--machine-readable']) {
       printJson(

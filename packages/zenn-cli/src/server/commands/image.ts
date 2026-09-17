@@ -99,7 +99,7 @@ async function upload(argv: string[]) {
     const filePath = args._[0];
     const image = await readImage(filePath);
     Log.warn(
-      '画像は公開URLで配信され、公開APIでは削除できません。機密情報や個人情報を含まないことを確認してください'
+      '画像は公開URLで配信され、公開APIでは削除できません。Markdown本文から参照しなくても直ちには削除されません。機密情報や個人情報を含まないことを確認してください'
     );
     const result = await uploadImage({
       ...image,
