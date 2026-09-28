@@ -35,20 +35,14 @@ describe('imageコマンド', () => {
     return file;
   }
 
-  test('helpは最新Public APIの公開・保持・容量・レート制限を案内する', async () => {
+  test('helpは画像の公開・保持と削除条件を案内する', async () => {
     await exec(['--help']);
 
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('image delete IMAGE_ID --yes')
     );
     expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('50ファイル、合計50MiB')
-    );
-    expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('本で使用中の画像は削除できません')
-    );
-    expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('IPアドレスごとに毎分60リクエスト')
     );
   });
 

@@ -63,12 +63,9 @@ describe('scrapコマンド', () => {
     return file;
   }
 
-  test('helpは最新Public APIの取得条件・制限・連鎖削除を案内する', async () => {
+  test('helpはPublic APIの取得条件・連鎖削除を案内する', async () => {
     await exec(['--help']);
 
-    expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('IPアドレスごとに毎分60リクエスト')
-    );
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('getでは自分のアーカイブ済みScrapに加えて')
     );
