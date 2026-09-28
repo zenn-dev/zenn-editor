@@ -6,7 +6,9 @@ import { imageHelpText, invalidOptionText } from '../lib/messages';
 import * as Log from '../lib/log';
 import { isExperimentalImageApiEnabled } from '../lib/experimental-features';
 import {
+  deleteImage,
   ensurePublicApiCredentials,
+  listMyImages,
   PublicApiClientError,
   uploadImage,
 } from '../lib/zenn-public-api-client';
@@ -99,7 +101,7 @@ async function upload(argv: string[]) {
     const filePath = args._[0];
     const image = await readImage(filePath);
     Log.warn(
-      '画像は公開URLで配信され、公開APIでは削除できません。Markdown本文から参照しなくても直ちには削除されません。機密情報や個人情報を含まないことを確認してください'
+      '画像は公開URLで配信されます。Markdown本文から参照しなくても自動的には削除されません。機密情報や個人情報を含まないことを確認してください'
     );
     const result = await uploadImage({
       ...image,
@@ -127,6 +129,102 @@ async function upload(argv: string[]) {
   }
 }
 
+async function list(argv: string[]) {
+  let args;
+  try {
+    args = arg(
+      {
+        '--page': Number,
+        '--count': Number,
+        '--machine-readable': Boolean,
+        '--help': Boolean,
+        '-h': '--help',
+      },
+      { argv }
+    );
+  } catch {
+    fail(invalidOptionText);
+    return;
+  }
+  if (args['--help']) return console.log(imageHelpText);
+  if (args._.length) return fail('listに位置引数は指定できません');
+
+  const page = args['--page'];
+  const count = args['--count'];
+  if (page !== undefined && (!Number.isSafeInteger(page) || page < 1)) {
+    return fail('--page は1以上の整数を指定してください');
+  }
+  if (
+    count !== undefined &&
+    (!Number.isSafeInteger(count) || count < 1 || count > 100)
+  ) {
+    return fail('--count は1以上100以下の整数を指定してください');
+  }
+
+  try {
+    ensurePublicApiCredentials();
+    const result = await listMyImages(page, count);
+    console.log(
+      JSON.stringify(result, null, args['--machine-readable'] ? undefined : 2)
+    );
+  } catch (error) {
+    showError(error);
+  }
+}
+
+async function removeImage(argv: string[]) {
+  let args;
+  try {
+    args = arg(
+      {
+        '--yes': Boolean,
+        '--machine-readable': Boolean,
+        '--help': Boolean,
+        '-h': '--help',
+      },
+      { argv }
+    );
+  } catch {
+    fail(invalidOptionText);
+    return;
+  }
+  if (args['--help']) return console.log(imageHelpText);
+  if (args._.length !== 1) return fail('削除する画像IDを1件指定してください');
+  if (!args['--yes'])
+    return fail(
+      '画像の削除は取り消せません。実行する場合は --yes を指定してください'
+    );
+
+  const rawId = args._[0];
+  const id = Number(rawId);
+  if (!/^[1-9]\d*$/.test(rawId) || !Number.isSafeInteger(id)) {
+    return fail('画像IDは1以上の整数を指定してください');
+  }
+
+  try {
+    ensurePublicApiCredentials();
+    Log.warn(
+      '画像を削除すると参照しているArticle、Book、Scrapなどで表示できなくなります'
+    );
+    await deleteImage(id);
+    if (args['--machine-readable']) {
+      console.log(JSON.stringify({ deleted: true, image_id: id }));
+    } else {
+      Log.success('画像を削除しました');
+    }
+  } catch (error) {
+    showError(error);
+  }
+}
+
+function showError(error: unknown) {
+  if (error instanceof PublicApiClientError) {
+    fail(`${error.message}${error.code ? ` (${error.code})` : ''}`);
+    return;
+  }
+  fail('原因不明のエラーが発生しました');
+}
+
 export const exec: CliExecFn = async (argv = []) => {
   if (!isExperimentalImageApiEnabled()) {
     fail(
@@ -140,6 +238,8 @@ export const exec: CliExecFn = async (argv = []) => {
     return;
   }
   if (subcommand === 'upload') return upload(subcommandArgs);
+  if (subcommand === 'list') return list(subcommandArgs);
+  if (subcommand === 'delete') return removeImage(subcommandArgs);
   fail('imageのサブコマンドが不正です');
   console.log(imageHelpText);
 };

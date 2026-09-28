@@ -243,26 +243,31 @@ Example:
 
 export const imageHelpText = `
 Command:
-  zenn image          Public API経由でMarkdown用画像をアップロード
+  zenn image          Public API経由でMarkdown用画像を管理
 
 Usage:
   npx zenn image upload FILE --confirm-public [--machine-readable]
+  npx zenn image list [--page NUMBER] [--count NUMBER] [--machine-readable]
+  npx zenn image delete IMAGE_ID --yes [--machine-readable]
 
 Options:
   --confirm-public     画像が公開URLで配信され、機密情報・個人情報を含まないことを確認する（必須）
-  --machine-readable   成功時に画像URLだけを標準出力へ表示
+  --page               一覧のページ番号（1以上、既定1）
+  --count              一覧の取得件数（1～100、既定50）
+  --yes                画像削除を確認する（必須）
+  --machine-readable   uploadは画像URL、listとdeleteはJSONを1行で表示
   --help, -h           このヘルプを表示
 
 Environment:
-  ZENN_API_KEY                         image:writeスコープを持つAPIキー
+  ZENN_API_KEY                         一覧はimage:read、アップロード・削除はimage:writeスコープを持つAPIキー
   ZENN_CLI_EXPERIMENTAL_IMAGE_API=true 実験的な画像API機能を有効化
   ZENN_API_BASE_URL                    開発・テスト用のPublic APIベースURL（任意）
 
 Notice:
   JPEG、PNG、GIF、WebP形式の3MB以下の画像に対応します。アップロード後は
-  公開URLで配信され、URLを知る人が閲覧できます。現在、公開APIに削除機能は
-  ありません。通常ユーザーは直近24時間に50ファイル、合計50MiBまでです。
-  Markdown本文から参照しない画像も直ちには削除されません。すべての操作は
+  公開URLで配信され、URLを知る人が閲覧できます。通常ユーザーは直近24時間に
+  50ファイル、合計50MiBまでです。画像は自動的には削除されません。
+  本で使用中の画像は削除できません。すべての操作は
   IPアドレスごとに毎分60リクエストまでです。機密情報や個人情報を含む画像は
   アップロードしないでください。
 

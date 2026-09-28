@@ -39,13 +39,13 @@ describe('imageコマンド', () => {
     await exec(['--help']);
 
     expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('公開APIに削除機能は')
+      expect.stringContaining('image delete IMAGE_ID --yes')
     );
     expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('直近24時間に50ファイル、合計50MiB')
+      expect.stringContaining('50ファイル、合計50MiB')
     );
     expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining('直ちには削除されません')
+      expect.stringContaining('本で使用中の画像は削除できません')
     );
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('IPアドレスごとに毎分60リクエスト')
@@ -73,7 +73,7 @@ describe('imageコマンド', () => {
     );
     expect(console.warn).toHaveBeenCalledWith(
       expect.any(String),
-      expect.stringContaining('直ちには削除されません')
+      expect.stringContaining('自動的には削除されません')
     );
   });
 
@@ -82,6 +82,61 @@ describe('imageコマンド', () => {
 
     expect(fetchMock).not.toHaveBeenCalled();
     expect(process.exitCode).toBe(1);
+  });
+
+  test('画像一覧をページングして取得する', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ images: [], next_page: null }), {
+        status: 200,
+      })
+    );
+
+    await exec(['list', '--page', '2', '--count', '10', '--machine-readable']);
+
+    expect(fetchMock.mock.calls[0][0].toString()).toBe(
+      'https://zenn.dev/api/public-api/v1/images?page=2&count=10'
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      JSON.stringify({ images: [], next_page: null })
+    );
+  });
+
+  test('画像をID指定で削除する', async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+
+    await exec(['delete', '42', '--yes', '--machine-readable']);
+
+    expect(fetchMock.mock.calls[0][0].toString()).toBe(
+      'https://zenn.dev/api/public-api/v1/images/42'
+    );
+    expect(fetchMock.mock.calls[0][1].method).toBe('DELETE');
+    expect(console.log).toHaveBeenCalledWith(
+      JSON.stringify({ deleted: true, image_id: 42 })
+    );
+  });
+
+  test('確認なしまたは不正なIDでの削除はAPIを呼ばない', async () => {
+    await exec(['delete', '42']);
+    await exec(['delete', '42abc', '--yes']);
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(process.exitCode).toBe(1);
+  });
+
+  test('本で使用中の画像の削除は失敗として表示する', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ error: { code: 'image_in_use' } }), {
+        status: 409,
+      })
+    );
+
+    await exec(['delete', '42', '--yes']);
+
+    expect(process.exitCode).toBe(1);
+    expect(console.error).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('本で使用中の画像は削除できません')
+    );
   });
 
   test('未対応形式はAPIへ送信しない', async () => {
