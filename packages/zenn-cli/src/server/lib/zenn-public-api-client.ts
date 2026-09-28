@@ -35,6 +35,7 @@ export class PublicApiClientError extends Error {
       | 'authorization'
       | 'not-found'
       | 'validation'
+      | 'conflict'
       | 'rate-limit'
       | 'unknown-result'
       | 'network'
@@ -58,6 +59,8 @@ function messageFor(kind: PublicApiClientError['kind']) {
       return 'この環境またはアカウントではPublic APIを利用できないか、対象リソースを利用できません';
     case 'validation':
       return 'リクエスト値または画像ファイルを確認してください';
+    case 'conflict':
+      return '本で使用中の画像は削除できません';
     case 'rate-limit':
       return 'レート制限に達しました。しばらく待ってから再実行してください';
     case 'compatibility':
@@ -118,6 +121,7 @@ function errorKind(status: number) {
   if (status === 403) return 'authorization' as const;
   if (status === 404) return 'not-found' as const;
   if (status === 422) return 'validation' as const;
+  if (status === 409) return 'conflict' as const;
   if (status === 429) return 'rate-limit' as const;
   if (status >= 500) return 'unknown-result' as const;
   return 'network' as const;
@@ -454,4 +458,17 @@ export async function uploadImage(input: {
   );
   const json = (await postForm('/images', form)) as ImageResponse;
   return { url: requiredImageUrl(json.image_url) };
+}
+
+export async function listMyImages(page?: number, count?: number) {
+  const json = await get<ObjectResponse>(
+    `/images${paginationQuery(page, count)}`
+  );
+  requiredArray(json, 'images');
+  requiredNextPage(json);
+  return json;
+}
+
+export async function deleteImage(id: number) {
+  await remove(`/images/${id}`);
 }
