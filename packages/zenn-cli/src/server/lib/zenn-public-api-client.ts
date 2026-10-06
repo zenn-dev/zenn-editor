@@ -138,7 +138,7 @@ async function responseJson(response: Response) {
 function publicApiUrl(resourcePath: string) {
   const baseUrl = publicApiBaseUrl();
   const prefix =
-    baseUrl.hostname === 'localhost' ? '/public-api/v1' : '/api/public-api/v1';
+    baseUrl.hostname === 'localhost' ? '/public-api/v0' : '/api/public-api/v0';
   return new URL(`${prefix}${resourcePath}`, baseUrl);
 }
 

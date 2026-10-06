@@ -38,7 +38,7 @@ describe('Zenn Public API client', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, options] = fetchMock.mock.calls[0];
-    expect(url.toString()).toBe('https://zenn.dev/api/public-api/v1/scraps');
+    expect(url.toString()).toBe('https://zenn.dev/api/public-api/v0/scraps');
     expect(options).toMatchObject({ method: 'POST', redirect: 'error' });
     expect(JSON.parse(options.body)).toEqual({
       title: 'タイトル',
@@ -68,7 +68,7 @@ describe('Zenn Public API client', () => {
 
     const [url, options] = fetchMock.mock.calls[0];
     expect(url.toString()).toBe(
-      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments'
+      'https://zenn.dev/api/public-api/v0/scraps/abcdef123456/comments'
     );
     expect(JSON.parse(options.body)).toEqual({
       body_markdown: '返信',
@@ -127,17 +127,17 @@ describe('Zenn Public API client', () => {
       ])
     ).toEqual([
       [
-        'https://zenn.dev/api/public-api/v1/scraps?page=2&count=10',
+        'https://zenn.dev/api/public-api/v0/scraps?page=2&count=10',
         'GET',
         undefined,
       ],
       [
-        'https://zenn.dev/api/public-api/v1/scraps/abcdef123456?page=3&count=20',
+        'https://zenn.dev/api/public-api/v0/scraps/abcdef123456?page=3&count=20',
         'GET',
         undefined,
       ],
       [
-        'https://zenn.dev/api/public-api/v1/scraps/abcdef123456',
+        'https://zenn.dev/api/public-api/v0/scraps/abcdef123456',
         'PATCH',
         {
           title: '更新後のタイトル',
@@ -146,12 +146,12 @@ describe('Zenn Public API client', () => {
         },
       ],
       [
-        'https://zenn.dev/api/public-api/v1/comments?slugs%5B%5D=comment123456&slugs%5B%5D=comment234567',
+        'https://zenn.dev/api/public-api/v0/comments?slugs%5B%5D=comment123456&slugs%5B%5D=comment234567',
         'GET',
         undefined,
       ],
       [
-        'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments/comment123456',
+        'https://zenn.dev/api/public-api/v0/scraps/abcdef123456/comments/comment123456',
         'PATCH',
         { body_markdown: '更新後の本文' },
       ],
@@ -196,7 +196,7 @@ describe('Zenn Public API client', () => {
     });
 
     expect(fetchMock.mock.calls[0][0].toString()).toBe(
-      'http://localhost:3000/public-api/v1/scraps'
+      'http://localhost:3000/public-api/v0/scraps'
     );
   });
 
@@ -294,9 +294,9 @@ describe('Zenn Public API client', () => {
         options.method,
       ])
     ).toEqual([
-      ['https://zenn.dev/api/public-api/v1/scraps/abcdef123456', 'DELETE'],
+      ['https://zenn.dev/api/public-api/v0/scraps/abcdef123456', 'DELETE'],
       [
-        'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments/comment123456',
+        'https://zenn.dev/api/public-api/v0/scraps/abcdef123456/comments/comment123456',
         'DELETE',
       ],
     ]);
@@ -323,7 +323,7 @@ describe('Zenn Public API client', () => {
     ).resolves.toEqual({ url: 'https://storage.example.com/image.png' });
 
     const [url, options] = fetchMock.mock.calls[0];
-    expect(url.toString()).toBe('https://zenn.dev/api/public-api/v1/images');
+    expect(url.toString()).toBe('https://zenn.dev/api/public-api/v0/images');
     expect(options.method).toBe('POST');
     expect(options.headers).not.toHaveProperty('Content-Type');
     expect(options.body).toBeInstanceOf(FormData);
