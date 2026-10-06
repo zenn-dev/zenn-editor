@@ -155,7 +155,7 @@ describe('scrapコマンド', () => {
 
     const [url, options] = fetchMock.mock.calls[0];
     expect(url.toString()).toBe(
-      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456'
+      'https://zenn.dev/api/public-api/v0/scraps/abcdef123456'
     );
     expect(options.method).toBe('PATCH');
     expect(JSON.parse(options.body)).toEqual({
@@ -173,7 +173,7 @@ describe('scrapコマンド', () => {
 
     const [url, options] = fetchMock.mock.calls[0];
     expect(url.toString()).toBe(
-      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456'
+      'https://zenn.dev/api/public-api/v0/scraps/abcdef123456'
     );
     expect(options.method).toBe('DELETE');
     expect(console.warn).toHaveBeenCalledWith(
@@ -198,7 +198,7 @@ describe('scrapコマンド', () => {
 
     const [url, options] = fetchMock.mock.calls[0];
     expect(url.toString()).toBe(
-      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456/comments/comment123456'
+      'https://zenn.dev/api/public-api/v0/scraps/abcdef123456/comments/comment123456'
     );
     expect(options.method).toBe('DELETE');
     expect(console.warn).toHaveBeenCalledWith(

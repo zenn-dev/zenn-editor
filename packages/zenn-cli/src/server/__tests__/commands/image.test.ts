@@ -88,7 +88,7 @@ describe('imageコマンド', () => {
     await exec(['list', '--page', '2', '--count', '10', '--machine-readable']);
 
     expect(fetchMock.mock.calls[0][0].toString()).toBe(
-      'https://zenn.dev/api/public-api/v1/images?page=2&count=10'
+      'https://zenn.dev/api/public-api/v0/images?page=2&count=10'
     );
     expect(console.log).toHaveBeenCalledWith(
       JSON.stringify({ images: [], next_page: null })
@@ -101,7 +101,7 @@ describe('imageコマンド', () => {
     await exec(['delete', '42', '--yes', '--machine-readable']);
 
     expect(fetchMock.mock.calls[0][0].toString()).toBe(
-      'https://zenn.dev/api/public-api/v1/images/42'
+      'https://zenn.dev/api/public-api/v0/images/42'
     );
     expect(fetchMock.mock.calls[0][1].method).toBe('DELETE');
     expect(console.log).toHaveBeenCalledWith(
