@@ -35,7 +35,6 @@ describe('scrapコマンド', () => {
     process.exitCode = undefined;
     directory = await mkdtemp(path.join(tmpdir(), 'zenn-scrap-test-'));
     process.env.ZENN_API_KEY = 'test-api-key';
-    process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API = 'true';
     process.env.ZENN_CLI_AI_SCAN = 'true';
     process.env.ZENN_CLI_AI_PROVIDER = 'openai';
     process.env.OPENAI_API_KEY = 'test-openai-key';
@@ -50,7 +49,6 @@ describe('scrapコマンド', () => {
   afterEach(async () => {
     process.exitCode = undefined;
     delete process.env.ZENN_API_KEY;
-    delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
     scanEnvironmentNames.forEach((name) => delete process.env[name]);
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
@@ -396,7 +394,7 @@ describe('scrapコマンド', () => {
       { title: 'タイトル', body: '通常の本文' },
       {
         provider: 'openai',
-        model: 'gpt-5.6-luna',
+        model: 'gpt-6-luna',
         effort: 'medium',
         failureThreshold: 'high',
       },
@@ -645,23 +643,5 @@ describe('scrapコマンド', () => {
       expect.stringContaining('[medium] 公開情報の確認')
     );
     expect(fetchMock).toHaveBeenCalledTimes(1);
-  });
-
-  test('実験的機能が無効ならSecretlintもAPI通信も実行しない', async () => {
-    delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
-
-    await exec([
-      'create',
-      '--title',
-      'タイトル',
-      '--file',
-      await bodyFile('通常の本文'),
-    ]);
-
-    expect(fetchMock).not.toHaveBeenCalled();
-    expect(console.error).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.stringContaining('実験的機能')
-    );
   });
 });

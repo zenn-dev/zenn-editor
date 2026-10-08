@@ -8,6 +8,7 @@ Command:
   zenn new:book       新しい本を追加
   zenn list:articles  記事の一覧を表示
   zenn list:books     本の一覧を表示
+  zenn scrap          Public API経由でScrapを操作
   zenn --version, -v  zenn-cliのバージョンを表示
   zenn --help, -h     ヘルプ
 
@@ -17,12 +18,6 @@ Command:
 
 export function getCommandListText() {
   let text = commandListText;
-  if (runtimeEnv('ZENN_CLI_EXPERIMENTAL_SCRAP_API') === 'true') {
-    text = text.replace(
-      '  zenn list:books     本の一覧を表示',
-      '  zenn list:books     本の一覧を表示\n  zenn scrap          Public API経由でScrapを操作（実験的機能）'
-    );
-  }
   if (runtimeEnv('ZENN_CLI_EXPERIMENTAL_IMAGE_API') === 'true') {
     text = text.replace(
       '  zenn list:books     本の一覧を表示',
@@ -193,7 +188,6 @@ Options:
 
 Environment:
   ZENN_API_KEY                 必要なscrap:readまたはscrap:writeスコープを持つAPIキー
-  ZENN_CLI_EXPERIMENTAL_SCRAP_API=true  実験的なScrap投稿機能を有効化
   ZENN_API_BASE_URL            開発・テスト用のPublic APIベースURL（任意）
   ZENN_CLI_FORCE_SAFE          dangerousなscanスキップを禁止する場合はtrue
   ZENN_CLI_FORCE_UNLISTED      Scrap作成を常に限定公開にする場合はtrue
@@ -207,7 +201,7 @@ Environment:
   FIREWORKS_API_KEY            Fireworks利用時のAPIキー
 
 Default AI models:
-  openai: gpt-5.6-luna
+  openai: gpt-6-luna
   fireworks: ZENN_CLI_AI_MODEL の指定が必須
 
 AI scan:
