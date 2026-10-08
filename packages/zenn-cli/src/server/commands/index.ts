@@ -1,7 +1,7 @@
 import * as Log from '../lib/log';
 import { getCommandListText } from '../lib/messages';
 import { notifyNeedUpdateCLI } from '../lib/notify-update';
-import { isExperimentalScrapApiEnabled } from '../lib/experimental-features';
+import { isExperimentalImageApiEnabled } from '../lib/experimental-features';
 import { CliExecFn } from '../types';
 import * as preview from './preview';
 import * as init from './init';
@@ -12,6 +12,7 @@ import * as listBooks from './list-books';
 import * as help from './help';
 import * as version from './version';
 import * as scrap from './scrap';
+import * as image from './image';
 
 type Commands = { [command: string]: CliExecFn };
 type ExecOptions = { canNotifyUpdate: boolean };
@@ -22,6 +23,7 @@ export async function exec(
   options: ExecOptions = { canNotifyUpdate: false }
 ) {
   const commands: Commands = {
+    scrap: async () => scrap.exec(execCommandArgs),
     preview: async () => preview.exec(),
     init: async () => init.exec(),
     'new:article': async () => newArticle.exec(),
@@ -36,8 +38,8 @@ export async function exec(
     '-v': async () => version.exec(),
   };
 
-  if (isExperimentalScrapApiEnabled()) {
-    commands.scrap = async () => scrap.exec(execCommandArgs);
+  if (isExperimentalImageApiEnabled()) {
+    commands.image = async () => image.exec(execCommandArgs);
   }
 
   if (options.canNotifyUpdate) {

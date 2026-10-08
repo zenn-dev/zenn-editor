@@ -3,12 +3,12 @@ import { runtimeEnv } from '../../lib/runtime-env';
 
 describe('runtimeEnv', () => {
   afterEach(() => {
-    delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
+    delete process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API;
   });
 
   test('モジュール読込後に設定された環境変数を返す', () => {
-    process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API = 'true';
+    process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API = 'true';
 
-    expect(runtimeEnv('ZENN_CLI_EXPERIMENTAL_SCRAP_API')).toBe('true');
+    expect(runtimeEnv('ZENN_CLI_EXPERIMENTAL_IMAGE_API')).toBe('true');
   });
 });

@@ -35,7 +35,6 @@ describe('scrapコマンド', () => {
     process.exitCode = undefined;
     directory = await mkdtemp(path.join(tmpdir(), 'zenn-scrap-test-'));
     process.env.ZENN_API_KEY = 'test-api-key';
-    process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API = 'true';
     process.env.ZENN_CLI_AI_SCAN = 'true';
     process.env.ZENN_CLI_AI_PROVIDER = 'openai';
     process.env.OPENAI_API_KEY = 'test-openai-key';
@@ -50,7 +49,6 @@ describe('scrapコマンド', () => {
   afterEach(async () => {
     process.exitCode = undefined;
     delete process.env.ZENN_API_KEY;
-    delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
     scanEnvironmentNames.forEach((name) => delete process.env[name]);
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
@@ -62,6 +60,26 @@ describe('scrapコマンド', () => {
     await writeFile(file, body);
     return file;
   }
+
+  test('helpはPublic APIの取得条件・連鎖削除を案内する', async () => {
+    await exec(['--help']);
+
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('getでは自分のアーカイブ済みScrapに加えて')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('slugを知っている限定公開Scrap')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('非表示・スパム判定コメントは返しません')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('配下の全コメントを削除')
+    );
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('返信も削除')
+    );
+  });
 
   test('createはSecretlint後に単一のAPIリクエストを送信する', async () => {
     fetchMock.mockResolvedValue(
@@ -135,7 +153,7 @@ describe('scrapコマンド', () => {
 
     const [url, options] = fetchMock.mock.calls[0];
     expect(url.toString()).toBe(
-      'https://zenn.dev/api/public-api/v1/scraps/abcdef123456'
+      'https://zenn.dev/api/public-api/v0/scraps/abcdef123456'
     );
     expect(options.method).toBe('PATCH');
     expect(JSON.parse(options.body)).toEqual({
@@ -144,6 +162,58 @@ describe('scrapコマンド', () => {
       topic_names: [],
     });
     expect(console.log).toHaveBeenLastCalledWith('{"scrap":{}}');
+  });
+
+  test('deleteは確認後にScrapをDELETEする', async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+
+    await exec(['delete', 'abcdef123456', '--yes', '--machine-readable']);
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url.toString()).toBe(
+      'https://zenn.dev/api/public-api/v0/scraps/abcdef123456'
+    );
+    expect(options.method).toBe('DELETE');
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('すべてのコメント')
+    );
+    expect(console.log).toHaveBeenLastCalledWith(
+      '{"deleted":true,"scrap_slug":"abcdef123456"}'
+    );
+  });
+
+  test('delete-commentは確認後にコメントをDELETEする', async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 204 }));
+
+    await exec([
+      'delete-comment',
+      'abcdef123456',
+      'comment123456',
+      '--yes',
+      '--machine-readable',
+    ]);
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url.toString()).toBe(
+      'https://zenn.dev/api/public-api/v0/scraps/abcdef123456/comments/comment123456'
+    );
+    expect(options.method).toBe('DELETE');
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('返信も削除')
+    );
+    expect(console.log).toHaveBeenLastCalledWith(
+      '{"deleted":true,"scrap_slug":"abcdef123456","comment_slug":"comment123456"}'
+    );
+  });
+
+  test('削除は--yesがなければAPIを呼ばない', async () => {
+    await exec(['delete', 'abcdef123456']);
+    await exec(['delete-comment', 'abcdef123456', 'comment123456']);
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(process.exitCode).toBe(1);
   });
 
   test('FORCE_UNLISTEDでは--unlistedなしでも限定公開にする', async () => {
@@ -324,7 +394,7 @@ describe('scrapコマンド', () => {
       { title: 'タイトル', body: '通常の本文' },
       {
         provider: 'openai',
-        model: 'gpt-5.6-luna',
+        model: 'gpt-6-luna',
         effort: 'medium',
         failureThreshold: 'high',
       },
@@ -573,23 +643,5 @@ describe('scrapコマンド', () => {
       expect.stringContaining('[medium] 公開情報の確認')
     );
     expect(fetchMock).toHaveBeenCalledTimes(1);
-  });
-
-  test('実験的機能が無効ならSecretlintもAPI通信も実行しない', async () => {
-    delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
-
-    await exec([
-      'create',
-      '--title',
-      'タイトル',
-      '--file',
-      await bodyFile('通常の本文'),
-    ]);
-
-    expect(fetchMock).not.toHaveBeenCalled();
-    expect(console.error).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.stringContaining('実験的機能')
-    );
   });
 });

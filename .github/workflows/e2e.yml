@@ -29,10 +29,12 @@ jobs:
       - name: ビルド
         run: pnpm build
 
-      - name: zenn-cliのdistディレクトリをキャッシュ
+      - name: zenn-cliの実行に必要なdistディレクトリをキャッシュ
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: packages/zenn-cli/dist
+          path: |
+            packages/zenn-cli/dist
+            packages/zenn-markdown-html/dist
           key: zenn-cli-dist-${{ github.sha }}
           enableCrossOsArchive: true
 
@@ -50,10 +52,12 @@ jobs:
       - name: パッケージをインストール
         run: pnpm install
 
-      - name: zenn-cliのdistディレクトリをキャッシュから復元
+      - name: zenn-cliの実行に必要なdistディレクトリをキャッシュから復元
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: packages/zenn-cli/dist
+          path: |
+            packages/zenn-cli/dist
+            packages/zenn-markdown-html/dist
           key: zenn-cli-dist-${{ github.sha }}
           enableCrossOsArchive: true
 
@@ -74,10 +78,12 @@ jobs:
       - name: パッケージをインストール
         run: pnpm install
 
-      - name: zenn-cliのdistディレクトリをキャッシュから復元
+      - name: zenn-cliの実行に必要なdistディレクトリをキャッシュから復元
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: packages/zenn-cli/dist
+          path: |
+            packages/zenn-cli/dist
+            packages/zenn-markdown-html/dist
           key: zenn-cli-dist-${{ github.sha }}
           enableCrossOsArchive: true
 
