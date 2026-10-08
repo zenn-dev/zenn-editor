@@ -5,7 +5,6 @@ const { dependencies } = require('./package.json');
 const RUNTIME_ONLY_ENV_KEYS = new Set([
   'ZENN_API_KEY',
   'ZENN_API_BASE_URL',
-  'ZENN_CLI_EXPERIMENTAL_SCRAP_API',
   'ZENN_CLI_AI_SCAN',
   'ZENN_CLI_FORCE_SAFE',
   'ZENN_CLI_FORCE_UNLISTED',

@@ -1,10 +1,7 @@
 import * as Log from '../lib/log';
 import { getCommandListText } from '../lib/messages';
 import { notifyNeedUpdateCLI } from '../lib/notify-update';
-import {
-  isExperimentalImageApiEnabled,
-  isExperimentalScrapApiEnabled,
-} from '../lib/experimental-features';
+import { isExperimentalImageApiEnabled } from '../lib/experimental-features';
 import { CliExecFn } from '../types';
 import * as preview from './preview';
 import * as init from './init';
@@ -26,6 +23,7 @@ export async function exec(
   options: ExecOptions = { canNotifyUpdate: false }
 ) {
   const commands: Commands = {
+    scrap: async () => scrap.exec(execCommandArgs),
     preview: async () => preview.exec(),
     init: async () => init.exec(),
     'new:article': async () => newArticle.exec(),
@@ -40,9 +38,6 @@ export async function exec(
     '-v': async () => version.exec(),
   };
 
-  if (isExperimentalScrapApiEnabled()) {
-    commands.scrap = async () => scrap.exec(execCommandArgs);
-  }
   if (isExperimentalImageApiEnabled()) {
     commands.image = async () => image.exec(execCommandArgs);
   }

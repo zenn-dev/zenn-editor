@@ -107,7 +107,7 @@ describe('Scrap scan settings', () => {
 
     expect(getScrapAiConfiguration()).toEqual({
       provider: 'openai',
-      model: 'gpt-5.6-luna',
+      model: 'gpt-6-luna',
       effort: 'medium',
       failureThreshold: 'high',
     });

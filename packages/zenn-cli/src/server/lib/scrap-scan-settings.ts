@@ -108,7 +108,7 @@ export function getScrapAiConfiguration(): ScrapAiConfiguration {
   const model =
     configuredModel === undefined
       ? provider === 'openai'
-        ? 'gpt-5.6-luna'
+        ? 'gpt-6-luna'
         : undefined
       : parseEnvironment(
           modelSchema,

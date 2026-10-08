@@ -16,8 +16,8 @@ describe('CLIのデフォルトの挙動のテスト', () => {
   let notifyNeedUpdateCLIMock: SpyInstance<any[], Promise<void>>;
 
   beforeEach(() => {
+    vi.clearAllMocks();
     process.exitCode = undefined;
-    delete process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API;
     delete process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API;
     // mock
     console.log = vi.fn();
@@ -48,22 +48,11 @@ describe('CLIのデフォルトの挙動のテスト', () => {
     expect(notifyNeedUpdateCLIMock).toBeCalled();
   });
 
-  test('実験的機能が無効ならscrapコマンドを登録しない', async () => {
-    await exec('scrap', []);
-
-    expect(Log.error).toHaveBeenCalledWith(
-      expect.stringContaining('該当するCLIコマンドが存在しません')
-    );
-    expect(console.log).toHaveBeenCalledWith(
-      expect.not.stringContaining('zenn scrap')
-    );
-  });
-
-  test('実験的機能が有効ならscrapコマンドを登録する', async () => {
-    process.env.ZENN_CLI_EXPERIMENTAL_SCRAP_API = 'true';
-
+  test('scrapコマンドは常に利用できる', async () => {
     await exec('scrap', ['--help']);
 
+    expect(process.exitCode).toBeUndefined();
+    expect(Log.error).not.toHaveBeenCalled();
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining('zenn scrap')
     );

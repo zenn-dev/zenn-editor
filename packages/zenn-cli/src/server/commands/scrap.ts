@@ -2,7 +2,6 @@ import arg from 'arg';
 import { CliExecFn } from '../types';
 import { invalidOptionText, scrapHelpText } from '../lib/messages';
 import * as Log from '../lib/log';
-import { isExperimentalScrapApiEnabled } from '../lib/experimental-features';
 import {
   parseCommentSlug,
   parseScrapSlugOrUrl,
@@ -593,13 +592,6 @@ async function post(argv: string[]) {
 }
 
 export const exec: CliExecFn = async (argv = []) => {
-  if (!isExperimentalScrapApiEnabled()) {
-    fail(
-      'Scrap操作は実験的機能です。ZENN_CLI_EXPERIMENTAL_SCRAP_API=true を設定してください'
-    );
-    return;
-  }
-
   const [subcommand, ...subcommandArgs] = argv;
   if (!subcommand || subcommand === '--help' || subcommand === '-h') {
     console.log(scrapHelpText);
