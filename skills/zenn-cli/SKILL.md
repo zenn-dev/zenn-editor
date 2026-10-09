@@ -82,11 +82,7 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 | `OPENAI_API_KEY` | OpenAI による AI scan 利用時に必須 | OpenAI の API キー。 |
 | `FIREWORKS_API_KEY` | Fireworks による AI scan 利用時に必須 | Fireworks の API キー。 |
 
-### 画像 API
-
-| 変数 | 設定値・既定値 | 用途 |
-|------|----------------|------|
-| `ZENN_CLI_EXPERIMENTAL_IMAGE_API` | `true` で有効。未設定時は無効 | 実験的な画像 API コマンドを有効にする。Scrap 操作には不要。利用時は `zenn image --help` で必要な scope と使い方を確認する。 |
+画像操作に必要な権限と使い方は `zenn image --help` で確認する。
 
 ## Scrap 操作の方針
 

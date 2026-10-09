@@ -1,7 +1,6 @@
 import * as Log from '../lib/log';
 import { getCommandListText } from '../lib/messages';
 import { notifyNeedUpdateCLI } from '../lib/notify-update';
-import { isExperimentalImageApiEnabled } from '../lib/experimental-features';
 import { CliExecFn } from '../types';
 import * as preview from './preview';
 import * as init from './init';
@@ -24,6 +23,7 @@ export async function exec(
 ) {
   const commands: Commands = {
     scrap: async () => scrap.exec(execCommandArgs),
+    image: async () => image.exec(execCommandArgs),
     preview: async () => preview.exec(),
     init: async () => init.exec(),
     'new:article': async () => newArticle.exec(),
@@ -37,10 +37,6 @@ export async function exec(
     '--version': async () => version.exec(),
     '-v': async () => version.exec(),
   };
-
-  if (isExperimentalImageApiEnabled()) {
-    commands.image = async () => image.exec(execCommandArgs);
-  }
 
   if (options.canNotifyUpdate) {
     // zenn-cli のアップデートが必要な場合はCLI上に通知メッセージを表示する

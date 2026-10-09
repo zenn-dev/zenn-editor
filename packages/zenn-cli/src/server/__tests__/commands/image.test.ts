@@ -12,7 +12,6 @@ describe('imageコマンド', () => {
     process.exitCode = undefined;
     directory = await mkdtemp(path.join(tmpdir(), 'zenn-image-test-'));
     process.env.ZENN_API_KEY = 'test-api-key';
-    process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API = 'true';
     fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
     vi.spyOn(console, 'log').mockImplementation(() => undefined);
@@ -23,7 +22,6 @@ describe('imageコマンド', () => {
   afterEach(async () => {
     process.exitCode = undefined;
     delete process.env.ZENN_API_KEY;
-    delete process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API;
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
     await rm(directory, { recursive: true, force: true });
@@ -173,18 +171,5 @@ describe('imageコマンド', () => {
 
     const uploaded = fetchMock.mock.calls[0][1].body.get('file');
     expect(uploaded).toMatchObject({ type });
-  });
-
-  test('実験的機能が無効なら画像を読み込まずAPIも呼ばない', async () => {
-    delete process.env.ZENN_CLI_EXPERIMENTAL_IMAGE_API;
-
-    await exec([
-      'upload',
-      path.join(directory, 'missing.png'),
-      '--confirm-public',
-    ]);
-
-    expect(fetchMock).not.toHaveBeenCalled();
-    expect(process.exitCode).toBe(1);
   });
 });
