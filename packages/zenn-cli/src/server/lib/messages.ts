@@ -1,5 +1,3 @@
-import { runtimeEnv } from './runtime-env';
-
 export const commandListText = `
 Command:
   zenn init           コンテンツ管理用のディレクトリを作成. 初回のみ実行
@@ -9,6 +7,7 @@ Command:
   zenn list:articles  記事の一覧を表示
   zenn list:books     本の一覧を表示
   zenn scrap          Public API経由でScrapを操作
+  zenn image          Public API経由で画像を管理
   zenn --version, -v  zenn-cliのバージョンを表示
   zenn --help, -h     ヘルプ
 
@@ -17,14 +16,7 @@ Command:
 `;
 
 export function getCommandListText() {
-  let text = commandListText;
-  if (runtimeEnv('ZENN_CLI_EXPERIMENTAL_IMAGE_API') === 'true') {
-    text = text.replace(
-      '  zenn list:books     本の一覧を表示',
-      '  zenn list:books     本の一覧を表示\n  zenn image          Public API経由で画像をアップロード（実験的機能）'
-    );
-  }
-  return text;
+  return commandListText;
 }
 
 export const initHelpText = `
@@ -254,7 +246,6 @@ Options:
 
 Environment:
   ZENN_API_KEY                         一覧はimage:read、アップロード・削除はimage:writeスコープを持つAPIキー
-  ZENN_CLI_EXPERIMENTAL_IMAGE_API=true 実験的な画像API機能を有効化
   ZENN_API_BASE_URL                    開発・テスト用のPublic APIベースURL（任意）
 
 Notice:

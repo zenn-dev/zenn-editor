@@ -4,7 +4,6 @@ import { readFile, stat } from 'node:fs/promises';
 import { CliExecFn } from '../types';
 import { imageHelpText, invalidOptionText } from '../lib/messages';
 import * as Log from '../lib/log';
-import { isExperimentalImageApiEnabled } from '../lib/experimental-features';
 import {
   deleteImage,
   ensurePublicApiCredentials,
@@ -226,12 +225,6 @@ function showError(error: unknown) {
 }
 
 export const exec: CliExecFn = async (argv = []) => {
-  if (!isExperimentalImageApiEnabled()) {
-    fail(
-      '画像操作は実験的機能です。ZENN_CLI_EXPERIMENTAL_IMAGE_API=true を設定してください'
-    );
-    return;
-  }
   const [subcommand, ...subcommandArgs] = argv;
   if (!subcommand || subcommand === '--help' || subcommand === '-h') {
     console.log(imageHelpText);
