@@ -88,6 +88,27 @@ export default function App(props) {
 }
 ```
 
+## AI エージェント向けスキルを取り込む
+
+[zenn-cli スキル](skills/zenn-cli/SKILL.md)には、Zenn CLI による Scrap 操作、セットアップ、環境変数、安全確認の手順をまとめています。利用するプロジェクトのディレクトリで、次のいずれかの方法で取り込めます。Zenn CLI 本体のセットアップはスキル内の案内に従ってください。
+
+### npx skills を使う
+
+```bash
+npx skills add zenn-dev/zenn-editor --skill zenn-cli
+```
+
+対話形式で取り込み先の AI エージェントを選択します。詳細は [Skills のドキュメント](https://github.com/vercel-labs/skills#readme)を参照してください。
+
+### npx rulesync を使う
+
+```bash
+npx rulesync fetch zenn-dev/zenn-editor --skills zenn-cli
+npx rulesync generate --targets claudecode --features skills
+```
+
+スキルを `.rulesync/skills/zenn-cli/` に取得し、AI エージェント向けの配置を生成します。上記は Claude Code 向けの例です。`--targets` は利用するツールに合わせて指定してください。既存の `rulesync.jsonc` に対象ツールを設定済みの場合は、`npx rulesync generate --features skills` でその設定を使えます。詳細は [Rulesync のドキュメント](https://rulesync.dyoshikawa.com/reference/cli-commands.html)を参照してください。
+
 ## 開発者向けドキュメント
 
 https://zenn-dev.github.io/zenn-docs-for-developers/
