@@ -313,15 +313,57 @@ describe('判定モデルによるAI scan', () => {
     ).rejects.toBeInstanceOf(ScrapAiScanError);
   });
 
-  test('Clefでcontext上限を超える可能性がある内容は送信しない', async () => {
+  test('Clefは長い内容も送信し、処理したトークン数が上限未満なら判定を使う', async () => {
+    respond({
+      result: {
+        ...systemOneResponse(safe),
+        usage: { input_tokens: 13_661, output_tokens: 0 },
+      },
+      success: true,
+    });
+
     await expect(
       scanScrapContentWithAi(
         { body: 'あ'.repeat(10_000) },
         config({ provider: 'clef', model: 'clef' })
       )
-    ).rejects.toBeInstanceOf(ScrapAiScanError);
-    expect(fetchMock).not.toHaveBeenCalled();
+    ).resolves.toEqual([]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
+
+  test.each([
+    ['上限付近のトークン数', { input_tokens: 24_200, output_tokens: 0 }],
+    ['usageの欠落', undefined],
+  ])('Clefで%sは切り捨ての可能性があるため止める', async (_, usage) => {
+    respond({
+      result: { ...systemOneResponse(safe), usage },
+      success: true,
+    });
+
+    await expect(
+      scanScrapContentWithAi(
+        { body: '本文' },
+        config({ provider: 'clef', model: 'clef-flash' })
+      )
+    ).rejects.toBeInstanceOf(ScrapAiScanError);
+  });
+
+  test.each([413, 422])(
+    'Clefがcontext超過(%i)で拒否した場合は長さの超過として止める',
+    async (status) => {
+      respond({ success: false, errors: [{ code: 5021 }] }, status);
+
+      await expect(
+        scanScrapContentWithAi(
+          { body: '本文' },
+          config({ provider: 'clef', model: 'clef-flash' })
+        )
+      ).rejects.toMatchObject({
+        constructor: ScrapAiScanError,
+        message: expect.stringContaining('長さを超えた可能性'),
+      });
+    }
+  );
 
   test('ClefのアカウントIDの形式を検証する', async () => {
     process.env.CLOUDFLARE_ACCOUNT_ID = '../other';

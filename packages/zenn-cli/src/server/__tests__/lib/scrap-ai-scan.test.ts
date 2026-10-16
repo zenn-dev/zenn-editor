@@ -432,7 +432,7 @@ describe('Scrap AI scan', () => {
         role: 'user',
         content: [
           { type: 'text', text: expect.any(String) },
-          { type: 'image', image: bytes, mediaType: 'image/png' },
+          { type: 'file', data: bytes, mediaType: 'image/png' },
         ],
       },
     ]);
@@ -545,5 +545,25 @@ describe('Scrap AI scan', () => {
     );
 
     expect(mocks.generateText).toHaveBeenCalledTimes(1);
+  });
+
+  test('想定外のproviderはFireworksとして扱わず設定エラーにする', async () => {
+    process.env.FIREWORKS_API_KEY = 'test-fireworks-key';
+
+    await expect(
+      scanScrapContentWithAi(
+        { body: '本文' },
+        {
+          provider: 'unknown' as never,
+          model: 'model',
+          effort: 'none',
+          failureThreshold: 'high',
+          probabilityThreshold: 0.5,
+          jevImagesEnabled: false,
+        }
+      )
+    ).rejects.toBeInstanceOf(ScrapScanConfigurationError);
+    expect(mocks.createFireworks).not.toHaveBeenCalled();
+    expect(mocks.generateText).not.toHaveBeenCalled();
   });
 });
