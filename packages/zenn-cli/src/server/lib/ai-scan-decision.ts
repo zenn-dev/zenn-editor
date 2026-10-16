@@ -12,10 +12,12 @@ import {
 const OPENAI_DECISIONS_URL = 'https://api.openai.com/v1/decisions';
 const JEV_URL = 'https://api.typesafe.ai/v1/systemone';
 const CLOUDFLARE_API_BASE_URL = 'https://api.cloudflare.com/client/v4';
-// Workers AI上のClefは上限を超えたstateを黙って切り捨てるため、送信前に検査する
+// Clefは長いstateを切り捨てると説明されているため、処理したトークン数が上限に近ければ
+// 未検査の部分が残った可能性があるとして扱う
 const CLEF_CONTEXT_TOKENS = 24_576;
-const CLEF_IMAGE_MAX_TOKENS = 1_027;
 const CLEF_CONTEXT_MARGIN_TOKENS = 512;
+const CLEF_TOO_LONG_MESSAGE =
+  'ClefのAI scanで一度に検査できる長さを超えた可能性があります。未検査の内容を投稿しないため終了します。内容を分割するか、別のプロバイダーを利用してください';
 const CLEF_IMAGE_MAX_PIXELS = 16_000_000;
 const JEV_IMAGE_MIN_SIDE = 280;
 const JEV_IMAGE_MAX_SIDE = 1568;
@@ -37,6 +39,12 @@ export type DecisionFinding = {
 };
 
 export class DecisionScanInputError extends Error {}
+
+class HttpStatusError extends Error {
+  constructor(readonly status: number) {
+    super(`HTTP ${status}`);
+  }
+}
 
 const levels = ['none', 'low', 'medium', 'high', 'critical'] as const;
 type SeverityLevel = (typeof levels)[number];
@@ -138,6 +146,9 @@ const systemOneAnswersSchema = z.object({
       }),
     ])
   ),
+});
+const clefUsageSchema = z.object({
+  usage: z.object({ input_tokens: z.number().int().nonnegative() }),
 });
 const openAiDecisionsSchema = z.object({
   answers: z.array(
@@ -244,7 +255,7 @@ async function postJson(
     body: JSON.stringify(body),
     signal,
   });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  if (!response.ok) throw new HttpStatusError(response.status);
   return response.json();
 }
 
@@ -356,29 +367,41 @@ function prepareClef(
       },
     ];
   }
-  // byte-level BPEでは1トークンが1バイト以上になるため、UTF-8のバイト数を上限として扱う
-  const estimatedTokens =
-    Buffer.byteLength(JSON.stringify(body.state)) +
-    Buffer.byteLength(JSON.stringify(questions)) +
-    (input.image ? CLEF_IMAGE_MAX_TOKENS : 0) +
-    CLEF_CONTEXT_MARGIN_TOKENS;
-  if (estimatedTokens > CLEF_CONTEXT_TOKENS) {
-    throw new DecisionScanInputError(
-      'ClefのAI scanで一度に検査できる長さを超える可能性があります。未検査の内容を投稿しないため終了します。内容を分割するか、別のプロバイダーを利用してください'
-    );
-  }
   const url = `${CLOUDFLARE_API_BASE_URL}/accounts/${accountId}/ai/run/@cf/cloudflare/${config.model}`;
   return {
-    send: (signal: AbortSignal) =>
-      postJson(url, { Authorization: `Bearer ${apiToken}` }, body, signal),
+    send: async (signal: AbortSignal) => {
+      try {
+        return await postJson(
+          url,
+          { Authorization: `Bearer ${apiToken}` },
+          body,
+          signal
+        );
+      } catch (error) {
+        // Workers AIはcontextを超える入力を413または422で拒否する
+        if (
+          error instanceof HttpStatusError &&
+          (error.status === 413 || error.status === 422)
+        ) {
+          throw new DecisionScanInputError(CLEF_TOO_LONG_MESSAGE);
+        }
+        throw error;
+      }
+    },
     normalize: (value: unknown) => {
       const record = asRecord(value);
       if ('success' in record && record.success !== true) {
         throw new Error('failed');
       }
-      return normalizeSystemOneAnswers(
-        'result' in record ? record.result : value
-      );
+      const result = 'result' in record ? record.result : value;
+      const { usage } = clefUsageSchema.parse(result);
+      if (
+        usage.input_tokens >=
+        CLEF_CONTEXT_TOKENS - CLEF_CONTEXT_MARGIN_TOKENS
+      ) {
+        throw new DecisionScanInputError(CLEF_TOO_LONG_MESSAGE);
+      }
+      return normalizeSystemOneAnswers(result);
     },
   };
 }

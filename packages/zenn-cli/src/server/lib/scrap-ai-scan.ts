@@ -29,7 +29,8 @@ import {
 } from './ai-scan-decision';
 import { isAnimatedImage } from './ai-scan-image';
 
-const AI_SCAN_TIMEOUT_MS = 30_000;
+// OpenRouterなどは応答時間のばらつきが大きいため、余裕を持たせる
+const AI_SCAN_TIMEOUT_MS = 60_000;
 const OPENAI_BASE_URL = 'https://api.openai.com/v1';
 const FIREWORKS_BASE_URL = 'https://api.fireworks.ai/inference/v1';
 const ANTHROPIC_BASE_URL = 'https://api.anthropic.com/v1';
@@ -217,6 +218,12 @@ function createModelAndOptions(
     };
   }
 
+  if (config.provider !== 'fireworks') {
+    throw new ScrapScanConfigurationError(
+      `ZENN_CLI_AI_PROVIDER の ${config.provider} には対応していません`
+    );
+  }
+
   const fireworks = createFireworks({
     apiKey: requiredApiKey('FIREWORKS_API_KEY'),
     baseURL: FIREWORKS_BASE_URL,
@@ -289,8 +296,8 @@ function prepareGenerativeScan(
                   }),
                 },
                 {
-                  type: 'image' as const,
-                  image: target.image.bytes,
+                  type: 'file' as const,
+                  data: target.image.bytes,
                   mediaType: target.image.contentType,
                 },
               ],
@@ -377,7 +384,10 @@ async function runAiScan(
       .array(aiScanFindingSchema)
       .max(20)
       .parse(await scan(AbortSignal.timeout(AI_SCAN_TIMEOUT_MS)));
-  } catch {
+  } catch (error) {
+    if (error instanceof DecisionScanInputError) {
+      throw new ScrapAiScanError(error.message);
+    }
     throw new ScrapAiScanError(
       'AIスキャンに失敗しました。投稿せずに終了します'
     );
