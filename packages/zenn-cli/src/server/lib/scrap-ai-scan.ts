@@ -7,18 +7,33 @@ import {
   createFireworks,
   type FireworksLanguageModelOptions,
 } from '@ai-sdk/fireworks';
+import {
+  createAnthropic,
+  type AnthropicLanguageModelOptions,
+} from '@ai-sdk/anthropic';
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { z } from 'zod';
 import { runtimeEnv } from './runtime-env';
 import {
+  isDecisionAiProvider,
   ScrapAiConfiguration,
   ScrapAiEffort,
   ScrapAiFindingLevel,
+  ScrapGenerativeAiProvider,
   ScrapScanConfigurationError,
 } from './scrap-scan-settings';
+import {
+  DecisionImage,
+  DecisionScanInputError,
+  prepareDecisionScan,
+} from './ai-scan-decision';
+import { isAnimatedImage } from './ai-scan-image';
 
 const AI_SCAN_TIMEOUT_MS = 30_000;
 const OPENAI_BASE_URL = 'https://api.openai.com/v1';
 const FIREWORKS_BASE_URL = 'https://api.fireworks.ai/inference/v1';
+const ANTHROPIC_BASE_URL = 'https://api.anthropic.com/v1';
+const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 
 const findingLevelSchema = z.enum(['low', 'medium', 'high', 'critical']);
 const aiScanFindingSchema = z
@@ -36,6 +51,7 @@ export type AiScanFinding = z.infer<typeof aiScanFindingSchema>;
 type AiScanResult = z.infer<typeof aiScanResultSchema>;
 
 type ScrapContent = { title?: string; body: string };
+type ImageContent = DecisionImage & { filename: string };
 
 export class ScrapAiScanError extends Error {}
 export class ScrapAiDetectedError extends ScrapAiScanError {}
@@ -97,7 +113,18 @@ const defaultDetectionPrompt = `
 事業情報などが対象です。
 `.trim();
 
-function requiredApiKey(name: 'OPENAI_API_KEY' | 'FIREWORKS_API_KEY') {
+const imageDetectionPrompt = `
+画像では、写り込んだ文字（スクリーンショット内のトークン、URL、メールアドレスなど）、
+人物の顔、画面に表示された個人情報や社内システムの情報も対象です。
+`.trim();
+
+type ApiKeyName =
+  | 'OPENAI_API_KEY'
+  | 'FIREWORKS_API_KEY'
+  | 'ANTHROPIC_API_KEY'
+  | 'OPENROUTER_API_KEY';
+
+function requiredApiKey(name: ApiKeyName) {
   const value = runtimeEnv(name)?.trim();
   if (!value) {
     throw new ScrapScanConfigurationError(`${name} を設定してください`);
@@ -122,7 +149,22 @@ type AiProviderOptions = NonNullable<
   Parameters<typeof generateText>[0]['providerOptions']
 >;
 
-function createModelAndOptions(config: ScrapAiConfiguration): {
+function anthropicOptions(effort: ScrapAiEffort) {
+  // jsonToolでは強制tool_choiceになり、新しいモデルでは拒否されるため使わない
+  const structuredOutputMode = 'outputFormat' as const;
+  if (effort === 'none') {
+    return { structuredOutputMode } satisfies AnthropicLanguageModelOptions;
+  }
+  return {
+    structuredOutputMode,
+    thinking: { type: 'adaptive' as const },
+    effort,
+  } satisfies AnthropicLanguageModelOptions;
+}
+
+function createModelAndOptions(
+  config: ScrapAiConfiguration & { provider: ScrapGenerativeAiProvider }
+): {
   model: LanguageModel;
   providerOptions: AiProviderOptions;
 } {
@@ -139,6 +181,39 @@ function createModelAndOptions(config: ScrapAiConfiguration): {
     return {
       model: openai(config.model),
       providerOptions: { openai: options },
+    };
+  }
+
+  if (config.provider === 'anthropic') {
+    const anthropic = createAnthropic({
+      apiKey: requiredApiKey('ANTHROPIC_API_KEY'),
+      baseURL: ANTHROPIC_BASE_URL,
+    });
+    return {
+      model: anthropic(config.model),
+      providerOptions: { anthropic: anthropicOptions(config.effort) },
+    };
+  }
+
+  if (config.provider === 'openrouter') {
+    const openrouter = createOpenRouter({
+      apiKey: requiredApiKey('OPENROUTER_API_KEY'),
+      baseURL: OPENROUTER_BASE_URL,
+      compatibility: 'strict',
+    });
+    return {
+      model: openrouter.chat(config.model, {
+        // ZDRのエンドポイントだけを使い、構造化出力に非対応のプロバイダーへ振り分けない
+        provider: {
+          data_collection: 'deny',
+          zdr: true,
+          require_parameters: true,
+        },
+        ...(config.effort === 'none'
+          ? {}
+          : { reasoning: { effort: config.effort } }),
+      }),
+      providerOptions: {},
     };
   }
 
@@ -170,30 +245,69 @@ export function formatAiScanFinding(finding: AiScanFinding) {
   return `[${finding.level}] ${sanitizeForTerminal(finding.finding, 160)}: ${sanitizeForTerminal(finding.detail, 500)}`;
 }
 
-export async function scanScrapContentWithAi(
-  content: ScrapContent,
-  config: ScrapAiConfiguration,
-  notes?: string
+type AiScanTarget =
+  | { kind: 'scrap'; content: ScrapContent }
+  | { kind: 'image'; image: ImageContent };
+
+function detectionPolicy(target: AiScanTarget, customPrompt?: string) {
+  return [
+    defaultDetectionPrompt,
+    target.kind === 'image' ? imageDetectionPrompt : undefined,
+    customPrompt,
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+function prepareGenerativeScan(
+  target: AiScanTarget,
+  config: ScrapAiConfiguration & { provider: ScrapGenerativeAiProvider },
+  notes: string | undefined
 ) {
   const { model, providerOptions } = createModelAndOptions(config);
-  let result: AiScanResult;
+  const policy = detectionPolicy(target, config.customPrompt);
+  const prompt =
+    target.kind === 'scrap'
+      ? {
+          prompt: JSON.stringify({
+            detectionPolicy: policy,
+            userNotes: notes || null,
+            scrapContent: target.content,
+          }),
+        }
+      : {
+          messages: [
+            {
+              role: 'user' as const,
+              content: [
+                {
+                  type: 'text' as const,
+                  text: JSON.stringify({
+                    detectionPolicy: policy,
+                    userNotes: notes || null,
+                    imageContent: { filename: target.image.filename },
+                  }),
+                },
+                {
+                  type: 'image' as const,
+                  image: target.image.bytes,
+                  mediaType: target.image.contentType,
+                },
+              ],
+            },
+          ],
+        };
 
-  try {
+  return async (abortSignal: AbortSignal) => {
     const generated = await generateText({
       model,
       system: systemPrompt,
-      prompt: JSON.stringify({
-        detectionPolicy: [defaultDetectionPrompt, config.customPrompt]
-          .filter(Boolean)
-          .join('\n\n'),
-        userNotes: notes || null,
-        scrapContent: content,
-      }),
+      ...prompt,
       output: Output.object({ schema: aiScanSchema }),
       providerOptions,
       maxOutputTokens: 8192,
       maxRetries: 0,
-      abortSignal: AbortSignal.timeout(AI_SCAN_TIMEOUT_MS),
+      abortSignal,
       experimental_telemetry: {
         isEnabled: false,
         recordInputs: false,
@@ -205,14 +319,71 @@ export async function scanScrapContentWithAi(
         recordOutputs: false,
       },
     });
-    result = aiScanResultSchema.parse(generated.output);
+    return aiScanResultSchema.parse(generated.output).findings;
+  };
+}
+
+function prepareScan(
+  target: AiScanTarget,
+  config: ScrapAiConfiguration,
+  notes: string | undefined
+) {
+  const provider = config.provider;
+  if (!isDecisionAiProvider(provider)) {
+    return prepareGenerativeScan(target, { ...config, provider }, notes);
+  }
+
+  const state = {
+    content:
+      target.kind === 'scrap'
+        ? target.content
+        : { filename: target.image.filename },
+    userNotes: notes || null,
+  };
+  try {
+    return prepareDecisionScan(
+      { ...config, provider },
+      {
+        state,
+        ...(target.kind === 'image'
+          ? {
+              image: {
+                bytes: target.image.bytes,
+                contentType: target.image.contentType,
+              },
+            }
+          : {}),
+      },
+      detectionPolicy(target, config.customPrompt)
+    );
+  } catch (error) {
+    if (error instanceof DecisionScanInputError) {
+      throw new ScrapAiScanError(error.message);
+    }
+    throw error;
+  }
+}
+
+async function runAiScan(
+  target: AiScanTarget,
+  config: ScrapAiConfiguration,
+  notes: string | undefined
+) {
+  const scan = prepareScan(target, config, notes);
+  let findings: AiScanFinding[];
+
+  try {
+    findings = z
+      .array(aiScanFindingSchema)
+      .max(20)
+      .parse(await scan(AbortSignal.timeout(AI_SCAN_TIMEOUT_MS)));
   } catch {
     throw new ScrapAiScanError(
       'AIスキャンに失敗しました。投稿せずに終了します'
     );
   }
 
-  const blockingFindings = result.findings.filter(
+  const blockingFindings = findings.filter(
     (finding) =>
       findingLevelRank[finding.level] >=
       findingLevelRank[config.failureThreshold]
@@ -227,7 +398,29 @@ export async function scanScrapContentWithAi(
     );
   }
 
-  return result.findings.sort(
+  return findings.sort(
     (a, b) => findingLevelRank[b.level] - findingLevelRank[a.level]
   );
+}
+
+export async function scanScrapContentWithAi(
+  content: ScrapContent,
+  config: ScrapAiConfiguration,
+  notes?: string
+) {
+  return runAiScan({ kind: 'scrap', content }, config, notes);
+}
+
+export async function scanImageWithAi(
+  image: ImageContent,
+  config: ScrapAiConfiguration,
+  notes?: string
+) {
+  // 多くのモデルは先頭フレームしか読まないため、未検査のフレームを残さない
+  if (isAnimatedImage(image.bytes, image.contentType)) {
+    throw new ScrapAiScanError(
+      'アニメーション画像はAI scanで全フレームを検査できないため、アップロードせずに終了します'
+    );
+  }
+  return runAiScan({ kind: 'image', image }, config, notes);
 }

@@ -74,15 +74,25 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 | 変数 | 必須条件・設定値・既定値 | 用途 |
 |------|--------------------------|------|
 | `ZENN_CLI_AI_SCAN` | `true` / `false`。既定値は `false` | `true` で AI scan を有効にする。 |
-| `ZENN_CLI_AI_PROVIDER` | AI scan 利用時に必須。`openai` / `fireworks` | 送信先の AI プロバイダー。 |
-| `ZENN_CLI_AI_MODEL` | OpenAI では任意、既定値は `gpt-6-luna`。Fireworks では必須 | 利用するモデル ID。指定する場合は空文字不可。 |
-| `ZENN_CLI_AI_EFFORT` | `none` / `low` / `medium` / `high`。既定値は `medium` | 推論量。`none` は推論設定を送信しない。モデルが対応する値を選ぶ。 |
+| `ZENN_CLI_AI_PROVIDER` | AI scan 利用時に必須。生成モデルは `openai` / `fireworks` / `anthropic` / `openrouter`、判定モデルは `openai-decisions` / `jev` / `clef` | 送信先の AI プロバイダー。 |
+| `ZENN_CLI_AI_MODEL` | 既定値は `openai` / `openai-decisions` が `gpt-6-luna`、`jev` が `jev-latest`、`clef` が `clef-flash`（`clef` も指定可）。`fireworks` / `anthropic` / `openrouter` では必須 | 利用するモデル ID。指定する場合は空文字不可。 |
+| `ZENN_CLI_AI_EFFORT` | `none` / `low` / `medium` / `high`。既定値は `medium` | 生成モデルの推論量。`none` は推論設定を送信しない。モデルが対応する値を選ぶ。判定モデルでは使用しない。 |
 | `ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD` | `low` / `medium` / `high` / `critical`。既定値は `high` | この重要度以上の指摘がある場合に投稿を拒否する。 |
+| `ZENN_CLI_AI_SCAN_PROBABILITY_THRESHOLD` | 0 より大きく 1 より小さい数値。既定値は `0.5` | 判定モデルで、検知事項や重要度を該当とみなす確率。 |
 | `ZENN_CLI_AI_SCAN_PROMPT` | 任意。未設定時は組み込みの検知方針。空文字不可 | 検知方針をカスタマイズするプロンプト。外部プロバイダーに送信されるため、機密情報を書かない。 |
-| `OPENAI_API_KEY` | OpenAI による AI scan 利用時に必須 | OpenAI の API キー。 |
-| `FIREWORKS_API_KEY` | Fireworks による AI scan 利用時に必須 | Fireworks の API キー。 |
+| `ZENN_CLI_AI_JEV_IMAGES` | `true` / `false`。既定値は `false` | `true` で Jev による画像の AI scan を許可する。TypeSafe の実験的機能のため、明示的に有効にする。 |
+| `OPENAI_API_KEY` | `openai` / `openai-decisions` 利用時に必須 | OpenAI の API キー。 |
+| `FIREWORKS_API_KEY` | `fireworks` 利用時に必須 | Fireworks の API キー。 |
+| `ANTHROPIC_API_KEY` | `anthropic` 利用時に必須 | Anthropic の API キー。 |
+| `OPENROUTER_API_KEY` | `openrouter` 利用時に必須 | OpenRouter の API キー。ZDR（Zero Data Retention）のエンドポイントだけへ振り分けるため、ZDR 非対応のモデルは利用できない。 |
+| `TYPESAFE_API_KEY` | `jev` 利用時に必須 | TypeSafe の API キー。 |
+| `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` | `clef` 利用時に必須 | Workers AI の API トークンとアカウント ID。 |
 
-画像操作に必要な権限と使い方は `zenn image --help` で確認する。
+判定モデル（`openai-decisions` / `jev` / `clef`）は文章を生成せず、検知事項ごとの確率を返す。指摘には固定の分類名と確率だけを表示する。Clef は上限を超えた入力を切り捨てるため、上限を超える可能性がある内容は送信せずに終了する。
+
+画像操作に必要な権限と使い方は `zenn image --help` で確認する。`ZENN_CLI_AI_SCAN=true` の場合は画像のアップロード前にも AI scan を実行し、画像とファイル名を AI プロバイダーへ送信する。画像を扱えないモデルや形式（Jev では PNG・JPEG で縦横 280〜1568px、Clef では PNG・JPEG・WebP）や、全フレームを検査できないアニメーション画像の場合はアップロードせずに終了する。
+
+判定モデルでは、認証情報を該当と判定した場合は `critical`、そのほかの分類は `high` 以上として扱い、重要度の回答だけで検知を弱めない。
 
 ## Scrap 操作の方針
 

@@ -38,8 +38,10 @@
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.41",
     "@ai-sdk/fireworks": "^3.0.23",
     "@ai-sdk/openai": "^4.0.28",
+    "@openrouter/ai-sdk-provider": "^3.1.0",
     "@secretlint/node": "^11.3.1",
     "@secretlint/secretlint-rule-preset-recommend": "^11.3.1",
     "ai": "^7.0.50",
