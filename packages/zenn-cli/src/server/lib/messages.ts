@@ -184,17 +184,28 @@ Environment:
   ZENN_CLI_FORCE_SAFE          dangerousなscanスキップを禁止する場合はtrue
   ZENN_CLI_FORCE_UNLISTED      Scrap作成を常に限定公開にする場合はtrue
   ZENN_CLI_AI_SCAN             AI scanを有効にする場合はtrue
-  ZENN_CLI_AI_PROVIDER         openai または fireworks
+  ZENN_CLI_AI_PROVIDER         openai / fireworks / anthropic / openrouter /
+                               openai-decisions / jev / clef
   ZENN_CLI_AI_MODEL            AI scanに使用するモデルID（任意）
-  ZENN_CLI_AI_EFFORT           none / low / medium / high。デフォルトはmedium
+  ZENN_CLI_AI_EFFORT           none / low / medium / high。デフォルトはmedium。
+                               openai-decisions / jev / clef では使用しない
   ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD  拒否するlevel。デフォルトはhigh
+  ZENN_CLI_AI_SCAN_PROBABILITY_THRESHOLD  判定モデルで検知とみなす確率。デフォルトは0.5
   ZENN_CLI_AI_SCAN_PROMPT      AI scanの検知方針（任意）
-  OPENAI_API_KEY               OpenAI利用時のAPIキー
+  ZENN_CLI_AI_JEV_IMAGES       Jevで画像をAI scanする場合はtrue（実験的機能）
+  OPENAI_API_KEY               openai / openai-decisions 利用時のAPIキー
   FIREWORKS_API_KEY            Fireworks利用時のAPIキー
+  ANTHROPIC_API_KEY            Anthropic利用時のAPIキー
+  OPENROUTER_API_KEY           OpenRouter利用時のAPIキー
+  TYPESAFE_API_KEY             Jev利用時のAPIキー
+  CLOUDFLARE_API_TOKEN         Clef利用時のCloudflare APIトークン
+  CLOUDFLARE_ACCOUNT_ID        Clef利用時のCloudflareアカウントID
 
 Default AI models:
-  openai: gpt-6-luna
-  fireworks: ZENN_CLI_AI_MODEL の指定が必須
+  openai / openai-decisions: gpt-6-luna
+  jev: jev-latest
+  clef: clef-flash（clef または clef-flash を指定可能）
+  fireworks / anthropic / openrouter: ZENN_CLI_AI_MODEL の指定が必須
 
 AI scan:
   Secret scanはデフォルトで有効です。AI scanはZENN_CLI_AI_SCAN=true を
@@ -242,11 +253,23 @@ Options:
   --count              一覧の取得件数（1～100、既定50）
   --yes                画像削除を確認する（必須）
   --machine-readable   uploadは画像URL、listとdeleteはJSONを1行で表示
+  --dangerously-skip-ai-scan  uploadのAI scanをスキップ
+  --notes-to-ai NOTES  uploadのAI scanへ追加の備考を送信
   --help, -h           このヘルプを表示
 
 Environment:
   ZENN_API_KEY                         一覧はimage:read、アップロード・削除はimage:writeスコープを持つAPIキー
   ZENN_API_BASE_URL                    開発・テスト用のPublic APIベースURL（任意）
+  ZENN_CLI_AI_SCAN                     uploadでAI scanを有効にする場合はtrue
+  ZENN_CLI_FORCE_SAFE                  AI scanのスキップを禁止する場合はtrue
+  AI scanのプロバイダー・モデル・APIキーの設定は npx zenn scrap --help を参照してください
+
+AI scan:
+  AI scanはZENN_CLI_AI_SCAN=true の場合だけ有効です。AI scanでは画像・ファイル名・
+  notes-to-ai・AI scan promptを選択したAIプロバイダーへ送信します。画像を扱えない
+  モデルや形式の場合は、アップロードせずに終了します。Jevでは
+  ZENN_CLI_AI_JEV_IMAGES=true とPNG・JPEG（縦横280〜1568px）が、Clefでは
+  PNG・JPEG・WebPが必要です。
 
 Notice:
   JPEG、PNG、GIF、WebP形式の3MB以下の画像に対応します。アップロード後は

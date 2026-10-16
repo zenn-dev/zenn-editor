@@ -2,7 +2,27 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+
+const aiScanMock = vi.hoisted(() => vi.fn());
+
+vi.mock('../../lib/scrap-ai-scan', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('../../lib/scrap-ai-scan')>();
+  return { ...actual, scanImageWithAi: aiScanMock };
+});
+
 import { exec } from '../../commands/image';
+import { ScrapAiDetectedError } from '../../lib/scrap-ai-scan';
+
+const scanEnvironmentNames = [
+  'ZENN_CLI_FORCE_SAFE',
+  'ZENN_CLI_AI_SCAN',
+  'ZENN_CLI_AI_PROVIDER',
+  'ZENN_CLI_AI_MODEL',
+  'ZENN_CLI_AI_EFFORT',
+  'ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD',
+  'ZENN_CLI_AI_SCAN_PROMPT',
+] as const;
 
 describe('imageコマンド', () => {
   let directory: string;
@@ -11,7 +31,9 @@ describe('imageコマンド', () => {
   beforeEach(async () => {
     process.exitCode = undefined;
     directory = await mkdtemp(path.join(tmpdir(), 'zenn-image-test-'));
+    scanEnvironmentNames.forEach((name) => delete process.env[name]);
     process.env.ZENN_API_KEY = 'test-api-key';
+    aiScanMock.mockResolvedValue([]);
     fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
     vi.spyOn(console, 'log').mockImplementation(() => undefined);
@@ -22,6 +44,8 @@ describe('imageコマンド', () => {
   afterEach(async () => {
     process.exitCode = undefined;
     delete process.env.ZENN_API_KEY;
+    scanEnvironmentNames.forEach((name) => delete process.env[name]);
+    aiScanMock.mockReset();
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
     await rm(directory, { recursive: true, force: true });
@@ -171,5 +195,118 @@ describe('imageコマンド', () => {
 
     const uploaded = fetchMock.mock.calls[0][1].body.get('file');
     expect(uploaded).toMatchObject({ type });
+  });
+
+  describe('AI scan', () => {
+    const pngBytes = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
+
+    beforeEach(() => {
+      process.env.ZENN_CLI_AI_SCAN = 'true';
+      process.env.ZENN_CLI_AI_PROVIDER = 'openai';
+      fetchMock.mockResolvedValue(
+        new Response(
+          JSON.stringify({ image_url: 'https://storage.example.com/a.png' }),
+          { status: 201 }
+        )
+      );
+    });
+
+    test('有効時は画像とファイル名をAI scanしてからアップロードする', async () => {
+      const file = await imageFile('image.png', pngBytes);
+
+      await exec([
+        'upload',
+        file,
+        '--confirm-public',
+        '--notes-to-ai',
+        '公開済みの画面です',
+      ]);
+
+      expect(aiScanMock).toHaveBeenCalledWith(
+        {
+          bytes: Buffer.from(pngBytes),
+          contentType: 'image/png',
+          filename: 'image.png',
+        },
+        expect.objectContaining({ provider: 'openai', model: 'gpt-6-luna' }),
+        '公開済みの画面です'
+      );
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(aiScanMock.mock.invocationCallOrder[0]).toBeLessThan(
+        fetchMock.mock.invocationCallOrder[0]
+      );
+    });
+
+    test('検知時はアップロードしない', async () => {
+      aiScanMock.mockRejectedValue(
+        new ScrapAiDetectedError(
+          'AIスキャンでhigh以上の検知事項が見つかりました'
+        )
+      );
+      const file = await imageFile('image.png', pngBytes);
+
+      await exec(['upload', file, '--confirm-public']);
+
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(1);
+      expect(console.error).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.stringContaining('AIスキャンでhigh以上')
+      );
+    });
+
+    test('AI scanの設定が不正ならアップロードしない', async () => {
+      delete process.env.ZENN_CLI_AI_PROVIDER;
+      const file = await imageFile('image.png', pngBytes);
+
+      await exec(['upload', file, '--confirm-public']);
+
+      expect(aiScanMock).not.toHaveBeenCalled();
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('dangerouslyオプションでスキップした場合は警告してアップロードする', async () => {
+      const file = await imageFile('image.png', pngBytes);
+
+      await exec([
+        'upload',
+        file,
+        '--confirm-public',
+        '--dangerously-skip-ai-scan',
+      ]);
+
+      expect(aiScanMock).not.toHaveBeenCalled();
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(console.warn).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.stringContaining('DANGER: AI scanをスキップします')
+      );
+    });
+
+    test('FORCE_SAFEではAI scanのスキップを拒否する', async () => {
+      process.env.ZENN_CLI_FORCE_SAFE = 'true';
+      const file = await imageFile('image.png', pngBytes);
+
+      await exec([
+        'upload',
+        file,
+        '--confirm-public',
+        '--dangerously-skip-ai-scan',
+      ]);
+
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('AI scanが無効な場合は--notes-to-aiを拒否する', async () => {
+      delete process.env.ZENN_CLI_AI_SCAN;
+      const file = await imageFile('image.png', pngBytes);
+
+      await exec(['upload', file, '--confirm-public', '--notes-to-ai', '備考']);
+
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(1);
+    });
   });
 });

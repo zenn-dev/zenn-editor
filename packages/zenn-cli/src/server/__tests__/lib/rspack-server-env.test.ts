@@ -58,6 +58,13 @@ describe('Rspackの環境変数設定', () => {
         'ZENN_CLI_AI_SCAN_PROMPT=DO_NOT_PUBLISH_PROMPT',
         'OPENAI_API_KEY=DO_NOT_PUBLISH_OPENAI',
         'FIREWORKS_API_KEY=DO_NOT_PUBLISH_FIREWORKS',
+        'ZENN_CLI_AI_SCAN_PROBABILITY_THRESHOLD=0.5',
+        'ZENN_CLI_AI_JEV_IMAGES=true',
+        'ANTHROPIC_API_KEY=DO_NOT_PUBLISH_ANTHROPIC',
+        'OPENROUTER_API_KEY=DO_NOT_PUBLISH_OPENROUTER',
+        'TYPESAFE_API_KEY=DO_NOT_PUBLISH_TYPESAFE',
+        'CLOUDFLARE_API_TOKEN=DO_NOT_PUBLISH_CLOUDFLARE',
+        'CLOUDFLARE_ACCOUNT_ID=0123456789abcdef0123456789abcdef',
         'OTHER_BUILD_TIME_VALUE=safe-to-inline',
       ].join('\n')
     );
@@ -95,6 +102,12 @@ describe('Rspackのサーバー依存設定', () => {
     await expect(
       resolveExternal(resolver, 'zenn-markdown-html/utils')
     ).resolves.toBe('import zenn-markdown-html/utils');
+    await expect(resolveExternal(resolver, '@ai-sdk/anthropic')).resolves.toBe(
+      'import @ai-sdk/anthropic'
+    );
+    await expect(
+      resolveExternal(resolver, '@openrouter/ai-sdk-provider')
+    ).resolves.toBe('import @openrouter/ai-sdk-provider');
     await expect(
       resolveExternal(resolver, 'zenn-content-css')
     ).resolves.toBeUndefined();

@@ -33,6 +33,7 @@ import {
 } from '../lib/scrap-ai-scan';
 import {
   getScrapAiConfiguration,
+  isDecisionAiProvider,
   getScrapScanSettings,
   isScrapForceUnlistedEnabled,
   ScrapScanConfigurationError,
@@ -197,8 +198,11 @@ async function runSafetyGates(
     ...(notes ? ['notes-to-ai'] : []),
     ...(aiConfig.customPrompt ? ['AI scan prompt'] : []),
   ];
+  const modelInfo = isDecisionAiProvider(aiConfig.provider)
+    ? `model=${JSON.stringify(aiConfig.model)}`
+    : `model=${JSON.stringify(aiConfig.model)}, effort=${aiConfig.effort}`;
   Log.warn(
-    `AI scanを実行します。${sentItems.join('、')}を${aiConfig.provider}（model=${JSON.stringify(aiConfig.model)}, effort=${aiConfig.effort}）へ送信します。データ取扱いは利用者の責任で確認してください`
+    `AI scanを実行します。${sentItems.join('、')}を${aiConfig.provider}（${modelInfo}）へ送信します。データ取扱いは利用者の責任で確認してください`
   );
   const findings = await scanScrapContentWithAi(scanContent, aiConfig, notes);
   findings.forEach((finding) => {

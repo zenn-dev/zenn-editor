@@ -6,6 +6,10 @@ const mocks = vi.hoisted(() => ({
   createFireworks: vi.fn(),
   openaiModel: vi.fn(),
   fireworksModel: vi.fn(),
+  createAnthropic: vi.fn(),
+  anthropicModel: vi.fn(),
+  createOpenRouter: vi.fn(),
+  openrouterChat: vi.fn(),
 }));
 
 vi.mock('ai', async (importOriginal) => {
@@ -17,8 +21,15 @@ vi.mock('@ai-sdk/openai', () => ({ createOpenAI: mocks.createOpenAI }));
 vi.mock('@ai-sdk/fireworks', () => ({
   createFireworks: mocks.createFireworks,
 }));
+vi.mock('@ai-sdk/anthropic', () => ({
+  createAnthropic: mocks.createAnthropic,
+}));
+vi.mock('@openrouter/ai-sdk-provider', () => ({
+  createOpenRouter: mocks.createOpenRouter,
+}));
 
 import {
+  scanImageWithAi,
   scanScrapContentWithAi,
   ScrapAiDetectedError,
   ScrapAiScanError,
@@ -37,6 +48,17 @@ describe('Scrap AI scan', () => {
       provider: 'fireworks',
       model,
     }));
+    mocks.createAnthropic.mockReturnValue(mocks.anthropicModel);
+    mocks.anthropicModel.mockImplementation((model) => ({
+      provider: 'anthropic',
+      model,
+    }));
+    mocks.createOpenRouter.mockReturnValue({ chat: mocks.openrouterChat });
+    mocks.openrouterChat.mockImplementation((model, settings) => ({
+      provider: 'openrouter',
+      model,
+      settings,
+    }));
     mocks.generateText.mockResolvedValue({
       output: { findings: [] },
     });
@@ -45,6 +67,8 @@ describe('Scrap AI scan', () => {
   afterEach(() => {
     delete process.env.OPENAI_API_KEY;
     delete process.env.FIREWORKS_API_KEY;
+    delete process.env.ANTHROPIC_API_KEY;
+    delete process.env.OPENROUTER_API_KEY;
     delete process.env.OPENAI_BASE_URL;
     vi.clearAllMocks();
   });
@@ -295,5 +319,150 @@ describe('Scrap AI scan', () => {
     );
 
     expect(mocks.generateText).toHaveBeenCalledTimes(1);
+  });
+
+  test('Anthropicへadaptive thinkingとeffortを指定し、構造化出力をoutputFormatで送信する', async () => {
+    process.env.ANTHROPIC_API_KEY = 'test-anthropic-key';
+
+    await scanScrapContentWithAi(
+      { body: '本文' },
+      {
+        provider: 'anthropic',
+        model: 'claude-opus-5-5',
+        effort: 'low',
+        failureThreshold: 'high',
+        probabilityThreshold: 0.5,
+        jevImagesEnabled: false,
+      }
+    );
+
+    expect(mocks.createAnthropic).toHaveBeenCalledWith({
+      apiKey: 'test-anthropic-key',
+      baseURL: 'https://api.anthropic.com/v1',
+    });
+    expect(mocks.generateText).toHaveBeenCalledWith(
+      expect.objectContaining({
+        model: { provider: 'anthropic', model: 'claude-opus-5-5' },
+        providerOptions: {
+          anthropic: {
+            structuredOutputMode: 'outputFormat',
+            thinking: { type: 'adaptive' },
+            effort: 'low',
+          },
+        },
+        maxRetries: 0,
+      })
+    );
+  });
+
+  test('Anthropicのeffort=noneではthinking設定を送らない', async () => {
+    process.env.ANTHROPIC_API_KEY = 'test-anthropic-key';
+
+    await scanScrapContentWithAi(
+      { body: '本文' },
+      {
+        provider: 'anthropic',
+        model: 'claude-haiku-4-5',
+        effort: 'none',
+        failureThreshold: 'high',
+        probabilityThreshold: 0.5,
+        jevImagesEnabled: false,
+      }
+    );
+
+    expect(mocks.generateText).toHaveBeenCalledWith(
+      expect.objectContaining({
+        providerOptions: {
+          anthropic: { structuredOutputMode: 'outputFormat' },
+        },
+      })
+    );
+  });
+
+  test('OpenRouterではデータ収集を拒否し、パラメーター対応プロバイダーだけへ送信する', async () => {
+    process.env.OPENROUTER_API_KEY = 'test-openrouter-key';
+
+    await scanScrapContentWithAi(
+      { body: '本文' },
+      {
+        provider: 'openrouter',
+        model: 'openai/gpt-6-luna',
+        effort: 'high',
+        failureThreshold: 'high',
+        probabilityThreshold: 0.5,
+        jevImagesEnabled: false,
+      }
+    );
+
+    expect(mocks.createOpenRouter).toHaveBeenCalledWith({
+      apiKey: 'test-openrouter-key',
+      baseURL: 'https://openrouter.ai/api/v1',
+      compatibility: 'strict',
+    });
+    expect(mocks.openrouterChat).toHaveBeenCalledWith('openai/gpt-6-luna', {
+      provider: { data_collection: 'deny', require_parameters: true },
+      reasoning: { effort: 'high' },
+    });
+  });
+
+  test('画像scanでは画像とファイル名をメッセージで送信する', async () => {
+    process.env.OPENAI_API_KEY = 'test-openai-key';
+    const bytes = Buffer.from([0x89, 0x50, 0x4e, 0x47]);
+
+    await scanImageWithAi(
+      { bytes, contentType: 'image/png', filename: 'screenshot.png' },
+      {
+        provider: 'openai',
+        model: 'gpt-6-luna',
+        effort: 'medium',
+        failureThreshold: 'high',
+        probabilityThreshold: 0.5,
+        jevImagesEnabled: false,
+      }
+    );
+
+    const call = mocks.generateText.mock.calls[0][0];
+    expect(call.prompt).toBeUndefined();
+    expect(call.messages).toEqual([
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: expect.any(String) },
+          { type: 'image', image: bytes, mediaType: 'image/png' },
+        ],
+      },
+    ]);
+    expect(JSON.parse(call.messages[0].content[0].text).imageContent).toEqual({
+      filename: 'screenshot.png',
+    });
+  });
+
+  test('画像scanで検知した場合は投稿を止める', async () => {
+    process.env.OPENAI_API_KEY = 'test-openai-key';
+    mocks.generateText.mockResolvedValue({
+      output: {
+        findings: [
+          { finding: '認証情報の写り込み', level: 'critical', detail: '隠す' },
+        ],
+      },
+    });
+
+    await expect(
+      scanImageWithAi(
+        {
+          bytes: Buffer.from([0xff, 0xd8, 0xff]),
+          contentType: 'image/jpeg',
+          filename: 'a.jpg',
+        },
+        {
+          provider: 'openai',
+          model: 'gpt-6-luna',
+          effort: 'medium',
+          failureThreshold: 'high',
+          probabilityThreshold: 0.5,
+          jevImagesEnabled: false,
+        }
+      )
+    ).rejects.toBeInstanceOf(ScrapAiDetectedError);
   });
 });
