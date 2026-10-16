@@ -52,29 +52,37 @@ const levelDescriptions: Record<SeverityLevel, string> = {
 const categories = {
   credentials: {
     label: '認証情報の可能性',
+    minimumLevel: 'critical',
     question:
       '`content`に、APIキー、トークン、パスワード、秘密鍵などの認証情報が含まれていますか？',
   },
   internal_resources: {
     label: '内部URL・内部ドメインの可能性',
+    minimumLevel: 'high',
     question:
       '`content`に、公開されていない内部URL、内部ドメイン、内部ホスト名が含まれていますか？',
   },
   customer_names: {
     label: '顧客名の可能性',
+    minimumLevel: 'high',
     question:
       '`content`に、公開されていない顧客名や取引先名が含まれていますか？',
   },
   personal_information: {
     label: '個人情報の可能性',
+    minimumLevel: 'high',
     question:
       '`content`に、氏名、メールアドレス、電話番号、住所、顔写真などの個人情報が含まれていますか？',
   },
   unpublished_business: {
     label: '未公開の事業情報の可能性',
+    minimumLevel: 'high',
     question: '`content`に、未公開の事業情報や社外秘の情報が含まれていますか？',
   },
-} as const;
+} as const satisfies Record<
+  string,
+  { label: string; minimumLevel: ScrapAiFindingLevel; question: string }
+>;
 type CategoryId = keyof typeof categories;
 const categoryIds = Object.keys(categories) as CategoryId[];
 
@@ -453,11 +461,14 @@ export function decisionFindings(
     }
   }
   const level = levels[Math.max(levelIndex, 1)] as ScrapAiFindingLevel;
+  // 分類と重要度は独立した質問のため、重要度の回答だけで分類の検知を弱めない
   const findings: DecisionFinding[] = categoryIds
     .filter((id) => answers.categories[id] >= probabilityThreshold)
     .map((id) => ({
       finding: categories[id].label,
-      level,
+      level: levels[
+        Math.max(levels.indexOf(categories[id].minimumLevel), levelIndex)
+      ] as ScrapAiFindingLevel,
       detail: `判定モデルの確率は${percent(answers.categories[id])}です。検知値は非表示`,
     }));
   if (levelIndex > 0 && findings.length === 0) {

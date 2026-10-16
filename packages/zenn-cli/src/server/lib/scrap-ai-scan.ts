@@ -27,6 +27,7 @@ import {
   DecisionScanInputError,
   prepareDecisionScan,
 } from './ai-scan-decision';
+import { isAnimatedImage } from './ai-scan-image';
 
 const AI_SCAN_TIMEOUT_MS = 30_000;
 const OPENAI_BASE_URL = 'https://api.openai.com/v1';
@@ -202,8 +203,12 @@ function createModelAndOptions(
     });
     return {
       model: openrouter.chat(config.model, {
-        // データを保存しうるプロバイダーや、構造化出力に非対応のプロバイダーへ振り分けない
-        provider: { data_collection: 'deny', require_parameters: true },
+        // ZDRのエンドポイントだけを使い、構造化出力に非対応のプロバイダーへ振り分けない
+        provider: {
+          data_collection: 'deny',
+          zdr: true,
+          require_parameters: true,
+        },
         ...(config.effort === 'none'
           ? {}
           : { reasoning: { effort: config.effort } }),
@@ -411,5 +416,11 @@ export async function scanImageWithAi(
   config: ScrapAiConfiguration,
   notes?: string
 ) {
+  // 多くのモデルは先頭フレームしか読まないため、未検査のフレームを残さない
+  if (isAnimatedImage(image.bytes, image.contentType)) {
+    throw new ScrapAiScanError(
+      'アニメーション画像はAI scanで全フレームを検査できないため、アップロードせずに終了します'
+    );
+  }
   return runAiScan({ kind: 'image', image }, config, notes);
 }

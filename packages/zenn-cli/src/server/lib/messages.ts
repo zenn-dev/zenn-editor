@@ -196,7 +196,7 @@ Environment:
   OPENAI_API_KEY               openai / openai-decisions 利用時のAPIキー
   FIREWORKS_API_KEY            Fireworks利用時のAPIキー
   ANTHROPIC_API_KEY            Anthropic利用時のAPIキー
-  OPENROUTER_API_KEY           OpenRouter利用時のAPIキー
+  OPENROUTER_API_KEY           OpenRouter利用時のAPIキー（ZDRのエンドポイントのみ使用）
   TYPESAFE_API_KEY             Jev利用時のAPIキー
   CLOUDFLARE_API_TOKEN         Clef利用時のCloudflare APIトークン
   CLOUDFLARE_ACCOUNT_ID        Clef利用時のCloudflareアカウントID
@@ -267,7 +267,8 @@ Environment:
 AI scan:
   AI scanはZENN_CLI_AI_SCAN=true の場合だけ有効です。AI scanでは画像・ファイル名・
   notes-to-ai・AI scan promptを選択したAIプロバイダーへ送信します。画像を扱えない
-  モデルや形式の場合は、アップロードせずに終了します。Jevでは
+  モデルや形式の場合、全フレームを検査できないアニメーション画像の場合は、
+  アップロードせずに終了します。Jevでは
   ZENN_CLI_AI_JEV_IMAGES=true とPNG・JPEG（縦横280〜1568px）が、Clefでは
   PNG・JPEG・WebPが必要です。
 

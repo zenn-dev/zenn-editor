@@ -400,7 +400,11 @@ describe('Scrap AI scan', () => {
       compatibility: 'strict',
     });
     expect(mocks.openrouterChat).toHaveBeenCalledWith('openai/gpt-6-luna', {
-      provider: { data_collection: 'deny', require_parameters: true },
+      provider: {
+        data_collection: 'deny',
+        zdr: true,
+        require_parameters: true,
+      },
       reasoning: { effort: 'high' },
     });
   });
@@ -464,5 +468,82 @@ describe('Scrap AI scan', () => {
         }
       )
     ).rejects.toBeInstanceOf(ScrapAiDetectedError);
+  });
+
+  test.each([
+    [
+      'アニメーションGIF',
+      'image/gif',
+      Buffer.concat([
+        Buffer.from('GIF89a'),
+        Buffer.from([1, 0, 1, 0, 0, 0, 0]),
+        ...[0, 1].map(() =>
+          Buffer.from([0x2c, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 1, 0, 0])
+        ),
+        Buffer.from([0x3b]),
+      ]),
+    ],
+    [
+      'APNG',
+      'image/png',
+      Buffer.concat([
+        Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+        Buffer.from([0, 0, 0, 8]),
+        Buffer.from('acTL'),
+        Buffer.alloc(12),
+      ]),
+    ],
+    [
+      'アニメーションWebP',
+      'image/webp',
+      Buffer.concat([
+        Buffer.from('RIFF0000WEBP'),
+        Buffer.from('ANIM'),
+        Buffer.from([6, 0, 0, 0]),
+        Buffer.alloc(6),
+      ]),
+    ],
+  ])('%sはAIへ送信せずに止める', async (_, contentType, bytes) => {
+    process.env.OPENAI_API_KEY = 'test-openai-key';
+
+    await expect(
+      scanImageWithAi(
+        { bytes, contentType, filename: 'a' },
+        {
+          provider: 'openai',
+          model: 'gpt-6-luna',
+          effort: 'medium',
+          failureThreshold: 'high',
+          probabilityThreshold: 0.5,
+          jevImagesEnabled: false,
+        }
+      )
+    ).rejects.toBeInstanceOf(ScrapAiScanError);
+    expect(mocks.generateText).not.toHaveBeenCalled();
+  });
+
+  test('静止画のGIFはAI scanする', async () => {
+    process.env.OPENAI_API_KEY = 'test-openai-key';
+    const bytes = Buffer.concat([
+      Buffer.from('GIF89a'),
+      Buffer.from([1, 0, 1, 0, 0, 0, 0]),
+      Buffer.from([0x21, 0xf9, 4, 0, 0, 0, 0, 0]),
+      Buffer.from([0x2c, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 1, 0, 0]),
+      Buffer.from([0x3b]),
+    ]);
+
+    await scanImageWithAi(
+      { bytes, contentType: 'image/gif', filename: 'a.gif' },
+      {
+        provider: 'openai',
+        model: 'gpt-6-luna',
+        effort: 'medium',
+        failureThreshold: 'high',
+        probabilityThreshold: 0.5,
+        jevImagesEnabled: false,
+      }
+    );
+
+    expect(mocks.generateText).toHaveBeenCalledTimes(1);
   });
 });

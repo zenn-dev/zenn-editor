@@ -84,13 +84,15 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 | `OPENAI_API_KEY` | `openai` / `openai-decisions` 利用時に必須 | OpenAI の API キー。 |
 | `FIREWORKS_API_KEY` | `fireworks` 利用時に必須 | Fireworks の API キー。 |
 | `ANTHROPIC_API_KEY` | `anthropic` 利用時に必須 | Anthropic の API キー。 |
-| `OPENROUTER_API_KEY` | `openrouter` 利用時に必須 | OpenRouter の API キー。データを収集しうるプロバイダーへは振り分けない。 |
+| `OPENROUTER_API_KEY` | `openrouter` 利用時に必須 | OpenRouter の API キー。ZDR（Zero Data Retention）のエンドポイントだけへ振り分けるため、ZDR 非対応のモデルは利用できない。 |
 | `TYPESAFE_API_KEY` | `jev` 利用時に必須 | TypeSafe の API キー。 |
 | `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` | `clef` 利用時に必須 | Workers AI の API トークンとアカウント ID。 |
 
 判定モデル（`openai-decisions` / `jev` / `clef`）は文章を生成せず、検知事項ごとの確率を返す。指摘には固定の分類名と確率だけを表示する。Clef は上限を超えた入力を切り捨てるため、上限を超える可能性がある内容は送信せずに終了する。
 
-画像操作に必要な権限と使い方は `zenn image --help` で確認する。`ZENN_CLI_AI_SCAN=true` の場合は画像のアップロード前にも AI scan を実行し、画像とファイル名を AI プロバイダーへ送信する。画像を扱えないモデルや形式（Jev では PNG・JPEG で縦横 280〜1568px、Clef では PNG・JPEG・WebP）の場合はアップロードせずに終了する。
+画像操作に必要な権限と使い方は `zenn image --help` で確認する。`ZENN_CLI_AI_SCAN=true` の場合は画像のアップロード前にも AI scan を実行し、画像とファイル名を AI プロバイダーへ送信する。画像を扱えないモデルや形式（Jev では PNG・JPEG で縦横 280〜1568px、Clef では PNG・JPEG・WebP）や、全フレームを検査できないアニメーション画像の場合はアップロードせずに終了する。
+
+判定モデルでは、認証情報を該当と判定した場合は `critical`、そのほかの分類は `high` 以上として扱い、重要度の回答だけで検知を弱めない。
 
 ## Scrap 操作の方針
 

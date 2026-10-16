@@ -174,15 +174,29 @@ describe('判定モデルによるAI scan', () => {
   });
 
   test('threshold未満の検知事項は警告用に返す', async () => {
-    respond(systemOneResponse([0.3, 0.6, 0.1, 0, 0], 0.7));
+    respond(systemOneResponse([0.3, 0.6, 0.1, 0, 0], 0.2));
 
-    const findings = await scanScrapContentWithAi(
-      { body: '本文' },
-      config({ provider: 'jev', model: 'jev-latest' })
-    );
+    await expect(
+      scanScrapContentWithAi(
+        { body: '本文' },
+        config({ provider: 'jev', model: 'jev-latest' })
+      )
+    ).resolves.toEqual([expect.objectContaining({ level: 'low' })]);
+  });
 
-    expect(findings).toHaveLength(categoryIds.length);
-    findings.forEach((finding) => expect(finding.level).toBe('low'));
+  test('重要度がnoneでも認証情報の確率が高ければ投稿を止める', async () => {
+    respond(systemOneResponse(safe, 0.9));
+
+    await expect(
+      scanScrapContentWithAi(
+        { body: '本文' },
+        config({
+          provider: 'jev',
+          model: 'jev-latest',
+          failureThreshold: 'critical',
+        })
+      )
+    ).rejects.toBeInstanceOf(ScrapAiDetectedError);
   });
 
   test.each([
@@ -411,6 +425,24 @@ describe('判定結果からfindingへの変換', () => {
         0.3
       )
     ).toEqual([expect.objectContaining({ level: 'critical' })]);
+  });
+
+  test('分類ごとの最低levelを重要度の回答より優先する', () => {
+    const findings = decisionFindings(
+      {
+        categories: { ...noCategories, credentials: 0.8, customer_names: 0.6 },
+        severity: [0.9, 0.1, 0, 0, 0],
+      },
+      0.5
+    );
+
+    expect(findings).toEqual([
+      expect.objectContaining({
+        finding: '認証情報の可能性',
+        level: 'critical',
+      }),
+      expect.objectContaining({ finding: '顧客名の可能性', level: 'high' }),
+    ]);
   });
 
   test('重要度も分類も低ければfindingを返さない', () => {
