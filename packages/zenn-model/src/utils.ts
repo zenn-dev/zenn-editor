@@ -323,7 +323,7 @@ export const validateChapterFreeType: ItemValidator = {
   type: 'chapter-free-type',
   isCritical: true,
   getMessage: () =>
-    'free（無料公開設定）には true もしくは falseのみを指定してください',
+    'free（無料公開設定）には true もしくは false のみを指定してください',
   isValid: ({ free }) => free === undefined || typeof free === 'boolean',
 };
 
