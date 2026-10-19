@@ -689,7 +689,7 @@ describe('validateBookChapter()のテスト', () => {
       });
       expect(errors.length).toEqual(1);
       expect(errors[0].message).toContain(
-        'free（無料公開設定）には true もしくは falseのみを指定してください'
+        'free（無料公開設定）には true もしくは false のみを指定してください'
       );
     });
 

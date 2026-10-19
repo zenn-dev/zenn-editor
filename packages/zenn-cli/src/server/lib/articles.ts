@@ -1,5 +1,4 @@
-import matter from 'gray-matter';
-import { JSON_SCHEMA, load } from 'js-yaml';
+import { parseFrontMatter } from './front-matter';
 import * as Log from './log';
 
 import {
@@ -73,13 +72,7 @@ function readArticleFile(slug: string) {
     return null;
   }
 
-  // NOTE: yamlのtimestampフィールドを自動的にDateに変換されないように、オプションを指定する
-  // https://github.com/jonschlinkert/gray-matter/issues/62#issuecomment-577628177
-  const { data, content: bodyMarkdown } = matter(raw, {
-    engines: {
-      yaml: (s) => load(s, { schema: JSON_SCHEMA }) as any,
-    },
-  });
+  const { data, content: bodyMarkdown } = parseFrontMatter(raw);
   return {
     meta: {
       ...data,

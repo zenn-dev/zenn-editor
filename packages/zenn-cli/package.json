@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.5.6",
+  "version": "0.5.7-alpha.8",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -38,8 +38,10 @@
     "exec:zenn": "node ./dist/server/zenn.js"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.41",
     "@ai-sdk/fireworks": "^3.0.23",
     "@ai-sdk/openai": "^4.0.28",
+    "@openrouter/ai-sdk-provider": "^3.1.0",
     "@secretlint/node": "^11.3.1",
     "@secretlint/secretlint-rule-preset-recommend": "^11.3.1",
     "ai": "^7.0.50",
@@ -51,7 +53,6 @@
     "configstore": "^8.0.0",
     "express": "^5.1.0",
     "fs-extra": "^11.3.2",
-    "gray-matter": "^4.0.3",
     "image-size": "^2.0.2",
     "js-yaml": "^5.2.1",
     "node-fetch": "^3.3.2",

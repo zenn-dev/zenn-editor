@@ -10,7 +10,13 @@ describe('E2E Tests', () => {
   afterEach(async () => {
     // クリーンアップ: 一時ディレクトリを削除
     if (tmpDir) {
-      await rm(tmpDir, { recursive: true, force: true });
+      // NOTE: Windows では終了直後のプロセスがファイルを掴んでいて EBUSY になることがあるため、リトライする
+      await rm(tmpDir, {
+        recursive: true,
+        force: true,
+        maxRetries: 5,
+        retryDelay: 200,
+      });
       tmpDir = null;
     }
   });
@@ -151,5 +157,6 @@ describe('E2E Tests', () => {
       console.error('STDERR:', result.stderr);
     }
     expect(result.hasError).toBe(false);
-  });
+    // NOTE: preview の起動待ち（3秒）とプロセスの終了待ちがあるため、デフォルト（5秒）より長めにする
+  }, 20000);
 });

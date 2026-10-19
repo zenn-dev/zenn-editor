@@ -397,6 +397,8 @@ describe('scrapコマンド', () => {
         model: 'gpt-6-luna',
         effort: 'medium',
         failureThreshold: 'high',
+        probabilityThreshold: 0.5,
+        jevImagesEnabled: false,
       },
       undefined
     );

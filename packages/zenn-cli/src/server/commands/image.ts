@@ -5,6 +5,17 @@ import { CliExecFn } from '../types';
 import { imageHelpText, invalidOptionText } from '../lib/messages';
 import * as Log from '../lib/log';
 import {
+  formatAiScanFinding,
+  scanImageWithAi,
+  ScrapAiScanError,
+} from '../lib/scrap-ai-scan';
+import {
+  getImageScanSettings,
+  getScrapAiConfiguration,
+  isDecisionAiProvider,
+  ScrapScanConfigurationError,
+} from '../lib/scrap-scan-settings';
+import {
   deleteImage,
   ensurePublicApiCredentials,
   listMyImages,
@@ -68,6 +79,45 @@ async function readImage(filePath: string) {
   return { bytes, contentType: contentType(bytes) };
 }
 
+async function runImageAiScan(
+  image: { bytes: Buffer; contentType: string; filename: string },
+  dangerouslySkipAiScan: boolean,
+  notes: string | undefined
+) {
+  const settings = getImageScanSettings({ dangerouslySkipAiScan });
+  if (!settings.aiScanEnabled) {
+    if (notes !== undefined) {
+      throw new ScrapScanConfigurationError(
+        '--notes-to-ai はAI scanが無効な場合には指定できません'
+      );
+    }
+    Log.warn(
+      settings.aiScanSkipped
+        ? 'DANGER: AI scanをスキップします。画像をAIプロバイダーへ送信しません'
+        : 'AI scanは無効です。画像をAIプロバイダーへ送信しません'
+    );
+    return;
+  }
+
+  const config = getScrapAiConfiguration();
+  const sentItems = [
+    '画像',
+    'ファイル名',
+    ...(notes ? ['notes-to-ai'] : []),
+    ...(config.customPrompt ? ['AI scan prompt'] : []),
+  ];
+  const modelInfo = isDecisionAiProvider(config.provider)
+    ? `model=${JSON.stringify(config.model)}`
+    : `model=${JSON.stringify(config.model)}, effort=${config.effort}`;
+  Log.warn(
+    `AI scanを実行します。${sentItems.join('、')}を${config.provider}（${modelInfo}）へ送信します。データ取扱いは利用者の責任で確認してください`
+  );
+  const findings = await scanImageWithAi(image, config, notes);
+  findings.forEach((finding) => {
+    Log.warn(`AI scan warning: ${formatAiScanFinding(finding)}`);
+  });
+}
+
 async function upload(argv: string[]) {
   let args;
   try {
@@ -75,6 +125,8 @@ async function upload(argv: string[]) {
       {
         '--confirm-public': Boolean,
         '--machine-readable': Boolean,
+        '--dangerously-skip-ai-scan': Boolean,
+        '--notes-to-ai': String,
         '--help': Boolean,
         '-h': '--help',
       },
@@ -99,13 +151,16 @@ async function upload(argv: string[]) {
     ensurePublicApiCredentials();
     const filePath = args._[0];
     const image = await readImage(filePath);
+    const filename = path.basename(filePath);
+    await runImageAiScan(
+      { ...image, filename },
+      Boolean(args['--dangerously-skip-ai-scan']),
+      args['--notes-to-ai']
+    );
     Log.warn(
       '画像は公開URLで配信されます。Markdown本文から参照しなくても自動的には削除されません。機密情報や個人情報を含まないことを確認してください'
     );
-    const result = await uploadImage({
-      ...image,
-      filename: path.basename(filePath),
-    });
+    const result = await uploadImage({ ...image, filename });
     if (args['--machine-readable']) {
       console.log(result.url);
     } else {
@@ -115,6 +170,8 @@ async function upload(argv: string[]) {
   } catch (error) {
     if (
       error instanceof ImageInputError ||
+      error instanceof ScrapAiScanError ||
+      error instanceof ScrapScanConfigurationError ||
       error instanceof PublicApiClientError
     ) {
       const code =

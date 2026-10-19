@@ -90,11 +90,37 @@ export function extractYoutubeVideoParameters(
   const videoId = params.get('v') || url.pathname.split('/')[1];
 
   // https://www.youtube.com/watch?v=Hoge&t=100s の "100" の部分を値とする
-  const start = params.get('t')?.replace('s', '');
+  const start = parseYoutubeTimeParam(params.get('t'));
 
   if (videoId?.length !== YOUTUBE_VIDEO_ID_LENGTH) return void 0;
 
   return { videoId, start };
+}
+
+/**
+ * YouTubeの t パラメータを秒数の文字列に変換する
+ * "90", "90s" といった秒指定のほか、"1h2m3s" 形式も秒に換算する
+ * 解釈できない形式の場合は undefined を返す
+ */
+export function parseYoutubeTimeParam(t: string | null): string | undefined {
+  if (!t) return void 0;
+
+  // 秒数のみ (例: "90", "90s")
+  if (/^\d+s?$/.test(t)) {
+    return t.replace(/s$/, '');
+  }
+
+  // 時・分・秒の組み合わせ (例: "1h2m3s", "2m3s", "1h30m")
+  const match = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/.exec(t);
+  if (match && (match[1] || match[2] || match[3])) {
+    const seconds =
+      Number(match[1] || 0) * 3600 +
+      Number(match[2] || 0) * 60 +
+      Number(match[3] || 0);
+    return String(seconds);
+  }
+
+  return void 0;
 }
 
 export function extractDocswellEmbedUrl(url: string): string | null {

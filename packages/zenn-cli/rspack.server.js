@@ -13,13 +13,22 @@ const RUNTIME_ONLY_ENV_KEYS = new Set([
   'ZENN_CLI_AI_EFFORT',
   'ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD',
   'ZENN_CLI_AI_SCAN_PROMPT',
+  'ZENN_CLI_AI_SCAN_PROBABILITY_THRESHOLD',
+  'ZENN_CLI_AI_JEV_IMAGES',
   'OPENAI_API_KEY',
   'FIREWORKS_API_KEY',
+  'ANTHROPIC_API_KEY',
+  'OPENROUTER_API_KEY',
+  'TYPESAFE_API_KEY',
+  'CLOUDFLARE_API_TOKEN',
+  'CLOUDFLARE_ACCOUNT_ID',
 ]);
 const SERVER_EXTERNALS = new Set(Object.keys(dependencies));
 const ESM_EXTERNALS = new Set([
+  '@ai-sdk/anthropic',
   '@ai-sdk/fireworks',
   '@ai-sdk/openai',
+  '@openrouter/ai-sdk-provider',
   '@secretlint/node',
   '@secretlint/secretlint-rule-preset-recommend',
   'ai',
