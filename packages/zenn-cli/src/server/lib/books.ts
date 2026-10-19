@@ -1,9 +1,9 @@
 import { load } from 'js-yaml';
 import path from 'path';
 import imageSizeOf from 'image-size';
-import matter from 'gray-matter';
 import markdownToHtml from 'zenn-markdown-html';
 import { parseToc } from 'zenn-markdown-html/utils';
+import { parseFrontMatter } from './front-matter';
 import * as Log from './log';
 import {
   listDirnames,
@@ -257,7 +257,7 @@ function readChapterFile(book: BookMeta, filename: string) {
   const { position, slug } = getChapterPositionAndSlug(book, filename);
   const raw = getChapterFileRaw(book.slug, filename);
   if (!raw) return null;
-  const { data, content: bodyMarkdown } = matter(raw);
+  const { data, content: bodyMarkdown } = parseFrontMatter(raw);
   return {
     meta: {
       ...data,
