@@ -93,14 +93,19 @@ export const execZennPreview = (
       }
     });
 
-    // 指定時間後にプロセスを終了
+    // 指定時間後にプロセスを終了する
+    // NOTE: Windows では終了前のプロセスが cwd を使用中のため、一時ディレクトリを削除すると EBUSY になる。
+    // そのため resolve はプロセスの終了（close）を待ってから行う
+    let forceKillTimer: NodeJS.Timeout | undefined;
     const timer = setTimeout(() => {
       child.kill('SIGTERM');
-      resolve({ stdout, stderr, hasError });
+      // SIGTERM で終了しない場合に備えて強制終了する
+      forceKillTimer = setTimeout(() => child.kill('SIGKILL'), 5000);
     }, timeoutMs);
 
     child.on('error', (err) => {
       clearTimeout(timer);
+      clearTimeout(forceKillTimer);
       hasError = true;
       stderr += err.message;
       child.kill('SIGTERM');
@@ -109,6 +114,7 @@ export const execZennPreview = (
 
     child.on('close', () => {
       clearTimeout(timer);
+      clearTimeout(forceKillTimer);
       resolve({ stdout, stderr, hasError });
     });
   });
