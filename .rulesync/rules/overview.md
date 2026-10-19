@@ -291,7 +291,7 @@ articles/ or books/ directory
        ↓
 File discovery (listFilenames)
        ↓
-Gray-matter parsing (YAML frontmatter + body)
+Frontmatter parsing with js-yaml JSON_SCHEMA (YAML frontmatter + body)
        ↓
 Data objects: {meta: ArticleMeta, bodyMarkdown: string}
 ```
@@ -407,7 +407,7 @@ chapters:
 ### 3. File-Based Content Management (zenn-cli)
 - No database required
 - Direct filesystem reading
-- Gray-matter for parsing frontmatter
+- js-yaml (JSON_SCHEMA) for parsing frontmatter (`parseFrontMatter`)
 - Hot-reload via file watchers
 
 ### 4. Express/WebSocket Server (zenn-cli)
