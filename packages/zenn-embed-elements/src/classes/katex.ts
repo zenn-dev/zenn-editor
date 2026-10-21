@@ -5,6 +5,18 @@ declare let katex: any;
 
 const containerId = 'katex-container';
 
+// CDN 上のファイルが改ざんされた場合に備えて、バージョンを固定したうえで
+// Subresource Integrity（SRI）で内容を検証する。
+// バージョンを更新する際は、各ファイルのハッシュも次のコマンドで再計算すること。
+//   curl -sL <URL> | openssl dgst -sha384 -binary | openssl base64 -A
+export const KATEX_VERSION = '0.19.0';
+export const KATEX_JS_SRC = `https://cdn.jsdelivr.net/npm/katex@${KATEX_VERSION}/dist/katex.min.js`;
+export const KATEX_JS_INTEGRITY =
+  'sha384-QFFtAGzvvj+bfgCGxXJlNZZR1nXEZgvG8tDLCCY1F19xl20WlfTYgguB4VcNdxYk';
+export const KATEX_CSS_HREF = `https://cdn.jsdelivr.net/npm/katex@${KATEX_VERSION}/dist/katex.min.css`;
+export const KATEX_CSS_INTEGRITY =
+  'sha384-3rdsX6e5mueWyoweR9NIVmtEsUkokpBT/0ALqKKIBMr9j4qhHkaIkAcGgsE6uVlp';
+
 export class EmbedKatex extends HTMLElement {
   private _container: HTMLDivElement;
 
@@ -22,17 +34,19 @@ export class EmbedKatex extends HTMLElement {
   async render() {
     if (typeof katex === 'undefined') {
       await loadScript({
-        // 本来はバージョンを指定した方がいいが、他の処理との兼ね合いでバージョンを固定するのは難しいので指定していません
-        src: `https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js`,
+        src: KATEX_JS_SRC,
         id: 'katex-js',
+        integrity: KATEX_JS_INTEGRITY,
+        crossOrigin: 'anonymous',
       });
     }
 
     // CSSを読み込む（まだ読み込まれていない場合のみ）
     loadStylesheet({
-      // 本来はバージョンを指定した方がいいが、他の処理との兼ね合いでバージョンを固定するのは難しいので指定していません
-      href: `https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css`,
+      href: KATEX_CSS_HREF,
       id: `katex-css`,
+      integrity: KATEX_CSS_INTEGRITY,
+      crossOrigin: 'anonymous',
     });
 
     const displayMode = !!this.getAttribute('display-mode');
