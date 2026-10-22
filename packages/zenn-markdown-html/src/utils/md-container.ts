@@ -1,5 +1,5 @@
 import { md } from './markdown-it';
-import type Token from 'markdown-it/lib/token.mjs';
+import type { Token } from 'markdown-it';
 
 // containers
 // ref: https://github.com/markdown-it/markdown-it-container

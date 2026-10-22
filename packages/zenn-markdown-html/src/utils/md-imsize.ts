@@ -4,9 +4,7 @@
  * License: MIT
  */
 
-import MarkdownIt from 'markdown-it';
-import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs';
-import type Token from 'markdown-it/lib/token.mjs';
+import type { MarkdownIt, StateInline, Token } from 'markdown-it';
 
 type ParseResult = {
   ok: boolean;

@@ -2,7 +2,7 @@
  * forked from https://github.com/goessner/markdown-it-mdKatex
  */
 
-import MarkdownIt from 'markdown-it';
+import type { MarkdownIt } from 'markdown-it';
 
 type PreHandler = (str: string, begin: number) => boolean;
 type PostHandler = (str: string, begin: number) => boolean;

@@ -1,8 +1,7 @@
-import MarkdownIt from 'markdown-it';
-import type { RenderRule } from 'markdown-it/lib/renderer.mjs';
+import type { MarkdownIt, RendererRule } from 'markdown-it';
 
 export const mdImage = (md: MarkdownIt): void => {
-  const originalImageRenderRule = md.renderer.rules['image'] as RenderRule;
+  const originalImageRenderRule = md.renderer.rules['image'] as RendererRule;
 
   md.renderer.rules.image = (tokens, idx, options, env, slf) => {
     const token = tokens[idx];

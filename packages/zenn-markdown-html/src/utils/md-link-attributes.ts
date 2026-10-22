@@ -1,4 +1,4 @@
-import MarkdownIt from 'markdown-it';
+import type { MarkdownIt } from 'markdown-it';
 import markdownItLinkAttributes from 'markdown-it-link-attributes';
 
 export function mdLinkAttributes(md: MarkdownIt) {
@@ -8,8 +8,8 @@ export function mdLinkAttributes(md: MarkdownIt) {
     // 内部リンク
     {
       matcher(href: string) {
-        return href.match(
-          /^(?:https:\/\/zenn\.dev$)|(?:https:\/\/zenn\.dev\/.*$)/
+        return /^(?:https:\/\/zenn\.dev$)|(?:https:\/\/zenn\.dev\/.*$)/.test(
+          href
         );
       },
       attrs: {
@@ -19,7 +19,7 @@ export function mdLinkAttributes(md: MarkdownIt) {
     // 外部リンク
     {
       matcher(href: string) {
-        return href.match(/^https?:\/\//);
+        return /^https?:\/\//.test(href);
       },
       attrs: {
         target: '_blank',

@@ -1,4 +1,4 @@
-import MarkdownIt from 'markdown-it';
+import type { MarkdownIt } from 'markdown-it';
 import { MarkdownOptions } from '../types';
 import { generateEmbedHTML, isEmbedType } from './embed-helper';
 
