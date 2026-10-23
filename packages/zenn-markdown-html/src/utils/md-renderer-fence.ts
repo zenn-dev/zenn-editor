@@ -44,7 +44,7 @@
  * - `md-renderer-fence.ts`: このファイル - Phase 1 と 3 を担当
  */
 
-import MarkdownIt from 'markdown-it';
+import type { MarkdownIt } from 'markdown-it';
 import { md } from './markdown-it';
 import { MarkdownOptions } from '../types';
 import { highlight } from './highlight';
