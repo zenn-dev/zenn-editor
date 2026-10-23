@@ -1,11 +1,11 @@
-import MarkdownIt from 'markdown-it';
-import Token from 'markdown-it/lib/token.mjs';
+import type { MarkdownIt, Token } from 'markdown-it';
 import { MarkdownOptions } from '../types';
 import { generateLinkifyEmbedHTML } from './embed-helper';
 
 function convertAutolinkToEmbed(
   inlineChildTokens: Token[],
-  options: MarkdownOptions
+  options: MarkdownOptions,
+  TokenClass: typeof Token
 ): Token[] {
   const newTokens: Token[] = [];
 
@@ -20,7 +20,7 @@ function convertAutolinkToEmbed(
 
     // tokenがlinkifyの場合は必要に応じて、カードを生成
     const url = linkOpenToken.attrGet('href');
-    if (!url) {
+    if (typeof url !== 'string' || !url) {
       newTokens.push(token); // 変換は行わずに出力結果に含める
       return;
     }
@@ -47,7 +47,7 @@ function convertAutolinkToEmbed(
     }
 
     // 埋め込み用のHTMLを生成
-    const embedToken = new Token('html_inline', '', 0);
+    const embedToken = new TokenClass('html_inline', '', 0);
 
     // 埋め込み要素のHTML生成
     embedToken.content = generateLinkifyEmbedHTML(url, options);
@@ -72,7 +72,8 @@ function convertAutolinkToEmbed(
 }
 
 export function mdLinkifyToCard(md: MarkdownIt, options?: MarkdownOptions) {
-  md.core.ruler.after('replacements', 'link-to-card', function ({ tokens }) {
+  md.core.ruler.after('replacements', 'link-to-card', function (state) {
+    const { tokens } = state;
     const containerStack: ('details' | 'message')[] = [];
 
     // 本文内のすべてのtokenをチェック
@@ -117,7 +118,11 @@ export function mdLinkifyToCard(md: MarkdownIt, options?: MarkdownOptions) {
       // 直近の container が message のときは非カード
       if (containerStack.at(-1) === 'message') return;
 
-      token.children = convertAutolinkToEmbed(children, options || {});
+      token.children = convertAutolinkToEmbed(
+        children,
+        options || {},
+        state.Token
+      );
     });
 
     return true;

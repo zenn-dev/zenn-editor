@@ -1,7 +1,7 @@
 /**
  * forked from https://github.com/iktakahiro/markdown-it-br
  */
-import MarkdownIt from 'markdown-it';
+import type { MarkdownIt } from 'markdown-it';
 
 /**
  * Return case-sensitive matched br tag

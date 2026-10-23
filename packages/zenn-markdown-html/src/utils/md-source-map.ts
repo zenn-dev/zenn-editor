@@ -1,4 +1,4 @@
-import MarkdownIt from 'markdown-it';
+import type { MarkdownIt } from 'markdown-it';
 
 /**
  * Adds begin line index to the output via the 'data-line' data attribute.
