@@ -1,7 +1,7 @@
 packages:
   - packages/*
 
-minimumReleaseAge: 30240
+minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - nanoid@3.3.18
 
