@@ -76,7 +76,7 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 | `ZENN_CLI_AI_SCAN` | `true` / `false`。既定値は `false` | `true` で AI scan を有効にする。 |
 | `ZENN_CLI_AI_PROVIDER` | AI scan 利用時に必須。生成モデルは `openai` / `fireworks` / `anthropic` / `openrouter` / `bedrock` / `vertex` / `vertex-anthropic` / `azure`、判定モデルは `openai-decisions` / `jev` / `clef` | 送信先の AI プロバイダー。 |
 | `ZENN_CLI_AI_MODEL` | 既定値は `openai` / `openai-decisions` が `gpt-6-luna`、`jev` が `jev-latest`、`clef` が `clef-flash`（`clef` も指定可）。`fireworks` / `anthropic` / `openrouter` / `bedrock` / `vertex` / `vertex-anthropic` / `azure` では必須 | 利用するモデル ID。指定する場合は空文字不可。`bedrock` では推論プロファイル ID も指定できる（application inference profile の ARN は非対応）。`azure` ではデプロイ名を指定する。 |
-| `ZENN_CLI_AI_EFFORT` | `none` / `low` / `medium` / `high`。既定値は `medium` | 生成モデルの推論量。`none` は推論設定を送信しない。モデルが対応する値を選ぶ。判定モデルでは使用しない。 |
+| `ZENN_CLI_AI_EFFORT` | `none` / `low` / `medium` / `high`。既定値は `medium` | 生成モデルの推論量。`none` は推論設定を送信しない。モデルが対応する値を選ぶ。`azure` で推論モデルではないデプロイを使う場合は `none` を指定する。判定モデルでは使用しない。 |
 | `ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD` | `low` / `medium` / `high` / `critical`。既定値は `high` | この重要度以上の指摘がある場合に投稿を拒否する。 |
 | `ZENN_CLI_AI_SCAN_PROBABILITY_THRESHOLD` | 0 より大きく 1 より小さい数値。既定値は `0.5` | 判定モデルで、検知事項や重要度を該当とみなす確率。 |
 | `ZENN_CLI_AI_SCAN_PROMPT` | 任意。未設定時は組み込みの検知方針。空文字不可 | 検知方針をカスタマイズするプロンプト。外部プロバイダーに送信されるため、機密情報を書かない。 |
@@ -97,9 +97,9 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 
 `bedrock` と `azure` で API キーを設定しない場合や、`vertex` / `vertex-anthropic` を使う場合は、手元の既定の認証情報（AWS の default プロファイル・SSO・IAM ロール、Azure CLI のログイン・マネージド ID、gcloud の ADC など）を自動で使う。意図したアカウント・サブスクリプション・プロジェクトかを事前に確認し、`AWS_PROFILE` や `az account set` などで明示することを推奨する。送信内容は、そのアカウントの課金対象になるほか、呼び出しログ（Bedrock の model invocation logging、Azure の診断ログなど）が有効な場合はそこにも記録される。
 
-推論が行われる場所は設定によって変わる。Bedrock のクロスリージョン推論プロファイル（`us.`、`apac.`、`global.` など）や Vertex AI の `global` ロケーションでは、指定したリージョン以外で処理される場合がある。処理場所に制約がある場合は、単一リージョンのモデル ID・ロケーションを使う。
+推論が行われる場所は設定によって変わる。Bedrock のクロスリージョン推論プロファイル（`us.`、`apac.`、`global.` など）、Vertex AI の `global` ロケーション、Azure の Global・DataZone デプロイでは、指定したリージョン以外で処理される場合がある。処理場所に制約がある場合は、単一リージョンのモデル ID・ロケーション・デプロイ（Azure では Standard デプロイ）を使う。
 
-入力の保持や人間によるレビューの扱いは、各クラウドの既定の動作と設定に従う。不正利用の監視などのために入力が一定期間保持される場合があり、無効化には申請や設定が必要なことがある。Amazon Bedrock ではリージョンごとのデータ保持設定によって、AWS が入力を保持する場合や、利用できないモデルがある場合がある（[Amazon Bedrock のデータ保持](https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html)）。Azure と Vertex AI については、それぞれ [Azure OpenAI のデータ、プライバシー、セキュリティ](https://learn.microsoft.com/azure/foundry/responsible-ai/openai/data-privacy) と [Vertex AI のゼロデータ保持](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention) を確認する。
+入力の保持や人間によるレビューの扱いは、各クラウドの既定の動作と設定に従う。不正利用の監視などのために入力が一定期間保持される場合があり、無効化には申請や設定が必要なことがある。Amazon Bedrock ではリージョンごとのデータ保持設定によって、AWS が入力を保持する場合や、利用できないモデルがある場合がある（[Amazon Bedrock のデータ保持](https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html)）。Azure と Vertex AI については、それぞれ [Azure OpenAI のデータ、プライバシー、セキュリティ](https://learn.microsoft.com/azure/foundry/responsible-ai/openai/data-privacy) と [Vertex AI のゼロデータ保持](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention) を確認する。Vertex AI 上の Claude などのパートナーモデルは、Google のモデルとは保持の条件が異なる場合があるため、各モデルの条件を確認する。
 
 判定モデル（`openai-decisions` / `jev` / `clef`）は文章を生成せず、検知事項ごとの確率を返す。指摘には固定の分類名と確率だけを表示する。Clef は一度に検査できる長さ（24,576 トークン）を超えた場合や、処理したトークン数が上限に近く未検査の部分が残った可能性がある場合は、投稿せずに終了する。
 

@@ -747,6 +747,34 @@ describe('Scrap AI scan', () => {
       );
     });
 
+    test('Gemini 2.5では出力上限を超えないthinking budgetを指定する', async () => {
+      process.env.GOOGLE_VERTEX_PROJECT = 'zenn-project';
+      process.env.GOOGLE_VERTEX_LOCATION = 'asia-northeast1';
+
+      await scanScrapContentWithAi(
+        { body: '本文' },
+        {
+          ...cloudConfig,
+          provider: 'vertex',
+          model: 'gemini-2.5-flash',
+          effort: 'high',
+        }
+      );
+
+      expect(mocks.generateText).toHaveBeenCalledWith(
+        expect.objectContaining({
+          providerOptions: {
+            vertex: { thinkingConfig: { thinkingBudget: 4096 } },
+          },
+        })
+      );
+      const options = mocks.generateText.mock.calls[0][0];
+      expect(options).not.toHaveProperty('reasoning');
+      expect(
+        options.providerOptions.vertex.thinkingConfig.thinkingBudget
+      ).toBeLessThan(options.maxOutputTokens);
+    });
+
     test('Vertex AIのClaudeにはAnthropicと同じ構造化出力とthinkingを指定する', async () => {
       process.env.GOOGLE_VERTEX_PROJECT = 'zenn-project';
       process.env.GOOGLE_VERTEX_LOCATION = 'us-east5';
@@ -893,6 +921,27 @@ describe('Scrap AI scan', () => {
         )
       ).rejects.toBeInstanceOf(ScrapScanConfigurationError);
       expect(mocks.createAzure).not.toHaveBeenCalled();
+      expect(mocks.generateText).not.toHaveBeenCalled();
+    });
+
+    test('SDKの初期化に失敗した場合は内部情報を表示せず投稿停止エラーにする', async () => {
+      process.env.AZURE_RESOURCE_NAME = 'zenn-openai';
+      mocks.DefaultAzureCredential.mockImplementationOnce(() => {
+        throw new Error('/internal/path/DO_NOT_DISPLAY');
+      });
+
+      const error = await scanScrapContentWithAi(
+        { body: '本文' },
+        {
+          ...cloudConfig,
+          provider: 'azure',
+          model: 'zenn-deployment',
+          effort: 'none',
+        }
+      ).catch((caught: unknown) => caught);
+
+      expect(error).toBeInstanceOf(ScrapAiScanError);
+      expect(String((error as Error).message)).not.toContain('DO_NOT_DISPLAY');
       expect(mocks.generateText).not.toHaveBeenCalled();
     });
 

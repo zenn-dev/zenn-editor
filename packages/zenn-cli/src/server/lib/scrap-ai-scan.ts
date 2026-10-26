@@ -251,16 +251,19 @@ async function azureAuthentication() {
   };
 }
 
+// 出力上限（maxOutputTokens）の中に構造化出力の枠を残す推論の予算
+const thinkingBudgetTokens = {
+  low: 1024,
+  medium: 2048,
+  high: 4096,
+} as const;
+
 function fireworksOptions(
   effort: ScrapAiEffort
 ): FireworksLanguageModelOptions {
   if (effort === 'none') return {};
 
-  const budgetTokens = {
-    low: 1024,
-    medium: 2048,
-    high: 4096,
-  }[effort];
+  const budgetTokens = thinkingBudgetTokens[effort];
   return { thinking: { type: 'enabled', budgetTokens } };
 }
 
@@ -375,7 +378,20 @@ async function createModelAndOptions(
     const settings = vertexSettings();
     const { createVertex } = await import('@ai-sdk/google-vertex');
     const vertex = createVertex(settings);
-    // Gemini 3とGemini 2.5で推論設定の形式が異なるため、SDKに変換させる
+    if (config.effort !== 'none' && config.model.includes('gemini-2.5')) {
+      // SDKの変換ではGemini 2.5の予算が出力上限を超え、構造化出力が途中で切れるため明示する
+      return {
+        model: vertex(config.model),
+        providerOptions: {
+          vertex: {
+            thinkingConfig: {
+              thinkingBudget: thinkingBudgetTokens[config.effort],
+            },
+          },
+        },
+      };
+    }
+    // Gemini 3以降はthinkingLevelで指定するため、SDKに変換させる
     return {
       model: vertex(config.model),
       providerOptions: {},
@@ -388,7 +404,9 @@ async function createModelAndOptions(
     const { createVertexAnthropic } =
       await import('@ai-sdk/google-vertex/anthropic');
     const vertexAnthropic = createVertexAnthropic(settings);
-    // Vertex AIのClaudeもoutput_config.formatに対応しているため、Anthropicと同じ設定にする
+    // SDKはVertex AIでの構造化出力を非対応として扱うが、Vertex AIのClaudeも
+    // output_config.formatに対応しているため、Anthropicと同じ設定にする
+    // https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/claude/structured_outputs
     return {
       model: vertexAnthropic(config.model),
       providerOptions: { anthropic: anthropicOptions(config.effort) },
@@ -576,7 +594,21 @@ async function runAiScan(
   config: ScrapAiConfiguration,
   notes: string | undefined
 ) {
-  const scan = await prepareScan(target, config, notes);
+  let scan: Awaited<ReturnType<typeof prepareScan>>;
+  try {
+    scan = await prepareScan(target, config, notes);
+  } catch (error) {
+    // SDKの読み込みや初期化の失敗は、内部情報を表示せずスキャン失敗として扱う
+    if (
+      error instanceof ScrapScanConfigurationError ||
+      error instanceof ScrapAiScanError
+    ) {
+      throw error;
+    }
+    throw new ScrapAiScanError(
+      'AIスキャンに失敗しました。投稿せずに終了します'
+    );
+  }
   let findings: AiScanFinding[];
 
   try {
