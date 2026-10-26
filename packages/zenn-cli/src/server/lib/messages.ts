@@ -223,7 +223,11 @@ AI scan:
   必要です。ZENN_CLI_FORCE_SAFE=true の場合はSecret scanとAI scanの両方が
   必須です。AI scanでは、タイトル・本文・topics・notes-to-ai・AI scan promptを
   選択したAIプロバイダーへ送信します。保持、学習利用、リージョン、契約条件は
-  利用者の責任で確認してください。notes-to-aiはシェル履歴に残るため、機密情報
+  利用者の責任で確認してください。bedrock / vertex / vertex-anthropic / azure
+  では、APIキーを設定しない場合に手元の既定の認証情報（AWSプロファイル、
+  Azure CLI、gcloudのADCなど）を自動で使います。意図したアカウントか確認して
+  ください。クロスリージョン推論やglobalロケーションでは、指定したリージョン
+  以外で処理される場合があります。notes-to-aiはシェル履歴に残るため、機密情報
   そのものを指定しないでください。限定公開でもURLまたはslugを知る利用者は閲覧
   できるため、URLとslugは秘密情報として扱ってください。
 

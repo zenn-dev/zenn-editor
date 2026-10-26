@@ -653,11 +653,9 @@ describe('Scrap AI scan', () => {
             model: 'global.anthropic.claude-sonnet-5-5',
           },
           providerOptions: {
-            bedrock: {
-              structuredOutputMode: 'outputFormat',
-              reasoningConfig: { type: 'adaptive', maxReasoningEffort: 'high' },
-            },
+            bedrock: { structuredOutputMode: 'outputFormat' },
           },
+          reasoning: 'high',
           maxRetries: 0,
         })
       );
@@ -686,18 +684,24 @@ describe('Scrap AI scan', () => {
       expect(mocks.generateText).toHaveBeenCalledWith(
         expect.objectContaining({
           providerOptions: {
-            bedrock: {
-              structuredOutputMode: 'outputFormat',
-              reasoningConfig: { type: 'enabled', maxReasoningEffort: 'low' },
-            },
+            bedrock: { structuredOutputMode: 'outputFormat' },
           },
+          reasoning: 'low',
         })
       );
     });
 
-    test.each([undefined, 'ap-northeast-1.example.com'])(
-      'BedrockはAWS_REGIONが不正(%s)なら送信しない',
-      async (region) => {
+    test.each([
+      [undefined, 'model'],
+      ['ap-northeast-1.example.com', 'model'],
+      ['us-iso-east-1', 'model'],
+      [
+        'us-east-1',
+        'arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/abc',
+      ],
+    ])(
+      'BedrockはAWS_REGION(%s)やmodel(%s)が非対応なら送信しない',
+      async (region, model) => {
         if (region) process.env.AWS_REGION = region;
 
         await expect(
@@ -706,7 +710,7 @@ describe('Scrap AI scan', () => {
             {
               ...cloudConfig,
               provider: 'bedrock',
-              model: 'model',
+              model,
               effort: 'none',
             }
           )
@@ -716,7 +720,7 @@ describe('Scrap AI scan', () => {
       }
     );
 
-    test('Vertex AIのGeminiへプロジェクトとロケーションを指定し、effortをthinkingLevelへ変換する', async () => {
+    test('Vertex AIのGeminiへプロジェクトとロケーションを指定し、effortの変換をSDKに任せる', async () => {
       process.env.GOOGLE_VERTEX_PROJECT = 'zenn-project';
       process.env.GOOGLE_VERTEX_LOCATION = 'global';
 
@@ -737,9 +741,8 @@ describe('Scrap AI scan', () => {
       expect(mocks.generateText).toHaveBeenCalledWith(
         expect.objectContaining({
           model: { provider: 'vertex', model: 'gemini-3-flash' },
-          providerOptions: {
-            vertex: { thinkingConfig: { thinkingLevel: 'medium' } },
-          },
+          providerOptions: {},
+          reasoning: 'medium',
         })
       );
     });
@@ -824,6 +827,7 @@ describe('Scrap AI scan', () => {
           providerOptions: {
             azure: {
               reasoningEffort: 'low',
+              forceReasoning: true,
               store: false,
               strictJsonSchema: true,
             },
@@ -852,6 +856,14 @@ describe('Scrap AI scan', () => {
         apiKey: 'test-azure-key',
       });
       expect(mocks.DefaultAzureCredential).not.toHaveBeenCalled();
+      expect(mocks.generateText).toHaveBeenCalledWith(
+        expect.objectContaining({
+          providerOptions: { azure: { store: false, strictJsonSchema: true } },
+        })
+      );
+      expect(mocks.generateText.mock.calls[0][0]).not.toHaveProperty(
+        'reasoning'
+      );
     });
 
     test.each([
