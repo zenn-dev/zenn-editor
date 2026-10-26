@@ -12,6 +12,8 @@ import {
   type AnthropicLanguageModelOptions,
 } from '@ai-sdk/anthropic';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
+import type { AmazonBedrockLanguageModelChatOptions } from '@ai-sdk/amazon-bedrock';
+import type { GoogleVertexProviderSettings } from '@ai-sdk/google-vertex';
 import { z } from 'zod';
 import { runtimeEnv } from './runtime-env';
 import {
@@ -35,6 +37,18 @@ const OPENAI_BASE_URL = 'https://api.openai.com/v1';
 const FIREWORKS_BASE_URL = 'https://api.fireworks.ai/inference/v1';
 const ANTHROPIC_BASE_URL = 'https://api.anthropic.com/v1';
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
+const AZURE_TOKEN_SCOPE = 'https://cognitiveservices.azure.com/.default';
+// 環境変数のエンドポイント上書きで送信先を変えられないよう、既知の形式だけ受け付ける
+// AWSは商用・GovCloud・中国のパーティションだけを対象にする
+const AWS_REGION_PATTERN = /^([a-z]{2}|us-gov)-[a-z]+-\d+$/;
+const GOOGLE_CLOUD_PROJECT_PATTERN = /^[a-z][a-z0-9-]{4,28}[a-z0-9]$/;
+const GOOGLE_CLOUD_LOCATION_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const AZURE_RESOURCE_NAME_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}$/;
+const AZURE_HOST_SUFFIXES = [
+  '.openai.azure.com',
+  '.services.ai.azure.com',
+  '.cognitiveservices.azure.com',
+];
 
 const findingLevelSchema = z.enum(['low', 'medium', 'high', 'critical']);
 const aiScanFindingSchema = z
@@ -133,16 +147,123 @@ function requiredApiKey(name: ApiKeyName) {
   return value;
 }
 
+function optionalEnvironment(name: string) {
+  return runtimeEnv(name)?.trim() || undefined;
+}
+
+function requiredSetting(name: string, pattern: RegExp, description: string) {
+  const value = optionalEnvironment(name);
+  if (!value || !pattern.test(value)) {
+    throw new ScrapScanConfigurationError(
+      `${name} に${description}を設定してください`
+    );
+  }
+  return value;
+}
+
+function bedrockBaseURL(region: string) {
+  const dnsSuffix = region.startsWith('cn-')
+    ? 'amazonaws.com.cn'
+    : 'amazonaws.com';
+  return `https://bedrock-runtime.${region}.${dnsSuffix}`;
+}
+
+function bedrockModel(model: string) {
+  // ARNではモデルの系統を判定できず、Claudeに別系統の推論設定や構造化出力を送ってしまう
+  if (model.startsWith('arn:')) {
+    throw new ScrapScanConfigurationError(
+      'bedrock の ZENN_CLI_AI_MODEL にはモデルIDまたは推論プロファイルIDを設定してください（ARNには対応していません）'
+    );
+  }
+  return model;
+}
+
+function vertexSettings(): GoogleVertexProviderSettings {
+  // Express modeのAPIキーではADCと送信先や権限の扱いが変わるため受け付けない
+  if (optionalEnvironment('GOOGLE_VERTEX_API_KEY')) {
+    throw new ScrapScanConfigurationError(
+      'Vertex AIのAPIキー（GOOGLE_VERTEX_API_KEY）には対応していません。設定を外し、Application Default Credentialsを利用してください'
+    );
+  }
+  return {
+    project: requiredSetting(
+      'GOOGLE_VERTEX_PROJECT',
+      GOOGLE_CLOUD_PROJECT_PATTERN,
+      'Google CloudのプロジェクトID'
+    ),
+    location: requiredSetting(
+      'GOOGLE_VERTEX_LOCATION',
+      GOOGLE_CLOUD_LOCATION_PATTERN,
+      'Vertex AIのロケーション'
+    ),
+  };
+}
+
+function azureEndpoint() {
+  const resourceName = optionalEnvironment('AZURE_RESOURCE_NAME');
+  const baseURL = optionalEnvironment('AZURE_BASE_URL');
+  if (Boolean(resourceName) === Boolean(baseURL)) {
+    throw new ScrapScanConfigurationError(
+      'AZURE_RESOURCE_NAME または AZURE_BASE_URL のどちらか一方を設定してください'
+    );
+  }
+  if (resourceName) {
+    if (!AZURE_RESOURCE_NAME_PATTERN.test(resourceName)) {
+      throw new ScrapScanConfigurationError(
+        'AZURE_RESOURCE_NAME にAzureのリソース名を設定してください'
+      );
+    }
+    return { resourceName };
+  }
+
+  let url: URL | undefined;
+  try {
+    url = new URL(baseURL as string);
+  } catch {
+    // 下で同じエラーにする
+  }
+  if (
+    url?.protocol !== 'https:' ||
+    url.username ||
+    url.password ||
+    url.port ||
+    url.search ||
+    url.hash ||
+    !AZURE_HOST_SUFFIXES.some((suffix) => url.hostname.endsWith(suffix))
+  ) {
+    throw new ScrapScanConfigurationError(
+      `AZURE_BASE_URL には ${AZURE_HOST_SUFFIXES.join('、')} のいずれかで終わるホストのhttps URLを設定してください`
+    );
+  }
+  return { baseURL: url.toString().replace(/\/+$/, '') };
+}
+
+async function azureAuthentication() {
+  const apiKey = optionalEnvironment('AZURE_API_KEY');
+  if (apiKey) return { apiKey };
+  const { DefaultAzureCredential, getBearerTokenProvider } =
+    await import('@azure/identity');
+  return {
+    tokenProvider: getBearerTokenProvider(
+      new DefaultAzureCredential(),
+      AZURE_TOKEN_SCOPE
+    ),
+  };
+}
+
+// 出力上限（maxOutputTokens）の中に構造化出力の枠を残す推論の予算
+const thinkingBudgetTokens = {
+  low: 1024,
+  medium: 2048,
+  high: 4096,
+} as const;
+
 function fireworksOptions(
   effort: ScrapAiEffort
 ): FireworksLanguageModelOptions {
   if (effort === 'none') return {};
 
-  const budgetTokens = {
-    low: 1024,
-    medium: 2048,
-    high: 4096,
-  }[effort];
+  const budgetTokens = thinkingBudgetTokens[effort];
   return { thinking: { type: 'enabled', budgetTokens } };
 }
 
@@ -163,12 +284,15 @@ function anthropicOptions(effort: ScrapAiEffort) {
   } satisfies AnthropicLanguageModelOptions;
 }
 
-function createModelAndOptions(
+// クラウドのSDKは読み込みが重いため、そのプロバイダーを使う場合だけ読み込む
+async function createModelAndOptions(
   config: ScrapAiConfiguration & { provider: ScrapGenerativeAiProvider }
-): {
+): Promise<{
   model: LanguageModel;
   providerOptions: AiProviderOptions;
-} {
+  // モデルごとの推論設定への変換をSDKに任せる場合に指定する
+  reasoning?: Exclude<ScrapAiEffort, 'none'>;
+}> {
   if (config.provider === 'openai') {
     const openai = createOpenAI({
       apiKey: requiredApiKey('OPENAI_API_KEY'),
@@ -215,6 +339,98 @@ function createModelAndOptions(
           : { reasoning: { effort: config.effort } }),
       }),
       providerOptions: {},
+    };
+  }
+
+  if (config.provider === 'bedrock') {
+    const region = requiredSetting(
+      'AWS_REGION',
+      AWS_REGION_PATTERN,
+      'AWSのリージョン'
+    );
+    const model = bedrockModel(config.model);
+    const apiKey = optionalEnvironment('AWS_BEARER_TOKEN_BEDROCK');
+    const { createAmazonBedrock } = await import('@ai-sdk/amazon-bedrock');
+    const credentials = apiKey
+      ? { apiKey }
+      : {
+          credentialProvider: (
+            await import('@aws-sdk/credential-providers')
+          ).fromNodeProviderChain(),
+        };
+    const bedrock = createAmazonBedrock({
+      region,
+      baseURL: bedrockBaseURL(region),
+      ...credentials,
+    });
+    // jsonToolでは強制tool_choiceになり、新しいClaudeでは拒否されるため使わない
+    const options: AmazonBedrockLanguageModelChatOptions = {
+      structuredOutputMode: 'outputFormat',
+    };
+    return {
+      model: bedrock(model),
+      providerOptions: { bedrock: options },
+      ...(config.effort === 'none' ? {} : { reasoning: config.effort }),
+    };
+  }
+
+  if (config.provider === 'vertex') {
+    const settings = vertexSettings();
+    const { createVertex } = await import('@ai-sdk/google-vertex');
+    const vertex = createVertex(settings);
+    if (config.effort !== 'none' && config.model.includes('gemini-2.5')) {
+      // SDKの変換ではGemini 2.5の予算が出力上限を超え、構造化出力が途中で切れるため明示する
+      return {
+        model: vertex(config.model),
+        providerOptions: {
+          vertex: {
+            thinkingConfig: {
+              thinkingBudget: thinkingBudgetTokens[config.effort],
+            },
+          },
+        },
+      };
+    }
+    // Gemini 3以降はthinkingLevelで指定するため、SDKに変換させる
+    return {
+      model: vertex(config.model),
+      providerOptions: {},
+      ...(config.effort === 'none' ? {} : { reasoning: config.effort }),
+    };
+  }
+
+  if (config.provider === 'vertex-anthropic') {
+    const settings = vertexSettings();
+    const { createVertexAnthropic } =
+      await import('@ai-sdk/google-vertex/anthropic');
+    const vertexAnthropic = createVertexAnthropic(settings);
+    // SDKはVertex AIでの構造化出力を非対応として扱うが、Vertex AIのClaudeも
+    // output_config.formatに対応しているため、Anthropicと同じ設定にする
+    // https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/claude/structured_outputs
+    return {
+      model: vertexAnthropic(config.model),
+      providerOptions: { anthropic: anthropicOptions(config.effort) },
+    };
+  }
+
+  if (config.provider === 'azure') {
+    const endpoint = azureEndpoint();
+    const { createAzure } = await import('@ai-sdk/azure');
+    const azure = createAzure({
+      ...endpoint,
+      ...(await azureAuthentication()),
+    });
+    // デプロイ名からは推論モデルか判定できず、reasoningEffortが捨てられるため明示する
+    const options: OpenAILanguageModelResponsesOptions = {
+      ...(config.effort === 'none'
+        ? {}
+        : { reasoningEffort: config.effort, forceReasoning: true }),
+      store: false,
+      strictJsonSchema: true,
+    };
+    return {
+      model: azure(config.model),
+      providerOptions: { azure: options },
     };
   }
 
@@ -266,12 +482,13 @@ function detectionPolicy(target: AiScanTarget, customPrompt?: string) {
     .join('\n\n');
 }
 
-function prepareGenerativeScan(
+async function prepareGenerativeScan(
   target: AiScanTarget,
   config: ScrapAiConfiguration & { provider: ScrapGenerativeAiProvider },
   notes: string | undefined
 ) {
-  const { model, providerOptions } = createModelAndOptions(config);
+  const { model, providerOptions, reasoning } =
+    await createModelAndOptions(config);
   const policy = detectionPolicy(target, config.customPrompt);
   const prompt =
     target.kind === 'scrap'
@@ -312,6 +529,7 @@ function prepareGenerativeScan(
       ...prompt,
       output: Output.object({ schema: aiScanSchema }),
       providerOptions,
+      ...(reasoning ? { reasoning } : {}),
       maxOutputTokens: 8192,
       maxRetries: 0,
       abortSignal,
@@ -330,7 +548,7 @@ function prepareGenerativeScan(
   };
 }
 
-function prepareScan(
+async function prepareScan(
   target: AiScanTarget,
   config: ScrapAiConfiguration,
   notes: string | undefined
@@ -376,7 +594,21 @@ async function runAiScan(
   config: ScrapAiConfiguration,
   notes: string | undefined
 ) {
-  const scan = prepareScan(target, config, notes);
+  let scan: Awaited<ReturnType<typeof prepareScan>>;
+  try {
+    scan = await prepareScan(target, config, notes);
+  } catch (error) {
+    // SDKの読み込みや初期化の失敗は、内部情報を表示せずスキャン失敗として扱う
+    if (
+      error instanceof ScrapScanConfigurationError ||
+      error instanceof ScrapAiScanError
+    ) {
+      throw error;
+    }
+    throw new ScrapAiScanError(
+      'AIスキャンに失敗しました。投稿せずに終了します'
+    );
+  }
   let findings: AiScanFinding[];
 
   try {

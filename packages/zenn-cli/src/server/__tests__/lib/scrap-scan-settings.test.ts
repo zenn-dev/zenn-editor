@@ -164,22 +164,26 @@ describe('Scrap scan settings', () => {
     expect(getScrapAiConfiguration()).toMatchObject({ provider, model });
   });
 
-  test.each(['anthropic', 'openrouter'])(
-    '%sはmodel指定を必須にする',
-    (provider) => {
-      process.env.ZENN_CLI_AI_PROVIDER = provider;
+  test.each([
+    'anthropic',
+    'openrouter',
+    'bedrock',
+    'vertex',
+    'vertex-anthropic',
+    'azure',
+  ])('%sはmodel指定を必須にする', (provider) => {
+    process.env.ZENN_CLI_AI_PROVIDER = provider;
 
-      expect(() => getScrapAiConfiguration()).toThrow(
-        ScrapScanConfigurationError
-      );
+    expect(() => getScrapAiConfiguration()).toThrow(
+      ScrapScanConfigurationError
+    );
 
-      process.env.ZENN_CLI_AI_MODEL = 'example-model';
-      expect(getScrapAiConfiguration()).toMatchObject({
-        provider,
-        model: 'example-model',
-      });
-    }
-  );
+    process.env.ZENN_CLI_AI_MODEL = 'example-model';
+    expect(getScrapAiConfiguration()).toMatchObject({
+      provider,
+      model: 'example-model',
+    });
+  });
 
   test('clefはclefとclef-flash以外のmodelを拒否する', () => {
     process.env.ZENN_CLI_AI_PROVIDER = 'clef';
