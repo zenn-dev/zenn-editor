@@ -74,8 +74,8 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 | 変数 | 必須条件・設定値・既定値 | 用途 |
 |------|--------------------------|------|
 | `ZENN_CLI_AI_SCAN` | `true` / `false`。既定値は `false` | `true` で AI scan を有効にする。 |
-| `ZENN_CLI_AI_PROVIDER` | AI scan 利用時に必須。生成モデルは `openai` / `fireworks` / `anthropic` / `openrouter`、判定モデルは `openai-decisions` / `jev` / `clef` | 送信先の AI プロバイダー。 |
-| `ZENN_CLI_AI_MODEL` | 既定値は `openai` / `openai-decisions` が `gpt-6-luna`、`jev` が `jev-latest`、`clef` が `clef-flash`（`clef` も指定可）。`fireworks` / `anthropic` / `openrouter` では必須 | 利用するモデル ID。指定する場合は空文字不可。 |
+| `ZENN_CLI_AI_PROVIDER` | AI scan 利用時に必須。生成モデルは `openai` / `fireworks` / `anthropic` / `openrouter` / `bedrock` / `vertex` / `vertex-anthropic` / `azure`、判定モデルは `openai-decisions` / `jev` / `clef` | 送信先の AI プロバイダー。 |
+| `ZENN_CLI_AI_MODEL` | 既定値は `openai` / `openai-decisions` が `gpt-6-luna`、`jev` が `jev-latest`、`clef` が `clef-flash`（`clef` も指定可）。`fireworks` / `anthropic` / `openrouter` / `bedrock` / `vertex` / `vertex-anthropic` / `azure` では必須 | 利用するモデル ID。指定する場合は空文字不可。`bedrock` では推論プロファイル ID も指定でき、`azure` ではデプロイ名を指定する。 |
 | `ZENN_CLI_AI_EFFORT` | `none` / `low` / `medium` / `high`。既定値は `medium` | 生成モデルの推論量。`none` は推論設定を送信しない。モデルが対応する値を選ぶ。判定モデルでは使用しない。 |
 | `ZENN_CLI_AI_SCAN_FAILURE_THRESHOLD` | `low` / `medium` / `high` / `critical`。既定値は `high` | この重要度以上の指摘がある場合に投稿を拒否する。 |
 | `ZENN_CLI_AI_SCAN_PROBABILITY_THRESHOLD` | 0 より大きく 1 より小さい数値。既定値は `0.5` | 判定モデルで、検知事項や重要度を該当とみなす確率。 |
@@ -87,6 +87,13 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 | `OPENROUTER_API_KEY` | `openrouter` 利用時に必須 | OpenRouter の API キー。ZDR（Zero Data Retention）のエンドポイントだけへ振り分けるため、ZDR 非対応のモデルは利用できない。 |
 | `TYPESAFE_API_KEY` | `jev` 利用時に必須 | TypeSafe の API キー。 |
 | `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` | `clef` 利用時に必須 | Workers AI の API トークンとアカウント ID。 |
+| `AWS_REGION` | `bedrock` 利用時に必須 | Amazon Bedrock のリージョン（例: `ap-northeast-1`）。 |
+| `AWS_BEARER_TOKEN_BEDROCK` | 任意 | Amazon Bedrock の API キー。未設定時は AWS の標準の認証情報チェーン（環境変数、`AWS_PROFILE`、SSO、IAM ロールなど）を使う。 |
+| `GOOGLE_VERTEX_PROJECT` / `GOOGLE_VERTEX_LOCATION` | `vertex` / `vertex-anthropic` 利用時に必須 | Vertex AI のプロジェクト ID とロケーション（例: `global`、`us-east5`）。認証には Application Default Credentials（`gcloud auth application-default login` や `GOOGLE_APPLICATION_CREDENTIALS`）を使う。Express mode の API キー（`GOOGLE_VERTEX_API_KEY`）には対応しておらず、設定されている場合は終了する。 |
+| `AZURE_RESOURCE_NAME` / `AZURE_BASE_URL` | `azure` 利用時にどちらか一方が必須 | Azure OpenAI のリソース名、または `https://<リソース>.openai.azure.com/openai/v1` や Microsoft Foundry の `https://<リソース>.services.ai.azure.com/openai/v1` などの Azure の URL。 |
+| `AZURE_API_KEY` | 任意 | Azure の API キー。未設定時は Microsoft Entra ID（`DefaultAzureCredential`。Azure CLI のログインやマネージド ID など）を使う。 |
+
+送信先のエンドポイントは、指定したリージョン・ロケーション・リソースから組み立てた公式のものに固定し、`AWS_ENDPOINT_URL` などによる上書きは使わない。入力の保持や人間によるレビューの扱いは各クラウドのアカウント設定に従う。Amazon Bedrock ではリージョンごとのデータ保持設定によって、AWS が入力を一定期間保持する場合や、利用できないモデルがある場合がある。
 
 判定モデル（`openai-decisions` / `jev` / `clef`）は文章を生成せず、検知事項ごとの確率を返す。指摘には固定の分類名と確率だけを表示する。Clef は一度に検査できる長さ（24,576 トークン）を超えた場合や、処理したトークン数が上限に近く未検査の部分が残った可能性がある場合は、投稿せずに終了する。
 

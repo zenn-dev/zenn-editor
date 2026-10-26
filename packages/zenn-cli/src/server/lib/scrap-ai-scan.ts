@@ -12,6 +12,21 @@ import {
   type AnthropicLanguageModelOptions,
 } from '@ai-sdk/anthropic';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
+import {
+  createAmazonBedrock,
+  type AmazonBedrockLanguageModelChatOptions,
+} from '@ai-sdk/amazon-bedrock';
+import {
+  createVertex,
+  type GoogleVertexProviderSettings,
+} from '@ai-sdk/google-vertex';
+import { createVertexAnthropic } from '@ai-sdk/google-vertex/anthropic';
+import { createAzure } from '@ai-sdk/azure';
+import { fromNodeProviderChain } from '@aws-sdk/credential-providers';
+import {
+  DefaultAzureCredential,
+  getBearerTokenProvider,
+} from '@azure/identity';
 import { z } from 'zod';
 import { runtimeEnv } from './runtime-env';
 import {
@@ -35,6 +50,17 @@ const OPENAI_BASE_URL = 'https://api.openai.com/v1';
 const FIREWORKS_BASE_URL = 'https://api.fireworks.ai/inference/v1';
 const ANTHROPIC_BASE_URL = 'https://api.anthropic.com/v1';
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
+const AZURE_TOKEN_SCOPE = 'https://cognitiveservices.azure.com/.default';
+// 環境変数のエンドポイント上書きで送信先を変えられないよう、既知の形式だけ受け付ける
+const AWS_REGION_PATTERN = /^[a-z]{2}(-[a-z]+)+-\d+$/;
+const GOOGLE_CLOUD_PROJECT_PATTERN = /^[a-z][a-z0-9-]{4,28}[a-z0-9]$/;
+const GOOGLE_CLOUD_LOCATION_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const AZURE_RESOURCE_NAME_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}$/;
+const AZURE_HOST_SUFFIXES = [
+  '.openai.azure.com',
+  '.services.ai.azure.com',
+  '.cognitiveservices.azure.com',
+];
 
 const findingLevelSchema = z.enum(['low', 'medium', 'high', 'critical']);
 const aiScanFindingSchema = z
@@ -133,6 +159,113 @@ function requiredApiKey(name: ApiKeyName) {
   return value;
 }
 
+function optionalEnvironment(name: string) {
+  return runtimeEnv(name)?.trim() || undefined;
+}
+
+function requiredSetting(name: string, pattern: RegExp, description: string) {
+  const value = optionalEnvironment(name);
+  if (!value || !pattern.test(value)) {
+    throw new ScrapScanConfigurationError(
+      `${name} に${description}を設定してください`
+    );
+  }
+  return value;
+}
+
+function bedrockBaseURL(region: string) {
+  const dnsSuffix = region.startsWith('cn-')
+    ? 'amazonaws.com.cn'
+    : 'amazonaws.com';
+  return `https://bedrock-runtime.${region}.${dnsSuffix}`;
+}
+
+function bedrockOptions(
+  model: string,
+  effort: ScrapAiEffort
+): AmazonBedrockLanguageModelChatOptions {
+  // jsonToolでは強制tool_choiceになり、新しいClaudeでは拒否されるため使わない
+  const structuredOutputMode = 'outputFormat' as const;
+  if (effort === 'none') return { structuredOutputMode };
+  return {
+    structuredOutputMode,
+    reasoningConfig: model.includes('anthropic')
+      ? { type: 'adaptive', maxReasoningEffort: effort }
+      : { type: 'enabled', maxReasoningEffort: effort },
+  };
+}
+
+function vertexSettings(): GoogleVertexProviderSettings {
+  // Express modeのAPIキーではADCと送信先や権限の扱いが変わるため受け付けない
+  if (optionalEnvironment('GOOGLE_VERTEX_API_KEY')) {
+    throw new ScrapScanConfigurationError(
+      'Vertex AIのAPIキー（GOOGLE_VERTEX_API_KEY）には対応していません。設定を外し、Application Default Credentialsを利用してください'
+    );
+  }
+  return {
+    project: requiredSetting(
+      'GOOGLE_VERTEX_PROJECT',
+      GOOGLE_CLOUD_PROJECT_PATTERN,
+      'Google CloudのプロジェクトID'
+    ),
+    location: requiredSetting(
+      'GOOGLE_VERTEX_LOCATION',
+      GOOGLE_CLOUD_LOCATION_PATTERN,
+      'Vertex AIのロケーション'
+    ),
+  };
+}
+
+function azureEndpoint() {
+  const resourceName = optionalEnvironment('AZURE_RESOURCE_NAME');
+  const baseURL = optionalEnvironment('AZURE_BASE_URL');
+  if (Boolean(resourceName) === Boolean(baseURL)) {
+    throw new ScrapScanConfigurationError(
+      'AZURE_RESOURCE_NAME または AZURE_BASE_URL のどちらか一方を設定してください'
+    );
+  }
+  if (resourceName) {
+    if (!AZURE_RESOURCE_NAME_PATTERN.test(resourceName)) {
+      throw new ScrapScanConfigurationError(
+        'AZURE_RESOURCE_NAME にAzureのリソース名を設定してください'
+      );
+    }
+    return { resourceName };
+  }
+
+  let url: URL | undefined;
+  try {
+    url = new URL(baseURL as string);
+  } catch {
+    // 下で同じエラーにする
+  }
+  if (
+    url?.protocol !== 'https:' ||
+    url.username ||
+    url.password ||
+    url.port ||
+    url.search ||
+    url.hash ||
+    !AZURE_HOST_SUFFIXES.some((suffix) => url.hostname.endsWith(suffix))
+  ) {
+    throw new ScrapScanConfigurationError(
+      `AZURE_BASE_URL には ${AZURE_HOST_SUFFIXES.join('、')} のいずれかで終わるホストのhttps URLを設定してください`
+    );
+  }
+  return { baseURL: url.toString().replace(/\/+$/, '') };
+}
+
+function azureAuthentication() {
+  const apiKey = optionalEnvironment('AZURE_API_KEY');
+  if (apiKey) return { apiKey };
+  return {
+    tokenProvider: getBearerTokenProvider(
+      new DefaultAzureCredential(),
+      AZURE_TOKEN_SCOPE
+    ),
+  };
+}
+
 function fireworksOptions(
   effort: ScrapAiEffort
 ): FireworksLanguageModelOptions {
@@ -215,6 +348,62 @@ function createModelAndOptions(
           : { reasoning: { effort: config.effort } }),
       }),
       providerOptions: {},
+    };
+  }
+
+  if (config.provider === 'bedrock') {
+    const region = requiredSetting(
+      'AWS_REGION',
+      AWS_REGION_PATTERN,
+      'AWSのリージョン'
+    );
+    const apiKey = optionalEnvironment('AWS_BEARER_TOKEN_BEDROCK');
+    const bedrock = createAmazonBedrock({
+      region,
+      baseURL: bedrockBaseURL(region),
+      ...(apiKey
+        ? { apiKey }
+        : { credentialProvider: fromNodeProviderChain() }),
+    });
+    return {
+      model: bedrock(config.model),
+      providerOptions: { bedrock: bedrockOptions(config.model, config.effort) },
+    };
+  }
+
+  if (config.provider === 'vertex') {
+    const vertex = createVertex(vertexSettings());
+    return {
+      model: vertex(config.model),
+      providerOptions:
+        config.effort === 'none'
+          ? {}
+          : { vertex: { thinkingConfig: { thinkingLevel: config.effort } } },
+    };
+  }
+
+  if (config.provider === 'vertex-anthropic') {
+    const vertexAnthropic = createVertexAnthropic(vertexSettings());
+    // Vertex AIのClaudeもoutput_config.formatに対応しているため、Anthropicと同じ設定にする
+    return {
+      model: vertexAnthropic(config.model),
+      providerOptions: { anthropic: anthropicOptions(config.effort) },
+    };
+  }
+
+  if (config.provider === 'azure') {
+    const azure = createAzure({
+      ...azureEndpoint(),
+      ...azureAuthentication(),
+    });
+    const options: OpenAILanguageModelResponsesOptions = {
+      ...(config.effort === 'none' ? {} : { reasoningEffort: config.effort }),
+      store: false,
+      strictJsonSchema: true,
+    };
+    return {
+      model: azure(config.model),
+      providerOptions: { azure: options },
     };
   }
 

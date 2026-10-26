@@ -185,6 +185,7 @@ Environment:
   ZENN_CLI_FORCE_UNLISTED      Scrap作成を常に限定公開にする場合はtrue
   ZENN_CLI_AI_SCAN             AI scanを有効にする場合はtrue
   ZENN_CLI_AI_PROVIDER         openai / fireworks / anthropic / openrouter /
+                               bedrock / vertex / vertex-anthropic / azure /
                                openai-decisions / jev / clef
   ZENN_CLI_AI_MODEL            AI scanに使用するモデルID（任意）
   ZENN_CLI_AI_EFFORT           none / low / medium / high。デフォルトはmedium。
@@ -200,12 +201,21 @@ Environment:
   TYPESAFE_API_KEY             Jev利用時のAPIキー
   CLOUDFLARE_API_TOKEN         Clef利用時のCloudflare APIトークン
   CLOUDFLARE_ACCOUNT_ID        Clef利用時のCloudflareアカウントID
+  AWS_REGION                   Bedrock利用時のリージョン
+  AWS_BEARER_TOKEN_BEDROCK     BedrockのAPIキー（任意。未設定時はAWSの認証情報チェーン）
+  GOOGLE_VERTEX_PROJECT        vertex / vertex-anthropic 利用時のプロジェクトID
+  GOOGLE_VERTEX_LOCATION       vertex / vertex-anthropic 利用時のロケーション
+                               （認証はApplication Default Credentials）
+  AZURE_RESOURCE_NAME          Azure OpenAIのリソース名
+  AZURE_BASE_URL               AzureのURL（AZURE_RESOURCE_NAMEの代わりに指定）
+  AZURE_API_KEY                AzureのAPIキー（任意。未設定時はMicrosoft Entra ID）
 
 Default AI models:
   openai / openai-decisions: gpt-6-luna
   jev: jev-latest
   clef: clef-flash（clef または clef-flash を指定可能）
-  fireworks / anthropic / openrouter: ZENN_CLI_AI_MODEL の指定が必須
+  fireworks / anthropic / openrouter / bedrock / vertex / vertex-anthropic / azure:
+    ZENN_CLI_AI_MODEL の指定が必須（azureではデプロイ名）
 
 AI scan:
   Secret scanはデフォルトで有効です。AI scanはZENN_CLI_AI_SCAN=true を
