@@ -28,10 +28,11 @@ A pnpm + Turbo monorepo. All packages share one version managed by Lerna-lite (`
 
 ## zenn-cli
 
-- Entry: `src/server/zenn.ts` → `src/server/commands/index.ts`. Commands: `preview` (default), `init`, `new:article`, `new:book`, `list:articles`, `list:books`, `scrap` (Scrap operations via the Zenn Public API), `image`, `--help`, `--version`. `new:*` takes options such as `--slug`/`--title` (no interactive prompts); `list:*` supports `--format tsv/json`.
+- Entry: `src/server/zenn.ts` → `src/server/commands/index.ts`. Commands: `preview` (default), `init`, `new:article`, `new:book`, `list:articles`, `list:books`, `scrap` and `image` (Scrap and image operations via the Zenn Public API), `--help`, `--version`. `new:*` takes options such as `--slug`/`--title` (no interactive prompts); `list:*` supports `--format tsv/json`.
+- Content layout: articles are `articles/<slug>.md`; books are `books/<slug>/` with `config.yaml` (or `config.yml`), a cover image, and chapter `.md` files. Chapter order comes from `chapters` in the config, otherwise from an `N.` filename prefix (no prefix → `position: null`).
 - Preview server: `src/server/app.ts` (routes) and `src/server/lib/server.ts` (HTTP + WebSocket). Port 8000 by default, incremented when busy. chokidar sends a refresh message only on `change` events (not on file add/delete).
 - API routes: `/api/articles`, `/api/articles/:slug`, `/api/books`, `/api/books/:slug`, `/api/books/:book_slug/chapters`, `/api/books/:book_slug/chapters/:chapter_filename`, `/api/manual/:slug`, `/api/cli-version`, `/api/local-info`, and `/images/*splat` (served from `cwd/images`; paths containing `..` are rejected).
-- Content is read from disk and converted on every request (no cache): `parseFrontMatter` (js-yaml `JSON_SCHEMA`) → `markdownToHtml` with `getMarkdownOptions()` (`src/server/lib/markdown-options.ts`) → `completeHtml` (inserts errors for missing images, non-absolute image paths, or images over 3MB) → `parseToc`. A book's `config.yaml` (or `config.yml`) is parsed with the default js-yaml schema.
+- Content is read from disk and converted on every request (no cache): `parseFrontMatter` (js-yaml `JSON_SCHEMA`) → `markdownToHtml` with `getMarkdownOptions()` (`src/server/lib/markdown-options.ts`) → `completeHtml` (inserts errors for non-absolute image paths, unsupported image extensions, missing images, or images over 3MB) → `parseToc`. A book's `config.yaml` (or `config.yml`) is parsed with the default js-yaml schema.
 - Environment variables:
   - Variables in `.env` are inlined at build time by rspack's DefinePlugin (e.g. `VITE_EMBED_SERVER_ORIGIN`).
   - Variables that users set at runtime must be listed in `RUNTIME_ONLY_ENV_KEYS` in `rspack.server.js` and read via `runtimeEnv()` (`src/server/lib/runtime-env.ts`). Never put them in `.env` / `.env.example`.
@@ -41,7 +42,7 @@ A pnpm + Turbo monorepo. All packages share one version managed by Lerna-lite (`
 - `markdownToHtml(text, options)` is **async**: markdown-it renders code blocks as placeholders, Shiki highlights them asynchronously (`src/utils/md-renderer-fence.ts`, `src/utils/highlight.ts`), then the result is sanitized with `sanitize-html` (`src/sanitizer.ts`; disallowed tags are discarded). `markdownToSimpleHtml` is also exported.
 - The code is meant to run in both Node.js and the browser. Do not use Node-only modules or `DOMParser`.
 - Plugins are registered in `src/index.ts` (order matters). `mdCustomBlock` handles the `@[type](...)` embed syntax; `:::message` / `:::details` use markdown-it-container; heading anchors are added to h1–h4.
-- `MarkdownOptions` (`src/types.ts`): `embedOrigin`, `customEmbed`, `htmlEmbed` (opt-in, default off; renders ` ```html-embed ` blocks in a sandboxed iframe).
+- `MarkdownOptions` (`src/types.ts`): `embedOrigin`, `customEmbed`, `htmlEmbed` (opt-in, default off; renders ` ```html-embed ` blocks in a sandboxed iframe only when `embedOrigin` is also set). zenn-cli enables it only when `ZENN_EXPERIMENTAL_HTML_EMBED=1`.
 - Embeds (`src/embed.ts`):
   - Direct iframes: youtube, slideshare, speakerdeck, docswell, jsfiddle, codepen, codesandbox, stackblitz, blueprintue, figma.
   - Via the embed server (`EmbedServerType`, requires `embedOrigin`): tweet, card, gist, github, mermaid, and `html` (` ```html-embed ` only). Without `embedOrigin`, tweet/card/gist/github fall back to links and mermaid stays a code block.
