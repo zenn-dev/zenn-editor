@@ -65,6 +65,14 @@ describe('Rspackの環境変数設定', () => {
         'TYPESAFE_API_KEY=DO_NOT_PUBLISH_TYPESAFE',
         'CLOUDFLARE_API_TOKEN=DO_NOT_PUBLISH_CLOUDFLARE',
         'CLOUDFLARE_ACCOUNT_ID=0123456789abcdef0123456789abcdef',
+        'AWS_REGION=ap-northeast-1',
+        'AWS_BEARER_TOKEN_BEDROCK=DO_NOT_PUBLISH_BEDROCK',
+        'GOOGLE_VERTEX_PROJECT=zenn-project',
+        'GOOGLE_VERTEX_LOCATION=global',
+        'GOOGLE_VERTEX_API_KEY=DO_NOT_PUBLISH_VERTEX',
+        'AZURE_RESOURCE_NAME=zenn-openai',
+        'AZURE_BASE_URL=https://zenn.openai.azure.com/openai/v1',
+        'AZURE_API_KEY=DO_NOT_PUBLISH_AZURE',
         'OTHER_BUILD_TIME_VALUE=safe-to-inline',
       ].join('\n')
     );
@@ -108,6 +116,15 @@ describe('Rspackのサーバー依存設定', () => {
     await expect(
       resolveExternal(resolver, '@openrouter/ai-sdk-provider')
     ).resolves.toBe('import @openrouter/ai-sdk-provider');
+    await expect(
+      resolveExternal(resolver, '@ai-sdk/google-vertex/anthropic')
+    ).resolves.toBe('import @ai-sdk/google-vertex/anthropic');
+    await expect(
+      resolveExternal(resolver, '@aws-sdk/credential-providers')
+    ).resolves.toBe('commonjs @aws-sdk/credential-providers');
+    await expect(resolveExternal(resolver, '@azure/identity')).resolves.toBe(
+      'import @azure/identity'
+    );
     await expect(
       resolveExternal(resolver, 'zenn-content-css')
     ).resolves.toBeUndefined();

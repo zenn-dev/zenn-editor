@@ -25,6 +25,10 @@ export const generativeAiProviders = [
   'fireworks',
   'anthropic',
   'openrouter',
+  'bedrock',
+  'vertex',
+  'vertex-anthropic',
+  'azure',
 ] as const;
 export const decisionAiProviders = ['openai-decisions', 'jev', 'clef'] as const;
 export type ScrapGenerativeAiProvider = (typeof generativeAiProviders)[number];
