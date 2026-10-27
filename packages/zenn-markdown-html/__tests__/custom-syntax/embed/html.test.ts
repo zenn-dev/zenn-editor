@@ -215,16 +215,14 @@ describe('HTML埋め込み要素のテスト', () => {
       expect($('text').text()).toBe('xy');
     });
 
-    test('入れ子が深すぎる場合は、例外にせずエラーメッセージを出力する', async () => {
+    test('入れ子が深すぎる場合も例外にせず、iframe を出力しない', async () => {
+      // 例外になるかは実行環境のスタックの大きさで変わるため、出力するメッセージは確かめない
       const html = await markdownToHtml(
         `\`\`\`html-embed\n${'<div>'.repeat(8000)}\n\`\`\``,
         { embedOrigin, htmlEmbed: true }
       );
 
       expect(parse(html).querySelector('iframe')).toBeNull();
-      expect(html).toContain(
-        'HTMLの埋め込みに変換できない記述が含まれています'
-      );
     });
 
     test('標準モードで解析する', async () => {
