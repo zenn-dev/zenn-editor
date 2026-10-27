@@ -71,7 +71,11 @@ export function generateEmbedServerIframe(
   // ref: https://github.com/zenn-dev/zenn-community/issues/746
   const loading = type === 'tweet' ? '' : ' loading="lazy"';
 
-  return `<span class="embed-block zenn-embedded zenn-embedded-${encodedType}"><iframe id="${id}" src="${iframeSrc}" data-content="${encodedSrc}" frameborder="0" scrolling="no"${loading}></iframe></span>`;
+  // ユーザーが書いた HTML を表示する iframe は、opaque origin で隔離する
+  // 親ページ側のスクリプトは、この属性の有無で iframe の高さに上限をかけるかを判定する
+  const sandbox = type === 'html' ? ' sandbox="allow-scripts"' : '';
+
+  return `<span class="embed-block zenn-embedded zenn-embedded-${encodedType}"><iframe id="${id}" src="${iframeSrc}" data-content="${encodedSrc}" frameborder="0" scrolling="no"${loading}${sandbox}></iframe></span>`;
 }
 
 /** 渡された`type`の埋め込み要素のHTML文字列を返す */
