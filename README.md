@@ -1,4 +1,4 @@
-<a href="https://flatt.tech/oss/gmo/trampoline" target="_blank"><img src="https://flatt.tech/assets/images/badges/gmo-oss.svg" height="24px"/></a>
+<a href="https://flatt.tech/oss/gmo/trampoline" target="_blank"><img src="https://flatt.tech/assets/images/badges/gmo-oss.svg" height="24px"/></a> [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/zenn-dev/zenn-editor)
 
 ![Zenn Editor](https://user-images.githubusercontent.com/34590683/91540859-60e06780-e956-11ea-9762-0acac2b7c4c5.png)
 
