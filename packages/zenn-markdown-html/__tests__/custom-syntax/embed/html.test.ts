@@ -121,6 +121,46 @@ describe('HTML埋め込み要素のテスト', () => {
       expect(content).not.toMatch(/href|<noscript|<mglyph/);
     });
 
+    test('SVG・MathML の <style>・<script> に文字参照で隠したタグも除去する', async () => {
+      const content = await embedContent(
+        [
+          '<svg><style>&lt;meta http-equiv="refresh" content="0"&gt;&lt;a href="https://example.com"&gt;x&lt;/a&gt;</style></svg>',
+          '<svg><style><![CDATA[<a href="https://example.com">x</a>]]></style></svg>',
+          '<svg><script>&lt;meta http-equiv="refresh" content="0"&gt;</script></svg>',
+          '<math><style>&lt;iframe src="https://example.com"&gt;&lt;/iframe&gt;</style></math>',
+        ].join('\n')
+      );
+
+      expect(content).not.toMatch(/href|<meta|<iframe/);
+    });
+
+    test('除去を繰り返しても出力が定まらない場合は、iframe を出力せずにエラーメッセージを出力する', async () => {
+      const html = await markdownToHtml(
+        `\`\`\`html-embed\n<svg><style>&amp;amp;amp;amp;amp;amp;lt;a href="https://example.com"&gt;</style></svg>\n\`\`\``,
+        { embedOrigin, htmlEmbed: true }
+      );
+
+      expect(parse(html).querySelector('iframe')).toBeNull();
+      expect(html).toContain(
+        'HTMLの埋め込みに変換できない記述が含まれています'
+      );
+    });
+
+    test('MathML の href を除去する', async () => {
+      expect(
+        await embedContent(
+          '<math href="https://example.com"><mi href="https://example.com">x</mi></math>'
+        )
+      ).toBe('<math><mi>x</mi></math>');
+    });
+
+    test('SVG の <style> はそのまま残す', async () => {
+      const input =
+        '<svg><style>.c { fill: red; } .a > .b { stroke: blue; }</style><circle class="c" r="5"></circle></svg>';
+
+      expect(await embedContent(input)).toBe(input);
+    });
+
     test('data: の画像や SVG の image は残す', async () => {
       const input =
         '<img src="data:image/png;base64,AA" srcset="data:image/png;base64,AA 2x" />\n<svg><image href="data:image/png;base64,AA"></image></svg>';

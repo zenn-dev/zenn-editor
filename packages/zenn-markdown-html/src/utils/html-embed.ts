@@ -37,14 +37,67 @@ const REMOVED_ATTRIBUTES = new Map([
 ]);
 /** すべての要素から除去する属性 */
 const REMOVED_GLOBAL_ATTRIBUTES = new Set(['formaction']);
+/** `href` でリンクになりうる MathML の要素 */
+const MATHML_TAGS = new Set([
+  'math',
+  'maction',
+  'annotation',
+  'annotation-xml',
+  'menclose',
+  'merror',
+  'mfenced',
+  'mfrac',
+  'mi',
+  'mmultiscripts',
+  'mn',
+  'mo',
+  'mover',
+  'mpadded',
+  'mphantom',
+  'mprescripts',
+  'mroot',
+  'mrow',
+  'ms',
+  'mspace',
+  'msqrt',
+  'mstyle',
+  'msub',
+  'msubsup',
+  'msup',
+  'mtable',
+  'mtd',
+  'mtext',
+  'mtr',
+  'munder',
+  'munderover',
+  'none',
+  'semantics',
+]);
+const MATHML_REMOVED_ATTRIBUTES = new Set(['href']);
+/** 除去を繰り返す上限の回数 */
+const MAX_STRIP_ITERATIONS = 5;
 
 /**
  * ユーザーが書いた HTML から、リンク先と `<meta>`・`<base>` などを除去する
  * iframe 側でも除去し、外部への通信は iframe 側の CSP で止める前提で、変換時にも多層防御として除去しておく
  * Node.js とブラウザの両方で動くよう、DOMParser ではなく sanitize-html を使う
  * (sanitize-html のパーサーはタグ名と属性名を小文字にするため、大文字で書かれても除去できる)
+ *
+ * SVG・MathML の中の `<style>`・`<script>` では、パーサーが展開した `&lt;` などを
+ * sanitize-html がエスケープせずに出力するため、1回の除去では除去したはずのタグが現れることがある
+ * そのため出力が変わらなくなるまで繰り返し、上限の回数で収まらない場合は null を返す
  */
-export function stripHtmlEmbedContent(html: string): string {
+export function stripHtmlEmbedContent(html: string): string | null {
+  let current = html;
+  for (let i = 0; i < MAX_STRIP_ITERATIONS; i++) {
+    const next = stripOnce(current);
+    if (next === current) return next;
+    current = next;
+  }
+  return null;
+}
+
+function stripOnce(html: string): string {
   return sanitizeHtml(html, {
     // `<style>` や SVG など描画に必要な要素は残す
     // JS は iframe 側の CSP で止めるため、ここでは除去しない
@@ -57,7 +110,9 @@ export function stripHtmlEmbedContent(html: string): string {
     transformTags: {
       '*': (tagName, attribs) => {
         // 中のテキストや図形は残し、属性だけを除去する
-        const removed = REMOVED_ATTRIBUTES.get(tagName);
+        const removed = MATHML_TAGS.has(tagName)
+          ? MATHML_REMOVED_ATTRIBUTES
+          : REMOVED_ATTRIBUTES.get(tagName);
         const filtered = Object.fromEntries(
           Object.entries(attribs).filter(
             ([name]) =>
@@ -79,6 +134,10 @@ export function generateHtmlEmbedHTML(
   embedOrigin: string
 ): string | null {
   const html = stripHtmlEmbedContent(content.trim());
+
+  if (html === null) {
+    return 'HTMLの埋め込みに変換できない記述が含まれています';
+  }
 
   if (new TextEncoder().encode(html).length > HTML_EMBED_MAX_BYTES) {
     return `HTMLの埋め込みは${HTML_EMBED_MAX_BYTES / 1024}KB以内にする必要があります`;
