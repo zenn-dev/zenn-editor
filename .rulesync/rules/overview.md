@@ -10,7 +10,7 @@ globs:
 
 ## Public Repository Notice
 
-This is a public repository. Never include the contents of private repositories or any confidential/internal information (e.g. internal URLs, private repo code or file paths, unreleased business plans, customer information) in PR titles/descriptions, commit messages, source code comments, or any other content pushed to this repository. Describe changes only in terms of what is visible in this repository.
+This is a public repository. Never include the contents of private repositories or any confidential/internal information (e.g. internal URLs, private repo code or file paths, unreleased business plans, customer information) in PR titles/descriptions, review comments, issues, commit messages, source code comments, or any other content pushed or posted to this repository. Describe changes only in terms of what is visible in this repository or other publicly available sources.
 
 ## Project Structure
 
