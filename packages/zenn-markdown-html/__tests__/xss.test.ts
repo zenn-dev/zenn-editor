@@ -64,6 +64,18 @@ describe('XSS脆弱性のテスト', () => {
     });
     expect(html).toContain(encodeURIComponent(content));
   });
+  test('html-embed の内容は data-content の外や iframe の外に出ない', async () => {
+    const content = `"></iframe><img src=x onerror="alert('XSS')"><script>alert('XSS')</script>`;
+    const html = await markdownToHtml(`\`\`\`html-embed\n${content}\n\`\`\``, {
+      embedOrigin: 'https://embed-server.example.com',
+      htmlEmbed: true,
+    });
+    // 属性値は encodeURIComponent されているため、`"` や `<` で属性や要素を閉じられない
+    expect(html).not.toMatch(/[<"]img|<script|onerror=/);
+    expect(html).toMatch(
+      /^<span class="embed-block zenn-embedded zenn-embedded-html"><iframe [^<>]+><\/iframe><\/span>$/
+    );
+  });
   test('figmaのURL内の<img />をエスケープする', async () => {
     const content = `@[figma](https://www.figma.com/file/LKQ4FJ4bTnCSjedbRpk931/Sample-File"></iframe><img src onerror=alert("XSS") />)`;
     const html = await markdownToHtml(content);

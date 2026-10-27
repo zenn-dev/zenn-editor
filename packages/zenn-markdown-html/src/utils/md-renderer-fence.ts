@@ -48,6 +48,7 @@ import type { MarkdownIt } from 'markdown-it';
 import { md } from './markdown-it';
 import { MarkdownOptions } from '../types';
 import { highlight } from './highlight';
+import { generateHtmlEmbedHTML } from './html-embed';
 
 /**
  * コードブロック情報を保存するインターフェース
@@ -197,12 +198,24 @@ export function mdRendererFence(
   md.renderer.rules.fence = function (...args) {
     const [tokens, idx] = args;
     const { info, content } = tokens[idx];
-    const { langName, fileName, hasDiff } = parseInfo(info);
+    const parsed = parseInfo(info);
+    const { fileName, hasDiff } = parsed;
+    let { langName } = parsed;
 
     if (langName === 'mermaid') {
       const generator = options.customEmbed?.mermaid;
       // generator が(上書きされて)定義されてない場合はそのまま出力する
       return generator ? generator(content.trim(), options) : content;
+    }
+
+    if (langName === 'html-embed') {
+      const embedded =
+        options.htmlEmbed && options.embedOrigin
+          ? generateHtmlEmbedHTML(content, options.embedOrigin)
+          : null;
+      if (embedded !== null) return embedded;
+      // 埋め込みを無効にしている場合や、埋め込みサーバーがない場合は HTML のコードブロックとして出力する
+      langName = 'html';
     }
 
     const fenceStart = tokens[idx].map?.[0];

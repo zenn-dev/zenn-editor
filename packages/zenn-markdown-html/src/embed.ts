@@ -39,11 +39,13 @@ export type EmbedType =
   | 'github'
   | 'mermaid';
 
-/** embedサーバーで表示する埋め込み要素の種別 */
-export type EmbedServerType = Extract<
-  EmbedType,
-  'tweet' | 'card' | 'mermaid' | 'github' | 'gist'
->;
+/**
+ * embedサーバーで表示する埋め込み要素の種別
+ * `html` は ```html-embed のコードブロック専用のため、`EmbedType` には含めない
+ * (`EmbedType` に含めると `@[html](...)` 記法でも埋め込めてしまう)
+ */
+export type EmbedServerType =
+  Extract<EmbedType, 'tweet' | 'card' | 'mermaid' | 'github' | 'gist'> | 'html';
 
 /** 埋め込み要素のHTMLを生成する関数 */
 export type EmbedGenerator = (str: string, options?: MarkdownOptions) => string;
