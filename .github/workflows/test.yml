@@ -1,6 +1,10 @@
 name: Test zenn-editor
 
 on:
+  # README の CI バッジで canary の状態を表示するため、canary への push でも実行する
+  push:
+    branches:
+      - canary
   pull_request:
     branches:
       - main
