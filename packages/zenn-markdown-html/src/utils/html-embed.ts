@@ -49,17 +49,23 @@ export function stripHtmlEmbedContent(
   html: string,
   maxIterations = MAX_STRIP_ITERATIONS
 ): string | null {
-  let current = html;
-  for (let i = 0; i < maxIterations; i++) {
-    const next = stripOnce(current);
-    if (next === current) return next;
-    current = next;
+  try {
+    let current = html;
+    for (let i = 0; i < maxIterations; i++) {
+      const next = stripOnce(current);
+      if (next === current) return next;
+      current = next;
+    }
+    return null;
+  } catch {
+    // 入れ子が深すぎる場合などは、文字列に戻す処理がスタックを使い切って例外になる
+    return null;
   }
-  return null;
 }
 
 function stripOnce(html: string): string {
-  const $ = cheerio.load(html);
+  // DOCTYPE がないと quirks モードで解析されるため、iframe 側の文書と同じ標準モードで解析する
+  const $ = cheerio.load(`<!DOCTYPE html>${html}`);
 
   // `<style>` や SVG など描画に必要な要素は残す
   // JS は iframe 側の CSP で止めるため、ここでは除去しない
@@ -68,6 +74,12 @@ function stripOnce(html: string): string {
   // 中のテキストや図形は残し、リンク先・送信先の属性だけを除去する
   // (parse5 は SVG の `xlink:href` も名前空間付きの `href` として扱うため、`href` の除去で両方が消える)
   $('a, area').removeAttr('href');
+  // SVG のアニメーションで、あとから href を付けられないようにする
+  $('set, animate')
+    .filter((_, el) =>
+      /^\s*(xlink:)?href\s*$/i.test($(el).attr('attributeName') ?? '')
+    )
+    .remove();
   $('form').removeAttr('action');
   $('[formaction]').removeAttr('formaction');
   $('[href]')
@@ -75,7 +87,12 @@ function stripOnce(html: string): string {
     .removeAttr('href');
 
   // `<head>` に移された `<style>` などを含め、本文に入れる HTML として出力する
+  // (`<html>`・`<body>` に書いた属性は出力しない)
   return ($('head').html() ?? '') + ($('body').html() ?? '');
+}
+
+function getByteLength(str: string): number {
+  return new TextEncoder().encode(str).length;
 }
 
 /**
@@ -86,15 +103,19 @@ export function generateHtmlEmbedHTML(
   content: string,
   embedOrigin: string
 ): string | null {
-  const html = stripHtmlEmbedContent(content.trim());
+  const sizeErrorMessage = `HTMLの埋め込みは${HTML_EMBED_MAX_BYTES / 1024}KB以内にする必要があります`;
 
+  // 大きすぎる入力を解析しないよう、除去の前にも確認する
+  const source = content.trim();
+  if (getByteLength(source) > HTML_EMBED_MAX_BYTES) return sizeErrorMessage;
+
+  const html = stripHtmlEmbedContent(source);
   if (html === null) {
     return 'HTMLの埋め込みに変換できない記述が含まれています';
   }
 
-  if (new TextEncoder().encode(html).length > HTML_EMBED_MAX_BYTES) {
-    return `HTMLの埋め込みは${HTML_EMBED_MAX_BYTES / 1024}KB以内にする必要があります`;
-  }
+  // 除去後に閉じタグなどが補われて大きくなる場合があるため、出力も確認する
+  if (getByteLength(html) > HTML_EMBED_MAX_BYTES) return sizeErrorMessage;
 
   return generateEmbedServerIframe('html', html, embedOrigin) || null;
 }

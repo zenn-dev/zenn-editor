@@ -196,6 +196,44 @@ describe('HTML埋め込み要素のテスト', () => {
       ).toBe('.a::after { content: "&lt;"; }');
     });
 
+    test('SVG のアニメーションで href を付ける要素を除去する', async () => {
+      const content = await embedContent(
+        [
+          '<svg><a><set attributeName="href" to="https://example.com"/><text>x</text></a></svg>',
+          '<svg><a><animate attributeName="xlink:href" values="https://example.com"/><text>y</text></a></svg>',
+          '<svg><rect><animate attributeName="width" values="1;2"/></rect></svg>',
+        ].join('\n')
+      );
+      const $ = cheerio.load(content ?? '');
+
+      expect($('set').length).toBe(0);
+      expect(
+        $('animate')
+          .toArray()
+          .map((el) => $(el).attr('attributeName'))
+      ).toEqual(['width']);
+      expect($('text').text()).toBe('xy');
+    });
+
+    test('入れ子が深すぎる場合は、例外にせずエラーメッセージを出力する', async () => {
+      const html = await markdownToHtml(
+        `\`\`\`html-embed\n${'<div>'.repeat(8000)}\n\`\`\``,
+        { embedOrigin, htmlEmbed: true }
+      );
+
+      expect(parse(html).querySelector('iframe')).toBeNull();
+      expect(html).toContain(
+        'HTMLの埋め込みに変換できない記述が含まれています'
+      );
+    });
+
+    test('標準モードで解析する', async () => {
+      // quirks モードでは <p> が <table> の前で閉じられない
+      expect(await embedContent('<p><table><tr><td>x</td></tr></table>')).toBe(
+        '<p></p><table><tbody><tr><td>x</td></tr></tbody></table>'
+      );
+    });
+
     test('上限の回数までに出力が定まらない場合は null を返す', () => {
       // 1回目で <meta> を除去して出力が変わるため、1回では定まらない
       expect(stripHtmlEmbedContent('<meta charset="utf-8"><p>a</p>', 1)).toBe(
@@ -258,6 +296,20 @@ describe('HTML埋め込み要素のテスト', () => {
       });
       expect(parse(over).querySelector('iframe')).toBeNull();
       expect(over).toContain('HTMLの埋め込みは50KB以内にする必要があります');
+
+      // 除去で小さくなる入力でも、除去する前の大きさで判定する
+      const beforeStrip = await markdownToHtml(
+        `\`\`\`html-embed\n<meta>${'a'.repeat(HTML_EMBED_MAX_BYTES)}\n\`\`\``,
+        { embedOrigin, htmlEmbed: true }
+      );
+      expect(parse(beforeStrip).querySelector('iframe')).toBeNull();
+
+      // 除去で大きくなる入力は、除去した後の大きさでも判定する(SVG の <style> の > は &gt; で出力される)
+      const afterStrip = await markdownToHtml(
+        `\`\`\`html-embed\n<svg><style>${'>'.repeat(HTML_EMBED_MAX_BYTES / 2)}</style></svg>\n\`\`\``,
+        { embedOrigin, htmlEmbed: true }
+      );
+      expect(parse(afterStrip).querySelector('iframe')).toBeNull();
 
       // 文字数ではなく UTF-8 のバイト数で数える(「あ」は3バイト)
       const multibyte = await markdownToHtml(
