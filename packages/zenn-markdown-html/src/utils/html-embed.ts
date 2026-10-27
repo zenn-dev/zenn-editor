@@ -4,16 +4,43 @@ import { generateEmbedServerIframe } from './embed-helper';
 /** ```html-embed のコードブロック1つあたりの最大サイズ(UTF-8 のバイト数) */
 export const HTML_EMBED_MAX_BYTES = 50 * 1024;
 
-/** リンク先を除去する要素 */
-const LINK_TAGS = new Set(['a', 'area']);
-/** リンク先を指定する属性 */
-const LINK_ATTRIBUTES = new Set(['href', 'xlink:href']);
-/** 要素ごと除去する要素 */
-const REMOVED_TAGS = new Set(['meta', 'base']);
+/**
+ * 要素ごと除去する要素
+ * - `meta`(`http-equiv="refresh"` による遷移)と `base`
+ * - 別の文書や外部リソースを読み込む要素
+ * - 中身の解析が sanitize-html のパーサーとブラウザで食い違い、除去を迂回できる要素
+ */
+const REMOVED_TAGS = new Set([
+  'meta',
+  'base',
+  'link',
+  'iframe',
+  'frame',
+  'frameset',
+  'object',
+  'embed',
+  'portal',
+  'noscript',
+  'noembed',
+  'noframes',
+  'xmp',
+  'plaintext',
+  'mglyph',
+  'malignmark',
+]);
+
+/** 要素ごとに除去する属性(リンク先・送信先) */
+const REMOVED_ATTRIBUTES = new Map([
+  ['a', new Set(['href', 'xlink:href'])],
+  ['area', new Set(['href', 'xlink:href'])],
+  ['form', new Set(['action'])],
+]);
+/** すべての要素から除去する属性 */
+const REMOVED_GLOBAL_ATTRIBUTES = new Set(['formaction']);
 
 /**
- * ユーザーが書いた HTML から、リンク先と `<meta>`・`<base>` を除去する
- * iframe 側でも同じものを除去するが、多層防御として変換時にも除去しておく
+ * ユーザーが書いた HTML から、リンク先と `<meta>`・`<base>` などを除去する
+ * iframe 側でも除去し、外部への通信は iframe 側の CSP で止める前提で、変換時にも多層防御として除去しておく
  * Node.js とブラウザの両方で動くよう、DOMParser ではなく sanitize-html を使う
  * (sanitize-html のパーサーはタグ名と属性名を小文字にするため、大文字で書かれても除去できる)
  */
@@ -24,14 +51,18 @@ export function stripHtmlEmbedContent(html: string): string {
     allowedTags: false,
     allowedAttributes: false,
     allowVulnerableTags: true,
+    // 画像などに使われるスキームは残す(`data:` の画像などを使えるかは iframe 側の CSP で決める)
+    allowedSchemes: ['http', 'https', 'data', 'blob'],
     exclusiveFilter: (frame) => REMOVED_TAGS.has(frame.tag),
     transformTags: {
       '*': (tagName, attribs) => {
-        if (!LINK_TAGS.has(tagName)) return { tagName, attribs };
-
-        // 中のテキストや図形は残し、リンク先の属性だけを除去する
+        // 中のテキストや図形は残し、属性だけを除去する
+        const removed = REMOVED_ATTRIBUTES.get(tagName);
         const filtered = Object.fromEntries(
-          Object.entries(attribs).filter(([name]) => !LINK_ATTRIBUTES.has(name))
+          Object.entries(attribs).filter(
+            ([name]) =>
+              !REMOVED_GLOBAL_ATTRIBUTES.has(name) && !removed?.has(name)
+          )
         );
         return { tagName, attribs: filtered };
       },
@@ -39,16 +70,19 @@ export function stripHtmlEmbedContent(html: string): string {
   });
 }
 
-/** ```html-embed のコードブロックを、埋め込みサーバーの iframe に変換する */
+/**
+ * ```html-embed のコードブロックを、埋め込みサーバーの iframe に変換する
+ * `embedOrigin` が URL として不正な場合は null を返す
+ */
 export function generateHtmlEmbedHTML(
   content: string,
   embedOrigin: string
-): string {
+): string | null {
   const html = stripHtmlEmbedContent(content.trim());
 
   if (new TextEncoder().encode(html).length > HTML_EMBED_MAX_BYTES) {
     return `HTMLの埋め込みは${HTML_EMBED_MAX_BYTES / 1024}KB以内にする必要があります`;
   }
 
-  return generateEmbedServerIframe('html', html, embedOrigin);
+  return generateEmbedServerIframe('html', html, embedOrigin) || null;
 }

@@ -12,6 +12,15 @@ const getEmbeddedContent = (html: string) => {
   return content === undefined ? undefined : decodeURIComponent(content);
 };
 
+/** html-embed のコードブロックを変換し、埋め込みサーバーに渡す HTML を返す */
+const embedContent = async (input: string) =>
+  getEmbeddedContent(
+    await markdownToHtml(`\`\`\`html-embed\n${input}\n\`\`\``, {
+      embedOrigin,
+      htmlEmbed: true,
+    })
+  );
+
 describe('HTML埋め込み要素のテスト', () => {
   const src = `<div class="box">図</div>\n<style>.box > p { padding: 16px; }</style>`;
   const markdown = `\`\`\`html-embed\n${src}\n\`\`\``;
@@ -35,11 +44,10 @@ describe('HTML埋め込み要素のテスト', () => {
       const iframe = span?.querySelector('iframe');
 
       expect(span?.classList.contains('zenn-embedded-html')).toBe(true);
+      expect(iframe?.id).toMatch(/^zenn-embedded__[0-9a-f]+$/);
       expect(iframe?.attributes).toEqual(
         expect.objectContaining({
-          src: expect.stringMatching(
-            new RegExp(`^${embedOrigin}/html#zenn-embedded__[0-9a-f]+$`)
-          ),
+          src: `${embedOrigin}/html#${iframe?.id}`,
           sandbox: 'allow-scripts',
         })
       );
@@ -85,6 +93,56 @@ describe('HTML埋め込み要素のテスト', () => {
       expect(content).toContain('<circle r="5">');
     });
 
+    test('別の文書を読み込む要素と、フォームの送信先を除去する', async () => {
+      const content = await embedContent(
+        [
+          '<iframe srcdoc="<a href=https://example.com>x</a>"></iframe>',
+          '<iframe src="https://example.com"></iframe>',
+          '<object data="https://example.com"></object>',
+          '<embed src="https://example.com">',
+          '<link rel="stylesheet" href="https://example.com/a.css">',
+          '<form action="https://example.com"><button formaction="https://example.com">送信</button></form>',
+        ].join('\n')
+      );
+
+      expect(content).not.toMatch(/<iframe|<object|<embed|<link|example\.com/);
+      expect(content).toContain('<form><button>送信</button></form>');
+    });
+
+    test('中身の解析がブラウザと食い違う要素は、要素ごと除去する', async () => {
+      // ブラウザでは </noscript> や mglyph の扱いが異なり、style の中に隠した <a href> がリンクになる
+      const content = await embedContent(
+        [
+          '<noscript><style></noscript><a href="https://example.com">x</a></style></noscript>',
+          '<math><mtext><table><mglyph><style><a href="https://example.com">x</a></style></mglyph></table></mtext></math>',
+        ].join('\n')
+      );
+
+      expect(content).not.toMatch(/href|<noscript|<mglyph/);
+    });
+
+    test('data: の画像や SVG の image は残す', async () => {
+      const input =
+        '<img src="data:image/png;base64,AA" srcset="data:image/png;base64,AA 2x" />\n<svg><image href="data:image/png;base64,AA"></image></svg>';
+
+      expect(await embedContent(input)).toBe(input);
+    });
+
+    test('タグ名が Object のプロパティ名と同じでも変換できる', async () => {
+      expect(await embedContent('<constructor title="t">x</constructor>')).toBe(
+        '<constructor title="t">x</constructor>'
+      );
+    });
+
+    test('embedOrigin が URL として不正な場合は、HTML のコードブロックを出力する', async () => {
+      const html = await markdownToHtml(markdown, {
+        embedOrigin: 'invalid origin',
+        htmlEmbed: true,
+      });
+
+      expect(html).toBe(await markdownToHtml(htmlCodeBlock));
+    });
+
     test('サイズの上限を超えた場合は、iframe を出力せずにエラーメッセージを出力する', async () => {
       const make = (bytes: number) =>
         `\`\`\`html-embed\n<p>${'a'.repeat(bytes - 7)}</p>\n\`\`\``;
@@ -101,6 +159,13 @@ describe('HTML埋め込み要素のテスト', () => {
       });
       expect(parse(over).querySelector('iframe')).toBeNull();
       expect(over).toContain('HTMLの埋め込みは50KB以内にする必要があります');
+
+      // 文字数ではなく UTF-8 のバイト数で数える(「あ」は3バイト)
+      const multibyte = await markdownToHtml(
+        `\`\`\`html-embed\n<p>${'あ'.repeat(HTML_EMBED_MAX_BYTES / 3)}</p>\n\`\`\``,
+        { embedOrigin, htmlEmbed: true }
+      );
+      expect(parse(multibyte).querySelector('iframe')).toBeNull();
     });
 
     test('`@[html](...)` は埋め込みとして扱わない', async () => {

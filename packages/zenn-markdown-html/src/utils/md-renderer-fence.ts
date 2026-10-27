@@ -209,9 +209,11 @@ export function mdRendererFence(
     }
 
     if (langName === 'html-embed') {
-      if (options.htmlEmbed && options.embedOrigin) {
-        return generateHtmlEmbedHTML(content, options.embedOrigin);
-      }
+      const embedded =
+        options.htmlEmbed && options.embedOrigin
+          ? generateHtmlEmbedHTML(content, options.embedOrigin)
+          : null;
+      if (embedded !== null) return embedded;
       // 埋め込みを無効にしている場合や、埋め込みサーバーがない場合は HTML のコードブロックとして出力する
       langName = 'html';
     }
