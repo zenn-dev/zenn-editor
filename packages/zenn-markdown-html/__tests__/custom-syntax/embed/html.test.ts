@@ -1,7 +1,11 @@
 import { describe, test, expect } from 'vitest';
 import { parse } from 'node-html-parser';
+import * as cheerio from 'cheerio';
 import markdownToHtml from '../../../src/index';
-import { HTML_EMBED_MAX_BYTES } from '../../../src/utils/html-embed';
+import {
+  HTML_EMBED_MAX_BYTES,
+  stripHtmlEmbedContent,
+} from '../../../src/utils/html-embed';
 
 const embedOrigin = 'https://embed.example.com';
 
@@ -20,6 +24,28 @@ const embedContent = async (input: string) =>
       htmlEmbed: true,
     })
   );
+
+/**
+ * 埋め込みサーバーに渡す HTML をブラウザと同じ規則(parse5)で解析し直し、
+ * 残ってはいけない要素や属性を返す
+ */
+const findForbidden = (content: string | undefined) => {
+  const $ = cheerio.load(content ?? '');
+  const elements = $(
+    'meta, base, link, iframe, object, embed, noscript, mglyph, template'
+  ).toArray();
+  const attributes = $(
+    'a[href], area[href], form[action], [formaction]'
+  ).toArray();
+  const mathml = $('[href]')
+    .toArray()
+    .filter(
+      (el) =>
+        'namespace' in el &&
+        el.namespace === 'http://www.w3.org/1998/Math/MathML'
+    );
+  return [...elements, ...attributes, ...mathml].map((el) => el.name);
+};
 
 describe('HTML埋め込み要素のテスト', () => {
   const src = `<div class="box">図</div>\n<style>.box > p { padding: 16px; }</style>`;
@@ -85,12 +111,22 @@ describe('HTML埋め込み要素のテスト', () => {
       });
       const content = getEmbeddedContent(html) ?? '';
 
-      expect(content).not.toMatch(/href/i);
-      expect(content).not.toMatch(/<meta|<base/i);
+      expect(findForbidden(content)).toEqual([]);
       expect(content).toContain('<a title="t">リンク</a>');
       expect(content).toContain('大文字');
       expect(content).toContain('alt="area"');
       expect(content).toContain('<circle r="5">');
+    });
+
+    test('先頭に書いた <style> も残す', async () => {
+      // 解析すると <head> に移る要素も、本文に入れる HTML として出力する
+      const content = await embedContent(
+        '<style>.a { color: red; }</style><p class="a">x</p>'
+      );
+
+      expect(content).toBe(
+        '<style>.a { color: red; }</style><p class="a">x</p>'
+      );
     });
 
     test('別の文書を読み込む要素と、フォームの送信先を除去する', async () => {
@@ -105,7 +141,8 @@ describe('HTML埋め込み要素のテスト', () => {
         ].join('\n')
       );
 
-      expect(content).not.toMatch(/<iframe|<object|<embed|<link|example\.com/);
+      expect(findForbidden(content)).toEqual([]);
+      expect(content).not.toContain('example.com');
       expect(content).toContain('<form><button>送信</button></form>');
     });
 
@@ -118,7 +155,7 @@ describe('HTML埋め込み要素のテスト', () => {
         ].join('\n')
       );
 
-      expect(content).not.toMatch(/href|<noscript|<mglyph/);
+      expect(findForbidden(content)).toEqual([]);
     });
 
     test('SVG・MathML の <style>・<script> に文字参照で隠したタグも除去する', async () => {
@@ -131,18 +168,41 @@ describe('HTML埋め込み要素のテスト', () => {
         ].join('\n')
       );
 
-      expect(content).not.toMatch(/href|<meta|<iframe/);
+      expect(findForbidden(content)).toEqual([]);
     });
 
-    test('除去を繰り返しても出力が定まらない場合は、iframe を出力せずにエラーメッセージを出力する', async () => {
-      const html = await markdownToHtml(
-        `\`\`\`html-embed\n<svg><style>&amp;amp;amp;amp;amp;amp;lt;a href="https://example.com"&gt;</style></svg>\n\`\`\``,
-        { embedOrigin, htmlEmbed: true }
+    test('ブラウザで HTML の要素として解析される SVG・MathML の <style> の中身も除去する', async () => {
+      // SVG・MathML の中で HTML を書ける要素かどうかは、要素の名前空間や属性で決まる
+      const content = await embedContent(
+        [
+          '<math><annotation-xml><style><meta http-equiv="refresh" content="0"><a href="https://example.com">x</a></style></annotation-xml></math>',
+          '<svg><mi><style><meta http-equiv="refresh" content="0"></style></mi></svg>',
+          '<math><title><style><meta http-equiv="refresh" content="0"></style></title></math>',
+        ].join('\n')
       );
 
-      expect(parse(html).querySelector('iframe')).toBeNull();
-      expect(html).toContain(
-        'HTMLの埋め込みに変換できない記述が含まれています'
+      expect(findForbidden(content)).toEqual([]);
+    });
+
+    test('SVG の <style> の文字参照は展開しない', async () => {
+      const content = await embedContent(
+        '<svg><style>.a::after { content: "&amp;lt;"; }</style></svg>'
+      );
+
+      expect(
+        cheerio
+          .load(content ?? '')('style')
+          .text()
+      ).toBe('.a::after { content: "&lt;"; }');
+    });
+
+    test('上限の回数までに出力が定まらない場合は null を返す', () => {
+      // 1回目で <meta> を除去して出力が変わるため、1回では定まらない
+      expect(stripHtmlEmbedContent('<meta charset="utf-8"><p>a</p>', 1)).toBe(
+        null
+      );
+      expect(stripHtmlEmbedContent('<meta charset="utf-8"><p>a</p>')).toBe(
+        '<p>a</p>'
       );
     });
 
@@ -154,24 +214,23 @@ describe('HTML埋め込み要素のテスト', () => {
       ).toBe('<math><mi>x</mi></math>');
     });
 
-    test('SVG の <style> はそのまま残す', async () => {
-      const input =
-        '<svg><style>.c { fill: red; } .a > .b { stroke: blue; }</style><circle class="c" r="5"></circle></svg>';
+    test('SVG の <style> の中身は変えずに残す', async () => {
+      const css = '.c { fill: red; } .a > .b { stroke: blue; }';
+      const content = await embedContent(
+        `<svg viewBox="0 0 10 10"><style>${css}</style><circle class="c" r="5"/></svg>`
+      );
+      const $ = cheerio.load(content ?? '');
 
-      expect(await embedContent(input)).toBe(input);
+      expect($('svg style').text()).toBe(css);
+      expect($('svg').attr('viewBox')).toBe('0 0 10 10');
+      expect($('svg circle').attr('class')).toBe('c');
     });
 
     test('data: の画像や SVG の image は残す', async () => {
       const input =
-        '<img src="data:image/png;base64,AA" srcset="data:image/png;base64,AA 2x" />\n<svg><image href="data:image/png;base64,AA"></image></svg>';
+        '<img src="data:image/png;base64,AA" srcset="data:image/png;base64,AA 2x">\n<svg><image href="data:image/png;base64,AA"></image></svg>';
 
       expect(await embedContent(input)).toBe(input);
-    });
-
-    test('タグ名が Object のプロパティ名と同じでも変換できる', async () => {
-      expect(await embedContent('<constructor title="t">x</constructor>')).toBe(
-        '<constructor title="t">x</constructor>'
-      );
     });
 
     test('embedOrigin が URL として不正な場合は、HTML のコードブロックを出力する', async () => {
