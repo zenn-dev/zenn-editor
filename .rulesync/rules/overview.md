@@ -8,6 +8,10 @@ globs:
 ---
 # Zenn Editor - Architecture Overview
 
+## Public Repository Notice
+
+This is a public repository. Never include the contents of private repositories or any confidential/internal information (e.g. internal URLs, private repo code or file paths, unreleased business plans, customer information) in PR titles/descriptions, commit messages, source code comments, or any other content pushed to this repository. Describe changes only in terms of what is visible in this repository.
+
 ## Project Structure
 
 The zenn-editor is a monorepo managed by Turbo and pnpm, containing five integrated packages that work together to provide local Markdown preview and content management for Zenn content (articles and books).
