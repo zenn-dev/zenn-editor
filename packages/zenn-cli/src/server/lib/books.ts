@@ -3,6 +3,7 @@ import path from 'path';
 import imageSizeOf from 'image-size';
 import markdownToHtml from 'zenn-markdown-html';
 import { parseToc } from 'zenn-markdown-html/utils';
+import { getMarkdownOptions } from './markdown-options';
 import { parseFrontMatter } from './front-matter';
 import * as Log from './log';
 import {
@@ -94,9 +95,7 @@ export async function getLocalChapter(
   if (!data) return null;
 
   const { meta, bodyMarkdown } = data;
-  const rawHtml = await markdownToHtml(bodyMarkdown, {
-    embedOrigin: process.env.VITE_EMBED_SERVER_ORIGIN,
-  });
+  const rawHtml = await markdownToHtml(bodyMarkdown, getMarkdownOptions());
   const bodyHtml = completeHtml(rawHtml);
   const toc = parseToc(bodyHtml);
   return {

@@ -8,14 +8,15 @@ targets:
 ---
 # リリースPRの作成
 
-1. リポジトリの Latest release を取得する。Pre-release は対象外とする。
-2. Latest release の patch バージョンを1つ増やし、今回のリリースバージョン `new_version` とする。
+1. リポジトリの Latest release を取得し、そのバージョンを `previous_version` とする。Pre-release は対象外とする。
+2. `previous_version` の patch バージョンを1つ増やし、今回のリリースバージョン `new_version` とする。
 3. タイトルが `release {previous_version}` の前回のリリースPRを特定する。
-4. 前回のリリースPR以降にマージされたPRのURLを、`https://github.com/zenn-dev/zenn-editor/pull/{pr_number}` の形式ですべて取得する。
+4. 前回のリリースPRのマージ以降に `canary` へマージされたPRのURLを、`https://github.com/zenn-dev/zenn-editor/pull/{pr_number}` の形式ですべて取得する。
 5. [PR #561](https://github.com/zenn-dev/zenn-editor/pull/561) を参考に、次の条件でPRを作成する。
    - head: `canary`
    - base: `main`
    - title: `release {new_version}`
+   - label: `release:patch`（`main` 宛てのPRは `.github/workflows/validate-pr.yml` で `release:*` のラベルが必須）
    - description: `.github/PULL_REQUEST_TEMPLATE.md` は使用せず、次の内容だけを記載する。
 
 ```md
