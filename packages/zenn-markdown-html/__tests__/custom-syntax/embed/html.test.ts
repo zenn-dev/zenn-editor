@@ -195,12 +195,27 @@ describe('HTML埋め込み要素のテスト', () => {
           '<input type="checkbox ">',
           // 点のない i(U+0131)は toUpperCase では I になるが、ブラウザでは text になる
           '<input type="rad\u0131o">',
+          // ケルビン記号(U+212A)は toLowerCase では k になるが、ブラウザでは text になる
+          '<input type="chec\u212abox">',
+          // 同じ属性が重なると、ブラウザは最初の値を使う
+          '<input type="text" type="checkbox">',
           '<p>後</p>',
         ].join('')
       );
 
       expect(findForbidden(content)).toEqual([]);
       expect(content).toBe('<p>前</p><p>後</p>');
+    });
+
+    test('SVG の foreignObject の中など、HTML として解析される checkbox は残す', async () => {
+      const content = await embedContent(
+        '<svg><foreignObject><input type="checkbox" type="text"></foreignObject></svg>'
+      );
+
+      expect(findForbidden(content)).toEqual([]);
+      expect(content).toBe(
+        '<svg><foreignObject><input type="checkbox"></foreignObject></svg>'
+      );
     });
 
     test('SVG の中の input は除去する', async () => {

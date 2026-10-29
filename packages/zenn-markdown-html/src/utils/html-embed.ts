@@ -47,6 +47,23 @@ const MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
 /** 残す `input` の `type`(文字を入力できないもの) */
 const KEPT_INPUT_TYPES = ['checkbox', 'radio'];
 
+/**
+ * 残す `input`(HTML の checkbox・radio)かどうか
+ * - `type` はブラウザと同じく、ASCII の大文字・小文字だけを区別しない完全一致で比べる
+ *   (`toLowerCase`・`toUpperCase` は ASCII 以外の文字も変換する。前後の空白や未知の値はブラウザでは `text` になる)
+ * - SVG・MathML の中の `input` は HTML の要素ではないので、checkbox にならない
+ */
+function isKeptInput(el: {
+  namespace?: string;
+  attribs: Record<string, string>;
+}): boolean {
+  if (el.namespace !== HTML_NAMESPACE) return false;
+  const type = (el.attribs.type ?? '').replace(/[A-Z]/g, (c) =>
+    c.toLowerCase()
+  );
+  return KEPT_INPUT_TYPES.includes(type);
+}
+
 /** 除去を繰り返す上限の回数 */
 const MAX_STRIP_ITERATIONS = 5;
 
@@ -85,20 +102,8 @@ function stripOnce(html: string): string {
   // `<style>` や SVG など描画に必要な要素は残す
   // JS は iframe 側の CSP で止めるため、ここでは除去しない
   $(REMOVED_TAGS.join(',')).remove();
-  // ブラウザと同じく `type` を ASCII の大文字・小文字だけを区別せずに比べる
-  // (`toLowerCase`・`toUpperCase` は ASCII 以外の文字も変換する。前後の空白や未知の値はブラウザでは `text` になる)
-  // SVG・MathML の中の `input` は HTML の要素ではないので、checkbox にならない
   $('input')
-    .filter(
-      (_, el) =>
-        !(
-          'namespace' in el &&
-          el.namespace === HTML_NAMESPACE &&
-          KEPT_INPUT_TYPES.includes(
-            ($(el).attr('type') ?? '').replace(/[A-Z]/g, (c) => c.toLowerCase())
-          )
-        )
-    )
+    .filter((_, el) => !isKeptInput(el))
     .remove();
 
   // 中のテキストや図形は残し、リンク先や編集を許す属性だけを除去する
