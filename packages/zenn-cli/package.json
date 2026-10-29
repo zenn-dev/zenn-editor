@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.5.11-alpha.0",
+  "version": "0.5.11",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
