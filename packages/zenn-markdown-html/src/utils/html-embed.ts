@@ -9,6 +9,9 @@ export const HTML_EMBED_MAX_BYTES = 50 * 1024;
  * - `meta`(`http-equiv="refresh"` による遷移)と `base`
  * - 別の文書や外部リソースを読み込む要素
  * - 解析のされ方が、文脈やスクリプトの有効・無効で変わる要素
+ * - フォームと入力欄(送信は iframe 側の CSP と sandbox で止めるが、偽のログイン画面などで読者に入力させないため)
+ *
+ * 埋め込みを表示する iframe 側でも同じ要素を除去しているので、変更するときは両側を揃える
  */
 const REMOVED_TAGS = [
   'meta',
@@ -28,6 +31,14 @@ const REMOVED_TAGS = [
   'plaintext',
   'mglyph',
   'malignmark',
+  'form',
+  'input',
+  'button',
+  'textarea',
+  'select',
+  'option',
+  'optgroup',
+  'datalist',
 ];
 
 const MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
@@ -71,7 +82,7 @@ function stripOnce(html: string): string {
   // JS は iframe 側の CSP で止めるため、ここでは除去しない
   $(REMOVED_TAGS.join(',')).remove();
 
-  // 中のテキストや図形は残し、リンク先・送信先の属性だけを除去する
+  // 中のテキストや図形は残し、リンク先や編集を許す属性だけを除去する
   // (parse5 は SVG の `xlink:href` も名前空間付きの `href` として扱うため、`href` の除去で両方が消える)
   $('a, area').removeAttr('href');
   // SVG のアニメーションで、あとから href を付けられないようにする
@@ -80,8 +91,8 @@ function stripOnce(html: string): string {
       /^\s*(xlink:)?href\s*$/i.test($(el).attr('attributeName') ?? '')
     )
     .remove();
-  $('form').removeAttr('action');
-  $('[formaction]').removeAttr('formaction');
+  // 入力欄を除去しても、contenteditable を付けた要素には文字を入力できる
+  $('[contenteditable]').removeAttr('contenteditable');
   $('[href]')
     .filter((_, el) => 'namespace' in el && el.namespace === MATHML_NAMESPACE)
     .removeAttr('href');
