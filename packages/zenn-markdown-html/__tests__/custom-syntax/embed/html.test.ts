@@ -166,7 +166,16 @@ describe('HTML埋め込み要素のテスト', () => {
         '<div contenteditable="true">入力</div><p contenteditable="">入力</p>'
       );
 
+      expect(findForbidden(content)).toEqual([]);
       expect(content).toBe('<div>入力</div><p>入力</p>');
+    });
+
+    test('入力を受け付けない、フォームに関係する要素は残す', async () => {
+      const html =
+        '<fieldset><legend>凡例</legend><label>ラベル</label><output>1</output><progress value="1" max="2"></progress><meter value="0.5"></meter></fieldset><details><summary>見出し</summary>本文</details>';
+      const content = await embedContent(html);
+
+      expect(content).toBe(html);
     });
 
     test('中身の解析がブラウザと食い違う要素は、要素ごと除去する', async () => {

@@ -82,7 +82,7 @@ function stripOnce(html: string): string {
   // JS は iframe 側の CSP で止めるため、ここでは除去しない
   $(REMOVED_TAGS.join(',')).remove();
 
-  // 中のテキストや図形は残し、リンク先・送信先の属性だけを除去する
+  // 中のテキストや図形は残し、リンク先や編集を許す属性だけを除去する
   // (parse5 は SVG の `xlink:href` も名前空間付きの `href` として扱うため、`href` の除去で両方が消える)
   $('a, area').removeAttr('href');
   // SVG のアニメーションで、あとから href を付けられないようにする
