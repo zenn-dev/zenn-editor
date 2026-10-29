@@ -10,6 +10,7 @@ export const HTML_EMBED_MAX_BYTES = 50 * 1024;
  * - 別の文書や外部リソースを読み込む要素
  * - 解析のされ方が、文脈やスクリプトの有効・無効で変わる要素
  * - フォームと入力欄(送信は iframe 側の CSP と sandbox で止めるが、偽のログイン画面などで読者に入力させないため)
+ *   `input` は別に扱い、文字を入力できない checkbox・radio だけを残す(CSS の `:checked` で作るタブや開閉に使うため)
  *
  * 埋め込みを表示する iframe 側でも同じ要素を除去しているので、変更するときは両側を揃える
  */
@@ -32,7 +33,6 @@ const REMOVED_TAGS = [
   'mglyph',
   'malignmark',
   'form',
-  'input',
   'button',
   'textarea',
   'select',
@@ -41,7 +41,28 @@ const REMOVED_TAGS = [
   'datalist',
 ];
 
+const HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
 const MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
+
+/** 残す `input` の `type`(文字を入力できないもの) */
+const KEPT_INPUT_TYPES = ['checkbox', 'radio'];
+
+/**
+ * 残す `input`(HTML の checkbox・radio)かどうか
+ * - `type` はブラウザと同じく、ASCII の大文字・小文字だけを区別しない完全一致で比べる
+ *   (`toLowerCase`・`toUpperCase` は ASCII 以外の文字も変換する。前後の空白や未知の値はブラウザでは `text` になる)
+ * - SVG・MathML の中の `input` は HTML の要素ではないので、checkbox にならない
+ */
+function isKeptInput(el: {
+  namespace?: string;
+  attribs: Record<string, string>;
+}): boolean {
+  if (el.namespace !== HTML_NAMESPACE) return false;
+  const type = (el.attribs.type ?? '').replace(/[A-Z]/g, (c) =>
+    c.toLowerCase()
+  );
+  return KEPT_INPUT_TYPES.includes(type);
+}
 
 /** 除去を繰り返す上限の回数 */
 const MAX_STRIP_ITERATIONS = 5;
@@ -81,6 +102,9 @@ function stripOnce(html: string): string {
   // `<style>` や SVG など描画に必要な要素は残す
   // JS は iframe 側の CSP で止めるため、ここでは除去しない
   $(REMOVED_TAGS.join(',')).remove();
+  $('input')
+    .filter((_, el) => !isKeptInput(el))
+    .remove();
 
   // 中のテキストや図形は残し、リンク先や編集を許す属性だけを除去する
   // (parse5 は SVG の `xlink:href` も名前空間付きの `href` として扱うため、`href` の除去で両方が消える)

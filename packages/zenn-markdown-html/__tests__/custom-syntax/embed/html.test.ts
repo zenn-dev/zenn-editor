@@ -32,8 +32,19 @@ const embedContent = async (input: string) =>
 const findForbidden = (content: string | undefined) => {
   const $ = cheerio.load(content ?? '');
   const elements = $(
-    'meta, base, link, iframe, object, embed, noscript, mglyph, template, form, input, button, textarea, select, option, optgroup, datalist'
+    'meta, base, link, iframe, object, embed, noscript, mglyph, template, form, button, textarea, select, option, optgroup, datalist'
   ).toArray();
+  // HTML の checkbox・radio 以外の input(type は ASCII の大文字・小文字だけを区別しない完全一致で比べる)
+  const inputs = $('input')
+    .toArray()
+    .filter(
+      (el) =>
+        !(
+          'namespace' in el &&
+          el.namespace === 'http://www.w3.org/1999/xhtml' &&
+          /^(checkbox|radio)$/i.test($(el).attr('type') ?? '')
+        )
+    );
   const attributes = $('a[href], area[href], [contenteditable]').toArray();
   const mathml = $('[href]')
     .toArray()
@@ -42,7 +53,9 @@ const findForbidden = (content: string | undefined) => {
         'namespace' in el &&
         el.namespace === 'http://www.w3.org/1998/Math/MathML'
     );
-  return [...elements, ...attributes, ...mathml].map((el) => el.name);
+  return [...elements, ...inputs, ...attributes, ...mathml].map(
+    (el) => el.name
+  );
 };
 
 describe('HTML埋め込み要素のテスト', () => {
@@ -159,6 +172,57 @@ describe('HTML埋め込み要素のテスト', () => {
       expect(content).toBe(
         '<p>前</p><svg><foreignObject></foreignObject></svg><p>後</p>'
       );
+    });
+
+    test('checkbox・radio の input は残す', async () => {
+      const html =
+        '<input type="checkbox" id="t"><label for="t">タブ</label><input type="RADIO" name="r">';
+      const content = await embedContent(html);
+
+      expect(findForbidden(content)).toEqual([]);
+      expect(content).toBe(html);
+    });
+
+    test('文字入力の input は、種類によらず除去する', async () => {
+      const content = await embedContent(
+        [
+          '<p>前</p>',
+          '<input>',
+          '<input type="text">',
+          '<input type="password">',
+          '<input type="unknown">',
+          // 前後の空白は除かず、ブラウザでは text になる
+          '<input type="checkbox ">',
+          // 点のない i(U+0131)は toUpperCase では I になるが、ブラウザでは text になる
+          '<input type="rad\u0131o">',
+          // ケルビン記号(U+212A)は toLowerCase では k になるが、ブラウザでは text になる
+          '<input type="chec\u212abox">',
+          // 同じ属性が重なると、ブラウザは最初の値を使う
+          '<input type="text" type="checkbox">',
+          '<p>後</p>',
+        ].join('')
+      );
+
+      expect(findForbidden(content)).toEqual([]);
+      expect(content).toBe('<p>前</p><p>後</p>');
+    });
+
+    test('SVG の foreignObject の中など、HTML として解析される checkbox は残す', async () => {
+      const content = await embedContent(
+        '<svg><foreignObject><input type="checkbox" type="text"></foreignObject></svg>'
+      );
+
+      expect(findForbidden(content)).toEqual([]);
+      expect(content).toBe(
+        '<svg><foreignObject><input type="checkbox"></foreignObject></svg>'
+      );
+    });
+
+    test('SVG の中の input は除去する', async () => {
+      const content = await embedContent('<svg><input type="checkbox"></svg>');
+
+      expect(findForbidden(content)).toEqual([]);
+      expect(content).toBe('<svg></svg>');
     });
 
     test('contenteditable を除去し、中のテキストは残す', async () => {
