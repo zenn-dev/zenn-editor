@@ -32,11 +32,9 @@ const embedContent = async (input: string) =>
 const findForbidden = (content: string | undefined) => {
   const $ = cheerio.load(content ?? '');
   const elements = $(
-    'meta, base, link, iframe, object, embed, noscript, mglyph, template'
+    'meta, base, link, iframe, object, embed, noscript, mglyph, template, form, input, button, textarea, select, option, optgroup, datalist'
   ).toArray();
-  const attributes = $(
-    'a[href], area[href], form[action], [formaction]'
-  ).toArray();
+  const attributes = $('a[href], area[href], [contenteditable]').toArray();
   const mathml = $('[href]')
     .toArray()
     .filter(
@@ -129,7 +127,7 @@ describe('HTML埋め込み要素のテスト', () => {
       );
     });
 
-    test('別の文書を読み込む要素と、フォームの送信先を除去する', async () => {
+    test('別の文書を読み込む要素を除去する', async () => {
       const content = await embedContent(
         [
           '<iframe srcdoc="<a href=https://example.com>x</a>"></iframe>',
@@ -137,13 +135,47 @@ describe('HTML埋め込み要素のテスト', () => {
           '<object data="https://example.com"></object>',
           '<embed src="https://example.com">',
           '<link rel="stylesheet" href="https://example.com/a.css">',
-          '<form action="https://example.com"><button formaction="https://example.com">送信</button></form>',
         ].join('\n')
       );
 
       expect(findForbidden(content)).toEqual([]);
       expect(content).not.toContain('example.com');
-      expect(content).toContain('<form><button>送信</button></form>');
+    });
+
+    test('フォームと入力欄を中身ごと除去する', async () => {
+      const content = await embedContent(
+        [
+          '<p>前</p>',
+          '<form action="https://example.com"><label>パスワード</label><input type="password"><button formaction="https://example.com">送信</button></form>',
+          '<textarea>入力</textarea>',
+          '<select><optgroup label="a"><option>a</option></optgroup></select>',
+          '<datalist><option value="a"></option></datalist>',
+          '<svg><foreignObject><input></foreignObject></svg>',
+          '<p>後</p>',
+        ].join('')
+      );
+
+      expect(findForbidden(content)).toEqual([]);
+      expect(content).toBe(
+        '<p>前</p><svg><foreignObject></foreignObject></svg><p>後</p>'
+      );
+    });
+
+    test('contenteditable を除去し、中のテキストは残す', async () => {
+      const content = await embedContent(
+        '<div contenteditable="true">入力</div><p contenteditable="">入力</p>'
+      );
+
+      expect(findForbidden(content)).toEqual([]);
+      expect(content).toBe('<div>入力</div><p>入力</p>');
+    });
+
+    test('入力を受け付けない、フォームに関係する要素は残す', async () => {
+      const html =
+        '<fieldset><legend>凡例</legend><label>ラベル</label><output>1</output><progress value="1" max="2"></progress><meter value="0.5"></meter></fieldset><details><summary>見出し</summary>本文</details>';
+      const content = await embedContent(html);
+
+      expect(content).toBe(html);
     });
 
     test('中身の解析がブラウザと食い違う要素は、要素ごと除去する', async () => {
