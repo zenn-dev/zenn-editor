@@ -73,7 +73,6 @@ describe('Rspackの環境変数設定', () => {
         'AZURE_RESOURCE_NAME=zenn-openai',
         'AZURE_BASE_URL=https://zenn.openai.azure.com/openai/v1',
         'AZURE_API_KEY=DO_NOT_PUBLISH_AZURE',
-        'ZENN_EXPERIMENTAL_HTML_EMBED=1',
         'OTHER_BUILD_TIME_VALUE=safe-to-inline',
       ].join('\n')
     );

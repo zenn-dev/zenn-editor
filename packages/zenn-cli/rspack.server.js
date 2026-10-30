@@ -30,7 +30,6 @@ const RUNTIME_ONLY_ENV_KEYS = new Set([
   'AZURE_RESOURCE_NAME',
   'AZURE_BASE_URL',
   'AZURE_API_KEY',
-  'ZENN_EXPERIMENTAL_HTML_EMBED',
 ]);
 const SERVER_EXTERNALS = new Set(Object.keys(dependencies));
 const ESM_EXTERNALS = new Set([
