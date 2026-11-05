@@ -56,6 +56,26 @@
       }
     }
   }
+  // ```html-embed（著者が書いた HTML/CSS）の埋め込みに、枠と「ユーザー作成コンテンツ」のラベルを付ける
+  // 枠とラベルは iframe の外に置くため、iframe 内の著者の CSS では隠せない
+  .zenn-embedded-html {
+    overflow: hidden;
+    border: 1px solid var(--c-border);
+    border-radius: 6px;
+
+    &::before {
+      display: block;
+      padding: 4px 10px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--c-text-subtle);
+      content: 'ユーザー作成コンテンツ';
+
+      // --c-bg-dim では --c-text-subtle とのコントラスト比が WCAG AA（4.5:1）に届かないため、本文と同じ背景にする
+      background: var(--c-bg-base);
+      border-bottom: 1px solid var(--c-border);
+    }
+  }
   .zenn-embedded-link-card {
     margin: 1rem auto;
     iframe {
