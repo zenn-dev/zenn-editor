@@ -22,6 +22,23 @@ describe('LinkCard埋め込み要素のテスト', () => {
       });
     });
 
+    describe('URLに引用符や山括弧が含まれる場合', () => {
+      test('属性や要素として解釈されないようにエスケープする', async () => {
+        const url = 'https://example.com/?q="a"<b>x</b>';
+        const html = await markdownToHtml(`@[card](${url})`);
+        const root = parse(html);
+        const link = root.querySelector('a');
+
+        expect(root.querySelector('b')).toBeNull();
+        expect(Object.keys(link?.attributes ?? {}).sort()).toEqual([
+          'href',
+          'rel',
+          'target',
+        ]);
+        expect(link?.text).toBe(url);
+      });
+    });
+
     describe('無効なURLの場合', () => {
       test('エラーメッセージを出力する', async () => {
         const html = await markdownToHtml(`@[card](${invalidUrl})`);

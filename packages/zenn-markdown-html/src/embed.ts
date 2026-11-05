@@ -171,14 +171,14 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (options?.embedOrigin)
       return generateEmbedServerIframe('card', str, options.embedOrigin);
 
-    return `<a href="${str}" rel="noreferrer noopener nofollow" target="_blank">${str}</a>`;
+    return generateFallbackLink(str);
   },
   tweet(str, options) {
     if (!isTweetUrl(str)) return 'ツイートページのURLを指定してください';
     if (options?.embedOrigin)
       return generateEmbedServerIframe('tweet', str, options.embedOrigin);
 
-    return `<a href="${str}" rel="noreferrer noopener nofollow" target="_blank">${str}</a>`;
+    return generateFallbackLink(str);
   },
   gist(str, options) {
     /**
@@ -191,7 +191,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (options?.embedOrigin)
       return generateEmbedServerIframe('gist', str, options.embedOrigin);
 
-    return `<a href="${str}" rel="noreferrer noopener nofollow" target="_blank">${str}</a>`;
+    return generateFallbackLink(str);
   },
   github(str, options) {
     if (!isGithubUrl(str))
@@ -199,7 +199,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (options?.embedOrigin)
       return generateEmbedServerIframe('github', str, options.embedOrigin);
 
-    return `<a href="${str}" rel="noreferrer noopener nofollow" target="_blank">${str}</a>`;
+    return generateFallbackLink(str);
   },
   mermaid(str, options) {
     if (options?.embedOrigin)
@@ -212,6 +212,15 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     return `<div class="code-block-container"><pre><code>${src}</code></pre></div>`;
   },
 } as const;
+
+/**
+ * 埋め込みサーバーを使わない場合のリンクを生成する
+ * URL はユーザーの入力値なので、属性値とテキストの両方でエスケープする
+ */
+function generateFallbackLink(url: string): string {
+  const escapedUrl = md.utils.escapeHtml(url);
+  return `<a href="${escapedUrl}" rel="noreferrer noopener nofollow" target="_blank">${escapedUrl}</a>`;
+}
 
 /** 埋め込み要素の種別配列 */
 export const embedKeys = Object.keys(embedGenerators) as EmbedType[];
