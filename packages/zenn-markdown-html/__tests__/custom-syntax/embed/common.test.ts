@@ -89,4 +89,18 @@ describe('埋め込み要素の共通テスト', () => {
       });
     });
   });
+
+  describe('customEmbedの生成器が空文字を返す場合', () => {
+    test('入力値をエスケープして出力する', async () => {
+      const html = await markdownToHtml(
+        '@[card](https://example.com/?q=<b>x</b>)',
+        {
+          customEmbed: { card: () => '' },
+        }
+      );
+
+      expect(html).not.toContain('<b>');
+      expect(html).toContain('&lt;b&gt;');
+    });
+  });
 });
