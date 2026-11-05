@@ -4,7 +4,7 @@ import type { Server as HttpServer } from 'http';
 import { WebSocketServer } from 'ws';
 import chokidar from 'chokidar';
 import open from 'open';
-import { resolveHostname } from './helper';
+import { DEFAULT_HOSTNAME, resolveHostname } from './helper';
 
 type ServerOptions = {
   app: Express;
@@ -19,17 +19,17 @@ export async function startServer(options: ServerOptions): Promise<HttpServer> {
 
   return new Promise((resolve, reject) => {
     server
-      .listen(port, hostname)
+      .listen(port, hostname || DEFAULT_HOSTNAME)
       .once('listening', function () {
+        const { name, host } = resolveHostname(hostname);
+
         if (process.env.TS_NODE_DEV) {
           console.log('🚀 Server is ready.');
         } else {
-          const { name, host } = resolveHostname(hostname);
-
           console.log(`👀 Preview: http://${name}:${port}`);
           if (host) console.log(`🌏 NetWork: http://${host}:${port}`);
         }
-        if (shouldOpen) open(`http://localhost:${port}`);
+        if (shouldOpen) open(`http://${name}:${port}`);
         resolve(server);
       })
       .once('error', async function (err) {

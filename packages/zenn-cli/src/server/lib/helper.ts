@@ -242,21 +242,30 @@ export const getLocalIPAddress = (): string | undefined => {
   }
 };
 
+/**
+ * `--host` 未指定時に待ち受けるホスト名。
+ * ループバック（IPv4）に限定し、LAN 内の他の端末からは接続できないようにする。
+ * `localhost` は環境によって ::1 に解決され、127.0.0.1 で待ち受けるサーバーとは
+ * 別のプロセスにつながることがあるため、IPv4 のアドレスを明示する。
+ */
+export const DEFAULT_HOSTNAME = '127.0.0.1';
+
+/**
+ * 起動表示とブラウザで開く URL に使うホスト名を決める。
+ * - name: このPCから開く URL のホスト名
+ * - host: LAN 内の他の端末から開く URL のホスト名（全インターフェースで待ち受ける場合のみ）
+ */
 export const resolveHostname = (
   hostname?: string
 ): { name: string; host?: string } => {
-  let name = 'localhost';
-  let host = hostname;
+  // 未指定（空文字を含む）の場合は DEFAULT_HOSTNAME だけで待ち受ける
+  if (!hostname) return { name: DEFAULT_HOSTNAME };
 
-  if (hostname) {
-    if (hostname !== '0.0.0.0' && hostname !== '::') {
-      name = hostname;
-    } else {
-      host = getLocalIPAddress();
-    }
+  if (hostname === '0.0.0.0' || hostname === '::') {
+    return { name: 'localhost', host: getLocalIPAddress() };
   }
 
-  return { name, host };
+  return { name: hostname, host: hostname };
 };
 
 export const resolveExecuteCommand = async (
