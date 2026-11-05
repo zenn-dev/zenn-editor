@@ -1,6 +1,7 @@
 import { MarkdownOptions } from '../types';
 import { embedKeys, EmbedServerType, EmbedType } from '../embed';
 import { isTweetUrl, isGithubUrl, isYoutubeUrl } from './url-matcher';
+import { md } from './markdown-it';
 
 /** 渡された文字列をサニタイズする */
 export function sanitizeEmbedToken(str: string): string {
@@ -87,7 +88,9 @@ export const generateEmbedHTML = (
   const { isValid, message } = validateEmbedToken(str, type);
   const generator = options?.customEmbed?.[type];
 
-  return isValid ? generator?.(str, options) || str : message;
+  return isValid
+    ? generator?.(str, options) || md.utils.escapeHtml(str)
+    : message;
 };
 
 /** Linkifyな埋め込み要素のHTML生成する */
@@ -98,16 +101,19 @@ export const generateLinkifyEmbedHTML = (
   const { isValid, message: msg } = validateEmbedToken(url);
   const generators = options?.customEmbed;
 
-  if (!generators) return url;
+  // 生成器がない場合も、URL は HTML としてそのまま出力せずエスケープする
+  const escapedUrl = md.utils.escapeHtml(url);
+
+  if (!generators) return escapedUrl;
 
   if (isTweetUrl(url))
-    return isValid ? generators.tweet?.(url, options) || url : msg;
+    return isValid ? generators.tweet?.(url, options) || escapedUrl : msg;
 
   if (isYoutubeUrl(url))
-    return isValid ? generators.youtube?.(url, options) || url : msg;
+    return isValid ? generators.youtube?.(url, options) || escapedUrl : msg;
 
   // GitHub は URL が長くなりやすいためバリデーション(`validateEmbedToken`)から外す
-  if (isGithubUrl(url)) return generators.github?.(url, options) || url;
+  if (isGithubUrl(url)) return generators.github?.(url, options) || escapedUrl;
 
-  return generators.card?.(url, options) || url;
+  return generators.card?.(url, options) || escapedUrl;
 };
