@@ -45,7 +45,7 @@
     "@ai-sdk/google-vertex": "^5.0.121",
     "@ai-sdk/openai": "^4.0.101",
     "@aws-sdk/credential-providers": "^3.1156.0",
-    "@azure/identity": "^4.14.0",
+    "@azure/identity": "^4.14.1",
     "@openrouter/ai-sdk-provider": "^3.1.0",
     "@secretlint/node": "^13.0.6",
     "@secretlint/secretlint-rule-preset-recommend": "^13.0.6",
@@ -65,7 +65,7 @@
     "package-manager-detector": "^1.6.0",
     "ws": "^8.18.3",
     "zenn-markdown-html": "workspace:*",
-    "zod": "^4.4.3"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
