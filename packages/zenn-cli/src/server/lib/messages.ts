@@ -47,12 +47,14 @@ Options:
   --port PORT, -p PORT  起動するサーバーに指定したいポート. デフォルトは8000
   --no-watch            ホットリロードを無効化
   --open                プレビュー立ち上げ時にブラウザを開く
-  --host                設定したいホスト名
+  --host HOST           待ち受けるホスト名. デフォルトは 127.0.0.1（このPCからのみアクセス可能）
+                        LAN内の他の端末からプレビューする場合は --host 0.0.0.0 を指定
 
   --help, -h            このヘルプを表示
 
 Example:
   npx zenn preview --port 3000
+  npx zenn preview --host 0.0.0.0
 
   👇  詳細
   https://zenn.dev/zenn/articles/zenn-cli-guide

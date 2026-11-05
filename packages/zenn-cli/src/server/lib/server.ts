@@ -6,6 +6,13 @@ import chokidar from 'chokidar';
 import open from 'open';
 import { resolveHostname } from './helper';
 
+/**
+ * `--host` 未指定時に待ち受けるホスト名。
+ * ループバック（IPv4）に限定し、LAN 内の他の端末からは接続できないようにする。
+ * `localhost` は環境によって ::1 だけに解決され、127.0.0.1 で接続できなくなるため IPv4 を明示する。
+ */
+export const DEFAULT_HOSTNAME = '127.0.0.1';
+
 type ServerOptions = {
   app: Express;
   port: number;
@@ -19,7 +26,7 @@ export async function startServer(options: ServerOptions): Promise<HttpServer> {
 
   return new Promise((resolve, reject) => {
     server
-      .listen(port, hostname)
+      .listen(port, hostname ?? DEFAULT_HOSTNAME)
       .once('listening', function () {
         if (process.env.TS_NODE_DEV) {
           console.log('🚀 Server is ready.');
