@@ -256,3 +256,30 @@ describe('resolveExecuteCommand() のテスト', () => {
     expect(result).toEqual('npx zenn foo bar');
   });
 });
+
+describe('resolveHostname() のテスト', () => {
+  test('hostname が未指定の場合は DEFAULT_HOSTNAME を返し、NetWork は表示しない', () => {
+    expect(helper.DEFAULT_HOSTNAME).toBe('127.0.0.1');
+    expect(helper.resolveHostname()).toEqual({ name: '127.0.0.1' });
+  });
+
+  test('hostname が空文字の場合も未指定と同じ扱いにする', () => {
+    expect(helper.resolveHostname('')).toEqual({ name: '127.0.0.1' });
+  });
+
+  test.each(['0.0.0.0', '::'])(
+    'hostname が %s の場合は localhost と LAN の IP アドレスを返す',
+    (hostname) => {
+      const { name, host } = helper.resolveHostname(hostname);
+      expect(name).toBe('localhost');
+      expect(host).toBe(helper.getLocalIPAddress());
+    }
+  );
+
+  test('それ以外の hostname はそのまま返す', () => {
+    expect(helper.resolveHostname('192.168.0.10')).toEqual({
+      name: '192.168.0.10',
+      host: '192.168.0.10',
+    });
+  });
+});
