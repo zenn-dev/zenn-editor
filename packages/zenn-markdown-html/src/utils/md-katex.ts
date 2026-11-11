@@ -36,7 +36,7 @@ const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline_double',
     // maybe unused.
-    rex: /\${2}((?:\S)|(?:\S(?!.*\]\(http).*?\S))\${2}/gy,
+    rex: /\${2}((?:\\\S|[^\s\\])|(?:(?:\\\S|[^\s\\])(?!.*\]\(http)(?:\\.|(?!\\).)*?(?:\\\S|[^\s\\])))\${2}/gy,
     tmpl: `<section class="${katexClassName}"><embed-katex display-mode="1"><eqn>$1</eqn></embed-katex></section>`,
     tag: '$$',
     pre: preHandler,
@@ -46,7 +46,8 @@ const inlineRules: HandlingRule[] = [
     name: 'math_inline',
     // fixed so that the expression [$something](https://something.com/$example) is skipped.
     // (?:\S(?![^$]*\]\(http.*) means something like "](https://hoge.com/hoge)"
-    rex: /\$((?:\S)|(?:\S(?![^$]*\]\(http.*).*?\S))\$/gy,
+    // a backslash and the following character are read as a pair, so an escaped "\$" does not close the expression.
+    rex: /\$((?:\\\S|[^\s\\])|(?:(?:\\\S|[^\s\\])(?![^$]*\]\(http.*)(?:\\.|(?!\\).)*?(?:\\\S|[^\s\\])))\$/gy,
     tmpl: `<embed-katex><eq class="${katexClassName}">$1</eq></embed-katex>`,
     tag: '$',
     pre: preHandler,
@@ -57,13 +58,14 @@ const inlineRules: HandlingRule[] = [
 const blockRules: HandlingRule[] = [
   {
     name: 'math_block_eqno',
-    rex: /\${2}([^$]+?)\${2}\s*?\(([^)\s]+?)\)/gmy,
+    // a backslash and the following character are read as a pair, so an escaped "\$" can be used in the expression.
+    rex: /\${2}((?:\\[\s\S]|[^$\\])+?)\${2}\s*?\(([^)\s]+?)\)/gmy,
     tmpl: `<section class="${katexClassName} eqno code-line" $3><eqn><embed-katex display-mode="1">$1</embed-katex></eqn><span>($2)</span></section>`,
     tag: '$$',
   },
   {
     name: 'math_block',
-    rex: /\${2}([^$]+?)\${2}/gmy,
+    rex: /\${2}((?:\\[\s\S]|[^$\\])+?)\${2}/gmy,
     tmpl: `<section class="${katexClassName} code-line" $3><eqn><embed-katex display-mode="1">$1</embed-katex></eqn></section>`,
     tag: '$$',
   },

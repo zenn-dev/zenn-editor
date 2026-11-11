@@ -32,6 +32,56 @@ describe('$ マークのテスト', () => {
   });
 });
 
+describe('数式内のエスケープされた $ のテスト', () => {
+  test('インラインの数式内の \\$ で数式を閉じない', async () => {
+    const html = await markdownToHtml('$x+y=\\$z$');
+    expect(html).toContain(
+      '<embed-katex><eq class="zenn-katex">x+y=\\$z</eq></embed-katex>'
+    );
+  });
+
+  test('\\$ だけのインラインの数式を katex に変換する', async () => {
+    const html = await markdownToHtml('$\\$$');
+    expect(html).toContain(
+      '<embed-katex><eq class="zenn-katex">\\$</eq></embed-katex>'
+    );
+  });
+
+  test('\\\\ で終わるインラインの数式は \\\\ の後の $ で閉じる', async () => {
+    const html = await markdownToHtml('$a\\\\$');
+    expect(html).toContain(
+      '<embed-katex><eq class="zenn-katex">a\\\\</eq></embed-katex>'
+    );
+  });
+
+  test('数式の外の \\$ は $ のままにする', async () => {
+    const html = await markdownToHtml('価格は \\$5 と \\$10');
+    expect(html).toContain('価格は $5 と $10');
+    expect(html).not.toContain('embed-katex');
+  });
+
+  test('ブロックの数式内の \\$ で数式を閉じない', async () => {
+    const html = await markdownToHtml('$$\nx+y=\\$z\n$$');
+    expect(html).toContain(
+      '<section class="zenn-katex code-line" data-line="0"><eqn><embed-katex display-mode="1">\nx+y=\\$z\n</embed-katex></eqn></section>'
+    );
+  });
+
+  test('式番号付きのブロックの数式内の \\$ で数式を閉じない', async () => {
+    const html = await markdownToHtml('$$\nx+y=\\$z\n$$ (1)');
+    expect(html).toContain(
+      '<section class="zenn-katex eqno code-line" data-line="0"><eqn><embed-katex display-mode="1">\nx+y=\\$z\n</embed-katex></eqn><span>(1)</span></section>'
+    );
+  });
+
+  test('ブロックの数式内の \\\\ はそのままにする', async () => {
+    const html = await markdownToHtml('$$\na \\\\\nb\n$$');
+    expect(html).toContain(
+      '<embed-katex display-mode="1">\na \\\\\nb\n</embed-katex>'
+    );
+  });
+});
+
 describe('HTMLタグにエスケープするテスト', () => {
   test('katex内の<sscript />をエスケープする', async () => {
     const html = await markdownToHtml('$a,<script>alert("XSS")</script>,c$');
