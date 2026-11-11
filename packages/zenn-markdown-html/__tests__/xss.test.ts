@@ -64,6 +64,25 @@ describe('XSS脆弱性のテスト', () => {
     });
     expect(html).toContain(encodeURIComponent(content));
   });
+  test('embedOrigin がない場合、mermaid 内の HTML タグを要素として出力しない', async () => {
+    const content = `<iframe src="https://example.com/" style="position:fixed;inset:0">\n<img src="x">`;
+    const html = await markdownToHtml(`\`\`\`mermaid\n${content}\n\`\`\``);
+    expect(html).not.toMatch(/<iframe|<img/);
+    expect(html).toContain('&lt;iframe src="https://example.com/"');
+  });
+  test('embedOrigin がない場合、@[mermaid] 内の HTML タグを要素として出力しない', async () => {
+    const html = await markdownToHtml(
+      `@[mermaid](<iframe src="https://example.com/" style="position:fixed;inset:0">)`
+    );
+    expect(html).not.toMatch(/<iframe|<img/);
+  });
+  test('customEmbed.mermaid を未定義にした場合も mermaid 内の HTML タグを要素として出力しない', async () => {
+    const content = `<iframe src="https://example.com/" style="position:fixed;inset:0">`;
+    const html = await markdownToHtml(`\`\`\`mermaid\n${content}\n\`\`\``, {
+      customEmbed: { mermaid: undefined },
+    });
+    expect(html).not.toMatch(/<iframe|<img/);
+  });
   test('html-embed の内容は data-content の外や iframe の外に出ない', async () => {
     const content = `"></iframe><img src=x onerror="alert('XSS')"><script>alert('XSS')</script>`;
     const html = await markdownToHtml(`\`\`\`html-embed\n${content}\n\`\`\``, {

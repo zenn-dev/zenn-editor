@@ -206,7 +206,7 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
       return generateEmbedServerIframe('mermaid', str, options.embedOrigin);
 
     // エスケープ処理しておく
-    const src = str.replace(/>/g, '&gt;');
+    const src = md.utils.escapeHtml(str);
 
     // ブラウザじゃないと mermaid はレンダリングできないので、Node.jsで描画するときはコードブロックのまま出力する
     return `<div class="code-block-container"><pre><code>${src}</code></pre></div>`;

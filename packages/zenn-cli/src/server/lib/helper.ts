@@ -164,6 +164,15 @@ export function generateFileIfNotExist(fullpath: string, content: string) {
   );
 }
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export function completeHtml(html: string): string {
   const errorStyle = `data-body-error style="color: var(--c-error); font-weight: 700"`;
   const $ = cheerio.load(html);
@@ -172,13 +181,16 @@ export function completeHtml(html: string): string {
     // サニタイズなどにより、srcが空になっている場合はスキップ
     if (!src) return;
 
+    // エラーメッセージの HTML に埋め込むため、src をエスケープしておく
+    const escapedSrc = escapeHtml(src);
+
     // srcがURLの場合はチェックしない
     if (isUrl(src)) return;
 
     // 先頭が `/images/` であること
     if (!path.isAbsolute(src)) {
       $(el).before(
-        `<p ${errorStyle}><code>${src}</code>を表示できません。ローカルの画像を読み込むには相対パスではなく<code>/images/example.png</code>のように<code>/images/</code>から始まるパスを指定してください。</p>`
+        `<p ${errorStyle}><code>${escapedSrc}</code>を表示できません。ローカルの画像を読み込むには相対パスではなく<code>/images/example.png</code>のように<code>/images/</code>から始まるパスを指定してください。</p>`
       );
       $(el).remove();
       return;
@@ -187,7 +199,7 @@ export function completeHtml(html: string): string {
     // 拡張子が png,jpg,jpeg,gif,webp であること
     if (!acceptImageExtensions.some((ext) => src.endsWith(ext))) {
       $(el).before(
-        `<p ${errorStyle}><code>${src}</code>を表示できません。対応している画像の拡張子は <code>${acceptImageExtensions.join(
+        `<p ${errorStyle}><code>${escapedSrc}</code>を表示できません。対応している画像の拡張子は <code>${acceptImageExtensions.join(
           ','
         )}</code> です。</p>`
       );
@@ -201,7 +213,7 @@ export function completeHtml(html: string): string {
 
     if (!fs.existsSync(filepath)) {
       $(el).before(
-        `<p ${errorStyle}><code>${src}</code>にファイルが存在しません。</p>`
+        `<p ${errorStyle}><code>${escapedSrc}</code>にファイルが存在しません。</p>`
       );
       $(el).remove();
       return;
@@ -210,7 +222,7 @@ export function completeHtml(html: string): string {
     const fileSize = fs.statSync(filepath).size;
     if (fileSize > 1024 * 1024 * 3) {
       $(el).before(
-        `<p ${errorStyle}><code>${src}</code>のファイルサイズ（${
+        `<p ${errorStyle}><code>${escapedSrc}</code>のファイルサイズ（${
           Math.trunc((fileSize * 100) / 1024 / 1024) / 100
         } MB）はアップロード可能なサイズを超えています。ファイルサイズは3MB以内にしてください。</p>`
       );

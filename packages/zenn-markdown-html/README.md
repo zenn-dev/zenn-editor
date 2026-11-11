@@ -15,7 +15,7 @@ Markdown を HTML に変換します。
 
 ```js
 import markdownToHtml from 'zenn-markdown-html';
-const html = markdownToHtml(markdown);
+const html = await markdownToHtml(markdown);
 ```
 
 サポートする記法については、Zenn の[Markdown 記法一覧](https://zenn.dev/zenn/articles/markdown-guide)を参照してください。
@@ -27,16 +27,16 @@ const html = markdownToHtml(markdown);
 
 ```js
 import markdownToHtml from 'zenn-markdown-html';
-const html = markdownToHtml(markdown, {
+const html = await markdownToHtml(markdown, {
   customEmbed: {
     // @[tweet](...)に対応している埋め込み要素をカスタマイズする
     tweet(url) {
       // 注意: サニタイズによって<script src="https://platform.twitter.com/widgets.js" />は埋め込めないので、別の場所で埋め込み必要があります！
       return `
         <blockquote
-          className="twitter-tweet"
+          class="twitter-tweet"
           data-conversation="${
-            src.split(/&|\?/).includes('conversation=none') ? 'none' : ''
+            url.split(/&|\?/).includes('conversation=none') ? 'none' : ''
           }"
         >
           <a href="${url}" rel="nofollow noopener noreferrer" target="_blank">
@@ -56,7 +56,7 @@ const html = markdownToHtml(markdown, {
 
 ```js
 import markdownToHtml from 'zenn-markdown-html';
-const html = markdownToHtml(markdown, {
+const html = await markdownToHtml(markdown, {
   embedOrigin: 'https://embed.zenn.studio',
 });
 ```

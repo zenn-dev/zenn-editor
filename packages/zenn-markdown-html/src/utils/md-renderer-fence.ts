@@ -204,8 +204,10 @@ export function mdRendererFence(
 
     if (langName === 'mermaid') {
       const generator = options.customEmbed?.mermaid;
-      // generator が(上書きされて)定義されてない場合はそのまま出力する
-      return generator ? generator(content.trim(), options) : content;
+      // generator が(上書きされて)定義されてない場合はエスケープしてそのまま出力する
+      return generator
+        ? generator(content.trim(), options)
+        : md.utils.escapeHtml(content);
     }
 
     if (langName === 'html-embed') {
