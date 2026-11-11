@@ -75,6 +75,7 @@ describe('XSS脆弱性のテスト', () => {
       `@[mermaid](<iframe src="https://example.com/" style="position:fixed;inset:0">)`
     );
     expect(html).not.toMatch(/<iframe|<img/);
+    expect(html).toContain('&lt;iframe src="https://example.com/"');
   });
   test('customEmbed.mermaid を未定義にした場合も mermaid 内の HTML タグを要素として出力しない', async () => {
     const content = `<iframe src="https://example.com/" style="position:fixed;inset:0">`;
@@ -82,6 +83,7 @@ describe('XSS脆弱性のテスト', () => {
       customEmbed: { mermaid: undefined },
     });
     expect(html).not.toMatch(/<iframe|<img/);
+    expect(html).toContain('&lt;iframe src="https://example.com/"');
   });
   test('html-embed の内容は data-content の外や iframe の外に出ない', async () => {
     const content = `"></iframe><img src=x onerror="alert('XSS')"><script>alert('XSS')</script>`;

@@ -181,11 +181,11 @@ export function completeHtml(html: string): string {
     // サニタイズなどにより、srcが空になっている場合はスキップ
     if (!src) return;
 
-    // エラーメッセージの HTML に埋め込むため、src をエスケープしておく
-    const escapedSrc = escapeHtml(src);
-
     // srcがURLの場合はチェックしない
     if (isUrl(src)) return;
+
+    // エラーメッセージの HTML に埋め込むため、src をエスケープしておく
+    const escapedSrc = escapeHtml(src);
 
     // 先頭が `/images/` であること
     if (!path.isAbsolute(src)) {
