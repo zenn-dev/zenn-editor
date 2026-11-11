@@ -35,7 +35,7 @@ type HandlingRule = {
 const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline_double',
-    // maybe unused.
+    // used when "$$...$$" is written in the middle of a line (e.g. "a $$x$$ b").
     // a backslash and the following character are read as a pair, so an escaped "\$" does not close the expression.
     // an unescaped "$" is not read as a part of the expression.
     rex: /\${2}((?:\\\S|[^\s\\$])|(?:(?:\\\S|[^\s\\$])(?!.*\]\(http)(?:\\.|[^\\$\n\r])*?(?:\\\S|[^\s\\$])))\${2}/gy,
