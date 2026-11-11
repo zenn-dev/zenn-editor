@@ -1,5 +1,5 @@
 /**
- * forked from https://github.com/goessner/markdown-it-mdKatex
+ * forked from https://github.com/goessner/markdown-it-texmath
  */
 
 import type { MarkdownIt } from 'markdown-it';
@@ -47,7 +47,7 @@ const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline',
     // fixed so that the expression [$something](https://something.com/$example) is skipped.
-    // (?:\S(?![^$]*\]\(http.*) means something like "](https://hoge.com/hoge)"
+    // the lookahead (?![^$]*\]\(http.*) means that something like "](https://hoge.com/hoge)" does not appear before the next "$".
     // a backslash and the following character are read as a pair, so an escaped "\$" does not close the expression.
     // an unescaped "$" is not read as a part of the expression.
     rex: /\$((?:\\\S|[^\s\\$])|(?:(?:\\\S|[^\s\\$])(?![^$]*\]\(http.*)(?:\\.|[^\\$\n\r])*?(?:\\\S|[^\s\\$])))\$/gy,
@@ -145,11 +145,11 @@ export function mdKatex(md: MarkdownIt) {
             match[1] = match[1].replace(/(\n*?^(?:\s*>)+)/gm, '');
           }
           // begin token
-          let token = state.push(rule.name, 'math', 1); // 'math_block'
+          let token = state.push(rule.name, 'math', 1); // 'math_block' or 'math_block_eqno'
           token.block = true;
           token.markup = rule.tag;
           token.content = match[1];
-          token.info = match[match.length - 1]; // eq.no
+          token.info = match[match.length - 1]; // eq.no for 'math_block_eqno' (for 'math_block', this is the expression and is not used)
           token.map = [begLine, curline];
           // end token
           token = state.push(rule.name + '_end', 'math', -1);
@@ -162,11 +162,11 @@ export function mdKatex(md: MarkdownIt) {
         }
         return res;
       }
-    ); // ! important for ```math delimiters
+    ); // checked before "fence" and the following block rules such as blockquote, list and paragraph
 
     md.renderer.rules[rule.name] = (tokens, idx) =>
       rule.tmpl
-        .replace(/\$2/, () => md.utils.escapeHtml(tokens[idx].info)) // equation number .. ?
+        .replace(/\$2/, () => md.utils.escapeHtml(tokens[idx].info)) // equation number
         .replace(/\$1/, () => md.utils.escapeHtml(tokens[idx].content))
         .replace(/\$3/, 'data-line="' + tokens[idx].attrGet('data-line') + '"');
   }
