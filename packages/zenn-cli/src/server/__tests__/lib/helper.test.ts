@@ -213,6 +213,16 @@ describe('completeHtml() のテスト', () => {
     const html = helper.completeHtml('<img src="/images/example.svg">');
     expect(html).toContain('表示できません');
   });
+
+  test('エラーメッセージに埋め込む src の HTML はエスケープされる', () => {
+    const html = helper.completeHtml(
+      '<img src="&lt;img src=x onerror=alert(1)&gt;">'
+    );
+    expect(html).toContain('表示できません');
+    expect(html).toContain('&lt;img src=x onerror=alert(1)&gt;');
+    expect(html).not.toContain('onerror=alert(1)>');
+    expect(html).not.toMatch(/<img[^>]*onerror/);
+  });
 });
 
 describe('resolveExecuteCommand() のテスト', () => {
