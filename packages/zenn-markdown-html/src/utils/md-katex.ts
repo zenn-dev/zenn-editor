@@ -36,7 +36,9 @@ const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline_double',
     // maybe unused.
-    rex: /\${2}((?:\\\S|[^\s\\])|(?:(?:\\\S|[^\s\\])(?!.*\]\(http)(?:\\.|(?!\\).)*?(?:\\\S|[^\s\\])))\${2}/gy,
+    // a backslash and the following character are read as a pair, so an escaped "\$" does not close the expression.
+    // an unescaped "$" is not read as a part of the expression.
+    rex: /\${2}((?:\\\S|[^\s\\$])|(?:(?:\\\S|[^\s\\$])(?!.*\]\(http)(?:\\.|[^\\$\n\r])*?(?:\\\S|[^\s\\$])))\${2}/gy,
     tmpl: `<section class="${katexClassName}"><embed-katex display-mode="1"><eqn>$1</eqn></embed-katex></section>`,
     tag: '$$',
     pre: preHandler,
@@ -47,7 +49,8 @@ const inlineRules: HandlingRule[] = [
     // fixed so that the expression [$something](https://something.com/$example) is skipped.
     // (?:\S(?![^$]*\]\(http.*) means something like "](https://hoge.com/hoge)"
     // a backslash and the following character are read as a pair, so an escaped "\$" does not close the expression.
-    rex: /\$((?:\\\S|[^\s\\])|(?:(?:\\\S|[^\s\\])(?![^$]*\]\(http.*)(?:\\.|(?!\\).)*?(?:\\\S|[^\s\\])))\$/gy,
+    // an unescaped "$" is not read as a part of the expression.
+    rex: /\$((?:\\\S|[^\s\\$])|(?:(?:\\\S|[^\s\\$])(?![^$]*\]\(http.*)(?:\\.|[^\\$\n\r])*?(?:\\\S|[^\s\\$])))\$/gy,
     tmpl: `<embed-katex><eq class="${katexClassName}">$1</eq></embed-katex>`,
     tag: '$',
     pre: preHandler,
@@ -95,8 +98,9 @@ export function mdKatex(md: MarkdownIt) {
       }
       return res;
     }); // ! important
+    // a function is passed to replace() so that "$&" or "$'" in the expression is not treated as a replacement pattern.
     md.renderer.rules[rule.name] = (tokens, idx) =>
-      rule.tmpl.replace(/\$1/, md.utils.escapeHtml(tokens[idx].content));
+      rule.tmpl.replace(/\$1/, () => md.utils.escapeHtml(tokens[idx].content));
   }
 
   for (const rule of blockRules) {
@@ -162,8 +166,8 @@ export function mdKatex(md: MarkdownIt) {
 
     md.renderer.rules[rule.name] = (tokens, idx) =>
       rule.tmpl
-        .replace(/\$2/, md.utils.escapeHtml(tokens[idx].info)) // equation number .. ?
-        .replace(/\$1/, md.utils.escapeHtml(tokens[idx].content))
+        .replace(/\$2/, () => md.utils.escapeHtml(tokens[idx].info)) // equation number .. ?
+        .replace(/\$1/, () => md.utils.escapeHtml(tokens[idx].content))
         .replace(/\$3/, 'data-line="' + tokens[idx].attrGet('data-line') + '"');
   }
 }
