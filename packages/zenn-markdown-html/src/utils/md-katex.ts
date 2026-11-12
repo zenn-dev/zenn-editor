@@ -1,5 +1,5 @@
 /**
- * forked from https://github.com/goessner/markdown-it-mdKatex
+ * forked from https://github.com/goessner/markdown-it-texmath
  */
 
 import type { MarkdownIt } from 'markdown-it';
@@ -35,8 +35,10 @@ type HandlingRule = {
 const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline_double',
-    // maybe unused.
-    rex: /\${2}((?:\S)|(?:\S(?!.*\]\(http).*?\S))\${2}/gy,
+    // used when "$$...$$" is written in the middle of a line (e.g. "a $$x$$ b").
+    // a backslash and the following character are read as a pair, so an escaped "\$" does not close the expression.
+    // an unescaped "$" is not read as a part of the expression.
+    rex: /\${2}((?:\\\S|[^\s\\$])|(?:(?:\\\S|[^\s\\$])(?!.*\]\(http)(?:\\.|[^\\$\n\r])*?(?:\\\S|[^\s\\$])))\${2}/gy,
     tmpl: `<section class="${katexClassName}"><embed-katex display-mode="1"><eqn>$1</eqn></embed-katex></section>`,
     tag: '$$',
     pre: preHandler,
@@ -45,8 +47,10 @@ const inlineRules: HandlingRule[] = [
   {
     name: 'math_inline',
     // fixed so that the expression [$something](https://something.com/$example) is skipped.
-    // (?:\S(?![^$]*\]\(http.*) means something like "](https://hoge.com/hoge)"
-    rex: /\$((?:\S)|(?:\S(?![^$]*\]\(http.*).*?\S))\$/gy,
+    // the lookahead (?![^$]*\]\(http.*) means that something like "](https://hoge.com/hoge)" does not appear before the next "$".
+    // a backslash and the following character are read as a pair, so an escaped "\$" does not close the expression.
+    // an unescaped "$" is not read as a part of the expression.
+    rex: /\$((?:\\\S|[^\s\\$])|(?:(?:\\\S|[^\s\\$])(?![^$]*\]\(http.*)(?:\\.|[^\\$\n\r])*?(?:\\\S|[^\s\\$])))\$/gy,
     tmpl: `<embed-katex><eq class="${katexClassName}">$1</eq></embed-katex>`,
     tag: '$',
     pre: preHandler,
@@ -57,13 +61,14 @@ const inlineRules: HandlingRule[] = [
 const blockRules: HandlingRule[] = [
   {
     name: 'math_block_eqno',
-    rex: /\${2}([^$]+?)\${2}\s*?\(([^)\s]+?)\)/gmy,
+    // a backslash and the following character are read as a pair, so an escaped "\$" can be used in the expression.
+    rex: /\${2}((?:\\[\s\S]|[^$\\])+?)\${2}\s*?\(([^)\s]+?)\)/gmy,
     tmpl: `<section class="${katexClassName} eqno code-line" $3><eqn><embed-katex display-mode="1">$1</embed-katex></eqn><span>($2)</span></section>`,
     tag: '$$',
   },
   {
     name: 'math_block',
-    rex: /\${2}([^$]+?)\${2}/gmy,
+    rex: /\${2}((?:\\[\s\S]|[^$\\])+?)\${2}/gmy,
     tmpl: `<section class="${katexClassName} code-line" $3><eqn><embed-katex display-mode="1">$1</embed-katex></eqn></section>`,
     tag: '$$',
   },
@@ -93,8 +98,9 @@ export function mdKatex(md: MarkdownIt) {
       }
       return res;
     }); // ! important
+    // a function is passed to replace() so that "$&" or "$'" in the expression is not treated as a replacement pattern.
     md.renderer.rules[rule.name] = (tokens, idx) =>
-      rule.tmpl.replace(/\$1/, md.utils.escapeHtml(tokens[idx].content));
+      rule.tmpl.replace(/\$1/, () => md.utils.escapeHtml(tokens[idx].content));
   }
 
   for (const rule of blockRules) {
@@ -139,11 +145,11 @@ export function mdKatex(md: MarkdownIt) {
             match[1] = match[1].replace(/(\n*?^(?:\s*>)+)/gm, '');
           }
           // begin token
-          let token = state.push(rule.name, 'math', 1); // 'math_block'
+          let token = state.push(rule.name, 'math', 1); // 'math_block' or 'math_block_eqno'
           token.block = true;
           token.markup = rule.tag;
           token.content = match[1];
-          token.info = match[match.length - 1]; // eq.no
+          token.info = match[match.length - 1]; // eq.no for 'math_block_eqno' (for 'math_block', this is the expression and is not used)
           token.map = [begLine, curline];
           // end token
           token = state.push(rule.name + '_end', 'math', -1);
@@ -156,12 +162,12 @@ export function mdKatex(md: MarkdownIt) {
         }
         return res;
       }
-    ); // ! important for ```math delimiters
+    ); // checked before "fence" and the following block rules such as blockquote, list and paragraph
 
     md.renderer.rules[rule.name] = (tokens, idx) =>
       rule.tmpl
-        .replace(/\$2/, md.utils.escapeHtml(tokens[idx].info)) // equation number .. ?
-        .replace(/\$1/, md.utils.escapeHtml(tokens[idx].content))
+        .replace(/\$2/, () => md.utils.escapeHtml(tokens[idx].info)) // equation number
+        .replace(/\$1/, () => md.utils.escapeHtml(tokens[idx].content))
         .replace(/\$3/, 'data-line="' + tokens[idx].attrGet('data-line') + '"');
   }
 }

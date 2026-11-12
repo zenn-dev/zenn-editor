@@ -32,6 +32,117 @@ describe('$ マークのテスト', () => {
   });
 });
 
+describe('数式内のエスケープされた $ のテスト', () => {
+  test('インラインの数式内の \\$ で数式を閉じない', async () => {
+    const html = await markdownToHtml('$x+y=\\$z$');
+    expect(html).toContain(
+      '<embed-katex><eq class="zenn-katex">x+y=\\$z</eq></embed-katex>'
+    );
+  });
+
+  test('\\$ だけのインラインの数式を katex に変換する', async () => {
+    const html = await markdownToHtml('$\\$$');
+    expect(html).toContain(
+      '<embed-katex><eq class="zenn-katex">\\$</eq></embed-katex>'
+    );
+  });
+
+  test('\\\\ で終わるインラインの数式は \\\\ の後の $ で閉じる', async () => {
+    const html = await markdownToHtml('$a\\\\$');
+    expect(html).toContain(
+      '<embed-katex><eq class="zenn-katex">a\\\\</eq></embed-katex>'
+    );
+  });
+
+  test('数式の外の \\$ は $ のままにする', async () => {
+    const html = await markdownToHtml('価格は \\$5 と \\$10');
+    expect(html).toContain('価格は $5 と $10');
+    expect(html).not.toContain('embed-katex');
+  });
+
+  test('ブロックの数式内の \\$ で数式を閉じない', async () => {
+    const html = await markdownToHtml('$$\nx+y=\\$z\n$$');
+    expect(html).toContain(
+      '<section class="zenn-katex code-line" data-line="0"><eqn><embed-katex display-mode="1">\nx+y=\\$z\n</embed-katex></eqn></section>'
+    );
+  });
+
+  test('式番号付きのブロックの数式内の \\$ で数式を閉じない', async () => {
+    const html = await markdownToHtml('$$\nx+y=\\$z\n$$ (1)');
+    expect(html).toContain(
+      '<section class="zenn-katex eqno code-line" data-line="0"><eqn><embed-katex display-mode="1">\nx+y=\\$z\n</embed-katex></eqn><span>(1)</span></section>'
+    );
+  });
+
+  test('数式の外の \\$ を挟んで後ろの数式までを1つの数式にしない', async () => {
+    const html = await markdownToHtml('約 $3 から \\$5 へ。式は $y$ です');
+    expect(html).toContain(
+      '約 $3 から $5 へ。式は <embed-katex><eq class="zenn-katex">y</eq></embed-katex> です'
+    );
+  });
+
+  test('エスケープしていない $ を数式の中身に含めない', async () => {
+    const html = await markdownToHtml('cost $5 and $x$');
+    expect(html).toContain(
+      'cost $5 and <embed-katex><eq class="zenn-katex">x</eq></embed-katex>'
+    );
+  });
+
+  test('\\ の後の $ しかない場合は数式にしない', async () => {
+    const html = await markdownToHtml('$a\\$');
+    expect(html).not.toContain('embed-katex');
+  });
+
+  test('リンク名の中の \\$ を数式にしない', async () => {
+    const html = await markdownToHtml('[$a\\$b](http://foo.bar)');
+    expect(html).toContain(
+      '<a href="http://foo.bar" target="_blank" rel="nofollow noopener noreferrer">$a$b</a>'
+    );
+  });
+
+  test('文中の $$ で囲んだ数式内の \\$ で数式を閉じない', async () => {
+    const html = await markdownToHtml('a $$x\\$y$$ b');
+    expect(html).toContain(
+      '<section class="zenn-katex"><embed-katex display-mode="1"><eqn>x\\$y</eqn></embed-katex></section>'
+    );
+  });
+
+  test('1行の $$ で囲んだ \\$ を含む数式をブロックの数式にする', async () => {
+    const html = await markdownToHtml('$$a\\$b$$');
+    expect(html).toContain(
+      '<section class="zenn-katex code-line" data-line="0"><eqn><embed-katex display-mode="1">a\\$b</embed-katex></eqn></section>'
+    );
+  });
+
+  test('引用の中のブロックの数式内の \\$ で数式を閉じない', async () => {
+    const html = await markdownToHtml('> $$\n> a \\$ b\n> $$');
+    expect(html).toContain(
+      '<embed-katex display-mode="1"> a \\$ b </embed-katex>'
+    );
+  });
+
+  test("インラインの数式内の \\$& や \\$' をそのまま出力する", async () => {
+    const html = await markdownToHtml("$a\\$&b$ と $c\\$'d$");
+    expect(html).toContain(
+      '<embed-katex><eq class="zenn-katex">a\\$&amp;b</eq></embed-katex> と <embed-katex><eq class="zenn-katex">c\\$\'d</eq></embed-katex>'
+    );
+  });
+
+  test("ブロックの数式内の \\$& や \\$' をそのまま出力する", async () => {
+    const html = await markdownToHtml("$$\na\\$&b\\$'c\n$$ (1)");
+    expect(html).toContain(
+      '<embed-katex display-mode="1">\na\\$&amp;b\\$\'c\n</embed-katex></eqn><span>(1)</span></section>'
+    );
+  });
+
+  test('ブロックの数式内の \\\\ はそのままにする', async () => {
+    const html = await markdownToHtml('$$\na \\\\\nb\n$$');
+    expect(html).toContain(
+      '<embed-katex display-mode="1">\na \\\\\nb\n</embed-katex>'
+    );
+  });
+});
+
 describe('HTMLタグにエスケープするテスト', () => {
   test('katex内の<sscript />をエスケープする', async () => {
     const html = await markdownToHtml('$a,<script>alert("XSS")</script>,c$');
