@@ -18,6 +18,20 @@ describe('Linkシンタックスのテスト', () => {
       '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">example</a>'
     );
   });
+  test('hrefが"https://zenn.dev/"から始まる場合はrel無しのリンクに変換する', async () => {
+    const html = await renderLink('[Zenn](https://zenn.dev/articles)');
+    expect(html).toContain(
+      '<a href="https://zenn.dev/articles" target="_blank">Zenn</a>'
+    );
+  });
+  test('hrefの途中に"https://zenn.dev/"を含むだけの外部リンクは nofollow のリンクに変換する', async () => {
+    const html = await renderLink(
+      '[example](https://example.com/?url=https://zenn.dev/articles)'
+    );
+    expect(html).toContain(
+      '<a href="https://example.com/?url=https://zenn.dev/articles" target="_blank" rel="nofollow noopener noreferrer">example</a>'
+    );
+  });
   test('hrefが"/"から始まる場合は属性のないリンクに変換する', async () => {
     const html = await renderLink('[Articles](/articles)');
     expect(html).toContain('<a href="/articles">Articles</a>');
@@ -39,6 +53,11 @@ describe('Linkifyのテスト', () => {
       );
       expect(await renderLink('URL is https://zenn.dev.example.com')).toContain(
         'URL is <a href="https://zenn.dev.example.com" target="_blank" rel="nofollow noopener noreferrer">https://zenn.dev.example.com</a>'
+      );
+      expect(
+        await renderLink('URL is https://example.com/?url=https://zenn.dev/x')
+      ).toContain(
+        'URL is <a href="https://example.com/?url=https://zenn.dev/x" target="_blank" rel="nofollow noopener noreferrer">https://example.com/?url=https://zenn.dev/x</a>'
       );
     });
 
