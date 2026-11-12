@@ -141,8 +141,13 @@ export function mdKatex(md: MarkdownIt) {
           state.parentType = 'math' as any;
 
           if (oldParentType === 'blockquote') {
-            // remove all leading '>' inside multiline formula
-            match[1] = match[1].replace(/(\n*?^(?:\s*>)+)/gm, '');
+            // remove all leading '>' inside multiline formula.
+            // from a line start (or a "\n"), the run of whitespace and '>' is read at once and removed up to its last '>',
+            // so that the time grows only in proportion to the length of the input even when there are many blank lines.
+            match[1] = match[1].replace(/(?:^|(?=\n))[\s>]+/gm, (run) => {
+              const lastQuote = run.lastIndexOf('>');
+              return lastQuote === -1 ? run : run.slice(lastQuote + 1);
+            });
           }
           // begin token
           let token = state.push(rule.name, 'math', 1); // 'math_block' or 'math_block_eqno'
