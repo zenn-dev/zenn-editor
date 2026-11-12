@@ -143,6 +143,45 @@ describe('数式内のエスケープされた $ のテスト', () => {
   });
 });
 
+describe('引用の中のブロックの数式のテスト', () => {
+  test('各行の先頭の > を取り除く', async () => {
+    const html = await markdownToHtml('> $$\n> a\n> b\n> $$');
+    expect(html).toContain(
+      '<section class="zenn-katex code-line" data-line="0"><eqn><embed-katex display-mode="1"> a b </embed-katex></eqn></section>'
+    );
+  });
+
+  test('> だけの行も取り除く', async () => {
+    const html = await markdownToHtml('> $$\n> a\n>\n> b\n> $$');
+    expect(html).toContain('<embed-katex display-mode="1"> a b </embed-katex>');
+  });
+
+  test('> の後の2つ目以降の空白は残す', async () => {
+    const html = await markdownToHtml('> $$\n>  a\n> $$');
+    expect(html).toContain('<embed-katex display-mode="1">  a </embed-katex>');
+  });
+
+  test('二重の引用では各行の先頭の > > を取り除く', async () => {
+    const html = await markdownToHtml('> > $$\n> > a\n> > $$');
+    expect(html).toContain('<embed-katex display-mode="1"> a </embed-katex>');
+  });
+
+  test('式番号付きのブロックの数式でも各行の先頭の > を取り除く', async () => {
+    const html = await markdownToHtml('> $$\n> a\n> $$ (1)');
+    expect(html).toContain(
+      '<embed-katex display-mode="1"> a </embed-katex></eqn><span>(1)</span>'
+    );
+  });
+
+  test('空行が多く続いても短い時間で変換できる', async () => {
+    // 先頭の > を取り除く処理が、空行の数の3乗に比例して遅くならないことを確認する
+    const input = '> $$\n' + '\n'.repeat(3000) + '$$';
+    const start = performance.now();
+    await markdownToHtml(input);
+    expect(performance.now() - start).toBeLessThan(1000);
+  });
+});
+
 describe('HTMLタグにエスケープするテスト', () => {
   test('katex内の<sscript />をエスケープする', async () => {
     const html = await markdownToHtml('$a,<script>alert("XSS")</script>,c$');
