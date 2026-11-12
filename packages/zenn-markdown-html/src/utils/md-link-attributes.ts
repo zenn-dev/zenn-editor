@@ -8,9 +8,8 @@ export function mdLinkAttributes(md: MarkdownIt) {
     // 内部リンク
     {
       matcher(href: string) {
-        return /^(?:https:\/\/zenn\.dev$)|(?:https:\/\/zenn\.dev\/.*$)/.test(
-          href
-        );
+        // "https://zenn.dev" itself or a URL that starts with "https://zenn.dev/"
+        return /^https:\/\/zenn\.dev(?:\/|$)/.test(href);
       },
       attrs: {
         target: '_blank',
