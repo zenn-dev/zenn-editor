@@ -12,6 +12,7 @@ import * as help from './help';
 import * as version from './version';
 import * as scrap from './scrap';
 import * as image from './image';
+import * as file from './file';
 
 type Commands = { [command: string]: CliExecFn };
 type ExecOptions = { canNotifyUpdate: boolean };
@@ -23,6 +24,7 @@ export async function exec(
 ) {
   const commands: Commands = {
     scrap: async () => scrap.exec(execCommandArgs),
+    file: async () => file.exec(execCommandArgs),
     image: async () => image.exec(execCommandArgs),
     preview: async () => preview.exec(),
     init: async () => init.exec(),

@@ -57,6 +57,16 @@ describe('CLIのデフォルトの挙動のテスト', () => {
     );
   });
 
+  test('fileコマンドは常に利用できる', async () => {
+    await exec('file', ['--help']);
+
+    expect(process.exitCode).toBeUndefined();
+    expect(Log.error).not.toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith(
+      expect.stringContaining('zenn file')
+    );
+  });
+
   test('imageコマンドは常に利用できる', async () => {
     await exec('image', ['--help']);
 

@@ -73,6 +73,9 @@ importers:
       '@azure/identity':
         specifier: ^4.14.1
         version: 4.14.1
+      '@mediabunny/aac-encoder':
+        specifier: ^1.66.0
+        version: 1.66.0(mediabunny@1.66.0)
       '@openrouter/ai-sdk-provider':
         specifier: ^3.1.0
         version: 3.1.0(ai@7.0.150(zod@4.6.7))(zod@4.6.7)
@@ -115,6 +118,9 @@ importers:
       js-yaml:
         specifier: ^5.2.1
         version: 5.4.2
+      mediabunny:
+        specifier: ^1.66.0
+        version: 1.66.0
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -1357,6 +1363,11 @@ packages:
     resolution: {integrity: sha512-WYrUIAveES+EvGvGmpNtm+MY3I4tEyRQ3GXHPAKvrYcuXqN3fziM1DutLCFkzyiKi8W0jGI/Axz/JtT/hq/qzw==}
     engines: {node: ^22.17.0 || >=24.0.0}
 
+  '@mediabunny/aac-encoder@1.66.0':
+    resolution: {integrity: sha512-46RM06RQGIqC+HQI30e2HR2JTgk6dzyD/ybD23E6zuc7R22/x1XIQHghJDkfKnHF72ztJBZxNbt/NncH7SrvYQ==}
+    peerDependencies:
+      mediabunny: ^1.0.0
+
   '@napi-rs/wasm-runtime@1.2.6':
     resolution: {integrity: sha512-mRyDmEw9/fCDXCGfL1sbgIw/GUK0PVxRW4YwgPN61F3LQ+fSyoBFarJVzgGyhF6kRzEQZ0FejDqm4WLXSeqQmw==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=23.5.0}
@@ -2114,10 +2125,12 @@ packages:
   '@secretlint/secretlint-rule-preset-recommend@13.0.2':
     resolution: {integrity: sha512-D03Kw51qOgffj9zNlJFZUarVmP8zGcCZNi7A14+vZtHskbbBPEsS/f09idb48rrlMSaRMBN29IkqfbmPyL9xtw==}
     engines: {node: '>=22.0.0'}
+    deprecated: Built into secretlint v14 and later. Remove this package; the rule id still works. https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/preset-recommend.md
 
   '@secretlint/secretlint-rule-preset-recommend@13.0.6':
     resolution: {integrity: sha512-5OdYoPKs7LznSY/mFgpJlSY8ayF+clq0gdfOE0ERVfvUifmIDz0yG/d1ij3wZmfpyOw33tk12zUcDZqrXHFodA==}
     engines: {node: '>=22.0.0'}
+    deprecated: Built into secretlint v14 and later. Remove this package; the rule id still works. https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/preset-recommend.md
 
   '@secretlint/source-creator@13.0.6':
     resolution: {integrity: sha512-cKO2Y0gh7RMNo4vMtJgmPMDHCuJZSP3aPZ0y+KzWST3wMTNCnPQcECeQeEccdL8b2oBfVLD/UJrb7fbhumXGsw==}
@@ -2412,6 +2425,12 @@ packages:
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
+
+  '@types/dom-mediacapture-transform@0.1.12':
+    resolution: {integrity: sha512-d7/QsLRwF864A5mgIM/YrfiglHoYn7zgCcAoJgW404r+2DwnNr7EBbLnCWpmOMgH8y0te73L1AV6H1bmauaWFw==}
+
+  '@types/dom-webcodecs@0.1.13':
+    resolution: {integrity: sha512-O5hkiFIcjjszPIYyUSyvScyvrBoV3NOEEZx/pMlsu44TKzWNkLVBBxnxJz42in5n3QIolYOcBYFCPZZ0h8SkwQ==}
 
   '@types/emoji-regex@9.2.2':
     resolution: {integrity: sha512-kg9a3lbO8WyO3LxZAhUtcS7X+u2FwptNcfsMCTsISiv0gV1BqLZlHgkL11XsG9n18t5uSPYtcQk6Zw8g7MbNRQ==}
@@ -4106,6 +4125,9 @@ packages:
   media-typer@1.1.1:
     resolution: {integrity: sha512-yz3xRaG20c6/BOzvYoDaGtPmGscs7YivItZEEqe6GbwNfHuxu9YNmvnEkMzKldAGY4/80pRcQRZSEnhquk9XuQ==}
     engines: {node: '>= 0.8'}
+
+  mediabunny@1.66.0:
+    resolution: {integrity: sha512-0Zff/qLkY1ZRyjBEt2vQjLeMigmU/dFKwJLpiPyCiskIel2f2R2kqMxaLYbeHN+rmyz4PVwwLSnU9anjUHHeJQ==}
 
   memorystream@0.3.1:
     resolution: {integrity: sha512-S3UwM3yj5mtUSEfP41UZmt/0SCoVYUcU1rkXv+BQ5Ig8ndL4sPoJNBUJERafdPb5jjHJGuMgytgKvKIf58XNBw==}
@@ -6533,6 +6555,10 @@ snapshots:
       - '@types/node'
       - conventional-commits-filter
 
+  '@mediabunny/aac-encoder@1.66.0(mediabunny@1.66.0)':
+    dependencies:
+      mediabunny: 1.66.0
+
   '@napi-rs/wasm-runtime@1.2.6(@emnapi/core@2.0.0-beta.2)(@emnapi/runtime@2.0.0-beta.2)':
     dependencies:
       '@emnapi/core': 2.0.0-beta.2
@@ -7512,6 +7538,12 @@ snapshots:
   '@types/cookiejar@2.1.5': {}
 
   '@types/deep-eql@4.0.2': {}
+
+  '@types/dom-mediacapture-transform@0.1.12':
+    dependencies:
+      '@types/dom-webcodecs': 0.1.13
+
+  '@types/dom-webcodecs@0.1.13': {}
 
   '@types/emoji-regex@9.2.2':
     dependencies:
@@ -9361,6 +9393,11 @@ snapshots:
   media-typer@1.1.0: {}
 
   media-typer@1.1.1: {}
+
+  mediabunny@1.66.0:
+    dependencies:
+      '@types/dom-mediacapture-transform': 0.1.12
+      '@types/dom-webcodecs': 0.1.13
 
   memorystream@0.3.1: {}
 

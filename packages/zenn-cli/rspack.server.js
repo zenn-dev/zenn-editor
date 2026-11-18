@@ -40,6 +40,7 @@ const ESM_EXTERNALS = new Set([
   '@ai-sdk/google-vertex',
   '@ai-sdk/openai',
   '@azure/identity',
+  '@mediabunny/aac-encoder',
   '@openrouter/ai-sdk-provider',
   '@secretlint/node',
   '@secretlint/secretlint-rule-preset-recommend',
@@ -47,6 +48,8 @@ const ESM_EXTERNALS = new Set([
   'boxen',
   'chokidar',
   'configstore',
+  // aac-encoderがESMで読み込むmediabunnyと同じインスタンスに登録する必要がある
+  'mediabunny',
   'node-fetch',
   'open',
   'package-manager-detector',

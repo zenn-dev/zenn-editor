@@ -57,6 +57,7 @@ vi.mock('@azure/identity', () => ({
 }));
 
 import {
+  scanAudioWithAi,
   scanImageWithAi,
   scanScrapContentWithAi,
   ScrapAiDetectedError,
@@ -501,6 +502,66 @@ describe('Scrap AI scan', () => {
       filename: 'screenshot.png',
     });
   });
+
+  test('音声scanでは音声とファイル名をVertex AIへメッセージで送信する', async () => {
+    process.env.GOOGLE_VERTEX_PROJECT = 'zenn-project';
+    process.env.GOOGLE_VERTEX_LOCATION = 'global';
+    const bytes = Buffer.from([0, 0, 0, 0x1c]);
+
+    await scanAudioWithAi(
+      { bytes, contentType: 'audio/mp4', filename: 'voice.m4a' },
+      {
+        ...cloudConfig,
+        provider: 'vertex',
+        model: 'gemini-3-flash',
+        effort: 'medium',
+      }
+    );
+
+    const call = mocks.generateText.mock.calls[0][0];
+    expect(call.model).toEqual({ provider: 'vertex', model: 'gemini-3-flash' });
+    expect(call.messages).toEqual([
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: expect.any(String) },
+          { type: 'file', data: bytes, mediaType: 'audio/mp4' },
+        ],
+      },
+    ]);
+    expect(JSON.parse(call.messages[0].content[0].text).audioContent).toEqual({
+      filename: 'voice.m4a',
+    });
+  });
+
+  test.each([
+    ['openai', 'gpt-6-luna'],
+    ['anthropic', 'model'],
+    ['vertex-anthropic', 'model'],
+    ['jev', 'jev-latest'],
+    // Vertex AIでもGemini以外のモデルは音声入力を確認できていない
+    ['vertex', 'other-model'],
+  ] as const)(
+    '音声入力を確認できていない%s（%s）には音声を送信せず失敗させる',
+    async (provider, model) => {
+      process.env.OPENAI_API_KEY = 'test-openai-key';
+      process.env.GOOGLE_VERTEX_PROJECT = 'zenn-project';
+      process.env.GOOGLE_VERTEX_LOCATION = 'global';
+
+      await expect(
+        scanAudioWithAi(
+          {
+            bytes: Buffer.from([0, 0, 0, 0x1c]),
+            contentType: 'audio/mp4',
+            filename: 'voice.m4a',
+          },
+          { ...cloudConfig, provider, model, effort: 'medium' }
+        )
+      ).rejects.toBeInstanceOf(ScrapAiScanError);
+
+      expect(mocks.generateText).not.toHaveBeenCalled();
+    }
+  );
 
   test('画像scanで検知した場合は投稿を止める', async () => {
     process.env.OPENAI_API_KEY = 'test-openai-key';
