@@ -534,10 +534,19 @@ describe('Scrap AI scan', () => {
     });
   });
 
-  test.each(['openai', 'anthropic', 'vertex-anthropic', 'jev'] as const)(
-    '音声入力を確認できていない%sには音声を送信せず失敗させる',
-    async (provider) => {
+  test.each([
+    ['openai', 'gpt-6-luna'],
+    ['anthropic', 'model'],
+    ['vertex-anthropic', 'model'],
+    ['jev', 'jev-latest'],
+    // Vertex AIでもGemini以外のモデルは音声入力を確認できていない
+    ['vertex', 'other-model'],
+  ] as const)(
+    '音声入力を確認できていない%s（%s）には音声を送信せず失敗させる',
+    async (provider, model) => {
       process.env.OPENAI_API_KEY = 'test-openai-key';
+      process.env.GOOGLE_VERTEX_PROJECT = 'zenn-project';
+      process.env.GOOGLE_VERTEX_LOCATION = 'global';
 
       await expect(
         scanAudioWithAi(
@@ -546,7 +555,7 @@ describe('Scrap AI scan', () => {
             contentType: 'audio/mp4',
             filename: 'voice.m4a',
           },
-          { ...cloudConfig, provider, model: 'model', effort: 'medium' }
+          { ...cloudConfig, provider, model, effort: 'medium' }
         )
       ).rejects.toBeInstanceOf(ScrapAiScanError);
 

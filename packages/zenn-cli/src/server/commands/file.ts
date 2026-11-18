@@ -1,7 +1,11 @@
 import arg from 'arg';
 import path from 'node:path';
 import { readFile, stat } from 'node:fs/promises';
-import { AudioInputError, prepareAudioForUpload } from '../lib/audio-convert';
+import {
+  AUDIO_CONVERSION_HINT,
+  AudioInputError,
+  prepareAudioForUpload,
+} from '../lib/audio-convert';
 import { CliExecFn } from '../types';
 import {
   fileHelpText,
@@ -36,8 +40,6 @@ import {
 const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
 // 変換前の音声として読み込む上限。30秒のWAVは数MBだが、長い録音の先頭だけを使う場合を考慮する
 const MAX_AUDIO_SOURCE_BYTES = 100 * 1024 * 1024;
-const AUDIO_CONVERSION_HINT =
-  '30秒以内のAAC（m4a）へ変換してから指定してください。例: ffmpeg -i input.mp3 -t 30 -c:a aac -b:a 128k output.m4a（640KBに収めるには30秒で約160kbps以下）';
 
 // `zenn file` は /files を、互換用の `zenn image` は従来の /images を呼ぶ。
 // `zenn image` の引数・出力・終了コードは変えない
@@ -196,10 +198,13 @@ async function runAiScan(
   });
 }
 
+type Operation = 'upload' | 'list' | 'delete';
+
 function apiErrorMessage(
   error: PublicApiClientError,
   variant: Variant,
-  type: PublicFileType
+  type: PublicFileType,
+  operation: Operation
 ) {
   const code = error.code ? ` (${error.code})` : '';
   if (variant === 'image') return `${error.message}${code}`;
@@ -208,6 +213,7 @@ function apiErrorMessage(
     return `音声アップロードは段階的に提供中のため、このアカウントではまだ利用できません${code}`;
   }
   if (error.kind === 'validation') {
+    if (operation !== 'upload') return `リクエスト値を確認してください${code}`;
     const hint = type === 'audio' ? `。${AUDIO_CONVERSION_HINT}` : '';
     return `リクエスト値または${typeLabels[type]}ファイルを確認してください${hint}${code}`;
   }
@@ -217,9 +223,14 @@ function apiErrorMessage(
   return `${error.message}${code}`;
 }
 
-function showError(error: unknown, variant: Variant, type: PublicFileType) {
+function showError(
+  error: unknown,
+  variant: Variant,
+  type: PublicFileType,
+  operation: Operation
+) {
   if (error instanceof PublicApiClientError) {
-    fail(apiErrorMessage(error, variant, type));
+    fail(apiErrorMessage(error, variant, type, operation));
   } else if (
     error instanceof FileInputError ||
     error instanceof AudioInputError ||
@@ -277,7 +288,11 @@ async function upload(variant: Variant, argv: string[]) {
       args['--notes-to-ai']
     );
     Log.warn(
-      `${label}は公開URLで配信されます。Markdown本文から参照しなくても自動的には削除されません。機密情報や個人情報を含まないことを確認してください`
+      `${label}は公開URLで配信されます。Markdown本文から参照しなくても自動的には削除されません。機密情報や個人情報を含まないことを確認してください${
+        type === 'audio'
+          ? '。自分以外の人の声や、第三者が権利を持つ音源を含まないことも確認してください'
+          : ''
+      }`
     );
 
     if (variant === 'image') {
@@ -300,7 +315,7 @@ async function upload(variant: Variant, argv: string[]) {
       }
     }
   } catch (error) {
-    showError(error, variant, type);
+    showError(error, variant, type, 'upload');
   }
 }
 
@@ -350,7 +365,7 @@ async function list(variant: Variant, argv: string[]) {
       JSON.stringify(result, null, args['--machine-readable'] ? undefined : 2)
     );
   } catch (error) {
-    showError(error, variant, type);
+    showError(error, variant, type, 'list');
   }
 }
 
@@ -415,7 +430,7 @@ async function remove(variant: Variant, argv: string[]) {
       Log.success(`${label}を削除しました`);
     }
   } catch (error) {
-    showError(error, variant, type);
+    showError(error, variant, type, 'delete');
   }
 }
 

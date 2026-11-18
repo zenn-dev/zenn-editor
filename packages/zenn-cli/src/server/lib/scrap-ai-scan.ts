@@ -50,11 +50,13 @@ const AZURE_HOST_SUFFIXES = [
   '.cognitiveservices.azure.com',
 ];
 
-// 音声入力を受け付けることを確認できたプロバイダーだけを対象にする。音声を無視する
-// モデルへ送ると、検査していないのに検知なしと扱ってしまう
-const AUDIO_SCAN_PROVIDERS: readonly string[] = ['vertex'];
+// 音声入力を受け付けることを確認できたプロバイダーとモデル系統だけを対象にする。
+// 音声を無視するモデルへ送ると、検査していないのに検知なしと扱ってしまう
+function supportsAudioScan(config: ScrapAiConfiguration) {
+  return config.provider === 'vertex' && /gemini/i.test(config.model);
+}
 const AUDIO_SCAN_UNSUPPORTED_MESSAGE =
-  '音声のAI scanは ZENN_CLI_AI_PROVIDER=vertex（音声入力に対応したGeminiモデル）だけに対応しています。未検査の音声をアップロードしないため終了します';
+  '音声のAI scanは ZENN_CLI_AI_PROVIDER=vertex と音声入力に対応したGeminiモデルだけに対応しています。未検査の音声をアップロードしないため終了します';
 
 const findingLevelSchema = z.enum(['low', 'medium', 'high', 'critical']);
 const aiScanFindingSchema = z
@@ -694,7 +696,7 @@ export async function scanAudioWithAi(
   config: ScrapAiConfiguration,
   notes?: string
 ) {
-  if (!AUDIO_SCAN_PROVIDERS.includes(config.provider)) {
+  if (!supportsAudioScan(config)) {
     throw new ScrapAiScanError(AUDIO_SCAN_UNSUPPORTED_MESSAGE);
   }
   return runAiScan({ kind: 'audio', audio }, config, notes);

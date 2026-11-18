@@ -232,16 +232,20 @@ describe('fileコマンド', () => {
       expect(process.exitCode).toBe(1);
     });
 
-    test('640KiBを超えるm4aは送信しない', async () => {
-      const file = await localFile(
-        'large.m4a',
-        Buffer.concat([m4aBytes, Buffer.alloc(640 * 1024)])
+    test('list・deleteの入力エラーでは音声の変換方法を案内しない', async () => {
+      fetchMock.mockResolvedValue(
+        new Response(JSON.stringify({ error: { code: 'invalid_request' } }), {
+          status: 400,
+        })
       );
 
-      await exec(['upload', file, '--type', 'audio', '--confirm-public']);
+      await exec(['list', '--type', 'audio']);
 
-      expect(fetchMock).not.toHaveBeenCalled();
       expect(process.exitCode).toBe(1);
+      expect(console.error).not.toHaveBeenCalledWith(
+        expect.any(String),
+        expect.stringContaining('ffmpeg')
+      );
     });
 
     test('応答の種類が指定と異なれば成功として扱わない', async () => {
@@ -274,10 +278,12 @@ describe('fileコマンド', () => {
   });
 
   describe('AI scan', () => {
-    function enableAiScan() {
+    function enableAiScan(provider = 'openai', model?: string) {
       process.env.ZENN_CLI_AI_SCAN = 'true';
-      process.env.ZENN_CLI_AI_PROVIDER = 'openai';
+      process.env.ZENN_CLI_AI_PROVIDER = provider;
+      if (model) process.env.ZENN_CLI_AI_MODEL = model;
     }
+    const enableAudioAiScan = () => enableAiScan('vertex', 'gemini-3-flash');
 
     test('画像は有効時にAI scanしてからアップロードする', async () => {
       enableAiScan();
@@ -295,7 +301,7 @@ describe('fileコマンド', () => {
     });
 
     test('音声は有効時に変換後の内容をAI scanしてからアップロードする', async () => {
-      enableAiScan();
+      enableAudioAiScan();
       const file = await localFile('voice.wav', wavBytes(1));
       mockUploaded(audioFile);
 
@@ -315,7 +321,7 @@ describe('fileコマンド', () => {
     });
 
     test('音声で検知した場合や検査できない場合はアップロードしない', async () => {
-      enableAiScan();
+      enableAudioAiScan();
       audioScanMock.mockRejectedValue(new ScrapAiDetectedError('検知'));
       const file = await localFile('audio.m4a', m4aBytes);
 
@@ -326,7 +332,7 @@ describe('fileコマンド', () => {
     });
 
     test('音声もdangerouslyオプションでAI scanをスキップできる', async () => {
-      enableAiScan();
+      enableAudioAiScan();
       const file = await localFile('audio.m4a', m4aBytes);
       mockUploaded(audioFile);
 
