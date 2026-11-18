@@ -50,6 +50,12 @@ const AZURE_HOST_SUFFIXES = [
   '.cognitiveservices.azure.com',
 ];
 
+// 音声入力を受け付けることを確認できたプロバイダーだけを対象にする。音声を無視する
+// モデルへ送ると、検査していないのに検知なしと扱ってしまう
+const AUDIO_SCAN_PROVIDERS: readonly string[] = ['vertex'];
+const AUDIO_SCAN_UNSUPPORTED_MESSAGE =
+  '音声のAI scanは ZENN_CLI_AI_PROVIDER=vertex（音声入力に対応したGeminiモデル）だけに対応しています。未検査の音声をアップロードしないため終了します';
+
 const findingLevelSchema = z.enum(['low', 'medium', 'high', 'critical']);
 const aiScanFindingSchema = z
   .object({
@@ -67,6 +73,7 @@ type AiScanResult = z.infer<typeof aiScanResultSchema>;
 
 type ScrapContent = { title?: string; body: string };
 type ImageContent = DecisionImage & { filename: string };
+type AudioContent = DecisionImage & { filename: string };
 
 export class ScrapAiScanError extends Error {}
 export class ScrapAiDetectedError extends ScrapAiScanError {}
@@ -131,6 +138,11 @@ const defaultDetectionPrompt = `
 const imageDetectionPrompt = `
 画像では、写り込んだ文字（スクリーンショット内のトークン、URL、メールアドレスなど）、
 人物の顔、画面に表示された個人情報や社内システムの情報も対象です。
+`.trim();
+
+const audioDetectionPrompt = `
+音声では、話されている内容に含まれる情報（読み上げられた認証情報、URL、氏名、
+連絡先、顧客名、未公開の事業情報など）も対象です。
 `.trim();
 
 type ApiKeyName =
@@ -470,12 +482,14 @@ export function formatAiScanFinding(finding: AiScanFinding) {
 
 type AiScanTarget =
   | { kind: 'scrap'; content: ScrapContent }
-  | { kind: 'image'; image: ImageContent };
+  | { kind: 'image'; image: ImageContent }
+  | { kind: 'audio'; audio: AudioContent };
 
 function detectionPolicy(target: AiScanTarget, customPrompt?: string) {
   return [
     defaultDetectionPrompt,
     target.kind === 'image' ? imageDetectionPrompt : undefined,
+    target.kind === 'audio' ? audioDetectionPrompt : undefined,
     customPrompt,
   ]
     .filter(Boolean)
@@ -490,37 +504,42 @@ async function prepareGenerativeScan(
   const { model, providerOptions, reasoning } =
     await createModelAndOptions(config);
   const policy = detectionPolicy(target, config.customPrompt);
-  const prompt =
-    target.kind === 'scrap'
-      ? {
-          prompt: JSON.stringify({
-            detectionPolicy: policy,
-            userNotes: notes || null,
-            scrapContent: target.content,
-          }),
-        }
-      : {
-          messages: [
-            {
-              role: 'user' as const,
-              content: [
-                {
-                  type: 'text' as const,
-                  text: JSON.stringify({
-                    detectionPolicy: policy,
-                    userNotes: notes || null,
-                    imageContent: { filename: target.image.filename },
-                  }),
-                },
-                {
-                  type: 'file' as const,
-                  data: target.image.bytes,
-                  mediaType: target.image.contentType,
-                },
-              ],
-            },
-          ],
-        };
+  const file =
+    target.kind === 'image'
+      ? { ...target.image, contentKey: 'imageContent' }
+      : target.kind === 'audio'
+        ? { ...target.audio, contentKey: 'audioContent' }
+        : undefined;
+  const prompt = file
+    ? {
+        messages: [
+          {
+            role: 'user' as const,
+            content: [
+              {
+                type: 'text' as const,
+                text: JSON.stringify({
+                  detectionPolicy: policy,
+                  userNotes: notes || null,
+                  [file.contentKey]: { filename: file.filename },
+                }),
+              },
+              {
+                type: 'file' as const,
+                data: file.bytes,
+                mediaType: file.contentType,
+              },
+            ],
+          },
+        ],
+      }
+    : {
+        prompt: JSON.stringify({
+          detectionPolicy: policy,
+          userNotes: notes || null,
+          scrapContent: target.kind === 'scrap' ? target.content : null,
+        }),
+      };
 
   return async (abortSignal: AbortSignal) => {
     const generated = await generateText({
@@ -558,6 +577,9 @@ async function prepareScan(
     return prepareGenerativeScan(target, { ...config, provider }, notes);
   }
 
+  if (target.kind === 'audio') {
+    throw new ScrapAiScanError(AUDIO_SCAN_UNSUPPORTED_MESSAGE);
+  }
   const state = {
     content:
       target.kind === 'scrap'
@@ -665,4 +687,15 @@ export async function scanImageWithAi(
     );
   }
   return runAiScan({ kind: 'image', image }, config, notes);
+}
+
+export async function scanAudioWithAi(
+  audio: AudioContent,
+  config: ScrapAiConfiguration,
+  notes?: string
+) {
+  if (!AUDIO_SCAN_PROVIDERS.includes(config.provider)) {
+    throw new ScrapAiScanError(AUDIO_SCAN_UNSUPPORTED_MESSAGE);
+  }
+  return runAiScan({ kind: 'audio', audio }, config, notes);
 }

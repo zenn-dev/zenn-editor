@@ -3,6 +3,7 @@ import sanitizeHtml from 'sanitize-html';
 const tags = [
   'a',
   'aside',
+  'audio',
   'blockquote',
   'br',
   'circle',
@@ -46,6 +47,7 @@ const tags = [
 const attributes = {
   a: ['aria-hidden', 'class', 'href', 'id', 'rel', 'style', 'target', 'title'],
   aside: ['class'],
+  audio: ['controls', 'preload', 'src'],
   blockquote: ['class', 'data-line'],
   br: ['style'],
   circle: ['cx', 'cy', 'fill', 'r'],

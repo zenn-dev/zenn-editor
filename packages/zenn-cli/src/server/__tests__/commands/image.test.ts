@@ -93,6 +93,32 @@ describe('imageコマンド', () => {
     );
   });
 
+  test('非推奨の案内はstderrにだけ出し、stdoutには足さない', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ images: [], next_page: null }), {
+        status: 200,
+      })
+    );
+
+    await exec(['list', '--machine-readable']);
+
+    expect(console.warn).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining('zenn file --type image')
+    );
+    expect(console.log).toHaveBeenCalledTimes(1);
+    expect(console.log).toHaveBeenCalledWith(
+      JSON.stringify({ images: [], next_page: null })
+    );
+  });
+
+  test('--typeは受け付けず、従来どおり不正なオプションとして扱う', async () => {
+    await exec(['list', '--type', 'audio']);
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(process.exitCode).toBe(1);
+  });
+
   test('--confirm-publicがなければ画像を読み込まずAPIも呼ばない', async () => {
     await exec(['upload', path.join(directory, 'missing.png')]);
 
