@@ -123,6 +123,58 @@ describe('prepareAudioForUpload', () => {
     expect(Buffer.from(repackaged.bytes).includes(title)).toBe(false);
   });
 
+  test('m4aのトラック名と言語は出力に残さず、同じ入力からは同じ出力になる', async () => {
+    const {
+      BufferSource,
+      BufferTarget,
+      EncodedAudioPacketSource,
+      EncodedPacketSink,
+      Input,
+      MP4,
+      Mp4OutputFormat,
+      Output,
+    } = await import('mediabunny');
+    const trackName = 'SECRET-TRACK-NAME';
+    const input = new Input({
+      formats: [MP4],
+      source: new BufferSource(shortM4a),
+    });
+    const track = await input.getPrimaryAudioTrack();
+    const decoderConfig = await track?.getDecoderConfig();
+    if (!track || !decoderConfig) throw new Error('fixture');
+    const packetSource = new EncodedAudioPacketSource('aac');
+    const output = new Output({
+      format: new Mp4OutputFormat(),
+      target: new BufferTarget(),
+    });
+    output.addAudioTrack(packetSource, {
+      name: trackName,
+      languageCode: 'jpn',
+    });
+    await output.start();
+    let first = true;
+    for await (const packet of new EncodedPacketSink(track).packets()) {
+      await packetSource.add(packet, first ? { decoderConfig } : undefined);
+      first = false;
+    }
+    await output.finalize();
+    const named = Buffer.from(output.target.buffer ?? new ArrayBuffer(0));
+    expect(named.includes(trackName)).toBe(true);
+
+    const audio = await prepareAudioForUpload(named);
+    const again = await prepareAudioForUpload(named);
+
+    expect(Buffer.from(audio.bytes).includes(trackName)).toBe(false);
+    const reparsed = await new Input({
+      formats: [MP4],
+      source: new BufferSource(audio.bytes),
+    }).getPrimaryAudioTrack();
+    expect(await reparsed?.getName()).toBeNull();
+    expect(Buffer.from(again.bytes).equals(Buffer.from(audio.bytes))).toBe(
+      true
+    );
+  });
+
   test.each([
     ['MP3', Buffer.from([0x49, 0x44, 0x33, 4, 0, 0])],
     ['空のファイル', Buffer.alloc(0)],

@@ -195,13 +195,14 @@ describe('fileコマンド', () => {
       expect(process.exitCode).toBe(1);
     });
 
-    test('変換済みのm4aはそのまま送信する', async () => {
+    test('変換済みのm4aは再エンコードせずに送信する', async () => {
       const file = await localFile('audio.m4a', m4aBytes);
       mockUploaded(audioFile);
 
       await exec(['upload', file, '--type', 'audio', '--confirm-public']);
 
       const sent = fetchMock.mock.calls[0][1].body.get('file') as File;
+      expect(sent).toMatchObject({ name: 'audio.m4a', type: 'audio/mp4' });
       expect(Buffer.from(await sent.arrayBuffer()).equals(m4aBytes)).toBe(true);
     });
 
@@ -418,9 +419,11 @@ describe('fileコマンド', () => {
       );
     });
 
-    test('確認なしまたは不正なIDでの削除はAPIを呼ばない', async () => {
-      await exec(['delete', '42', '--type', 'audio']);
-      await exec(['delete', '42abc', '--type', 'audio', '--yes']);
+    test.each([
+      ['確認なし', ['delete', '42', '--type', 'audio']],
+      ['不正なID', ['delete', '42abc', '--type', 'audio', '--yes']],
+    ])('%sでの削除はAPIを呼ばない', async (_name, argv) => {
+      await exec(argv);
 
       expect(fetchMock).not.toHaveBeenCalled();
       expect(process.exitCode).toBe(1);

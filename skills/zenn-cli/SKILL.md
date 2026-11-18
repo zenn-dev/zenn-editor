@@ -103,7 +103,7 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 
 判定モデル（`openai-decisions` / `jev` / `clef`）は文章を生成せず、検知事項ごとの確率を返す。指摘には固定の分類名と確率だけを表示する。Clef は一度に検査できる長さ（24,576 トークン）を超えた場合や、処理したトークン数が上限に近く未検査の部分が残った可能性がある場合は、投稿せずに終了する。
 
-画像・音声の操作には `zenn file upload|list|delete` を使う。`--type image|audio` は 3 つのサブコマンドすべてで必須であり、必要な権限と使い方は `zenn file --help` で確認する。`zenn image` は非推奨で、今後のリリースで削除されるため、新しく使わない。
+画像・音声の操作には `zenn file upload|list|delete` を使う。`--type image|audio` は 3 つのサブコマンドすべてで必須であり、必要な権限と使い方は `zenn file --help` で確認する。`zenn image` は非推奨のため、新しく使わない。既存の `zenn image` を置き換える時は、`upload` と `delete` の `--machine-readable` の出力形式と `list` のキー（`images` → `files`）が変わることに注意する。
 
 - `zenn file upload --machine-readable` は URL だけでなく `id`・`type`・`url` などを持つ JSON を 1 行で出力する。削除には `id` と `--type` の両方が必要なため、後で削除する可能性がある場合は JSON を控える。
 - 音声は約 30 秒以内・640KB 以下の m4a（AAC）としてアップロードされる。条件を満たす m4a は再エンコードせずに送信し、WAV などの非圧縮 PCM は先頭 30 秒を CLI が AAC へ変換する。どちらもタイトルなどのメタデータは取り除く。MP3 などの圧縮音声や条件を超える m4a は CLI で変換できないため、先に `ffmpeg` などで変換する。段階的に提供中のため、利用できないアカウントがある。アップロードした音声は、記事と本のチャプターの本文に `@[audio](URL)` と書いて埋め込む（Scrap とコメントでは使えない）。

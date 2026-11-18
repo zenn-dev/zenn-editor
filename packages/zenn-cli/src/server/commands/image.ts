@@ -6,7 +6,7 @@ import { execFileCommand } from './file';
 // stdoutを読むスクリプトやAIエージェントを壊さないよう、非推奨の案内はstderrにだけ出す
 export const exec: CliExecFn = async (argv = []) => {
   Log.warn(
-    'zenn image は非推奨です。今後のリリースで削除されるため、zenn file --type image へ移行してください'
+    'zenn image は非推奨です。zenn file --type image へ移行してください。出力形式の違いは zenn image --help を参照してください'
   );
   return execFileCommand('image', argv);
 };

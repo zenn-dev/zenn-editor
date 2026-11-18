@@ -4,6 +4,7 @@ const MAX_AUDIO_SECONDS = 30;
 const MAX_M4A_SECONDS = 31;
 // 30秒で約480KBになり、640KBの上限に収まる
 const AAC_BITRATE = 128_000;
+const FIXED_CREATION_TIME = new Date(Date.UTC(2000, 0, 1));
 
 export const AUDIO_CONVERSION_HINT =
   '30秒以内のAAC（m4a）へ変換してから指定してください。例: ffmpeg -i input.mp3 -t 30 -c:a aac -b:a 128k output.m4a（640KBに収めるには30秒で約160kbps以下）';
@@ -31,8 +32,9 @@ function isMp4Container(bytes: Uint8Array) {
  * 非圧縮PCM（WAV）は先頭30秒をAACへ変換し、m4aは音声を再エンコードせずに詰め替える。
  * Node.jsにはMP3などの圧縮音声のデコーダーがないため、それらは変換できない。
  *
- * どちらの経路でも、タイトルや作成者などのメタデータと音声以外のデータは出力に含めない。
- * AI scanは話されている内容を検査するため、検査されない情報を公開ファイルに残さない
+ * どちらの経路でも、タイトル・作成者・トラック名などコンテナのメタデータは出力に含めない。
+ * AI scanは話されている内容を検査するため、検査されない情報を公開ファイルに残さない。
+ * m4aのAACデータ自体は再エンコードしないため、そのまま引き継ぐ
  */
 export async function prepareAudioForUpload(
   source: Uint8Array
@@ -43,6 +45,8 @@ export async function prepareAudioForUpload(
     BufferTarget,
     canEncodeAudio,
     Conversion,
+    EncodedAudioPacketSource,
+    EncodedPacketSink,
     Input,
     MP4,
     Mp4OutputFormat,
@@ -99,31 +103,63 @@ export async function prepareAudioForUpload(
 
     let bytes: Uint8Array;
     try {
-      if (!isM4a && !(await canEncodeAudio('aac'))) {
-        const { registerAacEncoder } = await import('@mediabunny/aac-encoder');
-        registerAacEncoder();
+      let aacInput = input;
+      if (!isM4a) {
+        if (!(await canEncodeAudio('aac'))) {
+          const { registerAacEncoder } =
+            await import('@mediabunny/aac-encoder');
+          registerAacEncoder();
+        }
+        const encoded = new Output({
+          format: new Mp4OutputFormat(),
+          target: new BufferTarget(),
+        });
+        conversion = await Conversion.init({
+          input,
+          output: encoded,
+          tags: {},
+          showWarnings: false,
+          trim: { start: 0, end: Math.min(duration, MAX_AUDIO_SECONDS) },
+          audio: { codec: 'aac', bitrate: AAC_BITRATE },
+        });
+        if (!conversion.isValid) throw new Error();
+        const running = conversion;
+        // 実行に失敗した変換はライブラリが自分で中断するため、後始末の対象から外す
+        conversion = undefined;
+        await running.execute();
+        if (!encoded.target.buffer) throw new Error();
+        aacInput = new Input({
+          formats: [MP4],
+          source: new BufferSource(new Uint8Array(encoded.target.buffer)),
+        });
       }
-      const output = new Output({
-        format: new Mp4OutputFormat(),
-        target: new BufferTarget(),
-      });
-      conversion = await Conversion.init({
-        input,
-        output,
-        tags: {},
-        showWarnings: false,
-        ...(isM4a
-          ? {}
-          : {
-              trim: { start: 0, end: Math.min(duration, MAX_AUDIO_SECONDS) },
-              audio: { codec: 'aac' as const, bitrate: AAC_BITRATE },
-            }),
-      });
-      if (!conversion.isValid) throw new Error();
-      await conversion.execute();
-      conversion = undefined;
-      if (!output.target.buffer) throw new Error();
-      bytes = new Uint8Array(output.target.buffer);
+
+      // AACのパケットだけを新しいm4aへ詰め替える。変換機能はトラック名や言語を
+      // 引き継ぐため使わず、入力のメタデータを一切渡さない
+      try {
+        const aacTrack = await aacInput.getPrimaryAudioTrack();
+        const decoderConfig = await aacTrack?.getDecoderConfig();
+        if (!aacTrack || !decoderConfig) throw new Error();
+        const packetSource = new EncodedAudioPacketSource('aac');
+        const output = new Output({
+          format: new Mp4OutputFormat(),
+          target: new BufferTarget(),
+        });
+        output.addAudioTrack(packetSource);
+        // 既定ではアップロード時刻が書き込まれるため、固定の値にする
+        output.setMetadataTags({ creationTime: FIXED_CREATION_TIME });
+        await output.start();
+        let first = true;
+        for await (const packet of new EncodedPacketSink(aacTrack).packets()) {
+          await packetSource.add(packet, first ? { decoderConfig } : undefined);
+          first = false;
+        }
+        await output.finalize();
+        if (!output.target.buffer) throw new Error();
+        bytes = new Uint8Array(output.target.buffer);
+      } finally {
+        if (aacInput !== input) aacInput.dispose();
+      }
     } catch {
       throw new AudioInputError(
         `音声をアップロード用のm4aへ変換できませんでした。${AUDIO_CONVERSION_HINT}`
@@ -141,7 +177,7 @@ export async function prepareAudioForUpload(
       trimmed: !isM4a && duration > MAX_AUDIO_SECONDS,
     };
   } finally {
-    // 失敗時にエンコーダーのworkerが残ると、CLIのプロセスが終了しなくなる
+    // 開始前に中断した変換を残すと、CLIのプロセスが終了しなくなる
     await conversion?.cancel().catch(() => undefined);
     input.dispose();
   }

@@ -281,6 +281,12 @@ async function upload(variant: Variant, argv: string[]) {
   try {
     ensurePublicApiCredentials();
     const target = await readUploadFile(type, args._[0]);
+    if (type === 'audio') {
+      // AIプロバイダーへ送る前に確認できるよう、AI scanより先に表示する
+      Log.warn(
+        '声は話者を識別しうる情報です。自分以外の人の声や、第三者が権利を持つ音源を含まないことを確認してください'
+      );
+    }
     await runAiScan(
       type,
       target,
@@ -288,11 +294,7 @@ async function upload(variant: Variant, argv: string[]) {
       args['--notes-to-ai']
     );
     Log.warn(
-      `${label}は公開URLで配信されます。Markdown本文から参照しなくても自動的には削除されません。機密情報や個人情報を含まないことを確認してください${
-        type === 'audio'
-          ? '。自分以外の人の声や、第三者が権利を持つ音源を含まないことも確認してください'
-          : ''
-      }`
+      `${label}は公開URLで配信されます。Markdown本文から参照しなくても自動的には削除されません。機密情報や個人情報を含まないことを確認してください`
     );
 
     if (variant === 'image') {

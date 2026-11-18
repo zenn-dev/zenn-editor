@@ -260,7 +260,7 @@ Example:
 export const imageHelpText = `
 Command:
   zenn image          （非推奨）Public API経由でMarkdown用画像を管理
-                      今後のリリースで削除されるため zenn file --type image を利用してください
+                      zenn file --type image を利用してください（違いは下記のMigrationを参照）
 
 Usage:
   npx zenn image upload FILE --confirm-public [--machine-readable]
@@ -299,6 +299,15 @@ Notice:
   機密情報や個人情報を含む画像は
   アップロードしないでください。
 
+Migration:
+  zenn image は非推奨です。削除する時期は別途お知らせします。それまでは従来どおり
+  利用できます。zenn file --type image へ移行する場合は、次の違いに注意してください。
+  - upload --machine-readable の出力が、画像URLだけからJSON（id・type・urlなど）に変わります。
+  - delete --machine-readable の出力が {"deleted":true,"type":"image","id":123} に変わります。
+  - list の出力のキーが images から files に変わります。
+  - list と delete にも --type image が必要です。
+  詳細は npx zenn file --help を参照してください。
+
 Example:
   npx zenn image upload ./images/example.png --confirm-public
 `;
@@ -315,6 +324,7 @@ Usage:
 Options:
   --type               ファイルの種類。image または audio（必須。拡張子や中身からは推測しません）
   --confirm-public     ファイルが公開URLで配信され、機密情報・個人情報を含まないことを確認する（必須）
+                       音声では、自分以外の人の声や第三者が権利を持つ音源を含まないことも確認する
   --page               一覧のページ番号（1以上、既定1）
   --count              一覧の取得件数（1～100、既定50）
   --yes                ファイル削除を確認する（必須）
