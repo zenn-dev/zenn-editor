@@ -163,6 +163,18 @@ export function extractDocswellEmbedUrl(url: string): string | null {
 }
 
 /**
+ * Zennにアップロードした音声のURLか判定する
+ * アップロード時にしか長さを制限できないため、外部の音声は埋め込めないようにする
+ */
+export function isZennAudioUrl(url: string): boolean {
+  return (
+    /^https:\/\/storage\.googleapis\.com\/zenn-user-upload\/[\w\-./]+$/.test(
+      url
+    ) && !url.includes('..')
+  );
+}
+
+/**
  * 参考: https://blueprintue.com/
  * 生成されるURLをもとに正規表現を定義した
  */

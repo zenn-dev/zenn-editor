@@ -107,4 +107,11 @@ describe('XSS脆弱性のテスト', () => {
     const html = await markdownToHtml(content);
     expect(html).toContain('埋め込みに対応しているFigma URLを指定してください');
   });
+
+  test('直接書かれた<audio />は要素として出力しない', async () => {
+    const html = await markdownToHtml(
+      '<audio src="https://example.com/a.mp3" autoplay></audio>'
+    );
+    expect(html).not.toContain('<audio');
+  });
 });

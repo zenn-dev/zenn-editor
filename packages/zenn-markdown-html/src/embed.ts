@@ -14,6 +14,7 @@ import {
   isCodepenUrl,
   isJsfiddleUrl,
   isBlueprintUEUrl,
+  isZennAudioUrl,
   convertToFigmaEmbedUrl,
   isValidHttpUrl,
   isDocswellUrl,
@@ -34,6 +35,7 @@ export type EmbedType =
   | 'tweet'
   | 'blueprintue'
   | 'figma'
+  | 'audio'
   | 'card'
   | 'gist'
   | 'github'
@@ -160,6 +162,13 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     return `<span class="embed-block embed-figma"><iframe src="${sanitizeEmbedToken(
       embedUrl
     )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`;
+  },
+  audio(str) {
+    if (!isZennAudioUrl(str))
+      return 'Zennにアップロードした音声のURLを指定してください';
+    return `<span class="embed-block embed-audio"><audio controls preload="metadata" src="${sanitizeEmbedToken(
+      str
+    )}"></audio></span>`;
   },
 
   // 以下は埋め込みサーバーが絡む要素。

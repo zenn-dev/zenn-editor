@@ -10,6 +10,7 @@ import {
   PublicApiClientError,
   updateScrap,
   updateScrapComment,
+  uploadFile,
   uploadImage,
 } from '../../lib/zenn-public-api-client';
 
@@ -348,6 +349,62 @@ describe('Zenn Public API client', () => {
         bytes: new Uint8Array([0x89, 0x50, 0x4e, 0x47]),
         filename: 'image.png',
         contentType: 'image/png',
+      })
+    ).rejects.toMatchObject<Partial<PublicApiClientError>>({
+      kind: 'compatibility',
+    });
+  });
+
+  test('ファイルのURLが安全な絶対URLでなければ互換性エラーにする', async () => {
+    process.env.ZENN_API_KEY = 'test-api-key';
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            id: 1,
+            type: 'audio',
+            url: 'javascript:alert(1)',
+          }),
+          { status: 201 }
+        )
+      )
+    );
+
+    await expect(
+      uploadFile({
+        type: 'audio',
+        bytes: new Uint8Array([0, 0, 0, 0x1c]),
+        filename: 'audio.m4a',
+        contentType: 'audio/mp4',
+      })
+    ).rejects.toMatchObject<Partial<PublicApiClientError>>({
+      kind: 'compatibility',
+    });
+  });
+
+  test('ファイルのIDが整数でなければ互換性エラーにする', async () => {
+    process.env.ZENN_API_KEY = 'test-api-key';
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            id: '1',
+            type: 'audio',
+            url: 'https://storage.example.com/audio.m4a',
+          }),
+          { status: 201 }
+        )
+      )
+    );
+
+    await expect(
+      uploadFile({
+        type: 'audio',
+        bytes: new Uint8Array([0, 0, 0, 0x1c]),
+        filename: 'audio.m4a',
+        contentType: 'audio/mp4',
       })
     ).rejects.toMatchObject<Partial<PublicApiClientError>>({
       kind: 'compatibility',

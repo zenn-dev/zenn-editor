@@ -27,6 +27,10 @@
       border: none;
     }
   }
+  .embed-audio audio {
+    display: block;
+    width: 100%;
+  }
   .embed-slideshare iframe {
     border: 1px solid var(--c-border);
   }

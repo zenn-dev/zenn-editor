@@ -28,7 +28,7 @@ A pnpm + Turbo monorepo. All packages share one version managed by Lerna-lite (`
 
 ## zenn-cli
 
-- Entry: `src/server/zenn.ts` → `src/server/commands/index.ts`. Commands: `preview` (default), `init`, `new:article`, `new:book`, `list:articles`, `list:books`, `scrap` and `image` (Scrap and image operations via the Zenn Public API), `--help`, `--version`. `new:*` takes options such as `--slug`/`--title` (no interactive prompts); `list:*` supports `--format tsv/json`.
+- Entry: `src/server/zenn.ts` → `src/server/commands/index.ts`. Commands: `preview` (default), `init`, `new:article`, `new:book`, `list:articles`, `list:books`, `scrap` and `file` (Scrap, image, and audio operations via the Zenn Public API; `image` is a deprecated alias of `file --type image`), `--help`, `--version`. `new:*` takes options such as `--slug`/`--title` (no interactive prompts); `list:*` supports `--format tsv/json`.
 - Content layout: articles are `articles/<slug>.md`; books are `books/<slug>/` with `config.yaml` (or `config.yml`), a cover image, and chapter `.md` files. Chapter order comes from `chapters` in the config, otherwise from an `N.` filename prefix (no prefix → `position: null`).
 - Preview server: `src/server/app.ts` (routes) and `src/server/lib/server.ts` (HTTP + WebSocket). Port 8000 by default, incremented when busy. chokidar sends a refresh message only on `change` events (not on file add/delete).
 - API routes: `/api/articles`, `/api/articles/:slug`, `/api/books`, `/api/books/:slug`, `/api/books/:book_slug/chapters`, `/api/books/:book_slug/chapters/:chapter_filename`, `/api/manual/:slug`, `/api/cli-version`, `/api/local-info`, and `/images/*splat` (served from `cwd/images`; paths containing `..` are rejected).
@@ -45,6 +45,7 @@ A pnpm + Turbo monorepo. All packages share one version managed by Lerna-lite (`
 - `MarkdownOptions` (`src/types.ts`): `embedOrigin`, `customEmbed`, `htmlEmbed` (opt-in, default off; renders ` ```html-embed ` blocks in a sandboxed iframe only when `embedOrigin` is also set). zenn-cli always enables it in the preview.
 - Embeds (`src/embed.ts`):
   - Direct iframes: youtube, slideshare, speakerdeck, docswell, jsfiddle, codepen, codesandbox, stackblitz, blueprintue, figma.
+  - `audio` renders an `<audio>` element, only for URLs of audio uploaded to Zenn (`isZennAudioUrl`).
   - Via the embed server (`EmbedServerType`, requires `embedOrigin`): tweet, card, gist, github, mermaid, and `html` (` ```html-embed ` only). Without `embedOrigin`, tweet/card/gist/github fall back to links and mermaid stays a code block.
 
 ## zenn-model
