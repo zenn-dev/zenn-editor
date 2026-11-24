@@ -53,10 +53,15 @@ const AZURE_HOST_SUFFIXES = [
 // 音声入力を受け付けることを確認できたプロバイダーとモデル系統だけを対象にする。
 // 音声を無視するモデルへ送ると、検査していないのに検知なしと扱ってしまう
 function supportsAudioScan(config: ScrapAiConfiguration) {
-  return config.provider === 'vertex' && /gemini/i.test(config.model);
+  if (config.provider === 'vertex') return /gemini/i.test(config.model);
+  // OpenRouterのモデルIDは「google/gemini-...」の形式
+  if (config.provider === 'openrouter') {
+    return /^~?google\/gemini-/i.test(config.model);
+  }
+  return false;
 }
 const AUDIO_SCAN_UNSUPPORTED_MESSAGE =
-  '音声のAI scanは ZENN_CLI_AI_PROVIDER=vertex と音声入力に対応したGeminiモデルだけに対応しています。未検査の音声をアップロードしないため終了します';
+  '音声のAI scanは ZENN_CLI_AI_PROVIDER=vertex または openrouter と、音声入力に対応したGeminiモデルだけに対応しています。未検査の音声をアップロードしないため終了します';
 
 const findingLevelSchema = z.enum(['low', 'medium', 'high', 'critical']);
 const aiScanFindingSchema = z

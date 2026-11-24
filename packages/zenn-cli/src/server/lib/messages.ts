@@ -353,7 +353,8 @@ AI scan:
   画像: 画像を扱えないモデルや形式の場合、全フレームを検査できないアニメーション
   画像の場合は検査できません。Jevでは ZENN_CLI_AI_JEV_IMAGES=true とPNG・JPEG
   （縦横280〜1568px）が、ClefではPNG・JPEG・WebPが必要です。
-  音声: ZENN_CLI_AI_PROVIDER=vertex と音声入力に対応したGeminiモデルが必要です。
+  音声: ZENN_CLI_AI_PROVIDER=vertex または openrouter と、音声入力に対応した
+  Geminiモデル（openrouterでは google/gemini-...）が必要です。
   ほかのプロバイダーやモデルでは検査できません。変換後の音声（m4a）を送信します。
   検査するのは話されている内容で、検知漏れがありえます。話者の声そのものや
   音楽などの権利は検査しないため、公開してよい内容かは必ず自分で確認してください。

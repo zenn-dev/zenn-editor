@@ -534,8 +534,33 @@ describe('Scrap AI scan', () => {
     });
   });
 
+  test('音声scanではOpenRouterのGeminiへも音声を送信する', async () => {
+    process.env.OPENROUTER_API_KEY = 'test-openrouter-key';
+    const bytes = Buffer.from([0, 0, 0, 0x1c]);
+
+    await scanAudioWithAi(
+      { bytes, contentType: 'audio/mp4', filename: 'voice.m4a' },
+      {
+        ...cloudConfig,
+        provider: 'openrouter',
+        model: 'google/gemini-3.5-flash',
+        effort: 'medium',
+      }
+    );
+
+    expect(mocks.createOpenRouter).toHaveBeenCalled();
+    const call = mocks.generateText.mock.calls[0][0];
+    expect(call.messages[0].content).toEqual([
+      { type: 'text', text: expect.any(String) },
+      { type: 'file', data: bytes, mediaType: 'audio/mp4' },
+    ]);
+  });
+
   test.each([
     ['openai', 'gpt-6-luna'],
+    // OpenRouterでもGemini以外のモデルは音声入力を確認できていない
+    ['openrouter', 'openai/gpt-6-luna'],
+    ['openrouter', 'gemini-3.5-flash'],
     ['anthropic', 'model'],
     ['vertex-anthropic', 'model'],
     ['jev', 'jev-latest'],
@@ -545,6 +570,7 @@ describe('Scrap AI scan', () => {
     '音声入力を確認できていない%s（%s）には音声を送信せず失敗させる',
     async (provider, model) => {
       process.env.OPENAI_API_KEY = 'test-openai-key';
+      process.env.OPENROUTER_API_KEY = 'test-openrouter-key';
       process.env.GOOGLE_VERTEX_PROJECT = 'zenn-project';
       process.env.GOOGLE_VERTEX_LOCATION = 'global';
 
