@@ -84,7 +84,7 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 | `OPENAI_API_KEY` | `openai` / `openai-decisions` 利用時に必須 | OpenAI の API キー。 |
 | `FIREWORKS_API_KEY` | `fireworks` 利用時に必須 | Fireworks の API キー。 |
 | `ANTHROPIC_API_KEY` | `anthropic` 利用時に必須 | Anthropic の API キー。 |
-| `OPENROUTER_API_KEY` | `openrouter` 利用時に必須 | OpenRouter の API キー。ZDR（Zero Data Retention）のエンドポイントだけへ振り分けるため、ZDR 非対応のモデルは利用できない。 |
+| `OPENROUTER_API_KEY` | `openrouter` 利用時に必須 | OpenRouter の API キー。ZDR（Zero Data Retention）を要求して振り分けるため、対応するエンドポイントがないモデルは利用できない。Google のモデルなど Safety Retention の対象になるエンドポイントは、OpenRouter のアカウント設定によって振り分け先に含まれる。 |
 | `TYPESAFE_API_KEY` | `jev` 利用時に必須 | TypeSafe の API キー。 |
 | `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` | `clef` 利用時に必須 | Workers AI の API トークンとアカウント ID。 |
 | `AWS_REGION` | `bedrock` 利用時に必須 | Amazon Bedrock のリージョン（例: `ap-northeast-1`）。 |
@@ -99,7 +99,7 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 
 推論が行われる場所は設定によって変わる。Bedrock のクロスリージョン推論プロファイル（`us.`、`apac.`、`global.` など）、Vertex AI の `global` ロケーション、Azure の Global・DataZone デプロイでは、指定したリージョン以外で処理される場合がある。処理場所に制約がある場合は、単一リージョンのモデル ID・ロケーション・デプロイ（Azure では Standard デプロイ）を使う。
 
-入力の保持や人間によるレビューの扱いは、各クラウドの既定の動作と設定に従う。不正利用の監視などのために入力が一定期間保持される場合があり、無効化には申請や設定が必要なことがある。Amazon Bedrock ではリージョンごとのデータ保持設定によって、AWS が入力を保持する場合や、利用できないモデルがある場合がある（[Amazon Bedrock のデータ保持](https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html)）。Azure と Vertex AI については、それぞれ [Azure OpenAI のデータ、プライバシー、セキュリティ](https://learn.microsoft.com/azure/foundry/responsible-ai/openai/data-privacy) と [Vertex AI のゼロデータ保持](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention) を確認する。Vertex AI 上の Claude などのパートナーモデルは、Google のモデルとは保持の条件が異なる場合があるため、各モデルの条件を確認する。
+入力の保持や人間によるレビューの扱いは、各クラウドの既定の動作と設定に従う。不正利用の監視などのために入力が一定期間保持される場合があり、無効化には申請や設定が必要なことがある。Amazon Bedrock ではリージョンごとのデータ保持設定によって、AWS が入力を保持する場合や、利用できないモデルがある場合がある（[Amazon Bedrock のデータ保持](https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html)）。Azure と Vertex AI については、それぞれ [Azure OpenAI のデータ、プライバシー、セキュリティ](https://learn.microsoft.com/azure/foundry/responsible-ai/openai/data-privacy) と [Vertex AI のゼロデータ保持](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention) を確認する。Vertex AI 上の Claude などのパートナーモデルは、Google のモデルとは保持の条件が異なる場合があるため、各モデルの条件を確認する。OpenRouter では、Google のモデルは Safety Retention の対象で、不正利用の監視のためにフラグが付いた入力が一定期間保持される場合がある。厳密なゼロ保持が必要なら、OpenRouter のプライバシー設定で確認する（[OpenRouter の Zero Data Retention](https://openrouter.ai/docs/guides/features/zdr)）。
 
 判定モデル（`openai-decisions` / `jev` / `clef`）は文章を生成せず、検知事項ごとの確率を返す。指摘には固定の分類名と確率だけを表示する。Clef は一度に検査できる長さ（24,576 トークン）を超えた場合や、処理したトークン数が上限に近く未検査の部分が残った可能性がある場合は、投稿せずに終了する。
 
@@ -109,7 +109,7 @@ Secret scan は既定で有効であり、有効化のための環境変数は�
 - 音声は約 30 秒以内・640KB 以下の m4a（AAC）としてアップロードされる。条件を満たす m4a は再エンコードせずに送信し、WAV などの非圧縮 PCM は先頭 30 秒を CLI が AAC へ変換する。どちらもタイトルなどのメタデータは取り除く。MP3 などの圧縮音声や条件を超える m4a は CLI で変換できないため、先に `ffmpeg` などで変換する。段階的に提供中のため、利用できないアカウントがある。アップロードした音声は、記事と本のチャプターの本文に `@[audio](URL)` と書いて埋め込む（Scrap とコメントでは使えない）。
 - `ZENN_CLI_AI_SCAN=true` の場合はアップロード前に AI scan を実行し、画像または音声とファイル名を AI プロバイダーへ送信する。検査できない場合はアップロードせずに終了する。
   - 画像: 画像を扱えないモデルや形式（Jev では PNG・JPEG で縦横 280〜1568px、Clef では PNG・JPEG・WebP）や、全フレームを検査できないアニメーション画像は検査できない。
-  - 音声: `ZENN_CLI_AI_PROVIDER=vertex` または `openrouter` と、音声入力に対応した Gemini モデル（`openrouter` では `google/gemini-...`）が必要で、ほかのプロバイダーやモデルでは検査できない。変換後の音声を送信する。検査対象は話されている内容で、検知漏れがありうる補助的な検査として扱う。自分以外の人の声や第三者が権利を持つ音源を含まないことは、人が確認する。
+  - 音声: `ZENN_CLI_AI_PROVIDER=vertex` または `openrouter` と、音声入力に対応した Gemini モデル（`openrouter` では `google/gemini-...`）が必要で、ほかのプロバイダーやモデルでは検査できない。画像生成・埋め込み・音声合成用のモデルや `:batch` などの変種は対象外。変換後の音声を送信する。検査対象は話されている内容で、検知漏れがありうる補助的な検査として扱う。自分以外の人の声や第三者が権利を持つ音源を含まないことは、人が確認する。
 
 判定モデルでは、認証情報を該当と判定した場合は `critical`、そのほかの分類は `high` 以上として扱い、重要度の回答だけで検知を弱めない。
 

@@ -15,6 +15,7 @@ import {
 import * as Log from '../lib/log';
 import {
   formatAiScanFinding,
+  assertAudioScanSupported,
   scanAudioWithAi,
   scanImageWithAi,
   ScrapAiScanError,
@@ -186,6 +187,8 @@ async function runAiScan(
   const modelInfo = isDecisionAiProvider(config.provider)
     ? `model=${JSON.stringify(config.model)}`
     : `model=${JSON.stringify(config.model)}, effort=${config.effort}`;
+  // 対応しない設定では送信しないため、送信の案内より先に確認する
+  if (type === 'audio') assertAudioScanSupported(config);
   Log.warn(
     `AI scanを実行します。${sentItems.join('、')}を${config.provider}（${modelInfo}）へ送信します。データ取扱いは利用者の責任で確認してください`
   );
@@ -217,7 +220,7 @@ function apiErrorMessage(
     const hint = type === 'audio' ? `。${AUDIO_CONVERSION_HINT}` : '';
     return `リクエスト値または${typeLabels[type]}ファイルを確認してください${hint}${code}`;
   }
-  if (error.kind === 'conflict') {
+  if (error.kind === 'conflict' && operation === 'delete') {
     return `本で使用中の${typeLabels[type]}は削除できません${code}`;
   }
   return `${error.message}${code}`;
@@ -282,7 +285,7 @@ async function upload(variant: Variant, argv: string[]) {
     ensurePublicApiCredentials();
     const target = await readUploadFile(type, args._[0]);
     if (type === 'audio') {
-      // AIプロバイダーへ送る前に確認できるよう、AI scanより先に表示する
+      // AIプロバイダーへ送信する旨の案内より先に表示する
       Log.warn(
         '声は話者を識別しうる情報です。自分以外の人の声や、第三者が権利を持つ音源を含まないことを確認してください'
       );

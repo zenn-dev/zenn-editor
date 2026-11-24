@@ -51,12 +51,27 @@ const AZURE_HOST_SUFFIXES = [
 ];
 
 // 音声入力を受け付けることを確認できたプロバイダーとモデル系統だけを対象にする。
-// 音声を無視するモデルへ送ると、検査していないのに検知なしと扱ってしまう
+// 音声を無視するモデルへ送ると、検査していないのに検知なしと扱ってしまう。
+// 画像生成・埋め込み・音声合成などのGeminiは音声入力を受け付けないため除外し、
+// 「:batch」などの変種も対象にしない。ここで除外できない非対応モデルは、
+// プロバイダーがエラーを返してscanが失敗することに依存する
+const AUDIO_INPUT_GEMINI_PATTERN = /^gemini-[a-z0-9.-]+$/i;
+const NON_AUDIO_INPUT_GEMINI_PATTERN = /image|embedding|tts|banana|omni/i;
+
+function isAudioInputGemini(model: string) {
+  return (
+    AUDIO_INPUT_GEMINI_PATTERN.test(model) &&
+    !NON_AUDIO_INPUT_GEMINI_PATTERN.test(model)
+  );
+}
+
 function supportsAudioScan(config: ScrapAiConfiguration) {
-  if (config.provider === 'vertex') return /gemini/i.test(config.model);
-  // OpenRouterのモデルIDは「google/gemini-...」の形式
+  if (config.provider === 'vertex') return isAudioInputGemini(config.model);
   if (config.provider === 'openrouter') {
-    return /^~?google\/gemini-/i.test(config.model);
+    // OpenRouterのモデルIDは「google/gemini-...」の形式。
+    // 「~google/gemini-flash-latest」のように先頭が「~」の別名もある
+    const match = /^~?google\/(.+)$/i.exec(config.model);
+    return match !== null && isAudioInputGemini(match[1]);
   }
   return false;
 }
@@ -347,7 +362,9 @@ async function createModelAndOptions(
     });
     return {
       model: openrouter.chat(config.model, {
-        // ZDRのエンドポイントだけを使い、構造化出力に非対応のプロバイダーへ振り分けない
+        // ZDRを要求し、構造化出力に非対応のプロバイダーへ振り分けない。
+        // Googleのモデルなど、Safety Retentionの対象になるエンドポイントは
+        // OpenRouterのアカウント設定によって振り分け先に含まれる
         provider: {
           data_collection: 'deny',
           zdr: true,
@@ -696,13 +713,18 @@ export async function scanImageWithAi(
   return runAiScan({ kind: 'image', image }, config, notes);
 }
 
+/** 音声のAI scanに対応しない設定なら、音声を送信する前に失敗させる */
+export function assertAudioScanSupported(config: ScrapAiConfiguration) {
+  if (!supportsAudioScan(config)) {
+    throw new ScrapAiScanError(AUDIO_SCAN_UNSUPPORTED_MESSAGE);
+  }
+}
+
 export async function scanAudioWithAi(
   audio: AudioContent,
   config: ScrapAiConfiguration,
   notes?: string
 ) {
-  if (!supportsAudioScan(config)) {
-    throw new ScrapAiScanError(AUDIO_SCAN_UNSUPPORTED_MESSAGE);
-  }
+  assertAudioScanSupported(config);
   return runAiScan({ kind: 'audio', audio }, config, notes);
 }

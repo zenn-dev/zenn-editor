@@ -543,7 +543,7 @@ describe('Scrap AI scan', () => {
       {
         ...cloudConfig,
         provider: 'openrouter',
-        model: 'google/gemini-3.5-flash',
+        model: '~google/gemini-flash-latest',
         effort: 'medium',
       }
     );
@@ -561,6 +561,12 @@ describe('Scrap AI scan', () => {
     // OpenRouterでもGemini以外のモデルは音声入力を確認できていない
     ['openrouter', 'openai/gpt-6-luna'],
     ['openrouter', 'gemini-3.5-flash'],
+    // 音声入力を受け付けないGeminiや、変種のモデルIDは対象にしない
+    ['openrouter', 'google/gemini-3.1-flash-image'],
+    ['openrouter', 'google/gemini-3.8-flash-tts'],
+    ['openrouter', 'google/gemini-3.5-flash:batch'],
+    ['vertex', 'gemini-embedding-2'],
+    ['vertex', 'not-gemini-3-flash'],
     ['anthropic', 'model'],
     ['vertex-anthropic', 'model'],
     ['jev', 'jev-latest'],

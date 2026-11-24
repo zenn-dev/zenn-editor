@@ -200,7 +200,7 @@ Environment:
   OPENAI_API_KEY               openai / openai-decisions 利用時のAPIキー
   FIREWORKS_API_KEY            Fireworks利用時のAPIキー
   ANTHROPIC_API_KEY            Anthropic利用時のAPIキー
-  OPENROUTER_API_KEY           OpenRouter利用時のAPIキー（ZDRのエンドポイントのみ使用）
+  OPENROUTER_API_KEY           OpenRouter利用時のAPIキー（ZDRを要求して送信）
   TYPESAFE_API_KEY             Jev利用時のAPIキー
   CLOUDFLARE_API_TOKEN         Clef利用時のCloudflare APIトークン
   CLOUDFLARE_ACCOUNT_ID        Clef利用時のCloudflareアカウントID
@@ -355,6 +355,8 @@ AI scan:
   （縦横280〜1568px）が、ClefではPNG・JPEG・WebPが必要です。
   音声: ZENN_CLI_AI_PROVIDER=vertex または openrouter と、音声入力に対応した
   Geminiモデル（openrouterでは google/gemini-...）が必要です。
+  OpenRouterのGoogleのモデルはSafety Retentionの対象で、入力が一定期間保持される
+  場合があります。OpenRouterのZDRの説明とアカウント設定を確認してください。
   ほかのプロバイダーやモデルでは検査できません。変換後の音声（m4a）を送信します。
   検査するのは話されている内容で、検知漏れがありえます。話者の声そのものや
   音楽などの権利は検査しないため、公開してよい内容かは必ず自分で確認してください。

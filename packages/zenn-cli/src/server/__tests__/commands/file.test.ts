@@ -321,6 +321,17 @@ describe('fileコマンド', () => {
       );
     });
 
+    test('音声のAI scanに対応しないプロバイダーでは、送信もアップロードもしない', async () => {
+      enableAiScan('openai', 'gpt-6-luna');
+      const file = await localFile('audio.m4a', m4aBytes);
+
+      await exec(['upload', file, '--type', 'audio', '--confirm-public']);
+
+      expect(audioScanMock).not.toHaveBeenCalled();
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(1);
+    });
+
     test('音声で検知した場合や検査できない場合はアップロードしない', async () => {
       enableAudioAiScan();
       audioScanMock.mockRejectedValue(new ScrapAiDetectedError('検知'));
