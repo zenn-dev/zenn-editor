@@ -70,8 +70,13 @@ describe('音声埋め込み要素のテスト', () => {
       );
     });
 
-    test('URLでない文字列はリンクにしない', async () => {
-      const html = await markdownToHtml('@[audio](javascript:alert(1))');
+    test.each([
+      ['javascript スキーム', 'javascript:alert(1)'],
+      ['大文字が混ざった javascript スキーム', 'JaVaScRiPt:alert(1)'],
+      ['data スキーム', 'data:audio/mp4;base64,AAAA'],
+      ['スキームの省略', '//example.com/a.m4a'],
+    ])('%sはリンクにしない', async (_name, url) => {
+      const html = await markdownToHtml(`@[audio](${url})`);
       const root = parse(html);
 
       expect(root.querySelector('audio')).toBeNull();
@@ -159,8 +164,40 @@ describe('isZennAudioUrl', () => {
     ['前後の空白', ` ${validUrl}`],
     ['末尾の改行', `${validUrl}\n`],
     ['属性の挿入', `${validUrl}" autoplay="`],
+    [
+      '既定のポートの明示',
+      `https://user-upload.zenn.studio:443/audio/${audioId}.m4a`,
+    ],
+    ['全角のホスト', `https://ｕser-upload.zenn.studio/audio/${audioId}.m4a`],
+    [
+      '末尾がドットのホスト',
+      `https://user-upload.zenn.studio./audio/${audioId}.m4a`,
+    ],
+    [
+      'ホストの途中のタブ',
+      `https://user-up\tload.zenn.studio/audio/${audioId}.m4a`,
+    ],
+    ['スラッシュの省略', `https:user-upload.zenn.studio/audio/${audioId}.m4a`],
+    [
+      'スラッシュの過多',
+      `https:///user-upload.zenn.studio/audio/${audioId}.m4a`,
+    ],
+    [
+      'バックスラッシュと認証情報でホストを偽装',
+      `https://evil.example\\@user-upload.zenn.studio/audio/${audioId}.m4a`,
+    ],
+    ['エンコードされたパス', `${audioOrigin}/%61udio/${audioId}.m4a`],
+    ['カレントディレクトリ', `${audioOrigin}/audio/./${audioId}.m4a`],
+    ['末尾のスラッシュ', `${validUrl}/`],
+    ['末尾のNULL文字', `${validUrl}%00`],
   ])('%sは false を返す', (_name, url) => {
     expect(isZennAudioUrl(url, origins)).toBe(false);
+  });
+
+  test('audioOrigins が配列でなければ false を返す', () => {
+    expect(isZennAudioUrl(validUrl, audioOrigin as unknown as string[])).toBe(
+      false
+    );
   });
 
   describe('配信元にパスの接頭辞を指定した場合', () => {
@@ -198,6 +235,12 @@ describe('isZennAudioUrl', () => {
     ['URLでない文字列', 'user-upload.zenn.studio'],
     ['http・https 以外', 'ftp://user-upload.zenn.studio'],
     ['クエリ付き', `${audioOrigin}?x=1`],
+    ['空のクエリ付き', `${audioOrigin}/?`],
+    ['空のフラグメント付き', `${audioOrigin}/#`],
+    ['空の認証情報付き', 'https://@user-upload.zenn.studio'],
+    ['パスの遡りを含む接頭辞', `${audioOrigin}/x/..`],
+    ['大文字のホスト', 'https://USER-UPLOAD.zenn.studio'],
+    ['既定のポートの明示', `${audioOrigin}:443`],
     ['認証情報付き', 'https://user@user-upload.zenn.studio'],
   ])('配信元が%sの場合は許可しない', (_name, origin) => {
     expect(isZennAudioUrl(validUrl, [origin])).toBe(false);

@@ -42,10 +42,10 @@ A pnpm + Turbo monorepo. All packages share one version managed by Lerna-lite (`
 - `markdownToHtml(text, options)` is **async**: markdown-it renders code blocks as placeholders, Shiki highlights them asynchronously (`src/utils/md-renderer-fence.ts`, `src/utils/highlight.ts`), then the result is sanitized with `sanitize-html` (`src/sanitizer.ts`; disallowed tags are discarded). `markdownToSimpleHtml` is also exported.
 - The code is meant to run in both Node.js and the browser. Do not use Node-only modules or `DOMParser`.
 - Plugins are registered in `src/index.ts` (order matters). `mdCustomBlock` handles the `@[type](...)` embed syntax; `:::message` / `:::details` use markdown-it-container; heading anchors are added to h1–h4.
-- `MarkdownOptions` (`src/types.ts`): `embedOrigin`, `customEmbed`, `htmlEmbed` (opt-in, default off; renders ` ```html-embed ` blocks in a sandboxed iframe only when `embedOrigin` is also set). zenn-cli always enables it in the preview.
+- `MarkdownOptions` (`src/types.ts`): `embedOrigin`, `customEmbed`, `htmlEmbed` (opt-in, default off; renders ` ```html-embed ` blocks in a sandboxed iframe only when `embedOrigin` is also set). zenn-cli always enables it in the preview. `audioEmbed` (opt-in, default off) and `audioOrigins` (allowed audio origins, optionally with a path prefix) control `@[audio]`; zenn-cli enables it in the preview for audio uploaded with `zenn file upload --type audio`.
 - Embeds (`src/embed.ts`):
   - Direct iframes: youtube, slideshare, speakerdeck, docswell, jsfiddle, codepen, codesandbox, stackblitz, blueprintue, figma.
-  - `audio` renders an `<audio>` element, only for URLs of audio uploaded to Zenn (`isZennAudioUrl`).
+  - `audio` renders an `<audio>` element only when `audioEmbed` is true and the URL is `<one of audioOrigins>/audio/<32 lowercase hex>.m4a` (`isZennAudioUrl`). Otherwise it falls back to a link (`audioEmbed` off) or an error message.
   - Via the embed server (`EmbedServerType`, requires `embedOrigin`): tweet, card, gist, github, mermaid, and `html` (` ```html-embed ` only). Without `embedOrigin`, tweet/card/gist/github fall back to links and mermaid stays a code block.
 
 ## zenn-model

@@ -20,7 +20,9 @@ export type MarkdownOptions = {
    * `@[audio](URL)` で埋め込みを許可する音声の配信元（デフォルト: なし）
    * オリジン（例: `https://audio.example.com`）、またはオリジンとパスの接頭辞
    * （例: `https://example.com/uploads`）を指定する。
-   * 埋め込めるのは `<配信元>/audio/<32桁の16進数>.m4a` の形の URL だけ
+   * 埋め込めるのは `<配信元>/audio/<32桁の16進数（小文字）>.m4a` の形の URL だけで、
+   * クエリやフラグメントが付いた URL は埋め込まない。
+   * `audioEmbed` を有効にしても、ここに配信元を指定しなければ音声は埋め込まれない
    */
   audioOrigins?: readonly string[];
 };

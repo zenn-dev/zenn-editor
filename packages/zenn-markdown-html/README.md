@@ -64,7 +64,8 @@ const html = await markdownToHtml(markdown, {
 #### 音声の埋め込みを有効にする
 
 `@[audio](URL)` は、`audioEmbed` を `true` にしたときだけ `<audio>` として出力します。未指定の場合は URL へのリンクになります。
-埋め込みを許可する音声の配信元は `audioOrigins` に指定してください。`<配信元>/audio/<32桁の16進数>.m4a` の形の URL だけを埋め込みます。
+埋め込みを許可する音声の配信元は `audioOrigins` に指定してください。`audioEmbed` を有効にしても、`audioOrigins` を指定しなければ音声は埋め込まれません。
+埋め込むのは `<配信元>/audio/<32桁の16進数（小文字）>.m4a` の形の URL だけです。クエリやフラグメントが付いた URL は埋め込みません。
 
 ```js
 import markdownToHtml from 'zenn-markdown-html';

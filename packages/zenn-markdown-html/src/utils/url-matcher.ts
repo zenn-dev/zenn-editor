@@ -178,6 +178,9 @@ export function isZennAudioUrl(
   url: string,
   audioOrigins: readonly string[] = []
 ): boolean {
+  // 型を通らない値（JavaScript から文字列を渡した場合など）は、許可する配信元なしとして扱う
+  if (!Array.isArray(audioOrigins)) return false;
+
   const target = parseUrl(url);
   if (!target) return false;
 
@@ -187,12 +190,16 @@ export function isZennAudioUrl(
     if (allowed.protocol !== 'https:' && allowed.protocol !== 'http:') {
       return false;
     }
-    if (allowed.username || allowed.password || allowed.search || allowed.hash)
+    // 配信元の指定も、URL の解釈で正規化される書き方（`..`、クエリ、フラグメント、認証情報、
+    // 大文字のホスト、既定のポートなど）を受け付けない。`/a/..` のような接頭辞が
+    // 意図より広い範囲を許可しないようにする
+    const pathPrefix = allowed.pathname.replace(/\/+$/, '');
+    if (audioOrigin.replace(/\/+$/, '') !== `${allowed.origin}${pathPrefix}`)
       return false;
+
     if (target.protocol !== allowed.protocol || target.host !== allowed.host)
       return false;
 
-    const pathPrefix = allowed.pathname.replace(/\/+$/, '');
     if (!target.pathname.startsWith(`${pathPrefix}/`)) return false;
 
     const audioPath = target.pathname.slice(pathPrefix.length);
