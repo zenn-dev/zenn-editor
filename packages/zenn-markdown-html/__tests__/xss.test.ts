@@ -1,3 +1,4 @@
+import { parse } from 'node-html-parser';
 import { describe, test, expect } from 'vitest';
 import markdownToHtml from '../src/index';
 
@@ -106,5 +107,35 @@ describe('XSS脆弱性のテスト', () => {
     const content = `@[figma](https://embed.figma.com/design/LKQ4FJ4bTnCSjedbRpk931/Sample-File"></iframe><img src onerror=alert("XSS") />)`;
     const html = await markdownToHtml(content);
     expect(html).toContain('埋め込みに対応しているFigma URLを指定してください');
+  });
+
+  test('直接書かれた<audio />は要素として出力しない', async () => {
+    const html = await markdownToHtml(
+      '<audio src="https://example.com/a.mp3" autoplay></audio>'
+    );
+    expect(html).not.toContain('<audio');
+  });
+
+  test('@[audio] は audioEmbed が有効でも許可していない配信元の音声を出力しない', async () => {
+    const html = await markdownToHtml(
+      '@[audio](https://example.com/audio/0123456789abcdef0123456789abcdef.m4a)',
+      { audioEmbed: true, audioOrigins: ['https://audio.example.com'] }
+    );
+    expect(html).not.toContain('<audio');
+  });
+
+  test('@[audio] は audioEmbed が無効ならリンクの属性に入力値を挿入させない', async () => {
+    const html = await markdownToHtml(
+      '@[audio](https://example.com/a.m4a" onmouseover="alert(1))'
+    );
+    const link = parse(html).querySelector('a');
+
+    expect(html).not.toContain('<audio');
+    expect(link?.attributes).not.toHaveProperty('onmouseover');
+    expect(Object.keys(link?.attributes ?? {}).sort()).toEqual([
+      'href',
+      'rel',
+      'target',
+    ]);
   });
 });

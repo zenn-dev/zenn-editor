@@ -291,7 +291,7 @@ function requiredPath(value: unknown) {
   return url.toString();
 }
 
-function requiredImageUrl(value: unknown) {
+function requiredFileUrl(value: unknown) {
   if (typeof value !== 'string') {
     throw new PublicApiClientError('compatibility');
   }
@@ -443,7 +443,7 @@ export async function deleteScrapComment(input: {
   );
 }
 
-export async function uploadImage(input: {
+function fileForm(input: {
   bytes: Uint8Array;
   filename: string;
   contentType: string;
@@ -456,8 +456,16 @@ export async function uploadImage(input: {
     new Blob([bytes.buffer], { type: input.contentType }),
     input.filename
   );
-  const json = (await postForm('/images', form)) as ImageResponse;
-  return { url: requiredImageUrl(json.image_url) };
+  return form;
+}
+
+export async function uploadImage(input: {
+  bytes: Uint8Array;
+  filename: string;
+  contentType: string;
+}) {
+  const json = (await postForm('/images', fileForm(input))) as ImageResponse;
+  return { url: requiredFileUrl(json.image_url) };
 }
 
 export async function listMyImages(page?: number, count?: number) {
@@ -471,4 +479,41 @@ export async function listMyImages(page?: number, count?: number) {
 
 export async function deleteImage(id: number) {
   await remove(`/images/${id}`);
+}
+
+export type PublicFileType = 'image' | 'audio';
+
+export async function uploadFile(input: {
+  type: PublicFileType;
+  bytes: Uint8Array;
+  filename: string;
+  contentType: string;
+}) {
+  const form = fileForm(input);
+  form.append('type', input.type);
+  const json = await postForm<ObjectResponse>('/files', form);
+  // 削除に使うIDと種類が取り違えられていないことを確認する
+  if (!Number.isSafeInteger(json.id) || json.type !== input.type) {
+    throw new PublicApiClientError('compatibility');
+  }
+  return { ...json, url: requiredFileUrl(json.url) };
+}
+
+export async function listMyFiles(
+  type: PublicFileType,
+  page?: number,
+  count?: number
+) {
+  const query = new URLSearchParams({ type });
+  if (page !== undefined) query.set('page', String(page));
+  if (count !== undefined) query.set('count', String(count));
+  const json = await get<ObjectResponse>(`/files?${query.toString()}`);
+  requiredArray(json, 'files');
+  requiredNextPage(json);
+  return json;
+}
+
+// IDは種類ごとに採番されるため、削除でも種類を必ず指定する
+export async function deleteFile(type: PublicFileType, id: number) {
+  await remove(`/files/${id}?${new URLSearchParams({ type }).toString()}`);
 }

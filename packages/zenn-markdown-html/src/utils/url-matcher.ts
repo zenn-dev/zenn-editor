@@ -162,6 +162,63 @@ export function extractDocswellEmbedUrl(url: string): string | null {
   ).toString();
 }
 
+/** アップロードした音声のパス（配信元からの相対パス） */
+const AUDIO_PATH_REGEX = /^\/audio\/[0-9a-f]{32}\.m4a$/;
+
+/**
+ * Zennにアップロードした音声のURLか判定する
+ * アップロード時にしか長さを制限できないため、外部の音声は埋め込めないようにする
+ *
+ * `audioOrigins` には、許可する配信元をオリジン、またはオリジンとパスの接頭辞で指定する。
+ * 文字列の前方一致では `https://audio.example.com.evil.example/` のような URL を
+ * 通してしまうため、URL を分解してスキーム・ホスト・パスを比べる。
+ * クエリ・フラグメント・認証情報・パスの遡り（`..` や `%2e%2e`）を含む URL は許可しない
+ */
+export function isZennAudioUrl(
+  url: string,
+  audioOrigins: readonly string[] = []
+): boolean {
+  // 型を通らない値（JavaScript から文字列を渡した場合など）は、許可する配信元なしとして扱う
+  if (!Array.isArray(audioOrigins)) return false;
+
+  const target = parseUrl(url);
+  if (!target) return false;
+
+  return audioOrigins.some((audioOrigin) => {
+    const allowed = parseUrl(audioOrigin);
+    if (!allowed) return false;
+    if (allowed.protocol !== 'https:' && allowed.protocol !== 'http:') {
+      return false;
+    }
+    // 配信元の指定も、URL の解釈で正規化される書き方（`..`、クエリ、フラグメント、認証情報、
+    // 大文字のホスト、既定のポートなど）を受け付けない。`/a/..` のような接頭辞が
+    // 意図より広い範囲を許可しないようにする
+    const pathPrefix = allowed.pathname.replace(/\/+$/, '');
+    if (audioOrigin.replace(/\/+$/, '') !== `${allowed.origin}${pathPrefix}`)
+      return false;
+
+    if (target.protocol !== allowed.protocol || target.host !== allowed.host)
+      return false;
+
+    if (!target.pathname.startsWith(`${pathPrefix}/`)) return false;
+
+    const audioPath = target.pathname.slice(pathPrefix.length);
+    if (!AUDIO_PATH_REGEX.test(audioPath)) return false;
+
+    // URL の解釈で正規化された部分（`..`、認証情報、空のクエリなど）が無いことを、
+    // 入力の文字列と組み立て直した URL が一致することで確かめる
+    return url === `${allowed.origin}${pathPrefix}${audioPath}`;
+  });
+}
+
+function parseUrl(str: string): URL | null {
+  try {
+    return new URL(str);
+  } catch (_) {
+    return null;
+  }
+}
+
 /**
  * 参考: https://blueprintue.com/
  * 生成されるURLをもとに正規表現を定義した

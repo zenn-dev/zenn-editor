@@ -7,7 +7,8 @@ Command:
   zenn list:articles  記事の一覧を表示
   zenn list:books     本の一覧を表示
   zenn scrap          Public API経由でScrapを操作
-  zenn image          Public API経由で画像を管理
+  zenn file           Public API経由で画像・音声を管理
+  zenn image          （非推奨）zenn file --type image を利用してください
   zenn --version, -v  zenn-cliのバージョンを表示
   zenn --help, -h     ヘルプ
 
@@ -199,7 +200,7 @@ Environment:
   OPENAI_API_KEY               openai / openai-decisions 利用時のAPIキー
   FIREWORKS_API_KEY            Fireworks利用時のAPIキー
   ANTHROPIC_API_KEY            Anthropic利用時のAPIキー
-  OPENROUTER_API_KEY           OpenRouter利用時のAPIキー（ZDRのエンドポイントのみ使用）
+  OPENROUTER_API_KEY           OpenRouter利用時のAPIキー（ZDRを要求して送信）
   TYPESAFE_API_KEY             Jev利用時のAPIキー
   CLOUDFLARE_API_TOKEN         Clef利用時のCloudflare APIトークン
   CLOUDFLARE_ACCOUNT_ID        Clef利用時のCloudflareアカウントID
@@ -258,7 +259,8 @@ Example:
 
 export const imageHelpText = `
 Command:
-  zenn image          Public API経由でMarkdown用画像を管理
+  zenn image          （非推奨）Public API経由でMarkdown用画像を管理
+                      zenn file --type image を利用してください（違いは下記のMigrationを参照）
 
 Usage:
   npx zenn image upload FILE --confirm-public [--machine-readable]
@@ -297,6 +299,91 @@ Notice:
   機密情報や個人情報を含む画像は
   アップロードしないでください。
 
+Migration:
+  zenn image は非推奨です。削除する時期は別途お知らせします。それまでは従来どおり
+  利用できます。zenn file --type image へ移行する場合は、次の違いに注意してください。
+  - upload --machine-readable の出力が、画像URLだけからJSON（id・type・urlなど）に変わります。
+  - delete --machine-readable の出力が {"deleted":true,"type":"image","id":123} に変わります。
+  - list の出力のキーが images から files に変わります。
+  - list と delete にも --type image が必要です。
+  詳細は npx zenn file --help を参照してください。
+
 Example:
   npx zenn image upload ./images/example.png --confirm-public
+`;
+
+export const fileHelpText = `
+Command:
+  zenn file           Public API経由でMarkdown用の画像・音声を管理
+
+Usage:
+  npx zenn file upload FILE --type image|audio --confirm-public [--machine-readable]
+  npx zenn file list --type image|audio [--page NUMBER] [--count NUMBER] [--machine-readable]
+  npx zenn file delete FILE_ID --type image|audio --yes [--machine-readable]
+
+Options:
+  --type               ファイルの種類。image または audio（必須。拡張子や中身からは推測しません）
+  --confirm-public     ファイルが公開URLで配信され、機密情報・個人情報を含まないことを確認する（必須）
+                       音声では、自分以外の人の声や第三者が権利を持つ音源を含まないことも確認する
+  --page               一覧のページ番号（1以上、既定1）
+  --count              一覧の取得件数（1～100、既定50）
+  --yes                ファイル削除を確認する（必須）
+  --machine-readable   結果をJSON1行で表示
+  --dangerously-skip-ai-scan  uploadのAI scanをスキップ
+  --notes-to-ai NOTES  uploadのAI scanへ追加の備考を送信
+  --help, -h           このヘルプを表示
+
+Environment:
+  ZENN_API_KEY                         一覧はfile:read:own、アップロード・削除はfile:write:ownスコープを持つAPIキー
+                                       （--type image に限りimage:read:own・image:write:ownでも可）
+  ZENN_API_BASE_URL                    開発・テスト用のPublic APIベースURL（任意）
+  ZENN_CLI_AI_SCAN                     uploadでAI scanを有効にする場合はtrue
+  ZENN_CLI_FORCE_SAFE                  AI scanのスキップを禁止する場合はtrue
+  AI scanのプロバイダー・モデル・APIキーの設定は npx zenn scrap --help を参照してください
+
+Output:
+  uploadの--machine-readableは id・type・url・size・created_at（音声は duration_ms も）を
+  持つJSONを表示します。deleteは {"deleted":true,"type":"audio","id":123} の形式です。
+  IDは種類ごとに採番されるため、deleteでも--typeを省略できません。
+
+AI scan:
+  AI scanはZENN_CLI_AI_SCAN=true の場合だけ有効です。AI scanでは画像または音声・
+  ファイル名・notes-to-ai・AI scan promptを選択したAIプロバイダーへ送信します。
+  検査できない場合はアップロードせずに終了します。
+  画像: 画像を扱えないモデルや形式の場合、全フレームを検査できないアニメーション
+  画像の場合は検査できません。Jevでは ZENN_CLI_AI_JEV_IMAGES=true とPNG・JPEG
+  （縦横280〜1568px）が、ClefではPNG・JPEG・WebPが必要です。
+  音声: ZENN_CLI_AI_PROVIDER=vertex または openrouter と、音声入力に対応した
+  Geminiモデル（openrouterでは google/gemini-...）が必要です。
+  OpenRouterのGoogleのモデルはSafety Retentionの対象で、入力が一定期間保持される
+  場合があります。OpenRouterのZDRの説明とアカウント設定を確認してください。
+  ほかのプロバイダーやモデルでは検査できません。変換後の音声（m4a）を送信します。
+  検査するのは話されている内容で、検知漏れがありえます。話者の声そのものや
+  音楽などの権利は検査しないため、公開してよい内容かは必ず自分で確認してください。
+
+Audio:
+  音声は約30秒以内・640KB以下のm4a（AAC）としてアップロードします。
+  - WAVなどの非圧縮PCM（100MB以下）は、先頭30秒をCLIでAAC（128kbps）へ変換して
+    送信します。30秒を超える部分はアップロードしません。
+  - 条件を満たすm4aは音声を再エンコードせずに送信します。
+  - MP3などの圧縮音声や、条件を超えるm4aはCLIで変換できません。先に変換してください。
+      ffmpeg -i input.mp3 -t 30 -c:a aac -b:a 128k output.m4a
+  タイトルや作成者などのメタデータは取り除いて送信します。動画やカバー画像を含む
+  ファイル、音声トラックが複数あるファイルは指定できません。
+  自分以外の人の声や、第三者が権利を持つ音源はアップロードしないでください。
+  音声アップロードは段階的に提供中のため、利用できないアカウントがあります。
+  アップロードした音声は、記事と本のチャプターの本文に @[audio](URL) と書くと
+  埋め込めます（Scrapとコメントでは使えません）。
+
+Notice:
+  画像はJPEG、PNG、GIF、WebP形式の3MB以下に対応します。
+  アップロード後は公開URLで配信され、URLを知る人が閲覧できます。APIの利用には
+  レート制限があります。ファイルは自動的には削除されません。本で使用中のファイルは
+  削除できません。機密情報や個人情報を含むファイルはアップロードしないでください。
+
+Example:
+  npx zenn file upload ./images/example.png --type image --confirm-public
+  npx zenn file upload ./audio/example.wav --type audio --confirm-public --machine-readable
+  npx zenn file list --type audio --machine-readable
+  npx zenn file delete 123 --type audio --yes
 `;

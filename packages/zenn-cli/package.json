@@ -1,6 +1,6 @@
 {
   "name": "zenn-cli",
-  "version": "0.5.15",
+  "version": "0.5.16-alpha.3",
   "description": "Preview Zenn content locally.",
   "repository": {
     "type": "git",
@@ -46,6 +46,7 @@
     "@ai-sdk/openai": "^4.0.101",
     "@aws-sdk/credential-providers": "^3.1156.0",
     "@azure/identity": "^4.14.1",
+    "@mediabunny/aac-encoder": "^1.66.0",
     "@openrouter/ai-sdk-provider": "^3.1.0",
     "@secretlint/node": "^13.0.6",
     "@secretlint/secretlint-rule-preset-recommend": "^13.0.6",
@@ -60,6 +61,7 @@
     "fs-extra": "^11.3.2",
     "image-size": "^2.0.2",
     "js-yaml": "^5.2.1",
+    "mediabunny": "^1.66.0",
     "node-fetch": "^3.3.2",
     "open": "^11.0.4",
     "package-manager-detector": "^1.6.0",

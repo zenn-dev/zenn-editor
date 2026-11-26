@@ -50,6 +50,34 @@ const AZURE_HOST_SUFFIXES = [
   '.cognitiveservices.azure.com',
 ];
 
+// 音声入力を受け付けることを確認できたプロバイダーとモデル系統だけを対象にする。
+// 音声を無視するモデルへ送ると、検査していないのに検知なしと扱ってしまう。
+// 画像生成・埋め込み・音声合成などのGeminiは音声入力を受け付けないため除外し、
+// 「:batch」などの変種も対象にしない。ここで除外できない非対応モデルは、
+// プロバイダーがエラーを返してscanが失敗することに依存する
+const AUDIO_INPUT_GEMINI_PATTERN = /^gemini-[a-z0-9.-]+$/i;
+const NON_AUDIO_INPUT_GEMINI_PATTERN = /image|embedding|tts|banana|omni/i;
+
+function isAudioInputGemini(model: string) {
+  return (
+    AUDIO_INPUT_GEMINI_PATTERN.test(model) &&
+    !NON_AUDIO_INPUT_GEMINI_PATTERN.test(model)
+  );
+}
+
+function supportsAudioScan(config: ScrapAiConfiguration) {
+  if (config.provider === 'vertex') return isAudioInputGemini(config.model);
+  if (config.provider === 'openrouter') {
+    // OpenRouterのモデルIDは「google/gemini-...」の形式。
+    // 「~google/gemini-flash-latest」のように先頭が「~」の別名もある
+    const match = /^~?google\/(.+)$/i.exec(config.model);
+    return match !== null && isAudioInputGemini(match[1]);
+  }
+  return false;
+}
+const AUDIO_SCAN_UNSUPPORTED_MESSAGE =
+  '音声のAI scanは ZENN_CLI_AI_PROVIDER=vertex または openrouter と、音声入力に対応したGeminiモデルだけに対応しています。未検査の音声をアップロードしないため終了します';
+
 const findingLevelSchema = z.enum(['low', 'medium', 'high', 'critical']);
 const aiScanFindingSchema = z
   .object({
@@ -67,6 +95,7 @@ type AiScanResult = z.infer<typeof aiScanResultSchema>;
 
 type ScrapContent = { title?: string; body: string };
 type ImageContent = DecisionImage & { filename: string };
+type AudioContent = DecisionImage & { filename: string };
 
 export class ScrapAiScanError extends Error {}
 export class ScrapAiDetectedError extends ScrapAiScanError {}
@@ -131,6 +160,11 @@ const defaultDetectionPrompt = `
 const imageDetectionPrompt = `
 画像では、写り込んだ文字（スクリーンショット内のトークン、URL、メールアドレスなど）、
 人物の顔、画面に表示された個人情報や社内システムの情報も対象です。
+`.trim();
+
+const audioDetectionPrompt = `
+音声では、話されている内容に含まれる情報（読み上げられた認証情報、URL、氏名、
+連絡先、顧客名、未公開の事業情報など）も対象です。
 `.trim();
 
 type ApiKeyName =
@@ -328,7 +362,9 @@ async function createModelAndOptions(
     });
     return {
       model: openrouter.chat(config.model, {
-        // ZDRのエンドポイントだけを使い、構造化出力に非対応のプロバイダーへ振り分けない
+        // ZDRを要求し、構造化出力に非対応のプロバイダーへ振り分けない。
+        // Googleのモデルなど、Safety Retentionの対象になるエンドポイントは
+        // OpenRouterのアカウント設定によって振り分け先に含まれる
         provider: {
           data_collection: 'deny',
           zdr: true,
@@ -470,12 +506,14 @@ export function formatAiScanFinding(finding: AiScanFinding) {
 
 type AiScanTarget =
   | { kind: 'scrap'; content: ScrapContent }
-  | { kind: 'image'; image: ImageContent };
+  | { kind: 'image'; image: ImageContent }
+  | { kind: 'audio'; audio: AudioContent };
 
 function detectionPolicy(target: AiScanTarget, customPrompt?: string) {
   return [
     defaultDetectionPrompt,
     target.kind === 'image' ? imageDetectionPrompt : undefined,
+    target.kind === 'audio' ? audioDetectionPrompt : undefined,
     customPrompt,
   ]
     .filter(Boolean)
@@ -490,37 +528,42 @@ async function prepareGenerativeScan(
   const { model, providerOptions, reasoning } =
     await createModelAndOptions(config);
   const policy = detectionPolicy(target, config.customPrompt);
-  const prompt =
-    target.kind === 'scrap'
-      ? {
-          prompt: JSON.stringify({
-            detectionPolicy: policy,
-            userNotes: notes || null,
-            scrapContent: target.content,
-          }),
-        }
-      : {
-          messages: [
-            {
-              role: 'user' as const,
-              content: [
-                {
-                  type: 'text' as const,
-                  text: JSON.stringify({
-                    detectionPolicy: policy,
-                    userNotes: notes || null,
-                    imageContent: { filename: target.image.filename },
-                  }),
-                },
-                {
-                  type: 'file' as const,
-                  data: target.image.bytes,
-                  mediaType: target.image.contentType,
-                },
-              ],
-            },
-          ],
-        };
+  const file =
+    target.kind === 'image'
+      ? { ...target.image, contentKey: 'imageContent' }
+      : target.kind === 'audio'
+        ? { ...target.audio, contentKey: 'audioContent' }
+        : undefined;
+  const prompt = file
+    ? {
+        messages: [
+          {
+            role: 'user' as const,
+            content: [
+              {
+                type: 'text' as const,
+                text: JSON.stringify({
+                  detectionPolicy: policy,
+                  userNotes: notes || null,
+                  [file.contentKey]: { filename: file.filename },
+                }),
+              },
+              {
+                type: 'file' as const,
+                data: file.bytes,
+                mediaType: file.contentType,
+              },
+            ],
+          },
+        ],
+      }
+    : {
+        prompt: JSON.stringify({
+          detectionPolicy: policy,
+          userNotes: notes || null,
+          scrapContent: target.kind === 'scrap' ? target.content : null,
+        }),
+      };
 
   return async (abortSignal: AbortSignal) => {
     const generated = await generateText({
@@ -558,6 +601,9 @@ async function prepareScan(
     return prepareGenerativeScan(target, { ...config, provider }, notes);
   }
 
+  if (target.kind === 'audio') {
+    throw new ScrapAiScanError(AUDIO_SCAN_UNSUPPORTED_MESSAGE);
+  }
   const state = {
     content:
       target.kind === 'scrap'
@@ -665,4 +711,20 @@ export async function scanImageWithAi(
     );
   }
   return runAiScan({ kind: 'image', image }, config, notes);
+}
+
+/** 音声のAI scanに対応しない設定なら、音声を送信する前に失敗させる */
+export function assertAudioScanSupported(config: ScrapAiConfiguration) {
+  if (!supportsAudioScan(config)) {
+    throw new ScrapAiScanError(AUDIO_SCAN_UNSUPPORTED_MESSAGE);
+  }
+}
+
+export async function scanAudioWithAi(
+  audio: AudioContent,
+  config: ScrapAiConfiguration,
+  notes?: string
+) {
+  assertAudioScanSupported(config);
+  return runAiScan({ kind: 'audio', audio }, config, notes);
 }

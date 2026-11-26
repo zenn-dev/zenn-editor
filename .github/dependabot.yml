@@ -8,7 +8,7 @@ updates:
     schedule:
       interval: 'monthly'
     cooldown:
-      default-days: 21
+      default-days: 1
     open-pull-requests-limit: 5
     groups:
       dev-npm-minor-dependencies:
@@ -49,7 +49,7 @@ updates:
     schedule:
       interval: 'monthly'
     cooldown:
-      default-days: 21
+      default-days: 1
     open-pull-requests-limit: 1
     groups:
       all-actions:
