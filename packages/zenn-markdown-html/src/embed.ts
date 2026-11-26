@@ -163,8 +163,12 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
       embedUrl
     )}" width="100%" style="aspect-ratio: 16/9" scrolling="no" frameborder="no" loading="lazy" allowfullscreen></iframe></span>`;
   },
-  audio(str) {
-    if (!isZennAudioUrl(str))
+  audio(str, options) {
+    // 音声を表示する場所は呼び出し側が決めるため、有効にしたときだけ <audio> を出力する
+    if (!options?.audioEmbed) {
+      return isValidHttpUrl(str) ? generateFallbackLink(str) : 'URLが不正です';
+    }
+    if (!isZennAudioUrl(str, options.audioOrigins))
       return 'Zennにアップロードした音声のURLを指定してください';
     return `<span class="embed-block embed-audio"><audio controls preload="metadata" src="${sanitizeEmbedToken(
       str
