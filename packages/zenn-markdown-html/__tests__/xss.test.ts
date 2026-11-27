@@ -138,4 +138,28 @@ describe('XSS脆弱性のテスト', () => {
       'target',
     ]);
   });
+
+  test('@[audio] の相対パスは属性を抜け出せない', async () => {
+    const html = await markdownToHtml(
+      '@[audio](/files/"onerror=alert(1)".m4a)',
+      { audioEmbed: true, audioLocalPaths: true }
+    );
+    const audio = parse(html).querySelector('audio');
+
+    expect(audio?.attributes).toEqual({
+      src: '/files/%22onerror%3Dalert(1)%22.m4a',
+      controls: '',
+      preload: 'metadata',
+    });
+  });
+
+  test('@[audio] の相対パスにタグを挿入させない', async () => {
+    const html = await markdownToHtml(
+      '@[audio](/files/"><img src=x onerror=alert(1)>.m4a)',
+      { audioEmbed: true, audioLocalPaths: true }
+    );
+
+    expect(html).not.toContain('<img');
+    expect(html).not.toMatch(/<[^>]*\sonerror=/);
+  });
 });

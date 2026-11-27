@@ -12,5 +12,7 @@ export function getMarkdownOptions(): MarkdownOptions {
     htmlEmbed: true,
     audioEmbed: true,
     audioOrigins: AUDIO_ORIGINS,
+    // `files` ディレクトリの音声（`@[audio](/files/…)`）は、プレビューサーバーが配信する
+    audioLocalPaths: true,
   };
 }
