@@ -173,6 +173,9 @@ function escapeHtml(text: string): string {
     .replace(/'/g, '&#39;');
 }
 
+/** `files` ディレクトリに置ける音声のサイズの上限 */
+const MAX_LOCAL_AUDIO_BYTES = 640 * 1024;
+
 export function completeHtml(html: string): string {
   const errorStyle = `data-body-error style="color: var(--c-error); font-weight: 700"`;
   const $ = cheerio.load(html);
@@ -187,10 +190,10 @@ export function completeHtml(html: string): string {
     // エラーメッセージの HTML に埋め込むため、src をエスケープしておく
     const escapedSrc = escapeHtml(src);
 
-    // 先頭が `/images/` であること
+    // 先頭が `/images/` や `/files/` のような絶対パスであること
     if (!path.isAbsolute(src)) {
       $(el).before(
-        `<p ${errorStyle}><code>${escapedSrc}</code>を表示できません。ローカルの画像を読み込むには相対パスではなく<code>/images/example.png</code>のように<code>/images/</code>から始まるパスを指定してください。</p>`
+        `<p ${errorStyle}><code>${escapedSrc}</code>を表示できません。ローカルの画像を読み込むには相対パスではなく<code>/images/example.png</code>や<code>/files/example.png</code>のように<code>/images/</code>か<code>/files/</code>から始まるパスを指定してください。</p>`
       );
       $(el).remove();
       return;
@@ -227,6 +230,66 @@ export function completeHtml(html: string): string {
         } MB）はアップロード可能なサイズを超えています。ファイルサイズは3MB以内にしてください。</p>`
       );
       $(el).remove();
+      return;
+    }
+  });
+
+  // `@[audio](/files/…)` で参照した `files` ディレクトリの音声を検証する
+  $('audio').map((i, el) => {
+    const src = el.attribs['src'];
+    if (!src) return;
+
+    // アップロードした音声（URL）はチェックしない
+    if (isUrl(src)) return;
+
+    const escapedSrc = escapeHtml(src);
+    // 音声は `<span class="embed-block embed-audio">` の中にあるため、<p> ではなく <span> で表示する
+    const replaceWithError = (message: string) => {
+      $(el).replaceWith(
+        `<span ${errorStyle}><code>${escapedSrc}</code>${message}</span>`
+      );
+    };
+
+    let decodedSrc: string;
+    try {
+      decodedSrc = decodeURIComponent(src);
+    } catch {
+      replaceWithError('を再生できません。パスが不正です。');
+      return;
+    }
+    // `getWorkingPath` は `..` を含むパス（`a..b.m4a` のようなファイル名も含む）で
+    // プロセスを終了するため使わず、セグメントごとに検証してパスを組み立てる
+    const segments = decodedSrc.split(/[\\/]/).slice(1);
+    if (
+      !decodedSrc.startsWith('/files/') ||
+      segments.some((seg) => seg === '' || seg === '.' || seg === '..')
+    ) {
+      replaceWithError('を再生できません。パスが不正です。');
+      return;
+    }
+    // プレビューサーバーは `.` から始まるファイル・ディレクトリを配信しない
+    if (segments.some((seg) => seg.startsWith('.'))) {
+      replaceWithError(
+        'を再生できません。<code>.</code>から始まる名前のファイルやディレクトリは使えません。'
+      );
+      return;
+    }
+
+    const filepath = path.join(process.cwd(), ...segments);
+    if (!fs.existsSync(filepath) || !fs.statSync(filepath).isFile()) {
+      replaceWithError('にファイルが存在しません。');
+      return;
+    }
+
+    const fileSize = fs.statSync(filepath).size;
+    if (fileSize > MAX_LOCAL_AUDIO_BYTES) {
+      replaceWithError(
+        `のファイルサイズ（${Math.ceil(
+          fileSize / 1024
+        )} KB）は上限を超えています。ファイルサイズは${
+          MAX_LOCAL_AUDIO_BYTES / 1024
+        }KB以内にしてください。`
+      );
       return;
     }
   });

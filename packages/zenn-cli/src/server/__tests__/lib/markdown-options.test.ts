@@ -21,4 +21,17 @@ describe('getMarkdownOptions', () => {
 
     expect(html).toContain(`<audio controls preload="metadata" src="${url}">`);
   });
+
+  test('files ディレクトリの音声のパスを <audio /> に変換できる', async () => {
+    expect(getMarkdownOptions().audioLocalPaths).toBe(true);
+
+    const html = await markdownToHtml(
+      '@[audio](/files/intro.m4a)',
+      getMarkdownOptions()
+    );
+
+    expect(html).toContain(
+      '<audio controls preload="metadata" src="/files/intro.m4a">'
+    );
+  });
 });

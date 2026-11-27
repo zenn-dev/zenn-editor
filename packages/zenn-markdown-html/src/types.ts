@@ -25,4 +25,13 @@ export type MarkdownOptions = {
    * `audioEmbed` を有効にしても、ここに配信元を指定しなければ音声は埋め込まれない
    */
   audioOrigins?: readonly string[];
+  /**
+   * `@[audio](/files/…)` の相対パスを、`<audio>` の src にそのまま出力するか（デフォルト: false）
+   * GitHub 連携のリポジトリや zenn-cli のプレビューで、`files` ディレクトリの音声を参照するために使う。
+   * 出力するのは `/files/` から始まり `.m4a` で終わるパスだけで、`..` やクエリを含むパスは出力しない。
+   * src には、セグメントごとにパーセントエンコードしたパス（ファイル名は NFC に正規化）を出力する。
+   * 相対パスは呼び出し側で実際の URL に差し替えるか、配信する前提とする。
+   * `audioEmbed` が false の場合は無視する
+   */
+  audioLocalPaths?: boolean;
 };

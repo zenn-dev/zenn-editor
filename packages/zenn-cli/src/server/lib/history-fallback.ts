@@ -18,8 +18,8 @@ export function historyApiFallback() {
       return next();
     }
 
-    // Skip if request is for images
-    if (req.path.startsWith('/images/')) {
+    // Skip if request is for local files (images and audio)
+    if (req.path.startsWith('/images/') || req.path.startsWith('/files/')) {
       return next();
     }
 
