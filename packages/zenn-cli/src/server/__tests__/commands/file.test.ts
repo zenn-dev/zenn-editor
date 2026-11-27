@@ -7,7 +7,15 @@ import {
   test,
   vi,
 } from 'vitest';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import {
+  link,
+  mkdtemp,
+  readdir,
+  readFile,
+  rm,
+  symlink,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -454,6 +462,352 @@ describe('fileコマンド', () => {
         expect.any(String),
         expect.stringContaining('file_in_use')
       );
+    });
+  });
+
+  describe('convert', () => {
+    let cwd: string;
+
+    beforeEach(() => {
+      cwd = path.join(directory, 'repo');
+      vi.spyOn(process, 'cwd').mockReturnValue(cwd);
+    });
+
+    async function readOutput(...segments: string[]) {
+      return readFile(path.join(cwd, ...segments));
+    }
+
+    async function missing(...segments: string[]) {
+      return readFile(path.join(cwd, ...segments)).then(
+        () => false,
+        () => true
+      );
+    }
+
+    // タイトルのメタデータを持つm4a
+    async function m4aWithTitle(title: string) {
+      const {
+        BufferSource,
+        BufferTarget,
+        EncodedAudioPacketSource,
+        EncodedPacketSink,
+        Input,
+        MP4,
+        Mp4OutputFormat,
+        Output,
+      } = await import('mediabunny');
+      const input = new Input({
+        formats: [MP4],
+        source: new BufferSource(m4aBytes),
+      });
+      const track = await input.getPrimaryAudioTrack();
+      const decoderConfig = await track?.getDecoderConfig();
+      if (!track || !decoderConfig) throw new Error('fixture');
+      const packetSource = new EncodedAudioPacketSource('aac');
+      const output = new Output({
+        format: new Mp4OutputFormat(),
+        target: new BufferTarget(),
+      });
+      output.addAudioTrack(packetSource);
+      output.setMetadataTags({ title });
+      await output.start();
+      let first = true;
+      for await (const packet of new EncodedPacketSink(track).packets()) {
+        await packetSource.add(packet, first ? { decoderConfig } : undefined);
+        first = false;
+      }
+      await output.finalize();
+      input.dispose();
+      return Buffer.from(output.target.buffer ?? new ArrayBuffer(0));
+    }
+
+    test('WAVを files/<名前>.m4a へ、アップロードと同じバイト列で書き出す', async () => {
+      const wav = wavBytes(1);
+      const file = await localFile('voice.wav', wav);
+
+      await exec(['convert', file, '--machine-readable']);
+
+      const written = await readOutput('files', 'voice.m4a');
+      const expected = Buffer.from((await prepareAudioForUpload(wav)).bytes);
+      expect(written.equals(expected)).toBe(true);
+      expect(console.log).toHaveBeenCalledTimes(1);
+      expect(console.log).toHaveBeenCalledWith(
+        JSON.stringify({
+          path: path.join(cwd, 'files', 'voice.m4a'),
+          size: written.length,
+          converted: true,
+          trimmed: false,
+        })
+      );
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(audioScanMock).not.toHaveBeenCalled();
+      expect(process.exitCode).toBeUndefined();
+    });
+
+    test('APIキーがなくても変換できる', async () => {
+      delete process.env.ZENN_API_KEY;
+      const file = await localFile('voice.wav', wavBytes(1));
+
+      await exec(['convert', file]);
+
+      expect(await missing('files', 'voice.m4a')).toBe(false);
+      expect(process.exitCode).toBeUndefined();
+    });
+
+    test('書き出したm4aをもう一度変換しても同じバイト列になる', async () => {
+      const file = await localFile('voice.wav', wavBytes(1));
+      await exec(['convert', file]);
+      const written = await readOutput('files', 'voice.m4a');
+
+      const again = await prepareAudioForUpload(written);
+
+      expect(Buffer.from(again.bytes).equals(written)).toBe(true);
+    });
+
+    test('メタデータを含むm4aは、メタデータを落として書き出す', async () => {
+      const title = 'SECRET-PROJECT-TITLE';
+      const source = await m4aWithTitle(title);
+      expect(source.includes(title)).toBe(true);
+      const file = await localFile('memo.m4a', source);
+
+      await exec(['convert', file, '--machine-readable']);
+
+      const written = await readOutput('files', 'memo.m4a');
+      expect(written.includes(title)).toBe(false);
+      expect(written.equals(m4aBytes)).toBe(true);
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('"converted":false')
+      );
+    });
+
+    test('既にファイルがあると --force なしでは上書きしない', async () => {
+      const file = await localFile('voice.wav', wavBytes(1));
+      const output = await localFile('out.m4a', Buffer.from('original'));
+
+      await exec(['convert', file, '--output', output]);
+
+      expect((await readFile(output)).toString()).toBe('original');
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('--force なら上書きする', async () => {
+      const file = await localFile('voice.wav', wavBytes(1));
+      const output = await localFile('out.m4a', Buffer.from('original'));
+
+      await exec(['convert', file, '--output', output, '--force']);
+
+      expect(isM4a(await readFile(output))).toBe(true);
+      // 差し替えに使う一時ファイルを残さない
+      expect((await readdir(directory)).sort()).toEqual([
+        'out.m4a',
+        'voice.wav',
+      ]);
+      expect(process.exitCode).toBeUndefined();
+    });
+
+    test('出力先がシンボリックリンクなら、--force でもリンク先には書き込まない', async (context) => {
+      const file = await localFile('voice.wav', wavBytes(1));
+      const target = await localFile('target.txt', Buffer.from('original'));
+      const output = path.join(directory, 'out.m4a');
+      try {
+        await symlink(target, output);
+      } catch {
+        return context.skip();
+      }
+
+      await exec(['convert', file, '--output', output, '--force']);
+
+      expect((await readFile(target)).toString()).toBe('original');
+      expect(isM4a(await readFile(output))).toBe(true);
+    });
+
+    test('リンク切れのシンボリックリンクも、--force なしでは置き換えない', async (context) => {
+      const file = await localFile('voice.wav', wavBytes(1));
+      const target = path.join(directory, 'missing.m4a');
+      const output = path.join(directory, 'out.m4a');
+      try {
+        await symlink(target, output);
+      } catch {
+        return context.skip();
+      }
+
+      await exec(['convert', file, '--output', output]);
+
+      await expect(readFile(target)).rejects.toThrow();
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('出力先が入力のハードリンクなら --force でも書き込まない', async () => {
+      const source = await m4aWithTitle('TITLE');
+      const file = await localFile('memo.m4a', source);
+      const output = path.join(directory, 'linked.m4a');
+      await link(file, output);
+
+      await exec(['convert', file, '--output', output, '--force']);
+
+      expect((await readFile(file)).equals(source)).toBe(true);
+      expect((await readFile(output)).equals(source)).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('30秒を超えるWAVは trimmed を true にする', async () => {
+      const file = await localFile('long.wav', wavBytes(31, 8000));
+
+      await exec(['convert', file, '--machine-readable']);
+
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('"converted":true,"trimmed":true')
+      );
+    });
+
+    test.each([
+      ['0件', []],
+      ['2件', ['a.wav', 'b.wav']],
+    ])('入力が%sなら書き出さない', async (_name, inputs) => {
+      await exec(['convert', ...inputs]);
+
+      expect(await missing('files')).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('入力がなければ files を作らない', async () => {
+      await exec(['convert', path.join(directory, 'none.wav')]);
+
+      expect(await missing('files')).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('入力と出力が同じパスなら --force でも書き込まない', async () => {
+      const source = await m4aWithTitle('TITLE');
+      const file = await localFile('memo.m4a', source);
+
+      await exec(['convert', file, '--output', file, '--force']);
+
+      expect((await readFile(file)).equals(source)).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('出力先が入力へのシンボリックリンクでも書き込まない', async (context) => {
+      const source = await m4aWithTitle('TITLE');
+      const file = await localFile('memo.m4a', source);
+      const link = path.join(directory, 'link.m4a');
+      try {
+        await symlink(file, link);
+      } catch {
+        // シンボリックリンクを作る権限がない環境（Windowsなど）
+        return context.skip();
+      }
+
+      await exec(['convert', file, '--output', link, '--force']);
+
+      expect((await readFile(file)).equals(source)).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('変換できない形式では何も書き出さない', async () => {
+      const file = await localFile('voice.mp3', [0x49, 0x44, 0x33, 4, 0, 0]);
+
+      await exec(['convert', file]);
+
+      expect(await missing('files')).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('変換できない形式では、--force でも既存の出力先を残す', async () => {
+      const file = await localFile('voice.mp3', [0x49, 0x44, 0x33, 4, 0, 0]);
+      const output = await localFile('out.m4a', Buffer.from('original'));
+
+      await exec(['convert', file, '--output', output, '--force']);
+
+      expect((await readFile(output)).toString()).toBe('original');
+      expect(process.exitCode).toBe(1);
+    });
+
+    test.each(['out.mp4', 'out.M4A', 'out'])(
+      '出力先 %s は .m4a でないため書き出さない',
+      async (name) => {
+        const file = await localFile('voice.wav', wavBytes(1));
+        const output = path.join(directory, name);
+
+        await exec(['convert', file, '--output', output]);
+
+        await expect(readFile(output)).rejects.toThrow();
+        expect(process.exitCode).toBe(1);
+      }
+    );
+
+    test('files の中の出力先には、本文に書く記法を表示する', async () => {
+      const file = await localFile('voice.wav', wavBytes(1));
+
+      await exec([
+        'convert',
+        file,
+        '--output',
+        path.join(cwd, 'files', 'sub', '音声.m4a'),
+      ]);
+
+      expect(isM4a(await readOutput('files', 'sub', '音声.m4a'))).toBe(true);
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('@[audio](/files/sub/音声.m4a)')
+      );
+    });
+
+    test('files の外へ書き出したときは、本文に書く記法を表示しない', async () => {
+      const file = await localFile('voice.wav', wavBytes(1));
+      const output = path.join(cwd, 'audio', 'x.m4a');
+
+      await exec(['convert', file, '--output', output]);
+
+      expect(isM4a(await readFile(output))).toBe(true);
+      expect(console.log).not.toHaveBeenCalledWith(
+        expect.stringContaining('@[audio]')
+      );
+      expect(process.exitCode).toBeUndefined();
+    });
+
+    test.each(['100%.wav', 'a#b.wav', '.voice.wav'])(
+      '本文から参照できないファイル名 %s は、書き出したうえで警告する',
+      async (name) => {
+        const plain = await localFile('plain.wav', wavBytes(1));
+        await exec(['convert', plain]);
+        const warningsForPlain = vi.mocked(console.warn).mock.calls.length;
+        vi.mocked(console.warn).mockClear();
+        vi.mocked(console.log).mockClear();
+        const file = await localFile(name, wavBytes(1));
+
+        await exec(['convert', file]);
+
+        expect(
+          isM4a(await readOutput('files', name.replace('.wav', '.m4a')))
+        ).toBe(true);
+        expect(vi.mocked(console.warn).mock.calls.length).toBe(
+          warningsForPlain + 1
+        );
+        expect(console.log).not.toHaveBeenCalledWith(
+          expect.stringContaining('@[audio]')
+        );
+        expect(process.exitCode).toBeUndefined();
+      }
+    );
+
+    test.each([
+      ['画像の種類', ['--type', 'image']],
+      ['不正なオプション', ['--confirm-public']],
+    ])('%sを指定すると書き出さない', async (_name, options) => {
+      const file = await localFile('voice.wav', wavBytes(1));
+
+      await exec(['convert', file, ...options]);
+
+      expect(await missing('files')).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('--type audio は指定できる', async () => {
+      const file = await localFile('voice.wav', wavBytes(1));
+
+      await exec(['convert', file, '--type', 'audio']);
+
+      expect(await missing('files', 'voice.m4a')).toBe(false);
     });
   });
 });

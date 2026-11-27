@@ -335,4 +335,19 @@ describe('imageコマンド', () => {
       expect(process.exitCode).toBe(1);
     });
   });
+
+  test('convertは受け付けない', async () => {
+    // 中身にかかわらず、サブコマンドとして拒否する
+    const file = path.join(directory, 'voice.wav');
+    await writeFile(file, Buffer.from('RIFF'));
+
+    await exec(['convert', file]);
+
+    expect(console.error).toHaveBeenCalledWith(
+      expect.any(String),
+      'imageのサブコマンドが不正です'
+    );
+
+    expect(process.exitCode).toBe(1);
+  });
 });

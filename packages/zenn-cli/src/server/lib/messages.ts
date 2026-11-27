@@ -315,19 +315,24 @@ Example:
 export const fileHelpText = `
 Command:
   zenn file           Public API経由でMarkdown用の画像・音声を管理
+                      （convertはAPIを使わず、手元で音声を変換します）
 
 Usage:
   npx zenn file upload FILE --type image|audio --confirm-public [--machine-readable]
   npx zenn file list --type image|audio [--page NUMBER] [--count NUMBER] [--machine-readable]
   npx zenn file delete FILE_ID --type image|audio --yes [--machine-readable]
+  npx zenn file convert FILE [--output PATH] [--force] [--machine-readable]
 
 Options:
   --type               ファイルの種類。image または audio（必須。拡張子や中身からは推測しません）
+                       convertは音声だけに対応するため省略できます
   --confirm-public     ファイルが公開URLで配信され、機密情報・個人情報を含まないことを確認する（必須）
                        音声では、自分以外の人の声や第三者が権利を持つ音源を含まないことも確認する
   --page               一覧のページ番号（1以上、既定1）
   --count              一覧の取得件数（1～100、既定50）
   --yes                ファイル削除を確認する（必須）
+  --output PATH        convertの出力先（.m4a）。既定は files/<入力ファイル名>.m4a
+  --force              convertで既にある出力先を上書きする（入力と同じファイルには書き出せません）
   --machine-readable   結果をJSON1行で表示
   --dangerously-skip-ai-scan  uploadのAI scanをスキップ
   --notes-to-ai NOTES  uploadのAI scanへ追加の備考を送信
@@ -345,6 +350,8 @@ Output:
   uploadの--machine-readableは id・type・url・size・created_at（音声は duration_ms も）を
   持つJSONを表示します。deleteは {"deleted":true,"type":"audio","id":123} の形式です。
   IDは種類ごとに採番されるため、deleteでも--typeを省略できません。
+  convertは {"path":"/…/files/voice.m4a","size":12345,"converted":true,"trimmed":false} の形式です。
+  convertの注意は標準エラーに表示します。内容の確認は呼び出し側で行ってください。
 
 AI scan:
   AI scanはZENN_CLI_AI_SCAN=true の場合だけ有効です。AI scanでは画像または音声・
@@ -372,8 +379,28 @@ Audio:
   ファイル、音声トラックが複数あるファイルは指定できません。
   自分以外の人の声や、第三者が権利を持つ音源はアップロードしないでください。
   音声アップロードは段階的に提供中のため、利用できないアカウントがあります。
-  アップロードした音声は、記事と本のチャプターの本文に @[audio](URL) と書くと
-  埋め込めます（Scrapとコメントでは使えません）。
+  アップロードした音声は、記事・本のチャプターの本文と、記事・Scrapのコメントに
+  @[audio](URL) と書くと埋め込めます（レビューコメントでは使えません）。
+
+Audio (files/):
+  GitHub連携のリポジトリでは、files ディレクトリに置いたm4aを本文から
+  @[audio](/files/<ファイル名>.m4a) で参照できます。
+  Zennは、アップロードするときと同じ形のm4aだけを受け付けます。メタデータを含む
+  m4a（録音アプリやffmpegの出力など）はデプロイに失敗するため、files に置くm4aは
+  zenn file convert で作ってください。
+  - convertはアップロードと同じ変換をして、結果を files/<入力ファイル名>.m4a に
+    書き出します。アップロードもAI scanもしません。
+  - タイトルや作成者などのメタデータは出力に含めません（話している内容と声は
+    そのまま残ります）。メタデータを取り除くのは出力したm4aだけです。変換元の
+    ファイルはリポジトリに含めないでください。
+  - MP3などは上のffmpegの例でm4aにしてから、その出力を convert に通してください。
+  - ファイル名が . で始まるか、% ? # \\ や制御文字を含むと、本文から参照できません。
+  - files に置いた音声は、リポジトリが公開されていれば、commit・pushした時点で
+    （記事が下書きでも、音声を利用できないアカウントでも）GitHub上で公開されます。
+    pushする前に、機密情報や個人情報、自分以外の人の声、第三者が権利を持つ音源を
+    含まないことを自分で確認してください。pushした音声は、削除しても履歴に残ります。
+  音声は段階的に提供中のため、利用できないアカウントでは files の音声は取り込まれず、
+  本文には音声が見つからない旨が表示されます。
 
 Notice:
   画像はJPEG、PNG、GIF、WebP形式の3MB以下に対応します。
@@ -386,4 +413,6 @@ Example:
   npx zenn file upload ./audio/example.wav --type audio --confirm-public --machine-readable
   npx zenn file list --type audio --machine-readable
   npx zenn file delete 123 --type audio --yes
+  npx zenn file convert ./voice.wav
+  npx zenn file convert ./memo.m4a --output ./files/memo.m4a --force
 `;
