@@ -75,6 +75,17 @@ const html = await markdownToHtml(markdown, {
 });
 ```
 
+`audioLocalPaths` を `true` にすると、`@[audio](/files/intro.m4a)` のような `/files/` から始まる相対パスも `<audio>` として出力します（`audioEmbed` が有効な場合のみ）。
+出力するのは `.m4a` で終わるパスだけで、`..` やクエリ、フラグメントを含むパスは出力しません。日本語などのファイル名は、そのままでもパーセントエンコードしても書けます。src には、セグメントごとにパーセントエンコードしたパス（ファイル名は NFC に正規化）を出力します。
+相対パスの音声は、呼び出し側で配信するか、変換後の HTML の src を実際の URL に差し替えてください。
+
+```js
+const html = await markdownToHtml(markdown, {
+  audioEmbed: true,
+  audioLocalPaths: true,
+});
+```
+
 ### markdownToSimpleHtml
 
 Markdown を HTML に変換します。markdownToHtml と比べてサポートする記法が限られています。

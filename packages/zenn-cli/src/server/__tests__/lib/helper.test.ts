@@ -214,6 +214,80 @@ describe('completeHtml() のテスト', () => {
     expect(html).toContain('表示できません');
   });
 
+  test('files ディレクトリの画像も検証する', () => {
+    expect(helper.completeHtml('<img src="/files/test.jpg">')).not.toMatch(
+      /表示できません|ファイルが存在しません/
+    );
+    expect(helper.completeHtml('<img src="/files/notexist.jpg">')).toContain(
+      'ファイルが存在しません'
+    );
+    expect(helper.completeHtml('<img src="/files/test.m4a">')).toContain(
+      '表示できません'
+    );
+  });
+
+  describe('音声の検証', () => {
+    const audioHtml = (src: string) =>
+      `<span class="embed-block embed-audio"><audio controls preload="metadata" src="${src}"></audio></span>`;
+
+    test('src の値が URL なら検証しない', () => {
+      const html = helper.completeHtml(
+        audioHtml('https://example.com/audio/a.m4a')
+      );
+      expect(html).toContain('<audio');
+      expect(html).not.toContain('data-body-error');
+    });
+
+    test('files ディレクトリにある音声は検証に成功する', () => {
+      const html = helper.completeHtml(audioHtml('/files/test.m4a'));
+      expect(html).toContain('<audio');
+      expect(html).not.toContain('data-body-error');
+    });
+
+    test('エンコードされた日本語のファイル名でも検証に成功する', () => {
+      const filepath = path.join(fixtureDirPath, 'files', '日本語.m4a');
+      fs.copyFileSync(path.join(fixtureDirPath, 'files', 'test.m4a'), filepath);
+      try {
+        const html = helper.completeHtml(
+          audioHtml('/files/%E6%97%A5%E6%9C%AC%E8%AA%9E.m4a')
+        );
+        expect(html).toContain('<audio');
+        expect(html).not.toContain('data-body-error');
+      } finally {
+        fs.unlinkSync(filepath);
+      }
+    });
+
+    test('音声がなければ "ファイルが存在しません" を出力する', () => {
+      const html = helper.completeHtml(audioHtml('/files/notexist.m4a'));
+      expect(html).not.toContain('<audio');
+      expect(html).toContain('ファイルが存在しません');
+    });
+
+    test('640KB を超える音声はエラーを出力する', () => {
+      const filepath = path.join(fixtureDirPath, 'files', 'too-large.m4a');
+      fs.writeFileSync(filepath, Buffer.alloc(640 * 1024 + 1));
+      try {
+        const html = helper.completeHtml(audioHtml('/files/too-large.m4a'));
+        expect(html).not.toContain('<audio');
+        expect(html).toContain('640KB以内');
+      } finally {
+        fs.unlinkSync(filepath);
+      }
+    });
+
+    test.each([
+      ['files の外を指すパス', '/files/../articles/my-first-post.md'],
+      ['エンコードされた遡り', '/files/%2e%2e/articles/my-first-post.md'],
+      ['files 以外のディレクトリ', '/images/test.jpg'],
+      ['不正なエンコード', '/files/%E6.m4a'],
+    ])('%sはエラーを出力する', (_name, src) => {
+      const html = helper.completeHtml(audioHtml(src));
+      expect(html).not.toContain('<audio');
+      expect(html).toContain('パスが不正です');
+    });
+  });
+
   test('エラーメッセージに埋め込む src の HTML はエスケープされる', () => {
     const html = helper.completeHtml(
       '<img src="&lt;img src=x onerror=alert(1)&gt;">'

@@ -1,7 +1,10 @@
 import { describe, test, expect } from 'vitest';
 import { parse } from 'node-html-parser';
 import markdownToHtml from '../../../src/index';
-import { isZennAudioUrl } from '../../../src/utils/url-matcher';
+import {
+  isZennAudioUrl,
+  normalizeLocalAudioPath,
+} from '../../../src/utils/url-matcher';
 
 const audioOrigin = 'https://user-upload.zenn.studio';
 const audioId = '0123456789abcdef0123456789abcdef';
@@ -244,5 +247,144 @@ describe('isZennAudioUrl', () => {
     ['認証情報付き', 'https://user@user-upload.zenn.studio'],
   ])('配信元が%sの場合は許可しない', (_name, origin) => {
     expect(isZennAudioUrl(validUrl, [origin])).toBe(false);
+  });
+});
+
+describe('files ディレクトリの音声（audioLocalPaths）', () => {
+  const options = {
+    audioEmbed: true,
+    audioOrigins: [audioOrigin],
+    audioLocalPaths: true,
+  };
+  const encodedJapanese = '/files/%E6%97%A5%E6%9C%AC%E8%AA%9E.m4a';
+  const audioSrc = async (path: string, opts: object = options) => {
+    const html = await markdownToHtml(`@[audio](${path})`, opts);
+    return parse(html).querySelector('span.embed-audio audio')?.attributes.src;
+  };
+
+  test('相対パスを <audio /> の src にそのまま出力する', async () => {
+    const html = await markdownToHtml('@[audio](/files/intro.m4a)', options);
+    const audio = parse(html).querySelector('span.embed-audio audio');
+
+    expect(audio?.attributes).toEqual({
+      src: '/files/intro.m4a',
+      controls: '',
+      preload: 'metadata',
+    });
+  });
+
+  test('audioOrigins を指定しなくても相対パスを出力する', async () => {
+    expect(
+      await audioSrc('/files/intro.m4a', {
+        audioEmbed: true,
+        audioLocalPaths: true,
+      })
+    ).toBe('/files/intro.m4a');
+  });
+
+  test('サブディレクトリのパスを出力する', async () => {
+    expect(await audioSrc('/files/ch1/intro.m4a')).toBe('/files/ch1/intro.m4a');
+  });
+
+  test.each([
+    ['そのまま書いた日本語', '/files/日本語.m4a'],
+    ['エンコードした日本語', encodedJapanese],
+  ])('%sのファイル名は、エンコードした src になる', async (_name, path) => {
+    expect(await audioSrc(path)).toBe(encodedJapanese);
+  });
+
+  test('NFD のファイル名は NFC に正規化する', async () => {
+    const nfd = '\u304b\u3099'; // 「か」+ 結合文字の濁点
+    const nfc = '\u304c'; // 「が」
+    expect(nfd).not.toBe(nfc);
+
+    expect(await audioSrc(`/files/${nfd}.m4a`)).toBe(
+      `/files/${encodeURIComponent(nfc)}.m4a`
+    );
+  });
+
+  test('空白を含むファイル名は %20 にエンコードする', async () => {
+    expect(await audioSrc('/files/my%20intro.m4a')).toBe(
+      '/files/my%20intro.m4a'
+    );
+  });
+
+  test('許可した配信元の URL は従来どおり <audio /> を生成する', async () => {
+    expect(await audioSrc(validUrl)).toBe(validUrl);
+  });
+
+  test('audioLocalPaths を指定しなければ相対パスを出力しない', async () => {
+    const html = await markdownToHtml('@[audio](/files/intro.m4a)', {
+      audioEmbed: true,
+      audioOrigins: [audioOrigin],
+    });
+
+    expect(parse(html).querySelector('audio')).toBeNull();
+    expect(html).toContain(invalidUrlMessage);
+  });
+
+  test('audioEmbed が false なら audioLocalPaths を無視する', async () => {
+    const html = await markdownToHtml('@[audio](/files/intro.m4a)', {
+      audioEmbed: false,
+      audioLocalPaths: true,
+    });
+
+    expect(parse(html).querySelector('audio')).toBeNull();
+    expect(html).toContain('URLが不正です');
+  });
+
+  const invalidPaths: [string, string][] = [
+    ['パスの遡り', '/files/../secret.m4a'],
+    ['エンコードされたパスの遡り', '/files/%2e%2e/secret.m4a'],
+    ['エンコードされたスラッシュでの遡り', '/files/a%2F..%2F..%2Fx.m4a'],
+    ['二重のエンコード', '/files/a%252e.m4a'],
+    ['不正なエンコード', '/files/%E6.m4a'],
+    ['クエリ付き', '/files/intro.m4a?x=1'],
+    ['エンコードされたクエリ', '/files/intro.m4a%3Fx=1.m4a'],
+    ['フラグメント付き', '/files/intro.m4a#t=10'],
+    ['別の拡張子', '/files/intro.mp3'],
+    ['大文字の拡張子', '/files/intro.M4A'],
+    ['images ディレクトリ', '/images/intro.m4a'],
+    ['プロトコル相対 URL', '//evil.example/files/a.m4a'],
+    ['重複したスラッシュ', '/files//a.m4a'],
+    ['カレントディレクトリ', '/files/./a.m4a'],
+    ['バックスラッシュ', '/files/..\\secret.m4a'],
+    ['エンコードされたバックスラッシュ', '/files/..%5Csecret.m4a'],
+    ['エンコードされた NULL 文字', '/files/a%00.m4a'],
+    ['先頭のスラッシュなし', 'files/intro.m4a'],
+    ['相対パス', '../files/intro.m4a'],
+    ['エンコードされた files', '/%66iles/intro.m4a'],
+    ['ファイル名なし', '/files/'],
+  ];
+
+  test.each(invalidPaths)('%sは <audio /> を生成しない', async (_n, path) => {
+    const html = await markdownToHtml(`@[audio](${path})`, options);
+
+    expect(parse(html).querySelector('audio')).toBeNull();
+    expect(html).toContain(invalidUrlMessage);
+  });
+
+  describe('normalizeLocalAudioPath', () => {
+    test('正規形のパスを返す', () => {
+      expect(normalizeLocalAudioPath('/files/intro.m4a')).toBe(
+        '/files/intro.m4a'
+      );
+      expect(normalizeLocalAudioPath('/files/日本語.m4a')).toBe(
+        encodedJapanese
+      );
+      expect(normalizeLocalAudioPath(encodedJapanese)).toBe(encodedJapanese);
+    });
+
+    test.each(invalidPaths)('%sは null を返す', (_name, path) => {
+      expect(normalizeLocalAudioPath(path)).toBeNull();
+    });
+
+    test.each([
+      ['改行', '/files/a\n.m4a'],
+      ['対にならないサロゲート', '/files/\ud800.m4a'],
+      ['文字列でない値', undefined as unknown as string],
+    ])('%sは null を返す', (_name, path) => {
+      expect(normalizeLocalAudioPath(path)).toBeNull();
+    });
   });
 });

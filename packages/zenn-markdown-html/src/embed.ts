@@ -15,6 +15,7 @@ import {
   isJsfiddleUrl,
   isBlueprintUEUrl,
   isZennAudioUrl,
+  normalizeLocalAudioPath,
   convertToFigmaEmbedUrl,
   isValidHttpUrl,
   isDocswellUrl,
@@ -168,10 +169,14 @@ export const embedGenerators: Readonly<EmbedGeneratorList> = {
     if (!options?.audioEmbed) {
       return isValidHttpUrl(str) ? generateFallbackLink(str) : 'URLが不正です';
     }
-    if (!isZennAudioUrl(str, options.audioOrigins))
+    // 相対パスは、呼び出し側が差し替えるか配信する場合にだけ出力する
+    const localPath = options.audioLocalPaths
+      ? normalizeLocalAudioPath(str)
+      : null;
+    if (!localPath && !isZennAudioUrl(str, options.audioOrigins))
       return 'Zennにアップロードした音声のURLを指定してください';
     return `<span class="embed-block embed-audio"><audio controls preload="metadata" src="${sanitizeEmbedToken(
-      str
+      localPath ?? str
     )}"></audio></span>`;
   },
 

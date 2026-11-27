@@ -408,3 +408,57 @@ describe('/images/*', () => {
     expect(res.status).not.toBe(200);
   });
 });
+
+describe('/files/*', () => {
+  test('files ディレクトリの画像を返す', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app).get('/files/test.jpg').expect(200);
+    expect(res.headers['content-type']).toBe('image/jpeg');
+  });
+
+  test('files ディレクトリの音声を audio/mp4 で返す', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app).get('/files/test.m4a').expect(200);
+    expect(res.headers['content-type']).toBe('audio/mp4');
+  });
+
+  test('エンコードされた日本語のファイル名の音声を返す', async () => {
+    const filepath = path.join(fixturesRootPath, 'files', '日本語.m4a');
+    fs.copyFileSync(path.join(fixturesRootPath, 'files', 'test.m4a'), filepath);
+    try {
+      vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+      await supertest(app)
+        .get('/files/%E6%97%A5%E6%9C%AC%E8%AA%9E.m4a')
+        .expect(200);
+    } finally {
+      fs.unlinkSync(filepath);
+    }
+  });
+
+  test('存在しないファイルは 404 を返し、index.html にフォールバックしない', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    await supertest(app)
+      .get('/files/nonexistent')
+      .set('Accept', 'text/html')
+      .expect(404);
+  });
+
+  test.each([
+    ['パスの遡り', '/files/../package.json'],
+    ['エンコードされたパスの遡り', '/files/..%2Farticles%2Fmy-first-post.md'],
+    [
+      'ドットもエンコードされたパスの遡り',
+      '/files/%2e%2e%2Farticles%2Fmy-first-post.md',
+    ],
+    ['images ディレクトリへの遡り', '/files/..%2Fimages%2Ftest.jpg'],
+  ])('%sではファイルを返さない', async (_name, url) => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    const res = await supertest(app).get(url);
+    expect(res.status).not.toBe(200);
+  });
+
+  test('images ディレクトリのファイルは /files では返さない', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    await supertest(app).get('/files/test-1036bytes.jpg').expect(404);
+  });
+});

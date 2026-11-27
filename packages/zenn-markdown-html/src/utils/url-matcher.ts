@@ -211,6 +211,57 @@ export function isZennAudioUrl(
   });
 }
 
+/** 相対パスで音声を参照できるディレクトリ */
+const LOCAL_AUDIO_PATH_PREFIX = '/files/';
+
+/** 相対パスのセグメントに含められない文字（バックスラッシュ・%・クエリ・フラグメント・制御文字） */
+// eslint-disable-next-line no-control-regex
+const INVALID_LOCAL_PATH_SEGMENT_REGEX = /[\\%?#\u0000-\u001f\u007f]/;
+
+/**
+ * `/files/…/<名前>.m4a` の相対パスを検証し、セグメントごとにパーセントエンコードした形を返す。
+ * 許可しない形なら null を返す
+ *
+ * `@[audio](…)` の中身は書いたままの文字列で渡されるため、日本語などのファイル名は
+ * そのままでもパーセントエンコードしても書ける。どちらの書き方でも同じ結果になるように、
+ * 一度だけデコードして検証し、エンコードし直す。
+ * デコード後に `%` が残るパス（二重のエンコード）は、パスを受け取る側とデコードの回数が
+ * 食い違わないように許可しない。
+ * ファイル名は NFC に正規化する（macOS で作ったファイル名は NFD のことがあるため）
+ */
+export function normalizeLocalAudioPath(str: string): string | null {
+  if (typeof str !== 'string') return null;
+  if (!str.startsWith(LOCAL_AUDIO_PATH_PREFIX)) return null;
+
+  let decoded: string;
+  try {
+    decoded = decodeURIComponent(str);
+  } catch (_) {
+    return null; // 不正なパーセントエンコード
+  }
+
+  // デコードしてからセグメントに分けるため、`%2F` は区切りとして扱われ、
+  // `..` や空のセグメントの検査に掛かる
+  const segments = decoded.slice(LOCAL_AUDIO_PATH_PREFIX.length).split('/');
+  const isValid = segments.every(
+    (segment) =>
+      segment !== '' &&
+      segment !== '.' &&
+      segment !== '..' &&
+      !INVALID_LOCAL_PATH_SEGMENT_REGEX.test(segment)
+  );
+  if (!isValid) return null;
+  if (!segments[segments.length - 1].endsWith('.m4a')) return null;
+
+  try {
+    return `${LOCAL_AUDIO_PATH_PREFIX}${segments
+      .map((segment) => encodeURIComponent(segment.normalize('NFC')))
+      .join('/')}`;
+  } catch (_) {
+    return null; // 対にならないサロゲートなど、エンコードできない文字
+  }
+}
+
 function parseUrl(str: string): URL | null {
   try {
     return new URL(str);
