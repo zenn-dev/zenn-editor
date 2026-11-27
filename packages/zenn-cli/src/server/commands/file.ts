@@ -1,6 +1,15 @@
 import arg from 'arg';
 import path from 'node:path';
-import { mkdir, readFile, realpath, stat, writeFile } from 'node:fs/promises';
+import {
+  lstat,
+  mkdir,
+  readFile,
+  realpath,
+  rename,
+  rm,
+  stat,
+  writeFile,
+} from 'node:fs/promises';
 import {
   AUDIO_CONVERSION_HINT,
   AudioInputError,
@@ -322,9 +331,7 @@ async function upload(variant: Variant, argv: string[]) {
       Log.success(`${label}をアップロードしました`);
       console.log(result.url);
       if (type === 'audio') {
-        console.log(
-          `記事と本のチャプターの本文には @[audio](${result.url}) と書くと埋め込めます`
-        );
+        console.log(`本文には @[audio](${result.url}) と書くと埋め込めます`);
       }
     }
   } catch (error) {
@@ -454,7 +461,8 @@ const UNREFERENCEABLE_NAME_REGEX = /[\\%?#\u0000-\u001f\u007f]/;
 
 async function exists(filePath: string) {
   try {
-    await stat(filePath);
+    // リンク切れのシンボリックリンクも「ある」と扱うため、リンクをたどらない
+    await lstat(filePath);
     return true;
   } catch (error) {
     // 存在しない場合だけ「ない」と扱う。確かめられない場合は書き込まない
@@ -477,6 +485,34 @@ async function isSameFile(a: string, b: string) {
     );
   } catch {
     return false;
+  }
+}
+
+// 既にある出力先を置き換えるときは、同じディレクトリの一時ファイルに書いてから
+// 差し替える。書き込みの途中で失敗しても元のファイルが残り、出力先が
+// シンボリックリンクでもリンク先には書き込まない
+async function writeOutput(
+  outputPath: string,
+  bytes: Uint8Array,
+  overwrite: boolean
+) {
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  const target = overwrite
+    ? path.join(
+        path.dirname(outputPath),
+        `.${path.basename(outputPath)}.${process.pid}.tmp`
+      )
+    : outputPath;
+  try {
+    // 確認の後に作られたファイルは上書きしない
+    await writeFile(target, bytes, { flag: 'wx' });
+    if (overwrite) await rename(target, outputPath);
+  } catch (error) {
+    // 途中まで書いたファイルを残さない。既にあったファイルは消さない
+    if ((error as NodeJS.ErrnoException).code !== 'EEXIST') {
+      await rm(target, { force: true }).catch(() => undefined);
+    }
+    throw new FileInputError(`${outputPath} に書き出せませんでした`);
   }
 }
 
@@ -541,28 +577,26 @@ async function convert(argv: string[]) {
     const audio = await prepareAudioForUpload(
       await readSourceFile('audio', inputPath)
     );
-    try {
-      await mkdir(path.dirname(outputPath), { recursive: true });
-      // 確認の後に作られたファイルも、--force なしでは上書きしない
-      await writeFile(outputPath, audio.bytes, {
-        flag: args['--force'] ? 'w' : 'wx',
-      });
-    } catch {
-      throw new FileInputError(`${outputPath} に書き出せませんでした`);
-    }
+    await writeOutput(outputPath, audio.bytes, outputExists);
 
     const relative = path.relative(filesDirectory, outputPath);
     const insideFiles =
       relative !== '' &&
-      !relative.startsWith('..') &&
+      relative !== '..' &&
+      !relative.startsWith(`..${path.sep}`) &&
       !path.isAbsolute(relative);
     const segments = insideFiles
       ? relative.split(path.sep)
       : [path.basename(outputPath)];
     const referencePath = `/files/${segments.join('/')}`;
-    if (segments.some((segment) => UNREFERENCEABLE_NAME_REGEX.test(segment))) {
+    // プレビューは `.` で始まる名前の音声を配信しない
+    const referenceable = !segments.some(
+      (segment) =>
+        segment.startsWith('.') || UNREFERENCEABLE_NAME_REGEX.test(segment)
+    );
+    if (!referenceable) {
       Log.warn(
-        'ファイル名に % ? # \\ や制御文字が含まれているため、本文の @[audio](/files/…) では参照できません。ファイル名を変えてください'
+        'ファイル名が . で始まるか、% ? # \\ や制御文字を含むため、本文の @[audio](/files/…) では参照できません。ファイル名を変えてください'
       );
     }
     if (!insideFiles) {
@@ -571,7 +605,7 @@ async function convert(argv: string[]) {
       );
     }
     Log.warn(
-      'AI scanは行いません。公開する前に、機密情報や個人情報、自分以外の人の声、第三者が権利を持つ音源を含まないことを確認してください'
+      'AI scanは行いません。公開リポジトリではpushした時点で音声が公開されます。commit・pushする前に、機密情報や個人情報、自分以外の人の声、第三者が権利を持つ音源を含まないことを確認してください。変換元のファイルはリポジトリに含めないでください'
     );
 
     const result = {
@@ -592,7 +626,7 @@ async function convert(argv: string[]) {
           : '音声を再エンコードせずにm4aへ詰め替えて書き出しました'
     );
     console.log(`${outputPath} (${(result.size / 1024).toFixed(1)}KB)`);
-    if (insideFiles) {
+    if (insideFiles && referenceable) {
       console.log(`本文には @[audio](${referencePath}) と書くと埋め込めます`);
     }
   } catch (error) {

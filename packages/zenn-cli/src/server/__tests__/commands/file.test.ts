@@ -7,7 +7,15 @@ import {
   test,
   vi,
 } from 'vitest';
-import { mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import {
+  link,
+  mkdtemp,
+  readdir,
+  readFile,
+  rm,
+  symlink,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -589,7 +597,84 @@ describe('fileコマンド', () => {
       await exec(['convert', file, '--output', output, '--force']);
 
       expect(isM4a(await readFile(output))).toBe(true);
+      // 差し替えに使う一時ファイルを残さない
+      expect((await readdir(directory)).sort()).toEqual([
+        'out.m4a',
+        'voice.wav',
+      ]);
       expect(process.exitCode).toBeUndefined();
+    });
+
+    test('出力先がシンボリックリンクなら、--force でもリンク先には書き込まない', async (context) => {
+      const file = await localFile('voice.wav', wavBytes(1));
+      const target = await localFile('target.txt', Buffer.from('original'));
+      const output = path.join(directory, 'out.m4a');
+      try {
+        await symlink(target, output);
+      } catch {
+        return context.skip();
+      }
+
+      await exec(['convert', file, '--output', output, '--force']);
+
+      expect((await readFile(target)).toString()).toBe('original');
+      expect(isM4a(await readFile(output))).toBe(true);
+    });
+
+    test('リンク切れのシンボリックリンクも、--force なしでは置き換えない', async (context) => {
+      const file = await localFile('voice.wav', wavBytes(1));
+      const target = path.join(directory, 'missing.m4a');
+      const output = path.join(directory, 'out.m4a');
+      try {
+        await symlink(target, output);
+      } catch {
+        return context.skip();
+      }
+
+      await exec(['convert', file, '--output', output]);
+
+      await expect(readFile(target)).rejects.toThrow();
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('出力先が入力のハードリンクなら --force でも書き込まない', async () => {
+      const source = await m4aWithTitle('TITLE');
+      const file = await localFile('memo.m4a', source);
+      const output = path.join(directory, 'linked.m4a');
+      await link(file, output);
+
+      await exec(['convert', file, '--output', output, '--force']);
+
+      expect((await readFile(file)).equals(source)).toBe(true);
+      expect((await readFile(output)).equals(source)).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('30秒を超えるWAVは trimmed を true にする', async () => {
+      const file = await localFile('long.wav', wavBytes(31, 8000));
+
+      await exec(['convert', file, '--machine-readable']);
+
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('"converted":true,"trimmed":true')
+      );
+    });
+
+    test.each([
+      ['0件', []],
+      ['2件', ['a.wav', 'b.wav']],
+    ])('入力が%sなら書き出さない', async (_name, inputs) => {
+      await exec(['convert', ...inputs]);
+
+      expect(await missing('files')).toBe(true);
+      expect(process.exitCode).toBe(1);
+    });
+
+    test('入力がなければ files を作らない', async () => {
+      await exec(['convert', path.join(directory, 'none.wav')]);
+
+      expect(await missing('files')).toBe(true);
+      expect(process.exitCode).toBe(1);
     });
 
     test('入力と出力が同じパスなら --force でも書き込まない', async () => {
@@ -680,13 +765,14 @@ describe('fileコマンド', () => {
       expect(process.exitCode).toBeUndefined();
     });
 
-    test.each(['100%.wav', 'a#b.wav'])(
+    test.each(['100%.wav', 'a#b.wav', '.voice.wav'])(
       '本文から参照できないファイル名 %s は、書き出したうえで警告する',
       async (name) => {
         const plain = await localFile('plain.wav', wavBytes(1));
         await exec(['convert', plain]);
         const warningsForPlain = vi.mocked(console.warn).mock.calls.length;
         vi.mocked(console.warn).mockClear();
+        vi.mocked(console.log).mockClear();
         const file = await localFile(name, wavBytes(1));
 
         await exec(['convert', file]);
@@ -696,6 +782,9 @@ describe('fileコマンド', () => {
         ).toBe(true);
         expect(vi.mocked(console.warn).mock.calls.length).toBe(
           warningsForPlain + 1
+        );
+        expect(console.log).not.toHaveBeenCalledWith(
+          expect.stringContaining('@[audio]')
         );
         expect(process.exitCode).toBeUndefined();
       }
