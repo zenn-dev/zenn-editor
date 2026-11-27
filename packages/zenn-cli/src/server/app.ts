@@ -6,9 +6,19 @@ import { getManual } from './api/manual';
 import { getLocalInfo } from './api/local-info';
 import { getCliVersion } from './api/cli-version';
 import { historyApiFallback } from './lib/history-fallback';
+import { acceptImageExtensions } from './lib/helper';
 
-/** `zenn preview`を起動したディレクトリ直下にある、指定したディレクトリのファイルを返す */
-function serveLocalDirectory(dirName: 'images' | 'files'): RequestHandler {
+/** filesディレクトリから配信する拡張子（画像と音声） */
+const FILES_DIR_EXTENSIONS = [...acceptImageExtensions, '.m4a'];
+
+/**
+ * `zenn preview`を起動したディレクトリ直下にある、指定したディレクトリのファイルを返す。
+ * `extensions` を指定した場合は、その拡張子のファイルだけを返す
+ */
+function serveLocalDirectory(
+  dirName: 'images' | 'files',
+  extensions?: readonly string[]
+): RequestHandler {
   return (req, res) => {
     // URLエンコードされた文字（%20など）をデコード
     // 不正なパーセントエンコードは、ルートの照合の時点で Express が 400 を返す
@@ -20,6 +30,10 @@ function serveLocalDirectory(dirName: 'images' | 'files'): RequestHandler {
       res.status(400).end();
       return;
     }
+    if (extensions && !extensions.some((ext) => decodedPath.endsWith(ext))) {
+      res.status(404).end();
+      return;
+    }
     // rootをcwd/<dirName>に固定する。rootをcwdにするとsendのUP_PATH_REGEXPチェックが
     // cwd脱出時にしか効かず、`images/../package.json` のようなcwd配下への脱出を許して
     // しまう。加えて、rootを固定することでsendのdotfilesチェックはそのディレクトリ配下
@@ -28,6 +42,8 @@ function serveLocalDirectory(dirName: 'images' | 'files'): RequestHandler {
     res.sendFile(decodedPath, {
       root: path.join(process.cwd(), dirName),
       dotfiles: 'ignore',
+      // 拡張子と中身が食い違うファイルを、ブラウザが別の種類として解釈しないようにする
+      headers: { 'X-Content-Type-Options': 'nosniff' },
     });
   };
 }
@@ -47,7 +63,7 @@ export function createApp() {
   // `zenn preview`を起動したディレクトリ直下にあるimagesディレクトリ（画像）と
   // filesディレクトリ（画像・音声）を配信する
   app.get('/images/*splat', serveLocalDirectory('images'));
-  app.get('/files/*splat', serveLocalDirectory('files'));
+  app.get('/files/*splat', serveLocalDirectory('files', FILES_DIR_EXTENSIONS));
 
   // serve static files built by vite
   // historyApiFallbackがないと `/articles/foo` などの非ルートページでリロードすると404エラーになる

@@ -245,11 +245,11 @@ describe('completeHtml() のテスト', () => {
     });
 
     test('エンコードされた日本語のファイル名でも検証に成功する', () => {
-      const filepath = path.join(fixtureDirPath, 'files', '日本語.m4a');
+      const filepath = path.join(fixtureDirPath, 'files', '日本語の音声.m4a');
       fs.copyFileSync(path.join(fixtureDirPath, 'files', 'test.m4a'), filepath);
       try {
         const html = helper.completeHtml(
-          audioHtml('/files/%E6%97%A5%E6%9C%AC%E8%AA%9E.m4a')
+          audioHtml(`/files/${encodeURIComponent('日本語の音声')}.m4a`)
         );
         expect(html).toContain('<audio');
         expect(html).not.toContain('data-body-error');
@@ -262,6 +262,36 @@ describe('completeHtml() のテスト', () => {
       const html = helper.completeHtml(audioHtml('/files/notexist.m4a'));
       expect(html).not.toContain('<audio');
       expect(html).toContain('ファイルが存在しません');
+    });
+
+    test('ちょうど 640KB の音声は検証に成功する', () => {
+      const filepath = path.join(fixtureDirPath, 'files', 'just-640kb.m4a');
+      fs.writeFileSync(filepath, Buffer.alloc(640 * 1024));
+      try {
+        const html = helper.completeHtml(audioHtml('/files/just-640kb.m4a'));
+        expect(html).toContain('<audio');
+        expect(html).not.toContain('data-body-error');
+      } finally {
+        fs.unlinkSync(filepath);
+      }
+    });
+
+    test('連続するドットを含むファイル名でも検証に成功する', () => {
+      const filepath = path.join(fixtureDirPath, 'files', 'a..b.m4a');
+      fs.copyFileSync(path.join(fixtureDirPath, 'files', 'test.m4a'), filepath);
+      try {
+        const html = helper.completeHtml(audioHtml('/files/a..b.m4a'));
+        expect(html).toContain('<audio');
+        expect(html).not.toContain('data-body-error');
+      } finally {
+        fs.unlinkSync(filepath);
+      }
+    });
+
+    test('ドットから始まる名前のファイルはエラーを出力する', () => {
+      const html = helper.completeHtml(audioHtml('/files/.hidden.m4a'));
+      expect(html).not.toContain('<audio');
+      expect(html).toContain('data-body-error');
     });
 
     test('640KB を超える音声はエラーを出力する', () => {

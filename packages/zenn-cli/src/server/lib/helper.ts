@@ -257,13 +257,25 @@ export function completeHtml(html: string): string {
       replaceWithError('を再生できません。パスが不正です。');
       return;
     }
-    // `getWorkingPath` は `..` を含むパスでプロセスを終了するため、先に弾く
-    if (!decodedSrc.startsWith('/files/') || decodedSrc.includes('..')) {
+    // `getWorkingPath` は `..` を含むパス（`a..b.m4a` のようなファイル名も含む）で
+    // プロセスを終了するため使わず、セグメントごとに検証してパスを組み立てる
+    const segments = decodedSrc.split(/[\\/]/).slice(1);
+    if (
+      !decodedSrc.startsWith('/files/') ||
+      segments.some((seg) => seg === '' || seg === '.' || seg === '..')
+    ) {
       replaceWithError('を再生できません。パスが不正です。');
       return;
     }
+    // プレビューサーバーは `.` から始まるファイル・ディレクトリを配信しない
+    if (segments.some((seg) => seg.startsWith('.'))) {
+      replaceWithError(
+        'を再生できません。<code>.</code>から始まる名前のファイルやディレクトリは使えません。'
+      );
+      return;
+    }
 
-    const filepath = getWorkingPath(decodedSrc);
+    const filepath = path.join(process.cwd(), ...segments);
     if (!fs.existsSync(filepath) || !fs.statSync(filepath).isFile()) {
       replaceWithError('にファイルが存在しません。');
       return;
@@ -274,7 +286,7 @@ export function completeHtml(html: string): string {
       replaceWithError(
         `のファイルサイズ（${Math.ceil(
           fileSize / 1024
-        )} KB）はアップロード可能なサイズを超えています。ファイルサイズは${
+        )} KB）は上限を超えています。ファイルサイズは${
           MAX_LOCAL_AUDIO_BYTES / 1024
         }KB以内にしてください。`
       );

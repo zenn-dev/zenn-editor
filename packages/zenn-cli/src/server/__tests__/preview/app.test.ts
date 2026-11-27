@@ -420,6 +420,38 @@ describe('/files/*', () => {
     vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
     const res = await supertest(app).get('/files/test.m4a').expect(200);
     expect(res.headers['content-type']).toBe('audio/mp4');
+    expect(res.headers['x-content-type-options']).toBe('nosniff');
+  });
+
+  test('画像と音声以外の拡張子のファイルは返さない', async () => {
+    const htmlPath = path.join(fixturesRootPath, 'files', 'page.html');
+    fs.writeFileSync(htmlPath, '<p>test</p>');
+    try {
+      vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+      await supertest(app).get('/files/page.html').expect(404);
+    } finally {
+      fs.unlinkSync(htmlPath);
+    }
+  });
+
+  test('ドットから始まる名前のファイルは返さない', async () => {
+    const hiddenPath = path.join(fixturesRootPath, 'files', '.hidden.m4a');
+    fs.copyFileSync(
+      path.join(fixturesRootPath, 'files', 'test.m4a'),
+      hiddenPath
+    );
+    try {
+      vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+      await supertest(app).get('/files/.hidden.m4a').expect(404);
+    } finally {
+      fs.unlinkSync(hiddenPath);
+    }
+  });
+
+  test('不正なパーセントエンコードは 400 を返す', async () => {
+    vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
+    await supertest(app).get('/files/%E6.m4a').expect(400);
+    await supertest(app).get('/images/%E6.jpg').expect(400);
   });
 
   test('エンコードされた日本語のファイル名の音声を返す', async () => {
@@ -438,7 +470,7 @@ describe('/files/*', () => {
   test('存在しないファイルは 404 を返し、index.html にフォールバックしない', async () => {
     vi.spyOn(process, 'cwd').mockReturnValue(fixturesRootPath);
     await supertest(app)
-      .get('/files/nonexistent')
+      .get('/files/nonexistent.m4a')
       .set('Accept', 'text/html')
       .expect(404);
   });
