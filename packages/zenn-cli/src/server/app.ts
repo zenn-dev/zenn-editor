@@ -10,15 +10,11 @@ import { historyApiFallback } from './lib/history-fallback';
 /** `zenn preview`を起動したディレクトリ直下にある、指定したディレクトリのファイルを返す */
 function serveLocalDirectory(dirName: 'images' | 'files'): RequestHandler {
   return (req, res) => {
-    let decodedPath: string;
-    try {
-      // URLエンコードされた文字（%20など）をデコード
-      decodedPath = decodeURIComponent(req.path.slice(`/${dirName}/`.length));
-    } catch {
-      // 不正なパーセントエンコード
-      res.status(400).end();
-      return;
-    }
+    // URLエンコードされた文字（%20など）をデコード
+    // 不正なパーセントエンコードは、ルートの照合の時点で Express が 400 を返す
+    const decodedPath = decodeURIComponent(
+      req.path.slice(`/${dirName}/`.length)
+    );
     // デコード後に `..` セグメントが混ざっていれば早期に弾く
     if (decodedPath.split(/[\\/]+/).some((seg) => seg === '..')) {
       res.status(400).end();
