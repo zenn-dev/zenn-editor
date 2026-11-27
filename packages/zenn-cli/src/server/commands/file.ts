@@ -1,6 +1,6 @@
 import arg from 'arg';
 import path from 'node:path';
-import { readFile, stat } from 'node:fs/promises';
+import { mkdir, readFile, realpath, stat, writeFile } from 'node:fs/promises';
 import {
   AUDIO_CONVERSION_HINT,
   AudioInputError,
@@ -102,10 +102,10 @@ function imageContentType(bytes: Uint8Array) {
   throw new FileInputError('JPEG、PNG、GIF、WebP形式の画像を指定してください');
 }
 
-async function readUploadFile(
+async function readSourceFile(
   type: PublicFileType,
   filePath: string
-): Promise<UploadTarget> {
+): Promise<Buffer> {
   const label = typeLabels[type];
   const maxBytes = type === 'image' ? MAX_IMAGE_BYTES : MAX_AUDIO_SOURCE_BYTES;
   const unreadable = `${label}ファイルを読み込めませんでした`;
@@ -132,6 +132,14 @@ async function readUploadFile(
   if (!bytes.length || bytes.length > maxBytes) {
     throw new FileInputError(tooLarge);
   }
+  return bytes;
+}
+
+async function readUploadFile(
+  type: PublicFileType,
+  filePath: string
+): Promise<UploadTarget> {
+  const bytes = await readSourceFile(type, filePath);
   const filename = path.basename(filePath);
   if (type === 'image') {
     return { bytes, contentType: imageContentType(bytes), filename };
@@ -439,6 +447,163 @@ async function remove(variant: Variant, argv: string[]) {
   }
 }
 
+// 本文の `@[audio](/files/…)` で参照できないファイル名に含まれる文字。
+// zenn-markdown-html の normalizeLocalAudioPath が受け付けない文字に合わせる
+// eslint-disable-next-line no-control-regex
+const UNREFERENCEABLE_NAME_REGEX = /[\\%?#\u0000-\u001f\u007f]/;
+
+async function exists(filePath: string) {
+  try {
+    await stat(filePath);
+    return true;
+  } catch (error) {
+    // 存在しない場合だけ「ない」と扱う。確かめられない場合は書き込まない
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false;
+    throw new FileInputError('出力先を確認できませんでした');
+  }
+}
+
+// シンボリックリンクやハードリンクを経由しても、同じファイルなら同じと判定する
+async function isSameFile(a: string, b: string) {
+  if (path.resolve(a) === path.resolve(b)) return true;
+  try {
+    if ((await realpath(a)) === (await realpath(b))) return true;
+    const [statA, statB] = await Promise.all([
+      stat(a, { bigint: true }),
+      stat(b, { bigint: true }),
+    ]);
+    return (
+      statA.ino !== 0n && statA.ino === statB.ino && statA.dev === statB.dev
+    );
+  } catch {
+    return false;
+  }
+}
+
+// `files/` に置く音声を、アップロードするときと同じ形のm4aにして書き出す。アップロードはしない
+async function convert(argv: string[]) {
+  let args;
+  try {
+    args = arg(
+      {
+        '--type': String,
+        '--output': String,
+        '--force': Boolean,
+        '--machine-readable': Boolean,
+        '--help': Boolean,
+        '-h': '--help',
+      },
+      { argv }
+    );
+  } catch {
+    fail(invalidOptionText);
+    console.log(fileHelpText);
+    return;
+  }
+  if (args['--help']) return console.log(fileHelpText);
+  const type = args['--type'];
+  if (type !== undefined && type !== 'audio') {
+    return fail(
+      'convertは音声だけに対応します。--type は省略するか audio を指定してください'
+    );
+  }
+  if (args._.length !== 1) {
+    return fail('変換する音声ファイルを1件指定してください');
+  }
+
+  const inputPath = args._[0];
+  const filesDirectory = path.join(process.cwd(), 'files');
+  const outputPath = path.resolve(
+    args['--output'] ??
+      path.join(
+        filesDirectory,
+        `${path.basename(inputPath, path.extname(inputPath))}.m4a`
+      )
+  );
+  if (!outputPath.endsWith('.m4a')) {
+    return fail('出力先の拡張子は .m4a にしてください');
+  }
+
+  try {
+    const outputExists = await exists(outputPath);
+    // 変換や書き込みに失敗したときに元のファイルを失わないよう、--force でも上書きしない
+    if (outputExists && (await isSameFile(inputPath, outputPath))) {
+      throw new FileInputError(
+        '入力と同じファイルには書き出せません。別の出力先を指定してください'
+      );
+    }
+    if (outputExists && !args['--force']) {
+      throw new FileInputError(
+        `${outputPath} は既に存在します。上書きする場合は --force を指定してください`
+      );
+    }
+
+    const audio = await prepareAudioForUpload(
+      await readSourceFile('audio', inputPath)
+    );
+    try {
+      await mkdir(path.dirname(outputPath), { recursive: true });
+      // 確認の後に作られたファイルも、--force なしでは上書きしない
+      await writeFile(outputPath, audio.bytes, {
+        flag: args['--force'] ? 'w' : 'wx',
+      });
+    } catch {
+      throw new FileInputError(`${outputPath} に書き出せませんでした`);
+    }
+
+    const relative = path.relative(filesDirectory, outputPath);
+    const insideFiles =
+      relative !== '' &&
+      !relative.startsWith('..') &&
+      !path.isAbsolute(relative);
+    const segments = insideFiles
+      ? relative.split(path.sep)
+      : [path.basename(outputPath)];
+    const referencePath = `/files/${segments.join('/')}`;
+    if (segments.some((segment) => UNREFERENCEABLE_NAME_REGEX.test(segment))) {
+      Log.warn(
+        'ファイル名に % ? # \\ や制御文字が含まれているため、本文の @[audio](/files/…) では参照できません。ファイル名を変えてください'
+      );
+    }
+    if (!insideFiles) {
+      Log.warn(
+        '本文から /files/… で参照するには、zenn preview を起動するディレクトリの files ディレクトリに置いてください'
+      );
+    }
+    Log.warn(
+      'AI scanは行いません。公開する前に、機密情報や個人情報、自分以外の人の声、第三者が権利を持つ音源を含まないことを確認してください'
+    );
+
+    const result = {
+      path: outputPath,
+      size: audio.bytes.length,
+      converted: audio.converted,
+      trimmed: audio.trimmed,
+    };
+    if (args['--machine-readable']) {
+      console.log(JSON.stringify(result));
+      return;
+    }
+    Log.success(
+      audio.trimmed
+        ? '音声の先頭30秒をAAC（m4a）へ変換して書き出しました。30秒を超える部分は含みません'
+        : audio.converted
+          ? '音声をAAC（m4a）へ変換して書き出しました'
+          : '音声を再エンコードせずにm4aへ詰め替えて書き出しました'
+    );
+    console.log(`${outputPath} (${(result.size / 1024).toFixed(1)}KB)`);
+    if (insideFiles) {
+      console.log(`本文には @[audio](${referencePath}) と書くと埋め込めます`);
+    }
+  } catch (error) {
+    if (error instanceof FileInputError || error instanceof AudioInputError) {
+      fail(error.message);
+    } else {
+      fail('原因不明のエラーが発生しました');
+    }
+  }
+}
+
 export async function execFileCommand(variant: Variant, argv: string[]) {
   const helpText = helpTextOf(variant);
   const [subcommand, ...subcommandArgs] = argv;
@@ -449,6 +614,10 @@ export async function execFileCommand(variant: Variant, argv: string[]) {
   if (subcommand === 'upload') return upload(variant, subcommandArgs);
   if (subcommand === 'list') return list(variant, subcommandArgs);
   if (subcommand === 'delete') return remove(variant, subcommandArgs);
+  // 互換用の `zenn image` には足さない
+  if (variant === 'file' && subcommand === 'convert') {
+    return convert(subcommandArgs);
+  }
   fail(`${variant}のサブコマンドが不正です`);
   console.log(helpText);
 }

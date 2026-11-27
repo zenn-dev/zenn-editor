@@ -335,4 +335,10 @@ describe('imageコマンド', () => {
       expect(process.exitCode).toBe(1);
     });
   });
+
+  test('convertは受け付けない', async () => {
+    await exec(['convert', path.join(directory, 'voice.wav')]);
+
+    expect(process.exitCode).toBe(1);
+  });
 });
